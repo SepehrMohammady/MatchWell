@@ -10,7 +10,7 @@ import {
     StatusBar,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../types/navigation';
+import { RootStackParamList } from '../types';
 import { useGameStore } from '../context/GameStore';
 import { LEVELS, THEME_CONFIGS } from '../themes';
 import { ThemeType } from '../types';

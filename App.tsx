@@ -18,7 +18,7 @@ import LevelSelect from './src/screens/LevelSelect';
 import GameScreen from './src/screens/GameScreen';
 
 // Types
-import { RootStackParamList } from './src/types/navigation';
+import { RootStackParamList } from './src/types';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 

@@ -88,3 +88,6 @@ export interface SwipeDirection {
     from: Position;
     to: Position;
 }
+
+// Re-export navigation types
+export * from './navigation';

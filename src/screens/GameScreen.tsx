@@ -15,7 +15,7 @@ import GameBoard from '../components/Game/GameBoard';
 import HUD from '../components/UI/HUD';
 import { THEME_CONFIGS, getLevelById } from '../themes';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../types/navigation';
+import { RootStackParamList } from '../types';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Game'>;
 

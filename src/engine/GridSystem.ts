@@ -1,6 +1,6 @@
 // Grid System for MatchWell Match-3 Game
 import { Tile, TileType, Position, Match, ThemeType } from '../types';
-import { THEME_CONFIGS } from '../themes';
+import { THEME_CONFIGS } from '../themes/index';
 
 export const GRID_SIZE = 8;
 
