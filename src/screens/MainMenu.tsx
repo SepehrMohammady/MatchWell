@@ -1,4 +1,4 @@
-// Main Menu Screen
+// Main Menu Screen (Simplified without reanimated)
 import React from 'react';
 import {
     View,
@@ -9,52 +9,14 @@ import {
     StatusBar,
     Dimensions,
 } from 'react-native';
-import Animated, {
-    useAnimatedStyle,
-    useSharedValue,
-    withRepeat,
-    withSequence,
-    withTiming,
-    withDelay,
-} from 'react-native-reanimated';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types/navigation';
-import { useEffect } from 'react';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'MainMenu'>;
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 const MainMenu: React.FC<Props> = ({ navigation }) => {
-    const titleScale = useSharedValue(1);
-    const earthRotation = useSharedValue(0);
-
-    useEffect(() => {
-        // Title pulse animation
-        titleScale.value = withRepeat(
-            withSequence(
-                withTiming(1.05, { duration: 1000 }),
-                withTiming(1, { duration: 1000 })
-            ),
-            -1,
-            true
-        );
-
-        // Earth rotation
-        earthRotation.value = withRepeat(
-            withTiming(360, { duration: 20000 }),
-            -1,
-            false
-        );
-    }, []);
-
-    const titleStyle = useAnimatedStyle(() => ({
-        transform: [{ scale: titleScale.value }],
-    }));
-
-    const earthStyle = useAnimatedStyle(() => ({
-        transform: [{ rotate: `${earthRotation.value}deg` }],
-    }));
 
     const handlePlay = () => {
         navigation.navigate('LevelSelect');
@@ -77,10 +39,8 @@ const MainMenu: React.FC<Props> = ({ navigation }) => {
 
             {/* Title section */}
             <View style={styles.titleSection}>
-                <Animated.Text style={[styles.earth, earthStyle]}>🌍</Animated.Text>
-                <Animated.Text style={[styles.title, titleStyle]}>
-                    MatchWell
-                </Animated.Text>
+                <Text style={styles.earth}>🌍</Text>
+                <Text style={styles.title}>MatchWell</Text>
                 <Text style={styles.subtitle}>Save the Planet, One Match at a Time!</Text>
             </View>
 

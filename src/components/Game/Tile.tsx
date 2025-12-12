@@ -1,4 +1,4 @@
-// Tile Component - Renders a single game tile
+// Tile Component - Renders a single game tile (Simplified without reanimated)
 import React, { memo } from 'react';
 import {
     TouchableOpacity,
@@ -7,12 +7,6 @@ import {
     StyleSheet,
     Dimensions
 } from 'react-native';
-import Animated, {
-    useAnimatedStyle,
-    withSpring,
-    withSequence,
-    withTiming,
-} from 'react-native-reanimated';
 import { Tile as TileType, Position } from '../../types';
 import { TILE_INFO } from '../../themes';
 
@@ -31,39 +25,28 @@ interface TileProps {
 const TileComponent: React.FC<TileProps> = memo(({ tile, isSelected, onPress }) => {
     const tileInfo = TILE_INFO[tile.type];
 
-    const animatedStyle = useAnimatedStyle(() => {
-        return {
-            transform: [
-                {
-                    scale: withSpring(isSelected ? 1.1 : 1, {
-                        damping: 10,
-                        stiffness: 150
-                    })
-                },
-            ],
-            opacity: withTiming(tile.isMatched ? 0 : 1, { duration: 200 }),
-        };
-    }, [isSelected, tile.isMatched]);
-
     const handlePress = () => {
         onPress(tile.position);
     };
+
+    if (tile.isMatched) {
+        return <View style={styles.emptyTile} />;
+    }
 
     return (
         <TouchableOpacity
             onPress={handlePress}
             activeOpacity={0.8}
         >
-            <Animated.View
+            <View
                 style={[
                     styles.tile,
                     { backgroundColor: tileInfo.color },
                     isSelected && styles.selectedTile,
-                    animatedStyle,
                 ]}
             >
                 <Text style={styles.emoji}>{tileInfo.emoji}</Text>
-            </Animated.View>
+            </View>
         </TouchableOpacity>
     );
 });
@@ -91,6 +74,12 @@ const styles = StyleSheet.create({
         borderWidth: 3,
         shadowColor: '#FFD700',
         shadowOpacity: 0.8,
+        transform: [{ scale: 1.1 }],
+    },
+    emptyTile: {
+        width: TILE_SIZE,
+        height: TILE_SIZE,
+        margin: TILE_MARGIN,
     },
     emoji: {
         fontSize: TILE_SIZE * 0.5,
