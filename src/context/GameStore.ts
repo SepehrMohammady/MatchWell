@@ -17,6 +17,7 @@ import {
     hasValidMoves
 } from '../engine/MatchDetector';
 import { getLevelById, LEVELS } from '../themes';
+import { playSfx } from '../utils/SoundManager';
 
 interface GameStore extends GameState {
     // Actions
@@ -97,6 +98,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
         // If no tile selected, select this one
         if (!selectedTile) {
+            playSfx('tile_select');
             set({ selectedTile: position });
             return;
         }
@@ -125,6 +127,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         // Check if swap would create a match
         if (!wouldSwapCreateMatch(grid, pos1, pos2)) {
             // Invalid swap - just deselect
+            playSfx('invalid_move');
             set({ selectedTile: null });
             return;
         }
@@ -223,6 +226,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
         const matchScore = calculateMatchScore(matches, combo);
         const newScore = score + matchScore;
         const newCombo = combo + 1;
+
+        // Play combo sound
+        playSfx('combo');
 
         // Remove matched tiles
         let newGrid = removeMatchedTiles(grid, matches);

@@ -16,6 +16,7 @@ import HUD from '../components/UI/HUD';
 import { THEME_CONFIGS, getLevelById } from '../themes';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types';
+import { playBgm, stopBgm, pauseBgm, resumeBgm, playSfx } from '../utils/SoundManager';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Game'>;
 
@@ -31,12 +32,22 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
     const level = useGameStore((state) => state.level);
     const isPaused = useGameStore((state) => state.isPaused);
     const pauseGame = useGameStore((state) => state.pauseGame);
-    const resumeGame = useGameStore((state) => state.resumeGame);
+    const resumeGameState = useGameStore((state) => state.resumeGame);
     const markLevelComplete = useGameStore((state) => state.markLevelComplete);
 
     const levelConfig = getLevelById(levelId);
     const themeConfig = THEME_CONFIGS[theme];
 
+    // Start gameplay music when entering the game
+    useEffect(() => {
+        playBgm('bgm_gameplay');
+
+        return () => {
+            stopBgm();
+        };
+    }, []);
+
+    // Initialize the game level
     useEffect(() => {
         initializeGame(levelId);
     }, [levelId, initializeGame]);
@@ -48,12 +59,15 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
     }, [isLevelComplete, levelId, score, markLevelComplete]);
 
     const handlePause = useCallback(() => {
+        pauseBgm();
         pauseGame();
     }, [pauseGame]);
 
     const handleResume = useCallback(() => {
-        resumeGame();
-    }, [resumeGame]);
+        resumeBgm();
+        resumeGameState();
+    }, [resumeGameState]);
+
 
     const handleRestart = useCallback(() => {
         initializeGame(levelId);

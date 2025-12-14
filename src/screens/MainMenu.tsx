@@ -1,5 +1,5 @@
 // Main Menu Screen (Simplified without reanimated)
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
     View,
     Text,
@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types';
+import { preloadSounds, playBgm, playSfx, stopBgm } from '../utils/SoundManager';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'MainMenu'>;
 
@@ -18,14 +19,28 @@ const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 const MainMenu: React.FC<Props> = ({ navigation }) => {
 
+    // Preload sounds and start menu music
+    useEffect(() => {
+        preloadSounds().then(() => {
+            playBgm('bgm_menu');
+        });
+
+        return () => {
+            stopBgm();
+        };
+    }, []);
+
     const handlePlay = () => {
+        playSfx('tile_select');
         navigation.navigate('LevelSelect');
     };
 
     const handleEndless = () => {
+        playSfx('tile_select');
         // Start endless mode with level 1 settings but infinite moves
         navigation.navigate('Game', { levelId: 1 });
     };
+
 
     return (
         <SafeAreaView style={styles.container}>
