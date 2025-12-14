@@ -23,6 +23,7 @@ interface GameStore extends GameState {
     initializeGame: (levelId: number) => void;
     selectTile: (position: Position) => void;
     swapSelectedTiles: (pos1: Position, pos2: Position) => void;
+    swapWithDirection: (position: Position, direction: 'up' | 'down' | 'left' | 'right') => void;
     processMatches: () => void;
     resetCombo: () => void;
     pauseGame: () => void;
@@ -143,6 +144,38 @@ export const useGameStore = create<GameStore>((set, get) => ({
         setTimeout(() => {
             get().processMatches();
         }, 200);
+    },
+
+    // Swap tile in a direction (for swipe gesture)
+    swapWithDirection: (position: Position, direction: 'up' | 'down' | 'left' | 'right') => {
+        const { grid, movesRemaining, isProcessing } = get();
+
+        if (isProcessing || movesRemaining <= 0) return;
+
+        // Calculate target position based on direction
+        let targetPos: Position;
+        switch (direction) {
+            case 'up':
+                targetPos = { row: position.row - 1, col: position.col };
+                break;
+            case 'down':
+                targetPos = { row: position.row + 1, col: position.col };
+                break;
+            case 'left':
+                targetPos = { row: position.row, col: position.col - 1 };
+                break;
+            case 'right':
+                targetPos = { row: position.row, col: position.col + 1 };
+                break;
+        }
+
+        // Check if target is within bounds
+        if (targetPos.row < 0 || targetPos.row >= 8 || targetPos.col < 0 || targetPos.col >= 8) {
+            return; // Out of bounds
+        }
+
+        // Attempt the swap
+        get().swapSelectedTiles(position, targetPos);
     },
 
     // Process all matches, apply gravity, fill, repeat

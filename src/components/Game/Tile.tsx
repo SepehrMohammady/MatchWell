@@ -1,11 +1,12 @@
-// Tile Component - Renders a single game tile (Simplified without reanimated)
-import React, { memo } from 'react';
-import {
-    TouchableOpacity,
-    View,
-    Text,
-    StyleSheet,
-    Dimensions
+// Tile Component - Renders a single game tile with swipe support
+import React, { memo, useRef, useCallback } from 'react';
+import { 
+  View, 
+  Text, 
+  StyleSheet, 
+  Dimensions,
+  Animated,
+  PanResponder,
 } from 'react-native';
 import { Tile as TileType, Position } from '../../types';
 import { TILE_INFO } from '../../themes';
@@ -15,76 +16,209 @@ const GRID_SIZE = 8;
 const TILE_MARGIN = 2;
 const BOARD_PADDING = 10;
 const TILE_SIZE = (SCREEN_WIDTH - BOARD_PADDING * 2 - TILE_MARGIN * 2 * GRID_SIZE) / GRID_SIZE;
+const SWIPE_THRESHOLD = TILE_SIZE * 0.3; // Minimum distance to register swipe
+
+export type SwipeDirection = 'up' | 'down' | 'left' | 'right' | null;
 
 interface TileProps {
-    tile: TileType;
-    isSelected: boolean;
-    onPress: (position: Position) => void;
+  tile: TileType;
+  isSelected: boolean;
+  onPress: (position: Position) => void;
+  onSwipe: (position: Position, direction: SwipeDirection) => void;
 }
 
-const TileComponent: React.FC<TileProps> = memo(({ tile, isSelected, onPress }) => {
-    const tileInfo = TILE_INFO[tile.type];
+const TileComponent: React.FC<TileProps> = memo(({ tile, isSelected, onPress, onSwipe }) => {
+  const tileInfo = TILE_INFO[tile.type];
+  
+  // Animation values
+  const scaleAnim = useRef(new Animated.Value(1)).current;
+  const opacityAnim = useRef(new Animated.Value(1)).current;
+  const translateX = useRef(new Animated.Value(0)).current;
+  const translateY = useRef(new Animated.Value(0)).current;
 
-    const handlePress = () => {
-        onPress(tile.position);
-    };
+  // Track if this is a swipe or tap
+  const isSwipe = useRef(false);
 
+  // Animate selection
+  React.useEffect(() => {
+    Animated.spring(scaleAnim, {
+      toValue: isSelected ? 1.15 : 1,
+      friction: 5,
+      tension: 100,
+      useNativeDriver: true,
+    }).start();
+  }, [isSelected, scaleAnim]);
+
+  // Animate matched tiles (fade out)
+  React.useEffect(() => {
     if (tile.isMatched) {
-        return <View style={styles.emptyTile} />;
+      Animated.parallel([
+        Animated.timing(opacityAnim, {
+          toValue: 0,
+          duration: 200,
+          useNativeDriver: true,
+        }),
+        Animated.timing(scaleAnim, {
+          toValue: 0.5,
+          duration: 200,
+          useNativeDriver: true,
+        }),
+      ]).start();
+    } else {
+      opacityAnim.setValue(1);
+    }
+  }, [tile.isMatched, opacityAnim, scaleAnim]);
+
+  // Determine swipe direction
+  const getSwipeDirection = useCallback((dx: number, dy: number): SwipeDirection => {
+    const absDx = Math.abs(dx);
+    const absDy = Math.abs(dy);
+
+    if (absDx < SWIPE_THRESHOLD && absDy < SWIPE_THRESHOLD) {
+      return null; // No significant movement
     }
 
+    if (absDx > absDy) {
+      return dx > 0 ? 'right' : 'left';
+    } else {
+      return dy > 0 ? 'down' : 'up';
+    }
+  }, []);
+
+  // Pan responder for swipe gestures
+  const panResponder = useRef(
+    PanResponder.create({
+      onStartShouldSetPanResponder: () => true,
+      onMoveShouldSetPanResponder: (_, gestureState) => {
+        // Only become responder if there's significant movement
+        return Math.abs(gestureState.dx) > 5 || Math.abs(gestureState.dy) > 5;
+      },
+      onPanResponderGrant: () => {
+        isSwipe.current = false;
+        // Visual feedback on touch
+        Animated.spring(scaleAnim, {
+          toValue: 0.95,
+          friction: 5,
+          useNativeDriver: true,
+        }).start();
+      },
+      onPanResponderMove: (_, gestureState) => {
+        const { dx, dy } = gestureState;
+        // Limit movement to tile size
+        const clampedDx = Math.max(-TILE_SIZE / 2, Math.min(TILE_SIZE / 2, dx));
+        const clampedDy = Math.max(-TILE_SIZE / 2, Math.min(TILE_SIZE / 2, dy));
+        
+        translateX.setValue(clampedDx);
+        translateY.setValue(clampedDy);
+
+        if (Math.abs(dx) > SWIPE_THRESHOLD || Math.abs(dy) > SWIPE_THRESHOLD) {
+          isSwipe.current = true;
+        }
+      },
+      onPanResponderRelease: (_, gestureState) => {
+        const { dx, dy } = gestureState;
+        
+        // Reset position with animation
+        Animated.parallel([
+          Animated.spring(translateX, {
+            toValue: 0,
+            friction: 5,
+            useNativeDriver: true,
+          }),
+          Animated.spring(translateY, {
+            toValue: 0,
+            friction: 5,
+            useNativeDriver: true,
+          }),
+          Animated.spring(scaleAnim, {
+            toValue: isSelected ? 1.15 : 1,
+            friction: 5,
+            useNativeDriver: true,
+          }),
+        ]).start();
+
+        const direction = getSwipeDirection(dx, dy);
+        
+        if (direction && isSwipe.current) {
+          // It's a swipe
+          onSwipe(tile.position, direction);
+        } else {
+          // It's a tap
+          onPress(tile.position);
+        }
+      },
+      onPanResponderTerminate: () => {
+        // Reset if gesture is cancelled
+        Animated.parallel([
+          Animated.spring(translateX, { toValue: 0, friction: 5, useNativeDriver: true }),
+          Animated.spring(translateY, { toValue: 0, friction: 5, useNativeDriver: true }),
+          Animated.spring(scaleAnim, { toValue: 1, friction: 5, useNativeDriver: true }),
+        ]).start();
+      },
+    })
+  ).current;
+
+  if (tile.isMatched) {
     return (
-        <TouchableOpacity
-            onPress={handlePress}
-            activeOpacity={0.8}
-        >
-            <View
-                style={[
-                    styles.tile,
-                    { backgroundColor: tileInfo.color },
-                    isSelected && styles.selectedTile,
-                ]}
-            >
-                <Text style={styles.emoji}>{tileInfo.emoji}</Text>
-            </View>
-        </TouchableOpacity>
+      <Animated.View 
+        style={[
+          styles.tile, 
+          { opacity: opacityAnim, transform: [{ scale: scaleAnim }] }
+        ]} 
+      />
     );
+  }
+
+  return (
+    <Animated.View 
+      style={[
+        styles.tile, 
+        { backgroundColor: tileInfo.color },
+        isSelected && styles.selectedTile,
+        {
+          opacity: opacityAnim,
+          transform: [
+            { scale: scaleAnim },
+            { translateX },
+            { translateY },
+          ],
+        },
+      ]}
+      {...panResponder.panHandlers}
+    >
+      <Text style={styles.emoji}>{tileInfo.emoji}</Text>
+    </Animated.View>
+  );
 });
 
 const styles = StyleSheet.create({
-    tile: {
-        width: TILE_SIZE,
-        height: TILE_SIZE,
-        margin: TILE_MARGIN,
-        borderRadius: 8,
-        justifyContent: 'center',
-        alignItems: 'center',
-        // Pixel art style border
-        borderWidth: 2,
-        borderColor: 'rgba(0, 0, 0, 0.3)',
-        // Shadow for depth
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.25,
-        shadowRadius: 3,
-        elevation: 5,
-    },
-    selectedTile: {
-        borderColor: '#FFD700',
-        borderWidth: 3,
-        shadowColor: '#FFD700',
-        shadowOpacity: 0.8,
-        transform: [{ scale: 1.1 }],
-    },
-    emptyTile: {
-        width: TILE_SIZE,
-        height: TILE_SIZE,
-        margin: TILE_MARGIN,
-    },
-    emoji: {
-        fontSize: TILE_SIZE * 0.5,
-        textAlign: 'center',
-    },
+  tile: {
+    width: TILE_SIZE,
+    height: TILE_SIZE,
+    margin: TILE_MARGIN,
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+    // Tile border
+    borderWidth: 2,
+    borderColor: 'rgba(0, 0, 0, 0.2)',
+    // Shadow for depth
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3,
+    elevation: 5,
+  },
+  selectedTile: {
+    borderColor: '#FFD700',
+    borderWidth: 3,
+    shadowColor: '#FFD700',
+    shadowOpacity: 0.8,
+  },
+  emoji: {
+    fontSize: TILE_SIZE * 0.55,
+    textAlign: 'center',
+  },
 });
 
 export default TileComponent;

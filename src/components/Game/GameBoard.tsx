@@ -1,8 +1,8 @@
-// Game Board Component - Renders the 8x8 grid of tiles
+// Game Board Component - Renders the 8x8 grid of tiles with swipe support
 import React, { useCallback } from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
 import { useGameStore } from '../../context/GameStore';
-import TileComponent, { BOARD_PADDING, TILE_SIZE, TILE_MARGIN, GRID_DIMENSION } from './Tile';
+import TileComponent, { BOARD_PADDING, TILE_SIZE, TILE_MARGIN, GRID_DIMENSION, SwipeDirection } from './Tile';
 import { Position } from '../../types';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
@@ -11,10 +11,16 @@ const GameBoard: React.FC = () => {
     const grid = useGameStore((state) => state.grid);
     const selectedTile = useGameStore((state) => state.selectedTile);
     const selectTile = useGameStore((state) => state.selectTile);
+    const swapWithDirection = useGameStore((state) => state.swapWithDirection);
 
     const handleTilePress = useCallback((position: Position) => {
         selectTile(position);
     }, [selectTile]);
+
+    const handleTileSwipe = useCallback((position: Position, direction: SwipeDirection) => {
+        if (!direction) return;
+        swapWithDirection(position, direction);
+    }, [swapWithDirection]);
 
     const isSelected = useCallback((row: number, col: number): boolean => {
         return selectedTile?.row === row && selectedTile?.col === col;
@@ -30,7 +36,14 @@ const GameBoard: React.FC = () => {
                 {grid.map((row, rowIndex) => (
                     <View key={`row-${rowIndex}`} style={styles.row}>
                         {row.map((tile, colIndex) => {
-                            if (!tile) return <View key={`empty-${rowIndex}-${colIndex}`} style={styles.emptyTile} />;
+                            if (!tile) {
+                                return (
+                                    <View
+                                        key={`empty-${rowIndex}-${colIndex}`}
+                                        style={styles.emptyTile}
+                                    />
+                                );
+                            }
 
                             return (
                                 <TileComponent
@@ -38,6 +51,7 @@ const GameBoard: React.FC = () => {
                                     tile={tile}
                                     isSelected={isSelected(rowIndex, colIndex)}
                                     onPress={handleTilePress}
+                                    onSwipe={handleTileSwipe}
                                 />
                             );
                         })}
