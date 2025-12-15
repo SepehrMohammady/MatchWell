@@ -14,7 +14,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
 import { RootStackParamList } from '../types';
-import { preloadSounds, playBgm, playSfx, stopBgm } from '../utils/SoundManager';
+import { preloadSounds, playBgm, playSfx } from '../utils/SoundManager';
 import { useGameStore } from '../context/GameStore';
 import VERSION from '../config/version';
 import { COLORS, TYPOGRAPHY, SPACING, RADIUS } from '../config/theme';
@@ -53,17 +53,12 @@ const MainMenu: React.FC<Props> = ({ navigation }) => {
         preloadSounds();
     }, [loadProgress]);
 
-    // Handle music with focus - stops when leaving, plays when returning
+    // Handle music with focus - play menu music when screen is focused
     useFocusEffect(
         useCallback(() => {
-            // Screen is focused - stop any playing BGM first, then play menu music
-            stopBgm();
+            // Play menu music - playBgm internally stops any playing BGM first
             playBgm('bgm_menu');
-
-            return () => {
-                // Screen is unfocused - stop menu music
-                stopBgm();
-            };
+            // No cleanup needed - next screen's playBgm will handle stopping
         }, [])
     );
 

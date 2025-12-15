@@ -19,7 +19,7 @@ import HUD from '../components/UI/HUD';
 import { THEME_CONFIGS, getLevelById } from '../themes';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types';
-import { playBgm, playThemeBgm, stopBgm, pauseBgm, resumeBgm, playSfx, getSoundSettings, toggleSfx, toggleMusic } from '../utils/SoundManager';
+import { playBgm, playThemeBgm, pauseBgm, resumeBgm, playSfx, getSoundSettings, toggleSfx, toggleMusic } from '../utils/SoundManager';
 import { COLORS, TYPOGRAPHY, SPACING, RADIUS } from '../config/theme';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Game'>;
@@ -62,14 +62,9 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
     // Start theme-specific music when screen gains focus
     useFocusEffect(
         useCallback(() => {
-            // Stop any playing BGM first, then play theme music
-            stopBgm();
+            // Play theme music - playThemeBgm internally stops any playing BGM first
             playThemeBgm(theme);
-
-            return () => {
-                // Stop music when screen loses focus
-                stopBgm();
-            };
+            // No cleanup needed - next screen's playBgm will handle stopping
         }, [theme])
     );
 
