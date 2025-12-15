@@ -9,6 +9,7 @@ import {
     ImageBackground,
     StatusBar,
     Switch,
+    BackHandler,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useGameStore } from '../context/GameStore';
@@ -37,6 +38,8 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
     const resumeGameState = useGameStore((state) => state.resumeGame);
     const markLevelComplete = useGameStore((state) => state.markLevelComplete);
     const isEndlessMode = useGameStore((state) => state.isEndlessMode);
+    const movesRemaining = useGameStore((state) => state.movesRemaining);
+    const saveEndlessHighScore = useGameStore((state) => state.saveEndlessHighScore);
 
     const levelConfig = getLevelById(levelId);
     const themeConfig = THEME_CONFIGS[theme];
@@ -76,6 +79,27 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
         }
     }, [isLevelComplete, levelId, score, markLevelComplete]);
 
+    // Save endless high score when score changes in endless mode
+    useEffect(() => {
+        if (isEndlessMode && score > 0) {
+            saveEndlessHighScore(theme, score);
+        }
+    }, [isEndlessMode, score, theme, saveEndlessHighScore]);
+
+    // Handle hardware back button to open pause menu
+    useEffect(() => {
+        const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+            if (!isPaused && !isLevelComplete && !isGameOver) {
+                pauseBgm();
+                pauseGame();
+                return true; // Prevent default back behavior
+            }
+            return false;
+        });
+
+        return () => backHandler.remove();
+    }, [isPaused, isLevelComplete, isGameOver, pauseGame]);
+
     const handlePause = useCallback(() => {
         pauseBgm();
         pauseGame();
@@ -88,8 +112,11 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
 
 
     const handleRestart = useCallback(() => {
-        initializeGame(levelId);
-    }, [levelId, initializeGame]);
+        // Preserve endless mode settings when restarting
+        const isEndless = route.params?.isEndless || false;
+        const endlessTheme = route.params?.endlessTheme;
+        initializeGame(levelId, isEndless, endlessTheme);
+    }, [levelId, initializeGame, route.params?.isEndless, route.params?.endlessTheme]);
 
     const handleNextLevel = useCallback(() => {
         const nextLevelId = levelId + 1;
@@ -206,13 +233,17 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
             <Modal visible={isLevelComplete} transparent animationType="fade">
                 <View style={styles.modalOverlay}>
                     <View style={styles.modalContent}>
+                        {/* Celebration Emojis */}
+                        <Text style={styles.celebration}>🎊🎉✨🎊🎉</Text>
                         <Text style={styles.modalTitle}>🎉 Level Complete!</Text>
                         <Text style={styles.scoreText}>Score: {score.toLocaleString()}</Text>
+                        {/* Stars based on remaining moves: 1 star always, 2 stars if >25% moves left, 3 stars if >50% moves left */}
                         <View style={styles.starsContainer}>
-                            <Text style={styles.star}>{score >= targetScore ? '⭐' : '☆'}</Text>
-                            <Text style={styles.star}>{score >= targetScore * 1.5 ? '⭐' : '☆'}</Text>
-                            <Text style={styles.star}>{score >= targetScore * 2 ? '⭐' : '☆'}</Text>
+                            <Text style={styles.star}>⭐</Text>
+                            <Text style={styles.star}>{movesRemaining > (levelConfig?.moves || 20) * 0.25 ? '⭐' : '☆'}</Text>
+                            <Text style={styles.star}>{movesRemaining > (levelConfig?.moves || 20) * 0.50 ? '⭐' : '☆'}</Text>
                         </View>
+                        <Text style={styles.movesLeftText}>Moves left: {movesRemaining}</Text>
                         <Text style={styles.environmentMessage}>🌍 You're helping save the planet!</Text>
                         <TouchableOpacity style={styles.modalButton} onPress={handleNextLevel}>
                             <Text style={styles.modalButtonText}>➡️ Next Level</Text>
@@ -362,6 +393,16 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#fff',
         fontWeight: '500',
+    },
+    celebration: {
+        fontSize: 32,
+        textAlign: 'center',
+        marginBottom: 8,
+    },
+    movesLeftText: {
+        fontSize: 14,
+        color: '#2ecc71',
+        marginBottom: 8,
     },
 });
 

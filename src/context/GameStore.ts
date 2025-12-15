@@ -52,6 +52,7 @@ interface GameStore extends GameState {
     setSelectedTile: (position: Position | null) => void;
     setIsProcessing: (value: boolean) => void;
     markLevelComplete: (levelId: number, score: number) => void;
+    saveEndlessHighScore: (theme: ThemeType, score: number) => void;
 }
 
 export const useGameStore = create<GameStore>((set, get) => ({
@@ -345,5 +346,30 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
         // Save progress to AsyncStorage
         get().saveProgress();
+    },
+
+    saveEndlessHighScore: (theme: ThemeType, score: number) => {
+        const { highScores } = get();
+
+        // Use negative IDs for endless high scores based on theme index
+        const themeOrder: ThemeType[] = ['trash-sorting', 'pollution', 'water-conservation', 'energy-efficiency', 'deforestation'];
+        const themeIndex = themeOrder.indexOf(theme);
+        const endlessId = -(themeIndex + 1); // -1, -2, -3, -4, -5
+
+        const currentHighScore = highScores[endlessId] || 0;
+
+        // Only save if new score is higher
+        if (score > currentHighScore) {
+            const newHighScores = {
+                ...highScores,
+                [endlessId]: score,
+            };
+
+            set({ highScores: newHighScores });
+
+            // Save progress to AsyncStorage
+            get().saveProgress();
+            console.log(`✅ Endless high score saved for ${theme}: ${score}`);
+        }
     },
 }));
