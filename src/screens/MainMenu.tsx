@@ -1,4 +1,4 @@
-// Main Menu Screen - Earth-Inspired Minimal Design
+// Main Menu Screen - Earth-Inspired Minimal Design (No Emojis)
 import React, { useEffect } from 'react';
 import {
     View,
@@ -14,6 +14,7 @@ import { preloadSounds, playBgm, playSfx, stopBgm } from '../utils/SoundManager'
 import { useGameStore } from '../context/GameStore';
 import VERSION from '../config/version';
 import { COLORS, TYPOGRAPHY, SPACING, RADIUS, SHADOWS } from '../config/theme';
+import { EarthIcon, SeedlingIcon } from '../components/UI/Icons';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'MainMenu'>;
 
@@ -23,7 +24,6 @@ const MainMenu: React.FC<Props> = ({ navigation }) => {
 
     // Preload sounds, load saved progress, and start menu music
     useEffect(() => {
-        // Load saved progress from AsyncStorage
         loadProgress();
 
         preloadSounds().then(() => {
@@ -54,18 +54,13 @@ const MainMenu: React.FC<Props> = ({ navigation }) => {
         <View style={[styles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
             <StatusBar barStyle="dark-content" backgroundColor={COLORS.backgroundPrimary} />
 
-            {/* Ambient top decoration */}
-            <View style={styles.decorTop}>
-                <View style={styles.leafCluster}>
-                    <Text style={styles.leafEmoji}>🌿</Text>
-                    <Text style={[styles.leafEmoji, styles.leafOffset]}>🍃</Text>
-                </View>
-            </View>
+            {/* Spacer */}
+            <View style={styles.spacer} />
 
             {/* Title section */}
             <View style={styles.titleSection}>
                 <View style={styles.earthContainer}>
-                    <Text style={styles.earth}>🌍</Text>
+                    <EarthIcon size={80} color={COLORS.organicWaste} />
                 </View>
                 <Text style={styles.title}>MatchWell</Text>
                 <Text style={styles.subtitle}>Save the planet, one match at a time</Text>
@@ -86,12 +81,12 @@ const MainMenu: React.FC<Props> = ({ navigation }) => {
                 </TouchableOpacity>
             </View>
 
-            {/* Bottom ambient decoration */}
+            {/* Bottom ambient decoration - SVG seedlings */}
             <View style={styles.bottomDecor}>
                 <View style={styles.seedlingRow}>
-                    <Text style={styles.seedling}>🌱</Text>
-                    <Text style={styles.seedling}>🌱</Text>
-                    <Text style={styles.seedling}>🌱</Text>
+                    <SeedlingIcon size={28} color={COLORS.organicWaste} stage={1} />
+                    <SeedlingIcon size={32} color={COLORS.organicWaste} stage={2} />
+                    <SeedlingIcon size={28} color={COLORS.organicWaste} stage={1} />
                 </View>
             </View>
 
@@ -108,22 +103,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
     },
-    decorTop: {
-        width: '100%',
-        paddingHorizontal: SPACING.xl,
-        paddingTop: SPACING.lg,
-        alignItems: 'flex-end',
-    },
-    leafCluster: {
-        flexDirection: 'row',
-    },
-    leafEmoji: {
-        fontSize: 24,
-        opacity: 0.6,
-    },
-    leafOffset: {
-        marginLeft: -8,
-        marginTop: 8,
+    spacer: {
+        height: SPACING.xxl,
     },
     titleSection: {
         alignItems: 'center',
@@ -138,9 +119,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginBottom: SPACING.lg,
         ...SHADOWS.lg,
-    },
-    earth: {
-        fontSize: 64,
     },
     title: {
         fontSize: TYPOGRAPHY.h1,
@@ -201,10 +179,8 @@ const styles = StyleSheet.create({
     seedlingRow: {
         flexDirection: 'row',
         gap: SPACING.lg,
-        opacity: 0.5,
-    },
-    seedling: {
-        fontSize: 20,
+        opacity: 0.7,
+        alignItems: 'flex-end',
     },
     version: {
         color: COLORS.textMuted,

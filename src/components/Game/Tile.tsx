@@ -1,15 +1,17 @@
 // Tile Component - Renders a single game tile with swipe support
 import React, { memo, useRef, useCallback } from 'react';
-import { 
-  View, 
-  Text, 
-  StyleSheet, 
+import {
+  View,
+  Text,
+  StyleSheet,
   Dimensions,
   Animated,
   PanResponder,
 } from 'react-native';
 import { Tile as TileType, Position } from '../../types';
 import { TILE_INFO } from '../../themes';
+import { TileIcon } from './TileIcon';
+import { COLORS, RADIUS } from '../../config/theme';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const GRID_SIZE = 8;
@@ -29,7 +31,7 @@ interface TileProps {
 
 const TileComponent: React.FC<TileProps> = memo(({ tile, isSelected, onPress, onSwipe }) => {
   const tileInfo = TILE_INFO[tile.type];
-  
+
   // Animation values
   const scaleAnim = useRef(new Animated.Value(1)).current;
   const opacityAnim = useRef(new Animated.Value(1)).current;
@@ -107,7 +109,7 @@ const TileComponent: React.FC<TileProps> = memo(({ tile, isSelected, onPress, on
         // Limit movement to tile size
         const clampedDx = Math.max(-TILE_SIZE / 2, Math.min(TILE_SIZE / 2, dx));
         const clampedDy = Math.max(-TILE_SIZE / 2, Math.min(TILE_SIZE / 2, dy));
-        
+
         translateX.setValue(clampedDx);
         translateY.setValue(clampedDy);
 
@@ -117,7 +119,7 @@ const TileComponent: React.FC<TileProps> = memo(({ tile, isSelected, onPress, on
       },
       onPanResponderRelease: (_, gestureState) => {
         const { dx, dy } = gestureState;
-        
+
         // Reset position with animation
         Animated.parallel([
           Animated.spring(translateX, {
@@ -138,7 +140,7 @@ const TileComponent: React.FC<TileProps> = memo(({ tile, isSelected, onPress, on
         ]).start();
 
         const direction = getSwipeDirection(dx, dy);
-        
+
         if (direction && isSwipe.current) {
           // It's a swipe
           onSwipe(tile.position, direction);
@@ -160,19 +162,19 @@ const TileComponent: React.FC<TileProps> = memo(({ tile, isSelected, onPress, on
 
   if (tile.isMatched) {
     return (
-      <Animated.View 
+      <Animated.View
         style={[
-          styles.tile, 
+          styles.tile,
           { opacity: opacityAnim, transform: [{ scale: scaleAnim }] }
-        ]} 
+        ]}
       />
     );
   }
 
   return (
-    <Animated.View 
+    <Animated.View
       style={[
-        styles.tile, 
+        styles.tile,
         { backgroundColor: tileInfo.color },
         isSelected && styles.selectedTile,
         {
@@ -186,7 +188,7 @@ const TileComponent: React.FC<TileProps> = memo(({ tile, isSelected, onPress, on
       ]}
       {...panResponder.panHandlers}
     >
-      <Text style={styles.emoji}>{tileInfo.emoji}</Text>
+      <TileIcon type={tile.type} size={TILE_SIZE * 0.7} />
     </Animated.View>
   );
 });
@@ -196,28 +198,20 @@ const styles = StyleSheet.create({
     width: TILE_SIZE,
     height: TILE_SIZE,
     margin: TILE_MARGIN,
-    borderRadius: 8,
+    borderRadius: RADIUS.md,
     justifyContent: 'center',
     alignItems: 'center',
-    // Tile border
-    borderWidth: 2,
-    borderColor: 'rgba(0, 0, 0, 0.2)',
-    // Shadow for depth
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3,
-    elevation: 5,
+    backgroundColor: COLORS.cardBackground,
+    // Minimal shadow
+    shadowColor: COLORS.shadowColor,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 1,
+    shadowRadius: 2,
+    elevation: 2,
   },
   selectedTile: {
-    borderColor: '#FFD700',
-    borderWidth: 3,
-    shadowColor: '#FFD700',
-    shadowOpacity: 0.8,
-  },
-  emoji: {
-    fontSize: TILE_SIZE * 0.55,
-    textAlign: 'center',
+    borderColor: COLORS.accentHighlight,
+    borderWidth: 2,
   },
 });
 

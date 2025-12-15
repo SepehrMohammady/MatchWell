@@ -17,6 +17,7 @@ import { LEVELS, THEME_CONFIGS, getThemeEmoji } from '../themes';
 import { ThemeType } from '../types';
 import { playSfx } from '../utils/SoundManager';
 import { COLORS, TYPOGRAPHY, SPACING, RADIUS, SHADOWS } from '../config/theme';
+import { LockIcon } from '../components/UI/Icons';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'LevelSelect'>;
 
@@ -134,7 +135,7 @@ const LevelSelect: React.FC<Props> = ({ navigation }) => {
                                                     </View>
                                                 </>
                                             ) : (
-                                                <Text style={styles.lockIcon}>🔒</Text>
+                                                <LockIcon size={24} color={COLORS.textMuted} />
                                             )}
                                         </TouchableOpacity>
                                     );

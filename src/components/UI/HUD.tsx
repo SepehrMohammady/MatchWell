@@ -1,9 +1,13 @@
-// HUD Component - Earth-Inspired Minimal Design
+// HUD Component - Earth-Inspired Minimal Design with Sprouting Progress
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import { useGameStore } from '../../context/GameStore';
 import { THEME_CONFIGS } from '../../themes';
 import { COLORS, TYPOGRAPHY, SPACING, RADIUS } from '../../config/theme';
+import { PauseIcon } from './Icons';
+import SproutingProgress from './SproutingProgress';
+
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 interface HUDProps {
     onPause: () => void;
@@ -40,7 +44,7 @@ const HUD: React.FC<HUDProps> = ({ onPause }) => {
                     </Text>
                 </View>
                 <TouchableOpacity style={styles.pauseButton} onPress={onPause} activeOpacity={0.7}>
-                    <Text style={styles.pauseIcon}>⏸</Text>
+                    <PauseIcon size={18} color={COLORS.textSecondary} />
                 </TouchableOpacity>
             </View>
 
@@ -56,11 +60,13 @@ const HUD: React.FC<HUDProps> = ({ onPause }) => {
                 )}
             </View>
 
-            {/* Progress bar - only for story mode */}
+            {/* Sprouting Progress - only for story mode */}
             {!isEndlessMode && (
-                <View style={styles.progressContainer}>
-                    <View style={[styles.progressBar, { width: `${progress}%` }]} />
-                </View>
+                <SproutingProgress
+                    progress={progress}
+                    width={SCREEN_WIDTH - SPACING.lg * 4}
+                    height={48}
+                />
             )}
 
             {/* Bottom row: Moves and Combo */}
@@ -121,10 +127,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    pauseIcon: {
-        fontSize: 16,
-        color: COLORS.textSecondary,
-    },
     scoreSection: {
         alignItems: 'center',
         marginBottom: SPACING.sm,
@@ -138,18 +140,6 @@ const styles = StyleSheet.create({
     targetText: {
         color: COLORS.textMuted,
         fontSize: TYPOGRAPHY.bodySmall,
-    },
-    progressContainer: {
-        height: 6,
-        backgroundColor: COLORS.progressEmpty,
-        borderRadius: 3,
-        overflow: 'hidden',
-        marginVertical: SPACING.sm,
-    },
-    progressBar: {
-        height: '100%',
-        backgroundColor: COLORS.progressFill,
-        borderRadius: 3,
     },
     bottomRow: {
         flexDirection: 'row',
