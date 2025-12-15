@@ -1,5 +1,5 @@
 // Game Screen - Main gameplay screen
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import {
     View,
     StyleSheet,
@@ -8,6 +8,7 @@ import {
     TouchableOpacity,
     ImageBackground,
     StatusBar,
+    Switch,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useGameStore } from '../context/GameStore';
@@ -16,7 +17,7 @@ import HUD from '../components/UI/HUD';
 import { THEME_CONFIGS, getLevelById } from '../themes';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types';
-import { playBgm, stopBgm, pauseBgm, resumeBgm, playSfx } from '../utils/SoundManager';
+import { playBgm, stopBgm, pauseBgm, resumeBgm, playSfx, getSoundSettings, toggleSfx, toggleMusic } from '../utils/SoundManager';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Game'>;
 
@@ -38,6 +39,19 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
 
     const levelConfig = getLevelById(levelId);
     const themeConfig = THEME_CONFIGS[theme];
+
+    // Sound settings state
+    const [sfxEnabled, setSfxEnabled] = useState(true);
+    const [musicEnabled, setMusicEnabled] = useState(true);
+
+    // Load sound settings when pausing
+    useEffect(() => {
+        if (isPaused) {
+            const settings = getSoundSettings();
+            setSfxEnabled(settings.sfxEnabled);
+            setMusicEnabled(settings.musicEnabled);
+        }
+    }, [isPaused]);
 
     // Start gameplay music when entering the game
     useEffect(() => {
@@ -86,12 +100,25 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
     }, [levelId, initializeGame, navigation]);
 
     const handleBackToMenu = useCallback(() => {
+        resumeGameState(); // Dismiss the pause menu first
         navigation.navigate('MainMenu');
-    }, [navigation]);
+    }, [navigation, resumeGameState]);
 
     const handleBackToLevels = useCallback(() => {
+        resumeGameState(); // Dismiss the pause menu first
         navigation.navigate('LevelSelect');
-    }, [navigation]);
+    }, [navigation, resumeGameState]);
+
+    const handleSfxToggle = (value: boolean) => {
+        setSfxEnabled(value);
+        toggleSfx(value);
+        if (value) playSfx('tile_select');
+    };
+
+    const handleMusicToggle = (value: boolean) => {
+        setMusicEnabled(value);
+        toggleMusic(value);
+    };
 
     // Calculate sky color based on score progress
     const getBackgroundStyle = () => {
@@ -133,6 +160,29 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
                         <TouchableOpacity style={styles.modalButton} onPress={handleRestart}>
                             <Text style={styles.modalButtonText}>🔄 Restart</Text>
                         </TouchableOpacity>
+
+                        {/* Sound Controls */}
+                        <View style={styles.soundControlsContainer}>
+                            <View style={styles.soundRow}>
+                                <Text style={styles.soundLabel}>🎵 Music</Text>
+                                <Switch
+                                    value={musicEnabled}
+                                    onValueChange={handleMusicToggle}
+                                    trackColor={{ false: '#333', true: '#27ae60' }}
+                                    thumbColor={musicEnabled ? '#2ecc71' : '#666'}
+                                />
+                            </View>
+                            <View style={styles.soundRow}>
+                                <Text style={styles.soundLabel}>🔊 SFX</Text>
+                                <Switch
+                                    value={sfxEnabled}
+                                    onValueChange={handleSfxToggle}
+                                    trackColor={{ false: '#333', true: '#27ae60' }}
+                                    thumbColor={sfxEnabled ? '#2ecc71' : '#666'}
+                                />
+                            </View>
+                        </View>
+
                         <TouchableOpacity style={[styles.modalButton, styles.secondaryButton]} onPress={handleBackToLevels}>
                             <Text style={styles.modalButtonText}>📋 Levels</Text>
                         </TouchableOpacity>
@@ -285,6 +335,24 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold',
         textAlign: 'center',
+    },
+    soundControlsContainer: {
+        backgroundColor: '#34495e',
+        borderRadius: 12,
+        padding: 12,
+        marginVertical: 10,
+        width: '100%',
+    },
+    soundRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingVertical: 8,
+    },
+    soundLabel: {
+        fontSize: 16,
+        color: '#fff',
+        fontWeight: '500',
     },
 });
 
