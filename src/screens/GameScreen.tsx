@@ -337,6 +337,7 @@ const styles = StyleSheet.create({
     },
     modalTitle: {
         fontSize: TYPOGRAPHY.h2,
+        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
         fontWeight: TYPOGRAPHY.semibold,
         color: COLORS.textPrimary,
         marginBottom: SPACING.lg,
@@ -344,12 +345,14 @@ const styles = StyleSheet.create({
     },
     scoreText: {
         fontSize: TYPOGRAPHY.h2,
+        fontFamily: TYPOGRAPHY.fontFamilyBold,
         color: COLORS.accentHighlight,
         fontWeight: TYPOGRAPHY.bold,
         marginBottom: SPACING.sm,
     },
     targetText: {
         fontSize: TYPOGRAPHY.body,
+        fontFamily: TYPOGRAPHY.fontFamily,
         color: COLORS.textSecondary,
         marginBottom: SPACING.md,
     },
@@ -392,12 +395,14 @@ const styles = StyleSheet.create({
     modalButtonText: {
         color: COLORS.textLight,
         fontSize: TYPOGRAPHY.body,
+        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
         fontWeight: TYPOGRAPHY.semibold,
         textAlign: 'center',
     },
     secondaryButtonText: {
         color: COLORS.textSecondary,
         fontSize: TYPOGRAPHY.body,
+        fontFamily: TYPOGRAPHY.fontFamilyMedium,
         fontWeight: TYPOGRAPHY.medium,
         textAlign: 'center',
     },
@@ -424,6 +429,7 @@ const styles = StyleSheet.create({
     soundLabel: {
         flex: 1,
         fontSize: TYPOGRAPHY.body,
+        fontFamily: TYPOGRAPHY.fontFamilyMedium,
         color: COLORS.textPrimary,
         fontWeight: TYPOGRAPHY.medium,
     },
@@ -434,6 +440,7 @@ const styles = StyleSheet.create({
     },
     movesLeftText: {
         fontSize: TYPOGRAPHY.bodySmall,
+        fontFamily: TYPOGRAPHY.fontFamily,
         color: COLORS.organicWaste,
         marginBottom: SPACING.sm,
     },
