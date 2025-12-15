@@ -2,7 +2,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useGameStore } from '../../context/GameStore';
-import { getEnvironmentalMessage } from '../../themes';
+import { getEnvironmentalMessage, THEME_CONFIGS } from '../../themes';
 
 interface HUDProps {
     onPause: () => void;
@@ -14,16 +14,31 @@ const HUD: React.FC<HUDProps> = ({ onPause }) => {
     const movesRemaining = useGameStore((state) => state.movesRemaining);
     const level = useGameStore((state) => state.level);
     const combo = useGameStore((state) => state.combo);
+    const theme = useGameStore((state) => state.theme);
+    const isEndlessMode = useGameStore((state) => state.isEndlessMode);
+    const highScores = useGameStore((state) => state.highScores);
 
-    const progress = Math.min((score / targetScore) * 100, 100);
-    const message = getEnvironmentalMessage(score, targetScore);
+    const themeConfig = THEME_CONFIGS[theme];
+
+    // Calculate progress for story mode, or best score for endless
+    const progress = isEndlessMode ? 100 : Math.min((score / targetScore) * 100, 100);
+    const message = isEndlessMode
+        ? (combo > 1 ? '🔥 Keep the combo going!' : '♾️ No limits! Just match!')
+        : getEnvironmentalMessage(score, targetScore);
+
+    // Get endless high score for display (negative IDs based on theme index)
+    const themeOrder = ['trash-sorting', 'pollution', 'water-conservation', 'energy-efficiency', 'deforestation'];
+    const themeIndex = themeOrder.indexOf(theme);
+    const endlessHighScore = highScores[-(themeIndex + 1)] || 0;
 
     return (
         <View style={styles.container}>
-            {/* Top row: Level and Pause */}
+            {/* Top row: Level/Theme and Pause */}
             <View style={styles.topRow}>
-                <View style={styles.levelBadge}>
-                    <Text style={styles.levelText}>Level {level}</Text>
+                <View style={[styles.levelBadge, isEndlessMode && styles.endlessBadge]}>
+                    <Text style={styles.levelText}>
+                        {isEndlessMode ? `♾️ ${themeConfig.name}` : `Level ${level}`}
+                    </Text>
                 </View>
                 <TouchableOpacity style={styles.pauseButton} onPress={onPause}>
                     <Text style={styles.pauseIcon}>⏸️</Text>
@@ -34,13 +49,21 @@ const HUD: React.FC<HUDProps> = ({ onPause }) => {
             <View style={styles.scoreSection}>
                 <Text style={styles.scoreLabel}>SCORE</Text>
                 <Text style={styles.scoreValue}>{score.toLocaleString()}</Text>
-                <Text style={styles.targetText}>Target: {targetScore.toLocaleString()}</Text>
+                {isEndlessMode ? (
+                    <Text style={styles.targetText}>
+                        Best: {endlessHighScore > 0 ? endlessHighScore.toLocaleString() : '---'}
+                    </Text>
+                ) : (
+                    <Text style={styles.targetText}>Target: {targetScore.toLocaleString()}</Text>
+                )}
             </View>
 
-            {/* Progress bar */}
-            <View style={styles.progressContainer}>
-                <View style={[styles.progressBar, { width: `${progress}%` }]} />
-            </View>
+            {/* Progress bar - only for story mode */}
+            {!isEndlessMode && (
+                <View style={styles.progressContainer}>
+                    <View style={[styles.progressBar, { width: `${progress}%` }]} />
+                </View>
+            )}
 
             {/* Environmental message */}
             <Text style={styles.environmentalMessage}>{message}</Text>
@@ -48,10 +71,11 @@ const HUD: React.FC<HUDProps> = ({ onPause }) => {
             {/* Bottom row: Moves and Combo */}
             <View style={styles.bottomRow}>
                 <View style={styles.stat}>
-                    <Text style={styles.statLabel}>MOVES</Text>
+                    <Text style={styles.statLabel}>{isEndlessMode ? 'MOVES MADE' : 'MOVES LEFT'}</Text>
                     <Text style={[
                         styles.statValue,
-                        movesRemaining <= 5 && styles.lowMoves
+                        !isEndlessMode && movesRemaining <= 5 && styles.lowMoves,
+                        isEndlessMode && styles.endlessMoves
                     ]}>
                         {movesRemaining}
                     </Text>
@@ -170,6 +194,12 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontWeight: 'bold',
         fontSize: 16,
+    },
+    endlessBadge: {
+        backgroundColor: '#9b59b6',
+    },
+    endlessMoves: {
+        color: '#9b59b6',
     },
 });
 

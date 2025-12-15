@@ -15,6 +15,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 // Screens
 import MainMenu from './src/screens/MainMenu';
 import LevelSelect from './src/screens/LevelSelect';
+import EndlessSelect from './src/screens/EndlessSelect';
 import GameScreen from './src/screens/GameScreen';
 import Settings from './src/screens/Settings';
 
@@ -39,6 +40,7 @@ function App(): React.JSX.Element {
           >
             <Stack.Screen name="MainMenu" component={MainMenu} />
             <Stack.Screen name="LevelSelect" component={LevelSelect} />
+            <Stack.Screen name="EndlessSelect" component={EndlessSelect} />
             <Stack.Screen
               name="Game"
               component={GameScreen}

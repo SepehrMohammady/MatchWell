@@ -29,7 +29,7 @@ interface SavedProgress {
 
 interface GameStore extends GameState {
     // Actions
-    initializeGame: (levelId: number, isEndless?: boolean) => void;
+    initializeGame: (levelId: number, isEndless?: boolean, endlessTheme?: ThemeType) => void;
     selectTile: (position: Position) => void;
     swapSelectedTiles: (pos1: Position, pos2: Position) => void;
     swapWithDirection: (position: Position, direction: 'up' | 'down' | 'left' | 'right') => void;
@@ -105,27 +105,41 @@ export const useGameStore = create<GameStore>((set, get) => ({
     },
 
     // Initialize a new game with a specific level
-    initializeGame: (levelId: number, isEndless: boolean = false) => {
-        const level = getLevelById(levelId);
-        if (!level) {
-            console.error(`Level ${levelId} not found`);
-            return;
+    initializeGame: (levelId: number, isEndless: boolean = false, endlessTheme?: ThemeType) => {
+        // For endless mode, use the provided theme; otherwise get from level
+        let themeToUse: ThemeType;
+        let targetScore: number;
+        let movesRemaining: number;
+
+        if (isEndless && endlessTheme) {
+            // Endless mode with selected theme
+            themeToUse = endlessTheme;
+            targetScore = 999999; // No target in endless
+            movesRemaining = 0; // Start from 0, counts up
+        } else {
+            const level = getLevelById(levelId);
+            if (!level) {
+                console.error(`Level ${levelId} not found`);
+                return;
+            }
+            themeToUse = level.theme;
+            targetScore = level.targetScore;
+            movesRemaining = level.moves;
         }
 
-        const grid = createGrid(level.theme);
+        const grid = createGrid(themeToUse);
 
         set({
             grid,
             score: 0,
             moves: 0,
-            // Endless mode has 9999 moves (effectively infinite)
-            movesRemaining: isEndless ? 9999 : level.moves,
-            targetScore: isEndless ? 999999 : level.targetScore,
+            movesRemaining,
+            targetScore,
             level: levelId,
             isGameOver: false,
             isLevelComplete: false,
             combo: 0,
-            theme: level.theme,
+            theme: themeToUse,
             selectedTile: null,
             isPaused: false,
             isProcessing: false,
@@ -185,7 +199,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
             grid: newGrid,
             selectedTile: null,
             moves: get().moves + 1,
-            movesRemaining: isEndlessMode ? 9999 : movesRemaining - 1,
+            // In endless mode: increment (count up), otherwise decrement
+            movesRemaining: isEndlessMode ? movesRemaining + 1 : movesRemaining - 1,
             isProcessing: true,
         });
 

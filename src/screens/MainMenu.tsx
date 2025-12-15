@@ -44,8 +44,8 @@ const MainMenu: React.FC<Props> = ({ navigation }) => {
 
     const handleEndless = () => {
         playSfx('tile_select');
-        // Start endless mode with infinite moves
-        navigation.navigate('Game', { levelId: 1, isEndless: true });
+        // Navigate to theme selection for endless mode
+        navigation.navigate('EndlessSelect');
     };
 
     const handleSettings = () => {

@@ -62,11 +62,12 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
         };
     }, []);
 
-    // Initialize the game level with isEndless flag
+    // Initialize the game level with isEndless flag and optional endlessTheme
     useEffect(() => {
         const isEndless = route.params?.isEndless || false;
-        initializeGame(levelId, isEndless);
-    }, [levelId, initializeGame, route.params?.isEndless]);
+        const endlessTheme = route.params?.endlessTheme;
+        initializeGame(levelId, isEndless, endlessTheme);
+    }, [levelId, initializeGame, route.params?.isEndless, route.params?.endlessTheme]);
 
     useEffect(() => {
         if (isLevelComplete) {
