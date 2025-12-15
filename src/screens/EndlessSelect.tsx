@@ -1,4 +1,4 @@
-// Endless Mode Theme Selection Screen
+// Endless Mode Theme Selection Screen - Earth-Inspired Minimal Design
 import React from 'react';
 import {
     View,
@@ -15,6 +15,7 @@ import { ThemeType } from '../types';
 import { useGameStore } from '../context/GameStore';
 import { THEME_CONFIGS, getThemeEmoji, getLevelsByTheme } from '../themes';
 import { playSfx } from '../utils/SoundManager';
+import { COLORS, TYPOGRAPHY, SPACING, RADIUS, SHADOWS } from '../config/theme';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'EndlessSelect'>;
 
@@ -34,17 +35,14 @@ const EndlessSelect: React.FC<Props> = ({ navigation }) => {
 
     // Check if a theme is unlocked (at least one level completed in that theme)
     const isThemeUnlocked = (theme: ThemeType): boolean => {
-        // First theme is always unlocked
         if (theme === 'trash-sorting') return true;
 
-        // Get the previous theme in order
         const themeIndex = THEME_ORDER.indexOf(theme);
         if (themeIndex <= 0) return true;
 
         const prevTheme = THEME_ORDER[themeIndex - 1];
         const prevThemeLevels = getLevelsByTheme(prevTheme);
 
-        // Theme is unlocked if at least 5 levels of previous theme are completed
         const completedInPrevTheme = prevThemeLevels.filter(
             level => completedLevels.includes(level.id)
         ).length;
@@ -55,7 +53,6 @@ const EndlessSelect: React.FC<Props> = ({ navigation }) => {
     // Get endless high score for a theme (stored with negative IDs)
     const getEndlessHighScore = (theme: ThemeType): number => {
         const themeIndex = THEME_ORDER.indexOf(theme);
-        // Use negative IDs for endless mode high scores (-1 to -5)
         return highScores[-(themeIndex + 1)] || 0;
     };
 
@@ -77,21 +74,21 @@ const EndlessSelect: React.FC<Props> = ({ navigation }) => {
 
     return (
         <View style={[styles.container, { paddingTop: insets.top }]}>
-            <StatusBar barStyle="light-content" />
+            <StatusBar barStyle="dark-content" backgroundColor={COLORS.backgroundPrimary} />
 
             {/* Header */}
             <View style={styles.header}>
                 <TouchableOpacity style={styles.backButton} onPress={handleBack}>
                     <Text style={styles.backButtonText}>← Back</Text>
                 </TouchableOpacity>
-                <Text style={styles.title}>♾️ Endless Mode</Text>
+                <Text style={styles.title}>Endless mode</Text>
                 <View style={styles.placeholder} />
             </View>
 
             {/* Description */}
             <View style={styles.descriptionBox}>
                 <Text style={styles.descriptionText}>
-                    Play endlessly! No move limit - just keep matching and beat your high score!
+                    No move limit — just keep matching and beat your high score!
                 </Text>
             </View>
 
@@ -111,11 +108,14 @@ const EndlessSelect: React.FC<Props> = ({ navigation }) => {
                             ]}
                             onPress={() => handleThemeSelect(themeId)}
                             disabled={!unlocked}
+                            activeOpacity={0.7}
                         >
                             <View style={styles.themeHeader}>
-                                <Text style={styles.themeEmoji}>
-                                    {unlocked ? getThemeEmoji(themeId) : '🔒'}
-                                </Text>
+                                <View style={styles.themeIconContainer}>
+                                    <Text style={styles.themeEmoji}>
+                                        {unlocked ? getThemeEmoji(themeId) : '🔒'}
+                                    </Text>
+                                </View>
                                 <View style={styles.themeInfo}>
                                     <Text style={[
                                         styles.themeName,
@@ -124,23 +124,22 @@ const EndlessSelect: React.FC<Props> = ({ navigation }) => {
                                         {theme.name}
                                     </Text>
                                     <Text style={styles.themeDescription}>
-                                        {unlocked ? theme.description : 'Complete 5 levels of previous theme to unlock'}
+                                        {unlocked ? theme.description : 'Complete 5 levels of previous theme'}
                                     </Text>
                                 </View>
                             </View>
 
                             {unlocked && (
-                                <View style={styles.highScoreContainer}>
-                                    <Text style={styles.highScoreLabel}>Best Score</Text>
-                                    <Text style={styles.highScoreValue}>
-                                        {highScore > 0 ? highScore.toLocaleString() : '---'}
-                                    </Text>
-                                </View>
-                            )}
-
-                            {unlocked && (
-                                <View style={styles.playButton}>
-                                    <Text style={styles.playButtonText}>▶ Play</Text>
+                                <View style={styles.statsRow}>
+                                    <View style={styles.highScoreBox}>
+                                        <Text style={styles.highScoreLabel}>Best score</Text>
+                                        <Text style={styles.highScoreValue}>
+                                            {highScore > 0 ? highScore.toLocaleString() : '—'}
+                                        </Text>
+                                    </View>
+                                    <View style={styles.playButton}>
+                                        <Text style={styles.playButtonText}>Play</Text>
+                                    </View>
                                 </View>
                             )}
                         </TouchableOpacity>
@@ -154,119 +153,128 @@ const EndlessSelect: React.FC<Props> = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#1a1a2e',
+        backgroundColor: COLORS.backgroundPrimary,
     },
     header: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingHorizontal: 16,
-        paddingVertical: 12,
+        paddingHorizontal: SPACING.lg,
+        paddingVertical: SPACING.md,
         borderBottomWidth: 1,
-        borderBottomColor: '#333',
+        borderBottomColor: COLORS.cardBorder,
+        backgroundColor: COLORS.cardBackground,
     },
     backButton: {
-        padding: 8,
+        padding: SPACING.sm,
     },
     backButtonText: {
-        color: '#3498db',
-        fontSize: 16,
-        fontWeight: '600',
+        color: COLORS.organicWaste,
+        fontSize: TYPOGRAPHY.body,
+        fontWeight: TYPOGRAPHY.semibold,
     },
     title: {
-        fontSize: 22,
-        fontWeight: 'bold',
-        color: '#fff',
+        fontSize: TYPOGRAPHY.h3,
+        fontWeight: TYPOGRAPHY.semibold,
+        color: COLORS.textPrimary,
     },
     placeholder: {
         width: 60,
     },
     descriptionBox: {
-        backgroundColor: '#2c3e50',
-        margin: 16,
-        padding: 16,
-        borderRadius: 12,
-        borderLeftWidth: 4,
-        borderLeftColor: '#9b59b6',
+        backgroundColor: COLORS.cardBackground,
+        margin: SPACING.lg,
+        padding: SPACING.lg,
+        borderRadius: RADIUS.md,
+        borderLeftWidth: 3,
+        borderLeftColor: COLORS.accentHighlight,
+        ...SHADOWS.sm,
     },
     descriptionText: {
-        color: '#fff',
-        fontSize: 14,
-        textAlign: 'center',
-        fontStyle: 'italic',
+        color: COLORS.textSecondary,
+        fontSize: TYPOGRAPHY.bodySmall,
+        lineHeight: 20,
     },
     scrollView: {
         flex: 1,
     },
     scrollContent: {
-        padding: 16,
-        paddingTop: 0,
+        paddingHorizontal: SPACING.lg,
+        paddingBottom: SPACING.xxl,
     },
     themeCard: {
-        backgroundColor: '#2c3e50',
-        borderRadius: 16,
-        padding: 16,
-        marginBottom: 16,
-        borderWidth: 2,
-        borderColor: '#34495e',
+        backgroundColor: COLORS.cardBackground,
+        borderRadius: RADIUS.lg,
+        padding: SPACING.lg,
+        marginBottom: SPACING.md,
+        ...SHADOWS.sm,
     },
     lockedCard: {
-        opacity: 0.6,
-        borderColor: '#555',
+        opacity: 0.5,
     },
     themeHeader: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: 12,
+    },
+    themeIconContainer: {
+        width: 48,
+        height: 48,
+        borderRadius: RADIUS.md,
+        backgroundColor: COLORS.backgroundSecondary,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: SPACING.md,
     },
     themeEmoji: {
-        fontSize: 40,
-        marginRight: 12,
+        fontSize: 24,
     },
     themeInfo: {
         flex: 1,
     },
     themeName: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        color: '#2ecc71',
-        marginBottom: 4,
+        fontSize: TYPOGRAPHY.h4,
+        fontWeight: TYPOGRAPHY.semibold,
+        color: COLORS.textPrimary,
+        marginBottom: 2,
     },
     lockedText: {
-        color: '#888',
+        color: COLORS.textMuted,
     },
     themeDescription: {
-        fontSize: 12,
-        color: '#aaa',
+        fontSize: TYPOGRAPHY.caption,
+        color: COLORS.textSecondary,
     },
-    highScoreContainer: {
+    statsRow: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
         alignItems: 'center',
-        backgroundColor: '#1a1a2e',
-        borderRadius: 8,
-        padding: 12,
-        marginBottom: 12,
+        marginTop: SPACING.md,
+        gap: SPACING.md,
+    },
+    highScoreBox: {
+        flex: 1,
+        backgroundColor: COLORS.backgroundSecondary,
+        borderRadius: RADIUS.sm,
+        padding: SPACING.md,
     },
     highScoreLabel: {
-        fontSize: 14,
-        color: '#888',
+        fontSize: TYPOGRAPHY.caption,
+        color: COLORS.textMuted,
     },
     highScoreValue: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        color: '#FFD700',
+        fontSize: TYPOGRAPHY.h4,
+        fontWeight: TYPOGRAPHY.semibold,
+        color: COLORS.accentHighlight,
     },
     playButton: {
-        backgroundColor: '#27ae60',
-        borderRadius: 8,
-        padding: 12,
-        alignItems: 'center',
+        backgroundColor: COLORS.organicWaste,
+        borderRadius: RADIUS.sm,
+        paddingVertical: SPACING.md,
+        paddingHorizontal: SPACING.xl,
     },
     playButtonText: {
-        color: '#fff',
-        fontSize: 16,
-        fontWeight: 'bold',
+        color: COLORS.textLight,
+        fontSize: TYPOGRAPHY.body,
+        fontWeight: TYPOGRAPHY.semibold,
     },
 });
 

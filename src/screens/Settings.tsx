@@ -1,4 +1,4 @@
-// Settings Screen - Sound and game settings
+// Settings Screen - Earth-Inspired Minimal Design
 import React, { useState, useEffect } from 'react';
 import {
     View,
@@ -18,6 +18,7 @@ import {
     playSfx
 } from '../utils/SoundManager';
 import VERSION from '../config/version';
+import { COLORS, TYPOGRAPHY, SPACING, RADIUS, SHADOWS } from '../config/theme';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Settings'>;
 
@@ -52,14 +53,14 @@ const Settings: React.FC<Props> = ({ navigation }) => {
 
     return (
         <View style={[styles.container, { paddingTop: insets.top }]}>
-            <StatusBar barStyle="light-content" />
+            <StatusBar barStyle="dark-content" backgroundColor={COLORS.backgroundPrimary} />
 
             {/* Header */}
             <View style={styles.header}>
                 <TouchableOpacity style={styles.backButton} onPress={handleBack}>
                     <Text style={styles.backButtonText}>← Back</Text>
                 </TouchableOpacity>
-                <Text style={styles.title}>⚙️ Settings</Text>
+                <Text style={styles.title}>Settings</Text>
                 <View style={styles.placeholder} />
             </View>
 
@@ -67,7 +68,7 @@ const Settings: React.FC<Props> = ({ navigation }) => {
             <View style={styles.content}>
                 {/* Sound Settings Section */}
                 <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>🔊 Sound</Text>
+                    <Text style={styles.sectionTitle}>Sound</Text>
 
                     <View style={styles.settingRow}>
                         <View style={styles.settingInfo}>
@@ -77,42 +78,44 @@ const Settings: React.FC<Props> = ({ navigation }) => {
                         <Switch
                             value={musicEnabled}
                             onValueChange={handleMusicToggle}
-                            trackColor={{ false: '#333', true: '#27ae60' }}
-                            thumbColor={musicEnabled ? '#2ecc71' : '#666'}
+                            trackColor={{ false: COLORS.cardBorder, true: COLORS.organicWaste }}
+                            thumbColor={musicEnabled ? COLORS.textLight : COLORS.textMuted}
                         />
                     </View>
 
-                    <View style={styles.settingRow}>
+                    <View style={[styles.settingRow, styles.lastRow]}>
                         <View style={styles.settingInfo}>
-                            <Text style={styles.settingLabel}>Sound Effects</Text>
+                            <Text style={styles.settingLabel}>Sound effects</Text>
                             <Text style={styles.settingDescription}>Tile sounds & feedback</Text>
                         </View>
                         <Switch
                             value={sfxEnabled}
                             onValueChange={handleSfxToggle}
-                            trackColor={{ false: '#333', true: '#27ae60' }}
-                            thumbColor={sfxEnabled ? '#2ecc71' : '#666'}
+                            trackColor={{ false: COLORS.cardBorder, true: COLORS.organicWaste }}
+                            thumbColor={sfxEnabled ? COLORS.textLight : COLORS.textMuted}
                         />
                     </View>
                 </View>
 
                 {/* About Section */}
                 <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>ℹ️ About</Text>
+                    <Text style={styles.sectionTitle}>About</Text>
 
                     <View style={styles.aboutRow}>
                         <Text style={styles.aboutLabel}>Version</Text>
                         <Text style={styles.aboutValue}>{VERSION.string}</Text>
                     </View>
 
-                    <View style={styles.aboutRow}>
+                    <View style={[styles.aboutRow, styles.lastRow]}>
                         <Text style={styles.aboutLabel}>Developer</Text>
                         <Text style={styles.aboutValue}>SepehrMohammady</Text>
                     </View>
+                </View>
 
-                    <Text style={styles.tagline}>
-                        🌍 Save the planet, one match at a time!
-                    </Text>
+                {/* Tagline */}
+                <View style={styles.taglineContainer}>
+                    <Text style={styles.taglineEmoji}>🌱</Text>
+                    <Text style={styles.tagline}>Save the planet, one match at a time</Text>
                 </View>
             </View>
         </View>
@@ -122,92 +125,104 @@ const Settings: React.FC<Props> = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#1a1a2e',
+        backgroundColor: COLORS.backgroundPrimary,
     },
     header: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingHorizontal: 16,
-        paddingVertical: 12,
+        paddingHorizontal: SPACING.lg,
+        paddingVertical: SPACING.md,
         borderBottomWidth: 1,
-        borderBottomColor: '#333',
+        borderBottomColor: COLORS.cardBorder,
+        backgroundColor: COLORS.cardBackground,
     },
     backButton: {
-        padding: 8,
+        padding: SPACING.sm,
     },
     backButtonText: {
-        color: '#3498db',
-        fontSize: 16,
-        fontWeight: '600',
+        color: COLORS.organicWaste,
+        fontSize: TYPOGRAPHY.body,
+        fontWeight: TYPOGRAPHY.semibold,
     },
     title: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        color: '#fff',
+        fontSize: TYPOGRAPHY.h3,
+        fontWeight: TYPOGRAPHY.semibold,
+        color: COLORS.textPrimary,
     },
     placeholder: {
         width: 60,
     },
     content: {
         flex: 1,
-        padding: 16,
+        padding: SPACING.lg,
     },
     section: {
-        backgroundColor: '#2c3e50',
-        borderRadius: 16,
-        padding: 16,
-        marginBottom: 20,
+        backgroundColor: COLORS.cardBackground,
+        borderRadius: RADIUS.lg,
+        padding: SPACING.lg,
+        marginBottom: SPACING.lg,
+        ...SHADOWS.sm,
     },
     sectionTitle: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        color: '#2ecc71',
-        marginBottom: 16,
+        fontSize: TYPOGRAPHY.bodySmall,
+        fontWeight: TYPOGRAPHY.semibold,
+        color: COLORS.textMuted,
+        textTransform: 'uppercase',
+        letterSpacing: 0.5,
+        marginBottom: SPACING.md,
     },
     settingRow: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingVertical: 12,
+        paddingVertical: SPACING.md,
         borderBottomWidth: 1,
-        borderBottomColor: '#34495e',
+        borderBottomColor: COLORS.backgroundSecondary,
+    },
+    lastRow: {
+        borderBottomWidth: 0,
     },
     settingInfo: {
         flex: 1,
     },
     settingLabel: {
-        fontSize: 16,
-        fontWeight: '600',
-        color: '#fff',
+        fontSize: TYPOGRAPHY.body,
+        fontWeight: TYPOGRAPHY.medium,
+        color: COLORS.textPrimary,
     },
     settingDescription: {
-        fontSize: 12,
-        color: '#888',
+        fontSize: TYPOGRAPHY.caption,
+        color: COLORS.textSecondary,
         marginTop: 2,
     },
     aboutRow: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingVertical: 10,
+        paddingVertical: SPACING.sm,
         borderBottomWidth: 1,
-        borderBottomColor: '#34495e',
+        borderBottomColor: COLORS.backgroundSecondary,
     },
     aboutLabel: {
-        fontSize: 14,
-        color: '#888',
+        fontSize: TYPOGRAPHY.bodySmall,
+        color: COLORS.textSecondary,
     },
     aboutValue: {
-        fontSize: 14,
-        color: '#fff',
-        fontWeight: '500',
+        fontSize: TYPOGRAPHY.bodySmall,
+        color: COLORS.textPrimary,
+        fontWeight: TYPOGRAPHY.medium,
+    },
+    taglineContainer: {
+        alignItems: 'center',
+        marginTop: SPACING.xl,
+    },
+    taglineEmoji: {
+        fontSize: 24,
+        marginBottom: SPACING.sm,
     },
     tagline: {
-        fontSize: 14,
-        color: '#27ae60',
-        textAlign: 'center',
-        marginTop: 16,
-        fontStyle: 'italic',
+        fontSize: TYPOGRAPHY.bodySmall,
+        color: COLORS.textSecondary,
     },
 });
 

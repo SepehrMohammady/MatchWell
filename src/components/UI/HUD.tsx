@@ -1,8 +1,9 @@
-// HUD Component - Displays score, moves, and level info
+// HUD Component - Earth-Inspired Minimal Design
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useGameStore } from '../../context/GameStore';
-import { getEnvironmentalMessage, THEME_CONFIGS } from '../../themes';
+import { THEME_CONFIGS } from '../../themes';
+import { COLORS, TYPOGRAPHY, SPACING, RADIUS } from '../../config/theme';
 
 interface HUDProps {
     onPause: () => void;
@@ -20,17 +21,13 @@ const HUD: React.FC<HUDProps> = ({ onPause }) => {
 
     const themeConfig = THEME_CONFIGS[theme];
 
-    // Calculate progress for story mode, or best score for endless
+    // Calculate progress for story mode
     const progress = isEndlessMode ? 100 : Math.min((score / targetScore) * 100, 100);
-    const message = isEndlessMode
-        ? (combo > 1 ? '🔥 Keep the combo going!' : '♾️ No limits! Just match!')
-        : getEnvironmentalMessage(score, targetScore);
 
-    // Get endless high score for display (negative IDs based on theme index)
+    // Get endless high score for display
     const themeOrder = ['trash-sorting', 'pollution', 'water-conservation', 'energy-efficiency', 'deforestation'];
     const themeIndex = themeOrder.indexOf(theme);
     const savedHighScore = highScores[-(themeIndex + 1)] || 0;
-    // Show live best score: max of current score and saved high score
     const displayBestScore = isEndlessMode ? Math.max(score, savedHighScore) : savedHighScore;
 
     return (
@@ -39,21 +36,20 @@ const HUD: React.FC<HUDProps> = ({ onPause }) => {
             <View style={styles.topRow}>
                 <View style={[styles.levelBadge, isEndlessMode && styles.endlessBadge]}>
                     <Text style={styles.levelText}>
-                        {isEndlessMode ? `♾️ ${themeConfig.name}` : `Level ${level}`}
+                        {isEndlessMode ? themeConfig.name : `Level ${level}`}
                     </Text>
                 </View>
-                <TouchableOpacity style={styles.pauseButton} onPress={onPause}>
-                    <Text style={styles.pauseIcon}>⏸️</Text>
+                <TouchableOpacity style={styles.pauseButton} onPress={onPause} activeOpacity={0.7}>
+                    <Text style={styles.pauseIcon}>⏸</Text>
                 </TouchableOpacity>
             </View>
 
             {/* Score section */}
             <View style={styles.scoreSection}>
-                <Text style={styles.scoreLabel}>SCORE</Text>
                 <Text style={styles.scoreValue}>{score.toLocaleString()}</Text>
                 {isEndlessMode ? (
                     <Text style={styles.targetText}>
-                        Best: {displayBestScore > 0 ? displayBestScore.toLocaleString() : '---'}
+                        Best: {displayBestScore > 0 ? displayBestScore.toLocaleString() : '—'}
                     </Text>
                 ) : (
                     <Text style={styles.targetText}>Target: {targetScore.toLocaleString()}</Text>
@@ -67,24 +63,20 @@ const HUD: React.FC<HUDProps> = ({ onPause }) => {
                 </View>
             )}
 
-            {/* Environmental message */}
-            <Text style={styles.environmentalMessage}>{message}</Text>
-
             {/* Bottom row: Moves and Combo */}
             <View style={styles.bottomRow}>
                 <View style={styles.stat}>
-                    <Text style={styles.statLabel}>{isEndlessMode ? 'MOVES MADE' : 'MOVES LEFT'}</Text>
+                    <Text style={styles.statLabel}>{isEndlessMode ? 'Moves' : 'Moves left'}</Text>
                     <Text style={[
                         styles.statValue,
                         !isEndlessMode && movesRemaining <= 5 && styles.lowMoves,
-                        isEndlessMode && styles.endlessMoves
                     ]}>
                         {movesRemaining}
                     </Text>
                 </View>
                 {combo > 1 && (
                     <View style={styles.comboBadge}>
-                        <Text style={styles.comboText}>🔥 x{combo}</Text>
+                        <Text style={styles.comboText}>×{combo}</Text>
                     </View>
                 )}
             </View>
@@ -94,114 +86,102 @@ const HUD: React.FC<HUDProps> = ({ onPause }) => {
 
 const styles = StyleSheet.create({
     container: {
-        padding: 16,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        borderRadius: 16,
-        margin: 10,
+        padding: SPACING.lg,
+        backgroundColor: COLORS.cardBackground,
+        borderRadius: RADIUS.lg,
+        margin: SPACING.md,
+        borderWidth: 1,
+        borderColor: COLORS.cardBorder,
     },
     topRow: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: 12,
+        marginBottom: SPACING.md,
     },
     levelBadge: {
-        backgroundColor: '#27ae60',
-        paddingHorizontal: 16,
-        paddingVertical: 6,
-        borderRadius: 20,
+        backgroundColor: COLORS.organicWaste,
+        paddingHorizontal: SPACING.md,
+        paddingVertical: SPACING.xs,
+        borderRadius: RADIUS.round,
+    },
+    endlessBadge: {
+        backgroundColor: COLORS.accentHighlight,
     },
     levelText: {
-        color: '#fff',
-        fontWeight: 'bold',
-        fontSize: 16,
+        color: COLORS.textLight,
+        fontWeight: TYPOGRAPHY.semibold,
+        fontSize: TYPOGRAPHY.bodySmall,
     },
     pauseButton: {
-        padding: 8,
+        width: 36,
+        height: 36,
+        borderRadius: 18,
+        backgroundColor: COLORS.backgroundSecondary,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     pauseIcon: {
-        fontSize: 24,
+        fontSize: 16,
+        color: COLORS.textSecondary,
     },
     scoreSection: {
         alignItems: 'center',
-        marginBottom: 8,
-    },
-    scoreLabel: {
-        color: '#aaa',
-        fontSize: 12,
-        fontWeight: '600',
-        letterSpacing: 2,
+        marginBottom: SPACING.sm,
     },
     scoreValue: {
-        color: '#FFD700',
-        fontSize: 36,
-        fontWeight: 'bold',
-        textShadowColor: 'rgba(0, 0, 0, 0.5)',
-        textShadowOffset: { width: 1, height: 1 },
-        textShadowRadius: 2,
+        color: COLORS.textPrimary,
+        fontSize: 40,
+        fontWeight: TYPOGRAPHY.bold,
+        letterSpacing: -1,
     },
     targetText: {
-        color: '#888',
-        fontSize: 14,
+        color: COLORS.textMuted,
+        fontSize: TYPOGRAPHY.bodySmall,
     },
     progressContainer: {
-        height: 8,
-        backgroundColor: 'rgba(255, 255, 255, 0.2)',
-        borderRadius: 4,
+        height: 6,
+        backgroundColor: COLORS.progressEmpty,
+        borderRadius: 3,
         overflow: 'hidden',
-        marginVertical: 8,
+        marginVertical: SPACING.sm,
     },
     progressBar: {
         height: '100%',
-        backgroundColor: '#2ecc71',
-        borderRadius: 4,
-    },
-    environmentalMessage: {
-        color: '#fff',
-        textAlign: 'center',
-        fontSize: 14,
-        fontStyle: 'italic',
-        marginVertical: 8,
+        backgroundColor: COLORS.progressFill,
+        borderRadius: 3,
     },
     bottomRow: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginTop: 8,
+        marginTop: SPACING.sm,
     },
     stat: {
-        alignItems: 'center',
+        alignItems: 'flex-start',
     },
     statLabel: {
-        color: '#aaa',
-        fontSize: 10,
-        fontWeight: '600',
-        letterSpacing: 1,
+        color: COLORS.textMuted,
+        fontSize: TYPOGRAPHY.caption,
     },
     statValue: {
-        color: '#fff',
-        fontSize: 28,
-        fontWeight: 'bold',
+        color: COLORS.textPrimary,
+        fontSize: TYPOGRAPHY.h2,
+        fontWeight: TYPOGRAPHY.semibold,
     },
     lowMoves: {
-        color: '#e74c3c',
+        color: COLORS.accentDanger,
     },
     comboBadge: {
-        backgroundColor: '#e74c3c',
-        paddingHorizontal: 12,
-        paddingVertical: 6,
-        borderRadius: 16,
+        backgroundColor: COLORS.accentHighlight,
+        paddingHorizontal: SPACING.md,
+        paddingVertical: SPACING.xs,
+        borderRadius: RADIUS.round,
     },
     comboText: {
-        color: '#fff',
-        fontWeight: 'bold',
-        fontSize: 16,
-    },
-    endlessBadge: {
-        backgroundColor: '#9b59b6',
-    },
-    endlessMoves: {
-        color: '#9b59b6',
+        color: COLORS.textLight,
+        fontWeight: TYPOGRAPHY.bold,
+        fontSize: TYPOGRAPHY.body,
     },
 });
 

@@ -1,4 +1,4 @@
-// Level Select Screen
+// Level Select Screen - Earth-Inspired Minimal Design
 import React, { useEffect } from 'react';
 import {
     View,
@@ -16,6 +16,7 @@ import { useGameStore } from '../context/GameStore';
 import { LEVELS, THEME_CONFIGS, getThemeEmoji } from '../themes';
 import { ThemeType } from '../types';
 import { playSfx } from '../utils/SoundManager';
+import { COLORS, TYPOGRAPHY, SPACING, RADIUS, SHADOWS } from '../config/theme';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'LevelSelect'>;
 
@@ -28,7 +29,7 @@ const LevelSelect: React.FC<Props> = ({ navigation }) => {
     useEffect(() => {
         const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
             handleBack();
-            return true; // Prevent default behavior
+            return true;
         });
 
         return () => backHandler.remove();
@@ -73,14 +74,14 @@ const LevelSelect: React.FC<Props> = ({ navigation }) => {
 
     return (
         <View style={[styles.container, { paddingTop: insets.top }]}>
-            <StatusBar barStyle="light-content" />
+            <StatusBar barStyle="dark-content" backgroundColor={COLORS.backgroundPrimary} />
 
             {/* Header */}
             <View style={styles.header}>
                 <TouchableOpacity style={styles.backButton} onPress={handleBack}>
                     <Text style={styles.backButtonText}>← Back</Text>
                 </TouchableOpacity>
-                <Text style={styles.title}>Select Level</Text>
+                <Text style={styles.title}>Select level</Text>
                 <View style={styles.placeholder} />
             </View>
 
@@ -90,10 +91,12 @@ const LevelSelect: React.FC<Props> = ({ navigation }) => {
                     return (
                         <View key={themeId} style={styles.themeSection}>
                             <View style={styles.themeTitleContainer}>
-                                <Text style={styles.themeEmoji}>
-                                    {getThemeEmoji(themeId as ThemeType)}
-                                </Text>
-                                <View>
+                                <View style={styles.themeIconContainer}>
+                                    <Text style={styles.themeEmoji}>
+                                        {getThemeEmoji(themeId as ThemeType)}
+                                    </Text>
+                                </View>
+                                <View style={styles.themeTextContainer}>
                                     <Text style={styles.themeName}>{theme.name}</Text>
                                     <Text style={styles.themeDescription}>{theme.description}</Text>
                                 </View>
@@ -114,20 +117,21 @@ const LevelSelect: React.FC<Props> = ({ navigation }) => {
                                             ]}
                                             onPress={() => handleLevelSelect(level.id)}
                                             disabled={!unlocked}
+                                            activeOpacity={0.7}
                                         >
                                             {unlocked ? (
                                                 <>
                                                     <Text style={styles.levelNumber}>{level.id}</Text>
                                                     <View style={styles.starsRow}>
                                                         {[1, 2, 3].map((s) => (
-                                                            <Text key={s} style={styles.starSmall}>
-                                                                {s <= stars ? '⭐' : '☆'}
+                                                            <Text key={s} style={[
+                                                                styles.starSmall,
+                                                                s <= stars && styles.starFilled
+                                                            ]}>
+                                                                ★
                                                             </Text>
                                                         ))}
                                                     </View>
-                                                    <Text style={styles.difficultyBadge}>
-                                                        {level.difficulty === 'easy' ? '🟢' : level.difficulty === 'medium' ? '🟡' : '🔴'}
-                                                    </Text>
                                                 </>
                                             ) : (
                                                 <Text style={styles.lockIcon}>🔒</Text>
@@ -142,12 +146,9 @@ const LevelSelect: React.FC<Props> = ({ navigation }) => {
 
                 {/* Coming Soon section */}
                 <View style={styles.comingSoon}>
-                    <Text style={styles.comingSoonTitle}>🚧 Coming Soon</Text>
+                    <Text style={styles.comingSoonTitle}>More coming soon</Text>
                     <Text style={styles.comingSoonText}>
-                        🌊 Ocean Cleanup{'\n'}
-                        🐾 Wildlife Protection{'\n'}
-                        🏙️ Sustainable Cities{'\n'}
-                        And more themes!
+                        Ocean cleanup, wildlife protection, sustainable cities, and more themes!
                     </Text>
                 </View>
             </ScrollView>
@@ -158,29 +159,30 @@ const LevelSelect: React.FC<Props> = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#1a1a2e',
+        backgroundColor: COLORS.backgroundPrimary,
     },
     header: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingHorizontal: 16,
-        paddingVertical: 12,
+        paddingHorizontal: SPACING.lg,
+        paddingVertical: SPACING.md,
         borderBottomWidth: 1,
-        borderBottomColor: '#333',
+        borderBottomColor: COLORS.cardBorder,
+        backgroundColor: COLORS.cardBackground,
     },
     backButton: {
-        padding: 8,
+        padding: SPACING.sm,
     },
     backButtonText: {
-        color: '#3498db',
-        fontSize: 16,
-        fontWeight: '600',
+        color: COLORS.organicWaste,
+        fontSize: TYPOGRAPHY.body,
+        fontWeight: TYPOGRAPHY.semibold,
     },
     title: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        color: '#fff',
+        fontSize: TYPOGRAPHY.h3,
+        fontWeight: TYPOGRAPHY.semibold,
+        color: COLORS.textPrimary,
     },
     placeholder: {
         width: 60,
@@ -189,57 +191,69 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     scrollContent: {
-        padding: 16,
+        padding: SPACING.lg,
+        paddingBottom: SPACING.xxl,
     },
     themeSection: {
-        marginBottom: 24,
+        marginBottom: SPACING.xl,
     },
     themeTitleContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: 16,
-        gap: 12,
+        marginBottom: SPACING.lg,
+        gap: SPACING.md,
+    },
+    themeIconContainer: {
+        width: 48,
+        height: 48,
+        borderRadius: RADIUS.md,
+        backgroundColor: COLORS.cardBackground,
+        justifyContent: 'center',
+        alignItems: 'center',
+        ...SHADOWS.sm,
     },
     themeEmoji: {
-        fontSize: 36,
+        fontSize: 24,
+    },
+    themeTextContainer: {
+        flex: 1,
     },
     themeName: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        color: '#2ecc71',
+        fontSize: TYPOGRAPHY.h4,
+        fontWeight: TYPOGRAPHY.semibold,
+        color: COLORS.textPrimary,
     },
     themeDescription: {
-        fontSize: 12,
-        color: '#888',
-        maxWidth: 250,
+        fontSize: TYPOGRAPHY.caption,
+        color: COLORS.textSecondary,
+        marginTop: 2,
     },
     levelsGrid: {
         flexDirection: 'row',
         flexWrap: 'wrap',
-        gap: 12,
+        gap: SPACING.md,
     },
     levelButton: {
-        width: 70,
-        height: 85,
-        backgroundColor: '#2c3e50',
-        borderRadius: 12,
+        width: 64,
+        height: 72,
+        backgroundColor: COLORS.cardBackground,
+        borderRadius: RADIUS.md,
         justifyContent: 'center',
         alignItems: 'center',
-        borderWidth: 2,
-        borderColor: '#34495e',
+        ...SHADOWS.sm,
     },
     lockedLevel: {
-        backgroundColor: '#1a1a2e',
-        borderColor: '#333',
-        opacity: 0.6,
+        backgroundColor: COLORS.backgroundSecondary,
+        opacity: 0.5,
     },
     completedLevel: {
-        borderColor: '#27ae60',
+        borderWidth: 2,
+        borderColor: COLORS.organicWaste,
     },
     levelNumber: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        color: '#fff',
+        fontSize: TYPOGRAPHY.h3,
+        fontWeight: TYPOGRAPHY.semibold,
+        color: COLORS.textPrimary,
         marginBottom: 4,
     },
     starsRow: {
@@ -248,35 +262,35 @@ const styles = StyleSheet.create({
     },
     starSmall: {
         fontSize: 10,
+        color: COLORS.starEmpty,
     },
-    difficultyBadge: {
-        fontSize: 10,
-        marginTop: 4,
+    starFilled: {
+        color: COLORS.starFilled,
     },
     lockIcon: {
-        fontSize: 24,
+        fontSize: 20,
     },
     comingSoon: {
-        backgroundColor: 'rgba(52, 152, 219, 0.2)',
-        borderRadius: 16,
-        padding: 20,
+        backgroundColor: COLORS.cardBackground,
+        borderRadius: RADIUS.lg,
+        padding: SPACING.xl,
         alignItems: 'center',
-        marginTop: 16,
+        marginTop: SPACING.lg,
         borderWidth: 1,
-        borderColor: '#3498db',
+        borderColor: COLORS.cardBorder,
         borderStyle: 'dashed',
     },
     comingSoonTitle: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        color: '#3498db',
-        marginBottom: 12,
+        fontSize: TYPOGRAPHY.h4,
+        fontWeight: TYPOGRAPHY.semibold,
+        color: COLORS.textSecondary,
+        marginBottom: SPACING.sm,
     },
     comingSoonText: {
-        fontSize: 14,
-        color: '#888',
+        fontSize: TYPOGRAPHY.bodySmall,
+        color: COLORS.textMuted,
         textAlign: 'center',
-        lineHeight: 24,
+        lineHeight: 20,
     },
 });
 

@@ -1,4 +1,4 @@
-// Main Menu Screen - Minimal Material Design
+// Main Menu Screen - Earth-Inspired Minimal Design
 import React, { useEffect } from 'react';
 import {
     View,
@@ -6,7 +6,6 @@ import {
     StyleSheet,
     TouchableOpacity,
     StatusBar,
-    Dimensions,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -14,10 +13,9 @@ import { RootStackParamList } from '../types';
 import { preloadSounds, playBgm, playSfx, stopBgm } from '../utils/SoundManager';
 import { useGameStore } from '../context/GameStore';
 import VERSION from '../config/version';
+import { COLORS, TYPOGRAPHY, SPACING, RADIUS, SHADOWS } from '../config/theme';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'MainMenu'>;
-
-const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 const MainMenu: React.FC<Props> = ({ navigation }) => {
     const insets = useSafeAreaInsets();
@@ -44,7 +42,6 @@ const MainMenu: React.FC<Props> = ({ navigation }) => {
 
     const handleEndless = () => {
         playSfx('tile_select');
-        // Navigate to theme selection for endless mode
         navigation.navigate('EndlessSelect');
     };
 
@@ -53,50 +50,53 @@ const MainMenu: React.FC<Props> = ({ navigation }) => {
         navigation.navigate('Settings');
     };
 
-
     return (
         <View style={[styles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
-            <StatusBar barStyle="light-content" />
+            <StatusBar barStyle="dark-content" backgroundColor={COLORS.backgroundPrimary} />
 
-            {/* Decorative elements */}
+            {/* Ambient top decoration */}
             <View style={styles.decorTop}>
-                <Text style={styles.cloud}>☁️</Text>
-                <Text style={[styles.cloud, styles.cloudRight]}>☁️</Text>
+                <View style={styles.leafCluster}>
+                    <Text style={styles.leafEmoji}>🌿</Text>
+                    <Text style={[styles.leafEmoji, styles.leafOffset]}>🍃</Text>
+                </View>
             </View>
 
             {/* Title section */}
             <View style={styles.titleSection}>
-                <Text style={styles.earth}>🌍</Text>
+                <View style={styles.earthContainer}>
+                    <Text style={styles.earth}>🌍</Text>
+                </View>
                 <Text style={styles.title}>MatchWell</Text>
-                <Text style={styles.subtitle}>Save the Planet, One Match at a Time!</Text>
+                <Text style={styles.subtitle}>Save the planet, one match at a time</Text>
             </View>
 
             {/* Menu buttons */}
             <View style={styles.buttonContainer}>
-                <TouchableOpacity style={styles.playButton} onPress={handlePlay}>
-                    <Text style={styles.playButtonText}>🎮 Play</Text>
+                <TouchableOpacity style={styles.playButton} onPress={handlePlay} activeOpacity={0.8}>
+                    <Text style={styles.playButtonText}>Play story</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.secondaryButton} onPress={handleEndless}>
-                    <Text style={styles.secondaryButtonText}>♾️ Endless Mode</Text>
+                <TouchableOpacity style={styles.secondaryButton} onPress={handleEndless} activeOpacity={0.8}>
+                    <Text style={styles.secondaryButtonText}>Endless mode</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.settingsButton} onPress={handleSettings}>
-                    <Text style={styles.settingsButtonText}>⚙️ Settings</Text>
+                <TouchableOpacity style={styles.settingsButton} onPress={handleSettings} activeOpacity={0.6}>
+                    <Text style={styles.settingsButtonText}>Settings</Text>
                 </TouchableOpacity>
             </View>
 
-            {/* Bottom decoration */}
+            {/* Bottom ambient decoration */}
             <View style={styles.bottomDecor}>
-                <Text style={styles.treeEmoji}>🌲</Text>
-                <Text style={styles.treeEmoji}>🌳</Text>
-                <Text style={styles.treeEmoji}>🌲</Text>
-                <Text style={styles.treeEmoji}>🌴</Text>
-                <Text style={styles.treeEmoji}>🌳</Text>
+                <View style={styles.seedlingRow}>
+                    <Text style={styles.seedling}>🌱</Text>
+                    <Text style={styles.seedling}>🌱</Text>
+                    <Text style={styles.seedling}>🌱</Text>
+                </View>
             </View>
 
-            {/* Version and credits */}
-            <Text style={styles.version}>v{VERSION.string} • Made with 💚 for Earth</Text>
+            {/* Version */}
+            <Text style={styles.version}>v{VERSION.string}</Text>
         </View>
     );
 };
@@ -104,105 +104,112 @@ const MainMenu: React.FC<Props> = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#1a1a2e',
+        backgroundColor: COLORS.backgroundPrimary,
         justifyContent: 'space-between',
         alignItems: 'center',
     },
     decorTop: {
         width: '100%',
+        paddingHorizontal: SPACING.xl,
+        paddingTop: SPACING.lg,
+        alignItems: 'flex-end',
+    },
+    leafCluster: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
-        paddingHorizontal: 20,
-        paddingTop: 20,
     },
-    cloud: {
-        fontSize: 40,
-        opacity: 0.5,
+    leafEmoji: {
+        fontSize: 24,
+        opacity: 0.6,
     },
-    cloudRight: {
-        marginTop: 30,
+    leafOffset: {
+        marginLeft: -8,
+        marginTop: 8,
     },
     titleSection: {
         alignItems: 'center',
-        paddingVertical: 40,
+        paddingVertical: SPACING.xxl,
+    },
+    earthContainer: {
+        width: 120,
+        height: 120,
+        borderRadius: 60,
+        backgroundColor: COLORS.cardBackground,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: SPACING.lg,
+        ...SHADOWS.lg,
     },
     earth: {
-        fontSize: 80,
-        marginBottom: 16,
+        fontSize: 64,
     },
     title: {
-        fontSize: 48,
-        fontWeight: 'bold',
-        color: '#2ecc71',
-        textShadowColor: 'rgba(46, 204, 113, 0.5)',
-        textShadowOffset: { width: 0, height: 4 },
-        textShadowRadius: 10,
-        marginBottom: 8,
+        fontSize: TYPOGRAPHY.h1,
+        fontWeight: TYPOGRAPHY.semibold,
+        color: COLORS.textPrimary,
+        marginBottom: SPACING.sm,
+        letterSpacing: -0.5,
     },
     subtitle: {
-        fontSize: 16,
-        color: '#87CEEB',
+        fontSize: TYPOGRAPHY.body,
+        color: COLORS.textSecondary,
         textAlign: 'center',
-        fontStyle: 'italic',
     },
     buttonContainer: {
         width: '100%',
-        paddingHorizontal: 40,
-        gap: 16,
+        paddingHorizontal: SPACING.xxl,
+        gap: SPACING.md,
     },
     playButton: {
-        backgroundColor: '#27ae60',
-        paddingVertical: 20,
-        borderRadius: 30,
+        backgroundColor: COLORS.organicWaste,
+        paddingVertical: SPACING.lg,
+        borderRadius: RADIUS.lg,
         alignItems: 'center',
-        shadowColor: '#27ae60',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.4,
-        shadowRadius: 8,
-        elevation: 8,
+        ...SHADOWS.md,
     },
     playButtonText: {
-        color: '#fff',
-        fontSize: 28,
-        fontWeight: 'bold',
+        color: COLORS.textLight,
+        fontSize: TYPOGRAPHY.h3,
+        fontWeight: TYPOGRAPHY.semibold,
     },
     secondaryButton: {
-        backgroundColor: 'transparent',
-        paddingVertical: 16,
-        borderRadius: 25,
+        backgroundColor: COLORS.cardBackground,
+        paddingVertical: SPACING.lg,
+        borderRadius: RADIUS.lg,
         alignItems: 'center',
-        borderWidth: 2,
-        borderColor: '#3498db',
+        borderWidth: 1.5,
+        borderColor: COLORS.cardBorder,
+        ...SHADOWS.sm,
     },
     secondaryButtonText: {
-        color: '#3498db',
-        fontSize: 20,
-        fontWeight: '600',
+        color: COLORS.textPrimary,
+        fontSize: TYPOGRAPHY.h4,
+        fontWeight: TYPOGRAPHY.medium,
     },
     settingsButton: {
         backgroundColor: 'transparent',
-        paddingVertical: 12,
-        borderRadius: 20,
+        paddingVertical: SPACING.md,
         alignItems: 'center',
     },
     settingsButtonText: {
-        color: '#888',
-        fontSize: 16,
-        fontWeight: '500',
+        color: COLORS.textSecondary,
+        fontSize: TYPOGRAPHY.body,
+        fontWeight: TYPOGRAPHY.medium,
     },
     bottomDecor: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        paddingBottom: 20,
-        gap: 10,
+        paddingBottom: SPACING.lg,
     },
-    treeEmoji: {
-        fontSize: 32,
+    seedlingRow: {
+        flexDirection: 'row',
+        gap: SPACING.lg,
+        opacity: 0.5,
+    },
+    seedling: {
+        fontSize: 20,
     },
     version: {
-        color: '#666',
-        fontSize: 12,
-        paddingBottom: 20,
+        color: COLORS.textMuted,
+        fontSize: TYPOGRAPHY.caption,
+        paddingBottom: SPACING.lg,
     },
 });
 
