@@ -1,24 +1,26 @@
-// Main Menu Screen (Simplified without reanimated)
+// Main Menu Screen - Minimal Material Design
 import React, { useEffect } from 'react';
 import {
     View,
     Text,
     StyleSheet,
     TouchableOpacity,
-    SafeAreaView,
     StatusBar,
     Dimensions,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { RootStackParamList } from '../types';
 import { preloadSounds, playBgm, playSfx, stopBgm } from '../utils/SoundManager';
 import { useGameStore } from '../context/GameStore';
+import VERSION from '../config/version';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'MainMenu'>;
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 const MainMenu: React.FC<Props> = ({ navigation }) => {
+    const insets = useSafeAreaInsets();
     const loadProgress = useGameStore((state) => state.loadProgress);
 
     // Preload sounds, load saved progress, and start menu music
@@ -53,7 +55,7 @@ const MainMenu: React.FC<Props> = ({ navigation }) => {
 
 
     return (
-        <SafeAreaView style={styles.container}>
+        <View style={[styles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
             <StatusBar barStyle="light-content" />
 
             {/* Decorative elements */}
@@ -94,8 +96,8 @@ const MainMenu: React.FC<Props> = ({ navigation }) => {
             </View>
 
             {/* Version and credits */}
-            <Text style={styles.version}>v1.0.0 • Made with 💚 for Earth</Text>
-        </SafeAreaView>
+            <Text style={styles.version}>v{VERSION.string} • Made with 💚 for Earth</Text>
+        </View>
     );
 };
 

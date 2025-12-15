@@ -5,11 +5,11 @@ import {
     Text,
     StyleSheet,
     TouchableOpacity,
-    SafeAreaView,
     StatusBar,
     Switch,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { RootStackParamList } from '../types';
 import {
     getSoundSettings,
@@ -17,10 +17,12 @@ import {
     toggleMusic,
     playSfx
 } from '../utils/SoundManager';
+import VERSION from '../config/version';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Settings'>;
 
 const Settings: React.FC<Props> = ({ navigation }) => {
+    const insets = useSafeAreaInsets();
     const [sfxEnabled, setSfxEnabled] = useState(true);
     const [musicEnabled, setMusicEnabled] = useState(true);
 
@@ -49,7 +51,7 @@ const Settings: React.FC<Props> = ({ navigation }) => {
     };
 
     return (
-        <SafeAreaView style={styles.container}>
+        <View style={[styles.container, { paddingTop: insets.top }]}>
             <StatusBar barStyle="light-content" />
 
             {/* Header */}
@@ -100,7 +102,7 @@ const Settings: React.FC<Props> = ({ navigation }) => {
 
                     <View style={styles.aboutRow}>
                         <Text style={styles.aboutLabel}>Version</Text>
-                        <Text style={styles.aboutValue}>1.0.0</Text>
+                        <Text style={styles.aboutValue}>{VERSION.string}</Text>
                     </View>
 
                     <View style={styles.aboutRow}>
@@ -113,7 +115,7 @@ const Settings: React.FC<Props> = ({ navigation }) => {
                     </Text>
                 </View>
             </View>
-        </SafeAreaView>
+        </View>
     );
 };
 

@@ -3,13 +3,13 @@ import React, { useEffect, useCallback } from 'react';
 import {
     View,
     StyleSheet,
-    SafeAreaView,
     Modal,
     Text,
     TouchableOpacity,
     ImageBackground,
     StatusBar,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useGameStore } from '../context/GameStore';
 import GameBoard from '../components/Game/GameBoard';
 import HUD from '../components/UI/HUD';
@@ -22,6 +22,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Game'>;
 
 const GameScreen: React.FC<Props> = ({ navigation, route }) => {
     const { levelId } = route.params;
+    const insets = useSafeAreaInsets();
 
     const initializeGame = useGameStore((state) => state.initializeGame);
     const isGameOver = useGameStore((state) => state.isGameOver);
@@ -104,7 +105,7 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
     };
 
     return (
-        <SafeAreaView style={[styles.container, getBackgroundStyle()]}>
+        <View style={[styles.container, getBackgroundStyle(), { paddingTop: insets.top }]}>
             <StatusBar barStyle="light-content" />
 
             <HUD onPause={handlePause} />
@@ -184,7 +185,7 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
                     </View>
                 </View>
             </Modal>
-        </SafeAreaView>
+        </View>
     );
 };
 

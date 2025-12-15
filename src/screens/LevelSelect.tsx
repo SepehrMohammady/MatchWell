@@ -13,7 +13,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { RootStackParamList } from '../types';
 import { useGameStore } from '../context/GameStore';
-import { LEVELS, THEME_CONFIGS } from '../themes';
+import { LEVELS, THEME_CONFIGS, getThemeEmoji } from '../themes';
 import { ThemeType } from '../types';
 import { playSfx } from '../utils/SoundManager';
 
@@ -91,7 +91,7 @@ const LevelSelect: React.FC<Props> = ({ navigation }) => {
                         <View key={themeId} style={styles.themeSection}>
                             <View style={styles.themeTitleContainer}>
                                 <Text style={styles.themeEmoji}>
-                                    {themeId === 'trash-sorting' ? '♻️' : '🏭'}
+                                    {getThemeEmoji(themeId as ThemeType)}
                                 </Text>
                                 <View>
                                     <Text style={styles.themeName}>{theme.name}</Text>

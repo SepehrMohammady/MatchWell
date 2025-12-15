@@ -1,16 +1,36 @@
 // Game Types for MatchWell
 
 export type TileType =
+    // Trash Sorting Theme
     | 'plastic'
     | 'paper'
     | 'glass'
     | 'metal'
     | 'organic'
+    // Pollution Theme
     | 'car'
     | 'truck'
     | 'bus'
     | 'factory'
     | 'bicycle'
+    // Water Conservation Theme
+    | 'droplet'
+    | 'faucet'
+    | 'shower'
+    | 'bottle'
+    | 'ocean'
+    // Energy Efficiency Theme
+    | 'bulb'
+    | 'solar'
+    | 'wind'
+    | 'plug'
+    | 'battery'
+    // Deforestation Theme
+    | 'tree'
+    | 'axe'
+    | 'leaf'
+    | 'seedling'
+    | 'forest'
     | 'empty';
 
 export interface Position {
@@ -46,7 +66,8 @@ export interface GameState {
     theme: ThemeType;
 }
 
-export type ThemeType = 'trash-sorting' | 'pollution';
+export type ThemeType = 'trash-sorting' | 'pollution' | 'water-conservation' | 'energy-efficiency' | 'deforestation';
+
 
 export interface Theme {
     id: ThemeType;
