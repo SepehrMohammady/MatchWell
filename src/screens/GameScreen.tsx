@@ -21,6 +21,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types';
 import { playBgm, playThemeBgm, pauseBgm, resumeBgm, playSfx, getSoundSettings, toggleSfx, toggleMusic } from '../utils/SoundManager';
 import { COLORS, TYPOGRAPHY, SPACING, RADIUS } from '../config/theme';
+import { PauseIcon, PlayIcon, RestartIcon, MusicIcon, VolumeIcon, HomeIcon, PaletteIcon, ListIcon, StarFilledIcon, StarEmptyIcon } from '../components/UI/Icons';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Game'>;
 
@@ -189,43 +190,56 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
             <Modal visible={isPaused} transparent animationType="fade">
                 <View style={styles.modalOverlay}>
                     <View style={styles.modalContent}>
-                        <Text style={styles.modalTitle}>⏸️ Paused</Text>
+                        <View style={styles.modalTitleRow}>
+                            <PauseIcon size={24} color={COLORS.textPrimary} />
+                            <Text style={styles.modalTitle}>Paused</Text>
+                        </View>
                         <TouchableOpacity style={styles.modalButton} onPress={handleResume}>
-                            <Text style={styles.modalButtonText}>▶️ Resume</Text>
+                            <PlayIcon size={20} color="#fff" />
+                            <Text style={styles.modalButtonText}>Resume</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.modalButton} onPress={handleRestart}>
-                            <Text style={styles.modalButtonText}>🔄 Restart</Text>
+                            <RestartIcon size={20} color="#fff" />
+                            <Text style={styles.modalButtonText}>Restart</Text>
                         </TouchableOpacity>
 
                         {/* Sound Controls */}
                         <View style={styles.soundControlsContainer}>
                             <View style={styles.soundRow}>
-                                <Text style={styles.soundLabel}>🎵 Music</Text>
+                                <MusicIcon size={20} color={COLORS.textSecondary} />
+                                <Text style={styles.soundLabel}>Music</Text>
                                 <Switch
                                     value={musicEnabled}
                                     onValueChange={handleMusicToggle}
-                                    trackColor={{ false: '#333', true: '#27ae60' }}
-                                    thumbColor={musicEnabled ? '#2ecc71' : '#666'}
+                                    trackColor={{ false: '#ccc', true: COLORS.organicWaste }}
+                                    thumbColor={musicEnabled ? '#fff' : '#eee'}
                                 />
                             </View>
                             <View style={styles.soundRow}>
-                                <Text style={styles.soundLabel}>🔊 SFX</Text>
+                                <VolumeIcon size={20} color={COLORS.textSecondary} />
+                                <Text style={styles.soundLabel}>SFX</Text>
                                 <Switch
                                     value={sfxEnabled}
                                     onValueChange={handleSfxToggle}
-                                    trackColor={{ false: '#333', true: '#27ae60' }}
-                                    thumbColor={sfxEnabled ? '#2ecc71' : '#666'}
+                                    trackColor={{ false: '#ccc', true: COLORS.organicWaste }}
+                                    thumbColor={sfxEnabled ? '#fff' : '#eee'}
                                 />
                             </View>
                         </View>
 
                         <TouchableOpacity style={[styles.modalButton, styles.secondaryButton]} onPress={handleBackToLevels}>
-                            <Text style={styles.modalButtonText}>
-                                {isEndlessMode ? '🎨 Themes' : '📋 Levels'}
+                            {isEndlessMode ? (
+                                <PaletteIcon size={20} color={COLORS.textSecondary} />
+                            ) : (
+                                <ListIcon size={20} color={COLORS.textSecondary} />
+                            )}
+                            <Text style={styles.secondaryButtonText}>
+                                {isEndlessMode ? 'Themes' : 'Levels'}
                             </Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={[styles.modalButton, styles.secondaryButton]} onPress={handleBackToMenu}>
-                            <Text style={styles.modalButtonText}>🏠 Main Menu</Text>
+                            <HomeIcon size={20} color={COLORS.textSecondary} />
+                            <Text style={styles.secondaryButtonText}>Main Menu</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -367,6 +381,10 @@ const styles = StyleSheet.create({
         borderRadius: RADIUS.md,
         marginVertical: SPACING.xs,
         minWidth: 180,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: SPACING.sm,
     },
     secondaryButton: {
         backgroundColor: COLORS.backgroundSecondary,
@@ -376,6 +394,18 @@ const styles = StyleSheet.create({
         fontSize: TYPOGRAPHY.body,
         fontWeight: TYPOGRAPHY.semibold,
         textAlign: 'center',
+    },
+    secondaryButtonText: {
+        color: COLORS.textSecondary,
+        fontSize: TYPOGRAPHY.body,
+        fontWeight: TYPOGRAPHY.medium,
+        textAlign: 'center',
+    },
+    modalTitleRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: SPACING.sm,
+        marginBottom: SPACING.lg,
     },
     soundControlsContainer: {
         backgroundColor: COLORS.backgroundSecondary,
@@ -389,8 +419,10 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingVertical: SPACING.sm,
+        gap: SPACING.sm,
     },
     soundLabel: {
+        flex: 1,
         fontSize: TYPOGRAPHY.body,
         color: COLORS.textPrimary,
         fontWeight: TYPOGRAPHY.medium,

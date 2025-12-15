@@ -47,21 +47,23 @@ const MainMenu: React.FC<Props> = ({ navigation }) => {
     const loadProgress = useGameStore((state) => state.loadProgress);
     const completedLevels = useGameStore((state) => state.completedLevels);
 
-    // Load progress and sounds on mount, then start menu music
+    const [soundsReady, setSoundsReady] = React.useState(false);
+
+    // Load progress and preload sounds on mount
     useEffect(() => {
         loadProgress();
         preloadSounds().then(() => {
-            // Play menu music after settings are loaded
-            playBgm('bgm_menu');
+            setSoundsReady(true);
         });
     }, [loadProgress]);
 
-    // Keep menu music playing when returning to this screen
+    // Play menu music when screen is focused AND sounds are ready
     useFocusEffect(
         useCallback(() => {
-            // Only play if returning from a game (settings already loaded)
-            playBgm('bgm_menu');
-        }, [])
+            if (soundsReady) {
+                playBgm('bgm_menu');
+            }
+        }, [soundsReady])
     );
 
     const earthStage = getEarthStage(completedLevels);

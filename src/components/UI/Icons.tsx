@@ -52,6 +52,36 @@ export const BackIcon: React.FC<IconProps> = ({ size = 24, color = COLORS.organi
     <MaterialCommunityIcons name="arrow-left" size={size} color={color} />
 );
 
+// Restart Icon
+export const RestartIcon: React.FC<IconProps> = ({ size = 24, color = COLORS.textPrimary }) => (
+    <MaterialCommunityIcons name="restart" size={size} color={color} />
+);
+
+// Music Icon
+export const MusicIcon: React.FC<IconProps> = ({ size = 24, color = COLORS.textPrimary }) => (
+    <MaterialCommunityIcons name="music" size={size} color={color} />
+);
+
+// Volume Icon
+export const VolumeIcon: React.FC<IconProps> = ({ size = 24, color = COLORS.textPrimary }) => (
+    <MaterialCommunityIcons name="volume-high" size={size} color={color} />
+);
+
+// Home Icon
+export const HomeIcon: React.FC<IconProps> = ({ size = 24, color = COLORS.textPrimary }) => (
+    <MaterialCommunityIcons name="home" size={size} color={color} />
+);
+
+// Palette Icon (for themes)
+export const PaletteIcon: React.FC<IconProps> = ({ size = 24, color = COLORS.textPrimary }) => (
+    <MaterialCommunityIcons name="palette" size={size} color={color} />
+);
+
+// List Icon (for levels)
+export const ListIcon: React.FC<IconProps> = ({ size = 24, color = COLORS.textPrimary }) => (
+    <MaterialCommunityIcons name="format-list-bulleted" size={size} color={color} />
+);
+
 // Theme icons for theme selection
 export const getThemeIcon = (theme: string, size = 32, color?: string): React.ReactNode => {
     const iconMap: Record<string, { name: string; defaultColor: string }> = {
