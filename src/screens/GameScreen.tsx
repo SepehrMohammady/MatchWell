@@ -12,6 +12,7 @@ import {
     BackHandler,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useFocusEffect } from '@react-navigation/native';
 import { useGameStore } from '../context/GameStore';
 import GameBoard from '../components/Game/GameBoard';
 import HUD from '../components/UI/HUD';
@@ -58,14 +59,19 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
         }
     }, [isPaused]);
 
-    // Start theme-specific music when entering the game
-    useEffect(() => {
-        playThemeBgm(theme);
-
-        return () => {
+    // Start theme-specific music when screen gains focus
+    useFocusEffect(
+        useCallback(() => {
+            // Stop any playing BGM first, then play theme music
             stopBgm();
-        };
-    }, [theme]);
+            playThemeBgm(theme);
+
+            return () => {
+                // Stop music when screen loses focus
+                stopBgm();
+            };
+        }, [theme])
+    );
 
     // Initialize the game level with isEndless flag and optional endlessTheme
     useEffect(() => {

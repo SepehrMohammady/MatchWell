@@ -1,39 +1,74 @@
-// Main Menu Screen - Earth-Inspired Minimal Design (No Emojis)
-import React, { useEffect } from 'react';
+// Main Menu Screen - Earth Stages with Space Background
+import React, { useEffect, useCallback } from 'react';
 import {
     View,
     Text,
     StyleSheet,
     TouchableOpacity,
     StatusBar,
+    Image,
+    ImageBackground,
+    Dimensions,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useFocusEffect } from '@react-navigation/native';
 import { RootStackParamList } from '../types';
 import { preloadSounds, playBgm, playSfx, stopBgm } from '../utils/SoundManager';
 import { useGameStore } from '../context/GameStore';
 import VERSION from '../config/version';
-import { COLORS, TYPOGRAPHY, SPACING, RADIUS, SHADOWS } from '../config/theme';
-import { EarthIcon, SeedlingIcon } from '../components/UI/Icons';
+import { COLORS, TYPOGRAPHY, SPACING, RADIUS } from '../config/theme';
+import { SeedlingIcon } from '../components/UI/Icons';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'MainMenu'>;
+
+// Earth stage images based on story progress
+const EARTH_STAGES = {
+    1: require('../assets/images/01.png'), // Polluted (0-10 levels)
+    2: require('../assets/images/02.png'), // Recovering (11-20 levels)
+    3: require('../assets/images/03.png'), // Healing (21-30 levels)
+    4: require('../assets/images/04.png'), // Thriving (31-50 levels)
+};
+
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
+
+// Get Earth stage based on completed levels
+const getEarthStage = (completedLevels: number[]): number => {
+    const maxLevel = completedLevels.length > 0 ? Math.max(...completedLevels) : 0;
+
+    if (maxLevel >= 50) return 4; // All stories complete - Thriving
+    if (maxLevel >= 30) return 3; // Story 3 complete - Healing
+    if (maxLevel >= 20) return 2; // Story 2 complete - Recovering
+    return 1; // Starting or Story 1 - Polluted
+};
 
 const MainMenu: React.FC<Props> = ({ navigation }) => {
     const insets = useSafeAreaInsets();
     const loadProgress = useGameStore((state) => state.loadProgress);
+    const completedLevels = useGameStore((state) => state.completedLevels);
 
-    // Preload sounds, load saved progress, and start menu music
+    // Load progress on mount
     useEffect(() => {
         loadProgress();
-
-        preloadSounds().then(() => {
-            playBgm('bgm_menu');
-        });
-
-        return () => {
-            stopBgm();
-        };
+        preloadSounds();
     }, [loadProgress]);
+
+    // Handle music with focus - stops when leaving, plays when returning
+    useFocusEffect(
+        useCallback(() => {
+            // Screen is focused - stop any playing BGM first, then play menu music
+            stopBgm();
+            playBgm('bgm_menu');
+
+            return () => {
+                // Screen is unfocused - stop menu music
+                stopBgm();
+            };
+        }, [])
+    );
+
+    const earthStage = getEarthStage(completedLevels);
+    const earthImage = EARTH_STAGES[earthStage as keyof typeof EARTH_STAGES];
 
     const handlePlay = () => {
         playSfx('tile_select');
@@ -52,16 +87,42 @@ const MainMenu: React.FC<Props> = ({ navigation }) => {
 
     return (
         <View style={[styles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
-            <StatusBar barStyle="dark-content" backgroundColor={COLORS.backgroundPrimary} />
+            <StatusBar barStyle="light-content" backgroundColor="#000000" />
+
+            {/* Space background with stars */}
+            <View style={styles.spaceBackground}>
+                {/* Simple star pattern */}
+                {Array.from({ length: 50 }).map((_, i) => (
+                    <View
+                        key={i}
+                        style={[
+                            styles.star,
+                            {
+                                left: `${Math.random() * 100}%`,
+                                top: `${Math.random() * 100}%`,
+                                width: Math.random() * 2 + 1,
+                                height: Math.random() * 2 + 1,
+                                opacity: Math.random() * 0.5 + 0.3,
+                            },
+                        ]}
+                    />
+                ))}
+            </View>
 
             {/* Spacer */}
             <View style={styles.spacer} />
 
+            {/* Earth image section */}
+            <View style={styles.earthSection}>
+                <Image
+                    source={earthImage}
+                    style={styles.earthImage}
+                    resizeMode="contain"
+                />
+            </View>
+
             {/* Title section */}
             <View style={styles.titleSection}>
-                <View style={styles.earthContainer}>
-                    <EarthIcon size={80} color={COLORS.organicWaste} />
-                </View>
                 <Text style={styles.title}>MatchWell</Text>
                 <Text style={styles.subtitle}>Save the planet, one match at a time</Text>
             </View>
@@ -81,7 +142,7 @@ const MainMenu: React.FC<Props> = ({ navigation }) => {
                 </TouchableOpacity>
             </View>
 
-            {/* Bottom ambient decoration */}
+            {/* Bottom seedling decoration */}
             <View style={styles.bottomDecor}>
                 <View style={styles.seedlingRow}>
                     <SeedlingIcon size={24} color={COLORS.organicWaste} />
@@ -99,93 +160,107 @@ const MainMenu: React.FC<Props> = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: COLORS.backgroundPrimary,
-        justifyContent: 'space-between',
-        alignItems: 'center',
+        backgroundColor: '#000000', // Space black
+        paddingHorizontal: SPACING.xl,
+    },
+    spaceBackground: {
+        ...StyleSheet.absoluteFillObject,
+        backgroundColor: '#0a0a0f', // Slightly off-black for depth
+    },
+    star: {
+        position: 'absolute',
+        backgroundColor: '#ffffff',
+        borderRadius: 10,
     },
     spacer: {
-        height: SPACING.xxl,
+        flex: 0.5,
+    },
+    earthSection: {
+        alignItems: 'center',
+        marginBottom: SPACING.lg,
+    },
+    earthImage: {
+        width: SCREEN_WIDTH * 0.55,
+        height: SCREEN_WIDTH * 0.55,
     },
     titleSection: {
         alignItems: 'center',
-        paddingVertical: SPACING.xxl,
-    },
-    earthContainer: {
-        width: 120,
-        height: 120,
-        borderRadius: 60,
-        backgroundColor: COLORS.cardBackground,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginBottom: SPACING.lg,
-        ...SHADOWS.lg,
+        marginBottom: SPACING.xxl,
     },
     title: {
         fontSize: TYPOGRAPHY.h1,
-        fontWeight: TYPOGRAPHY.semibold,
-        color: COLORS.textPrimary,
-        marginBottom: SPACING.sm,
-        letterSpacing: -0.5,
+        fontFamily: TYPOGRAPHY.fontFamilyBold,
+        fontWeight: TYPOGRAPHY.bold,
+        color: '#ffffff',
+        marginBottom: SPACING.xs,
+        letterSpacing: 1,
     },
     subtitle: {
-        fontSize: TYPOGRAPHY.body,
-        color: COLORS.textSecondary,
+        fontSize: TYPOGRAPHY.bodySmall,
+        fontFamily: TYPOGRAPHY.fontFamily,
+        color: 'rgba(255, 255, 255, 0.6)',
         textAlign: 'center',
     },
     buttonContainer: {
-        width: '100%',
-        paddingHorizontal: SPACING.xxl,
+        alignItems: 'center',
         gap: SPACING.md,
     },
     playButton: {
         backgroundColor: COLORS.organicWaste,
         paddingVertical: SPACING.lg,
-        borderRadius: RADIUS.lg,
+        paddingHorizontal: SPACING.xxl * 2,
+        borderRadius: RADIUS.round,
+        width: '100%',
         alignItems: 'center',
-        ...SHADOWS.md,
     },
     playButtonText: {
-        color: COLORS.textLight,
-        fontSize: TYPOGRAPHY.h3,
+        fontSize: TYPOGRAPHY.h4,
+        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
         fontWeight: TYPOGRAPHY.semibold,
+        color: '#ffffff',
     },
     secondaryButton: {
-        backgroundColor: COLORS.cardBackground,
-        paddingVertical: SPACING.lg,
-        borderRadius: RADIUS.lg,
-        alignItems: 'center',
+        backgroundColor: 'transparent',
         borderWidth: 1.5,
-        borderColor: COLORS.cardBorder,
-        ...SHADOWS.sm,
+        borderColor: 'rgba(255, 255, 255, 0.3)',
+        paddingVertical: SPACING.lg,
+        paddingHorizontal: SPACING.xxl * 2,
+        borderRadius: RADIUS.round,
+        width: '100%',
+        alignItems: 'center',
     },
     secondaryButtonText: {
-        color: COLORS.textPrimary,
         fontSize: TYPOGRAPHY.h4,
+        fontFamily: TYPOGRAPHY.fontFamilyMedium,
         fontWeight: TYPOGRAPHY.medium,
+        color: '#ffffff',
     },
     settingsButton: {
-        backgroundColor: 'transparent',
         paddingVertical: SPACING.md,
-        alignItems: 'center',
+        paddingHorizontal: SPACING.xl,
     },
     settingsButtonText: {
-        color: COLORS.textSecondary,
         fontSize: TYPOGRAPHY.body,
-        fontWeight: TYPOGRAPHY.medium,
+        fontFamily: TYPOGRAPHY.fontFamily,
+        color: 'rgba(255, 255, 255, 0.5)',
     },
     bottomDecor: {
-        paddingBottom: SPACING.lg,
+        flex: 1,
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        paddingBottom: SPACING.md,
     },
     seedlingRow: {
         flexDirection: 'row',
-        gap: SPACING.lg,
-        opacity: 0.7,
         alignItems: 'flex-end',
+        gap: SPACING.lg,
     },
     version: {
-        color: COLORS.textMuted,
-        fontSize: TYPOGRAPHY.caption,
-        paddingBottom: SPACING.lg,
+        fontSize: TYPOGRAPHY.tiny,
+        fontFamily: TYPOGRAPHY.fontFamily,
+        color: 'rgba(255, 255, 255, 0.3)',
+        textAlign: 'center',
+        marginBottom: SPACING.sm,
     },
 });
 
