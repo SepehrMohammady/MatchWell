@@ -24,10 +24,10 @@ type Props = NativeStackScreenProps<RootStackParamList, 'MainMenu'>;
 
 // Earth stage images based on story progress
 const EARTH_STAGES = {
-    1: require('../assets/images/01.png'), // Polluted (0-10 levels)
-    2: require('../assets/images/02.png'), // Recovering (11-20 levels)
-    3: require('../assets/images/03.png'), // Healing (21-30 levels)
-    4: require('../assets/images/04.png'), // Thriving (31-50 levels)
+    1: require('../assets/images/01.png'), // Polluted (0-20 levels)
+    2: require('../assets/images/02.png'), // Recovering (21-30 levels)
+    3: require('../assets/images/03.png'), // Healing (31-50 levels)
+    4: require('../assets/images/04.png'), // Thriving (all 50 levels complete)
 };
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
@@ -36,10 +36,10 @@ const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const getEarthStage = (completedLevels: number[]): number => {
     const maxLevel = completedLevels.length > 0 ? Math.max(...completedLevels) : 0;
 
-    if (maxLevel >= 50) return 4; // All stories complete - Thriving
-    if (maxLevel >= 30) return 3; // Story 3 complete - Healing
-    if (maxLevel >= 20) return 2; // Story 2 complete - Recovering
-    return 1; // Starting or Story 1 - Polluted
+    if (maxLevel >= 50) return 4; // All 50 levels complete - Thriving
+    if (maxLevel >= 31) return 3; // 31-50 levels - Healing
+    if (maxLevel >= 21) return 2; // 21-30 levels - Recovering
+    return 1; // 0-20 levels - Polluted
 };
 
 const MainMenu: React.FC<Props> = ({ navigation }) => {
@@ -160,12 +160,12 @@ const MainMenu: React.FC<Props> = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#000000', // Space black
+        backgroundColor: '#030303', // Space black
         paddingHorizontal: SPACING.xl,
     },
     spaceBackground: {
         ...StyleSheet.absoluteFillObject,
-        backgroundColor: '#0a0a0f', // Slightly off-black for depth
+        backgroundColor: '#030303', // Space black with stars
     },
     star: {
         position: 'absolute',
