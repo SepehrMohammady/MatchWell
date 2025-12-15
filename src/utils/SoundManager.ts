@@ -2,9 +2,13 @@
 // Handles all game audio: sound effects and background music
 
 import Sound from 'react-native-sound';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Enable playback in silence mode (iOS)
 Sound.setCategory('Playback');
+
+// Storage key for sound settings
+const SOUND_SETTINGS_KEY = '@MatchWell:soundSettings';
 
 // Sound file references
 type SoundName = 'tile_select' | 'combo' | 'invalid_move' | 'bgm_menu' | 'bgm_gameplay';
@@ -35,6 +39,38 @@ let sfxEnabled = true;
 let musicEnabled = true;
 let sfxVolume = 1.0;
 let musicVolume = 1.0;
+
+/**
+ * Load sound settings from AsyncStorage
+ */
+export const loadSoundSettings = async (): Promise<void> => {
+    try {
+        const saved = await AsyncStorage.getItem(SOUND_SETTINGS_KEY);
+        if (saved) {
+            const settings = JSON.parse(saved);
+            sfxEnabled = settings.sfxEnabled ?? true;
+            musicEnabled = settings.musicEnabled ?? true;
+            sfxVolume = settings.sfxVolume ?? 1.0;
+            musicVolume = settings.musicVolume ?? 1.0;
+            console.log('✅ Sound settings loaded:', { sfxEnabled, musicEnabled });
+        }
+    } catch (error) {
+        console.warn('Failed to load sound settings:', error);
+    }
+};
+
+/**
+ * Save sound settings to AsyncStorage
+ */
+const saveSoundSettings = async (): Promise<void> => {
+    try {
+        const settings = { sfxEnabled, musicEnabled, sfxVolume, musicVolume };
+        await AsyncStorage.setItem(SOUND_SETTINGS_KEY, JSON.stringify(settings));
+        console.log('✅ Sound settings saved');
+    } catch (error) {
+        console.warn('Failed to save sound settings:', error);
+    }
+};
 
 /**
  * Load a sound file and cache it
@@ -69,6 +105,9 @@ const loadSound = (name: SoundName): Promise<Sound> => {
  * Preload all sounds
  */
 export const preloadSounds = async (): Promise<void> => {
+    // Load saved settings first
+    await loadSoundSettings();
+
     const soundNames = Object.keys(SOUND_CONFIG) as SoundName[];
 
     await Promise.all(
@@ -168,6 +207,7 @@ export const resumeBgm = (): void => {
  */
 export const toggleSfx = (enabled?: boolean): boolean => {
     sfxEnabled = enabled !== undefined ? enabled : !sfxEnabled;
+    saveSoundSettings(); // Persist to AsyncStorage
     return sfxEnabled;
 };
 
@@ -181,6 +221,7 @@ export const toggleMusic = (enabled?: boolean): boolean => {
         stopBgm();
     }
 
+    saveSoundSettings(); // Persist to AsyncStorage
     return musicEnabled;
 };
 

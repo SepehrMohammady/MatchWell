@@ -36,6 +36,7 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
     const pauseGame = useGameStore((state) => state.pauseGame);
     const resumeGameState = useGameStore((state) => state.resumeGame);
     const markLevelComplete = useGameStore((state) => state.markLevelComplete);
+    const isEndlessMode = useGameStore((state) => state.isEndlessMode);
 
     const levelConfig = getLevelById(levelId);
     const themeConfig = THEME_CONFIGS[theme];
@@ -107,8 +108,13 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
 
     const handleBackToLevels = useCallback(() => {
         resumeGameState(); // Dismiss the pause menu first
-        navigation.navigate('LevelSelect');
-    }, [navigation, resumeGameState]);
+        // Navigate to appropriate screen based on mode
+        if (isEndlessMode) {
+            navigation.navigate('EndlessSelect');
+        } else {
+            navigation.navigate('LevelSelect');
+        }
+    }, [navigation, resumeGameState, isEndlessMode]);
 
     const handleSfxToggle = (value: boolean) => {
         setSfxEnabled(value);
@@ -185,7 +191,9 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
                         </View>
 
                         <TouchableOpacity style={[styles.modalButton, styles.secondaryButton]} onPress={handleBackToLevels}>
-                            <Text style={styles.modalButtonText}>📋 Levels</Text>
+                            <Text style={styles.modalButtonText}>
+                                {isEndlessMode ? '🎨 Themes' : '📋 Levels'}
+                            </Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={[styles.modalButton, styles.secondaryButton]} onPress={handleBackToMenu}>
                             <Text style={styles.modalButtonText}>🏠 Main Menu</Text>

@@ -29,7 +29,9 @@ const HUD: React.FC<HUDProps> = ({ onPause }) => {
     // Get endless high score for display (negative IDs based on theme index)
     const themeOrder = ['trash-sorting', 'pollution', 'water-conservation', 'energy-efficiency', 'deforestation'];
     const themeIndex = themeOrder.indexOf(theme);
-    const endlessHighScore = highScores[-(themeIndex + 1)] || 0;
+    const savedHighScore = highScores[-(themeIndex + 1)] || 0;
+    // Show live best score: max of current score and saved high score
+    const displayBestScore = isEndlessMode ? Math.max(score, savedHighScore) : savedHighScore;
 
     return (
         <View style={styles.container}>
@@ -51,7 +53,7 @@ const HUD: React.FC<HUDProps> = ({ onPause }) => {
                 <Text style={styles.scoreValue}>{score.toLocaleString()}</Text>
                 {isEndlessMode ? (
                     <Text style={styles.targetText}>
-                        Best: {endlessHighScore > 0 ? endlessHighScore.toLocaleString() : '---'}
+                        Best: {displayBestScore > 0 ? displayBestScore.toLocaleString() : '---'}
                     </Text>
                 ) : (
                     <Text style={styles.targetText}>Target: {targetScore.toLocaleString()}</Text>
