@@ -42,8 +42,10 @@ export const COLORS = {
 };
 
 export const TYPOGRAPHY = {
-    fontFamily: 'System', // Will use Nunito when available
-    fontFamilyFallback: 'System',
+    fontFamily: 'Nunito-Regular',
+    fontFamilyMedium: 'Nunito-Medium',
+    fontFamilySemiBold: 'Nunito-SemiBold',
+    fontFamilyBold: 'Nunito-Bold',
 
     // Font Sizes
     h1: 32,

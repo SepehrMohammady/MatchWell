@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MatchWell Icon Preview</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Nunito', 'Segoe UI', sans-serif;
+            background: #F0F4EF;
+            color: #2C3E2D;
+            padding: 40px;
+            margin: 0;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #2C3E2D;
+        }
+        h2 {
+            color: #6B7B6C;
+            border-bottom: 2px solid #D0D5CF;
+            padding-bottom: 8px;
+            margin-top: 40px;
+        }
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .icon-card {
+            background: #FFFFFF;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(44, 62, 45, 0.1);
+        }
+        .icon-card svg {
+            margin-bottom: 12px;
+        }
+        .icon-name {
+            font-weight: 600;
+            font-size: 14px;
+            color: #2C3E2D;
+        }
+        .icon-id {
+            font-size: 12px;
+            color: #9BA99C;
+            margin-top: 4px;
+        }
+        .color-swatch {
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        .color-row {
+            display: flex;
+            align-items: center;
+            margin: 8px 0;
+        }
+        .color-code {
+            font-family: monospace;
+            font-size: 12px;
+            color: #6B7B6C;
+        }
+    </style>
+</head>
+<body>
+    <h1>🌍 MatchWell Icon Preview</h1>
+
+    <!-- Color Palette -->
+    <h2>Color Palette</h2>
+    <div class="color-row">
+        <span class="color-swatch" style="background: #F0F4EF; border: 1px solid #D0D5CF;"></span>
+        <span class="icon-name">backgroundPrimary</span>
+        <span class="color-code" style="margin-left: auto;">#F0F4EF</span>
+    </div>
+    <div class="color-row">
+        <span class="color-swatch" style="background: #6DBE45;"></span>
+        <span class="icon-name">organicWaste (Primary Accent)</span>
+        <span class="color-code" style="margin-left: auto;">#6DBE45</span>
+    </div>
+    <div class="color-row">
+        <span class="color-swatch" style="background: #D9CAB3;"></span>
+        <span class="icon-name">paper</span>
+        <span class="color-code" style="margin-left: auto;">#D9CAB3</span>
+    </div>
+    <div class="color-row">
+        <span class="color-swatch" style="background: #4A90E2;"></span>
+        <span class="icon-name">plastic</span>
+        <span class="color-code" style="margin-left: auto;">#4A90E2</span>
+    </div>
+    <div class="color-row">
+        <span class="color-swatch" style="background: #7AD1C7;"></span>
+        <span class="icon-name">glass</span>
+        <span class="color-code" style="margin-left: auto;">#7AD1C7</span>
+    </div>
+    <div class="color-row">
+        <span class="color-swatch" style="background: #8E8E93;"></span>
+        <span class="icon-name">metal</span>
+        <span class="color-code" style="margin-left: auto;">#8E8E93</span>
+    </div>
+    <div class="color-row">
+        <span class="color-swatch" style="background: #F5A623;"></span>
+        <span class="icon-name">accentHighlight</span>
+        <span class="color-code" style="margin-left: auto;">#F5A623</span>
+    </div>
+
+    <!-- Tile Icons -->
+    <h2>Tile Icons (Game Tiles)</h2>
+    <div class="icon-grid">
+        <!-- Organic/Leaf -->
+        <div class="icon-card">
+            <svg width="60" height="60" viewBox="0 0 40 40" fill="none">
+                <path d="M20 8C12 8 8 16 8 24C8 28 12 32 20 32C28 32 32 24 24 16C28 20 26 28 20 28C14 28 12 24 14 18C16 12 20 8 20 8Z" fill="#6DBE45"/>
+                <path d="M20 16V28" stroke="#6DBE45" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+            </svg>
+            <div class="icon-name">Organic / Leaf</div>
+            <div class="icon-id">type: organic, tree, plant, leaf</div>
+        </div>
+        
+        <!-- Paper/Document -->
+        <div class="icon-card">
+            <svg width="60" height="60" viewBox="0 0 40 40" fill="none">
+                <path d="M10 8H24L30 14V32H10V8Z" fill="#D9CAB3"/>
+                <path d="M24 8V14H30" stroke="rgba(255,255,255,0.5)" stroke-width="1.5" fill="none"/>
+                <rect x="14" y="18" width="12" height="2" rx="1" fill="rgba(255,255,255,0.4)"/>
+                <rect x="14" y="23" width="8" height="2" rx="1" fill="rgba(255,255,255,0.4)"/>
+            </svg>
+            <div class="icon-name">Paper / Document</div>
+            <div class="icon-id">type: paper, bucket</div>
+        </div>
+        
+        <!-- Plastic/Bottle -->
+        <div class="icon-card">
+            <svg width="60" height="60" viewBox="0 0 40 40" fill="none">
+                <rect x="16" y="4" width="8" height="4" rx="1" fill="#4A90E2"/>
+                <path d="M14 8H26L28 14V34C28 35 27 36 26 36H14C13 36 12 35 12 34V14L14 8Z" fill="#4A90E2"/>
+                <ellipse cx="20" cy="22" rx="4" ry="6" fill="rgba(255,255,255,0.2)"/>
+            </svg>
+            <div class="icon-name">Plastic / Bottle</div>
+            <div class="icon-id">type: plastic, droplet, rain</div>
+        </div>
+        
+        <!-- Glass/Jar -->
+        <div class="icon-card">
+            <svg width="60" height="60" viewBox="0 0 40 40" fill="none">
+                <rect x="10" y="4" width="20" height="4" rx="1" fill="#7AD1C7" opacity="0.8"/>
+                <path d="M12 8H28V34C28 35 27 36 26 36H14C13 36 12 35 12 34V8Z" fill="#7AD1C7" opacity="0.6"/>
+                <path d="M16 12V28" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            <div class="icon-name">Glass / Jar</div>
+            <div class="icon-id">type: glass, cloud, wind, bird</div>
+        </div>
+        
+        <!-- Metal/Can -->
+        <div class="icon-card">
+            <svg width="60" height="60" viewBox="0 0 40 40" fill="none">
+                <ellipse cx="20" cy="8" rx="10" ry="4" fill="#8E8E93"/>
+                <path d="M10 8V32C10 34.2 14.5 36 20 36C25.5 36 30 34.2 30 32V8" fill="#8E8E93"/>
+                <ellipse cx="20" cy="32" rx="10" ry="4" fill="#8E8E93" opacity="0.8"/>
+                <path d="M12 16H28" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+                <path d="M12 24H28" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+            </svg>
+            <div class="icon-name">Metal / Can</div>
+            <div class="icon-id">type: metal, factory, faucet, axe, plug</div>
+        </div>
+        
+        <!-- Bulb/Solar -->
+        <div class="icon-card">
+            <svg width="60" height="60" viewBox="0 0 40 40" fill="none">
+                <circle cx="20" cy="18" r="10" fill="#F5A623"/>
+                <rect x="16" y="28" width="8" height="4" rx="1" fill="#F5A623" opacity="0.7"/>
+                <rect x="17" y="32" width="6" height="2" rx="1" fill="#F5A623" opacity="0.5"/>
+            </svg>
+            <div class="icon-name">Bulb / Solar</div>
+            <div class="icon-id">type: solar, bulb</div>
+        </div>
+        
+        <!-- Seedling -->
+        <div class="icon-card">
+            <svg width="60" height="60" viewBox="0 0 40 40" fill="none">
+                <path d="M20 36V20" stroke="#6DBE45" stroke-width="2" stroke-linecap="round"/>
+                <path d="M20 24C16 20 10 20 10 16C14 16 18 18 20 24Z" fill="#6DBE45"/>
+                <path d="M20 18C24 14 30 14 30 10C26 10 22 12 20 18Z" fill="#6DBE45" opacity="0.7"/>
+            </svg>
+            <div class="icon-name">Seedling</div>
+            <div class="icon-id">type: seedling</div>
+        </div>
+        
+        <!-- Battery -->
+        <div class="icon-card">
+            <svg width="60" height="60" viewBox="0 0 40 40" fill="none">
+                <rect x="8" y="12" width="24" height="16" rx="2" fill="#6DBE45"/>
+                <rect x="32" y="18" width="4" height="6" rx="1" fill="#6DBE45"/>
+                <rect x="12" y="16" width="8" height="8" fill="rgba(255,255,255,0.3)"/>
+            </svg>
+            <div class="icon-name">Battery</div>
+            <div class="icon-id">type: battery</div>
+        </div>
+    </div>
+
+    <!-- UI Icons -->
+    <h2>UI Icons</h2>
+    <div class="icon-grid">
+        <!-- Pause -->
+        <div class="icon-card">
+            <svg width="60" height="60" viewBox="0 0 24 24" fill="none">
+                <rect x="6" y="5" width="4" height="14" rx="1" fill="#2C3E2D"/>
+                <rect x="14" y="5" width="4" height="14" rx="1" fill="#2C3E2D"/>
+            </svg>
+            <div class="icon-name">Pause</div>
+            <div class="icon-id">PauseIcon</div>
+        </div>
+        
+        <!-- Lock -->
+        <div class="icon-card">
+            <svg width="60" height="60" viewBox="0 0 24 24" fill="none">
+                <rect x="5" y="10" width="14" height="11" rx="2" fill="#9BA99C"/>
+                <path d="M8 10V7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7V10" stroke="#9BA99C" stroke-width="2" fill="none"/>
+            </svg>
+            <div class="icon-name">Lock</div>
+            <div class="icon-id">LockIcon</div>
+        </div>
+        
+        <!-- Star Filled -->
+        <div class="icon-card">
+            <svg width="60" height="60" viewBox="0 0 24 24" fill="none">
+                <path d="M12 2L14.9 8.6L22 9.3L17 14.1L18.2 21.2L12 17.8L5.8 21.2L7 14.1L2 9.3L9.1 8.6L12 2Z" fill="#F5A623" stroke="#F5A623" stroke-width="1.5" stroke-linejoin="round"/>
+            </svg>
+            <div class="icon-name">Star (Filled)</div>
+            <div class="icon-id">StarIcon filled=true</div>
+        </div>
+        
+        <!-- Star Empty -->
+        <div class="icon-card">
+            <svg width="60" height="60" viewBox="0 0 24 24" fill="none">
+                <path d="M12 2L14.9 8.6L22 9.3L17 14.1L18.2 21.2L12 17.8L5.8 21.2L7 14.1L2 9.3L9.1 8.6L12 2Z" fill="none" stroke="#D0D5CF" stroke-width="1.5" stroke-linejoin="round"/>
+            </svg>
+            <div class="icon-name">Star (Empty)</div>
+            <div class="icon-id">StarIcon filled=false</div>
+        </div>
+        
+        <!-- Earth -->
+        <div class="icon-card">
+            <svg width="60" height="60" viewBox="0 0 64 64" fill="none">
+                <circle cx="32" cy="32" r="28" fill="#E8EDE7" stroke="#6DBE45" stroke-width="2"/>
+                <path d="M20 20C24 18 30 22 32 28C34 34 28 40 22 42C16 44 12 38 14 32C16 26 16 22 20 20Z" fill="#6DBE45" opacity="0.6"/>
+                <path d="M38 16C42 18 46 24 44 30C42 36 36 36 38 40C40 44 46 44 48 38C50 32 48 22 42 18C38 15 34 14 38 16Z" fill="#6DBE45" opacity="0.4"/>
+            </svg>
+            <div class="icon-name">Earth</div>
+            <div class="icon-id">EarthIcon</div>
+        </div>
+    </div>
+
+    <!-- Sprouting Progress Stages -->
+    <h2>Sprouting Progress Stages</h2>
+    <div class="icon-grid">
+        <!-- Seed (0-25%) -->
+        <div class="icon-card">
+            <svg width="60" height="60" viewBox="0 0 40 40" fill="none">
+                <path d="M5 35C5 32 10 30 20 30C30 30 35 32 35 35C35 38 30 38 20 38C10 38 5 38 5 35Z" fill="#D9CAB3"/>
+                <circle cx="20" cy="30" r="4" fill="#D9CAB3"/>
+            </svg>
+            <div class="icon-name">Stage 0: Seed</div>
+            <div class="icon-id">0-25% progress</div>
+        </div>
+        
+        <!-- Sprout (25-50%) -->
+        <div class="icon-card">
+            <svg width="60" height="60" viewBox="0 0 40 40" fill="none">
+                <path d="M5 35C5 32 10 30 20 30C30 30 35 32 35 35C35 38 30 38 20 38C10 38 5 38 5 35Z" fill="#D9CAB3"/>
+                <path d="M20 30V24" stroke="#6DBE45" stroke-width="2.5" stroke-linecap="round"/>
+                <path d="M20 26C22 24 26 24 26 22" stroke="#6DBE45" stroke-width="2" stroke-linecap="round" fill="none"/>
+            </svg>
+            <div class="icon-name">Stage 1: Sprout</div>
+            <div class="icon-id">25-50% progress</div>
+        </div>
+        
+        <!-- Small Plant (50-75%) -->
+        <div class="icon-card">
+            <svg width="60" height="60" viewBox="0 0 40 40" fill="none">
+                <path d="M5 35C5 32 10 30 20 30C30 30 35 32 35 35C35 38 30 38 20 38C10 38 5 38 5 35Z" fill="#D9CAB3"/>
+                <path d="M20 30V18" stroke="#6DBE45" stroke-width="2.5" stroke-linecap="round"/>
+                <path d="M20 22C24 18 30 18 30 14" stroke="#6DBE45" stroke-width="2" stroke-linecap="round" fill="none"/>
+                <path d="M20 18C16 14 10 14 10 10" stroke="#6DBE45" stroke-width="2" stroke-linecap="round" fill="none"/>
+            </svg>
+            <div class="icon-name">Stage 2: Small Plant</div>
+            <div class="icon-id">50-75% progress</div>
+        </div>
+        
+        <!-- Tree (75-100%) -->
+        <div class="icon-card">
+            <svg width="60" height="60" viewBox="0 0 40 40" fill="none">
+                <path d="M5 35C5 32 10 30 20 30C30 30 35 32 35 35C35 38 30 38 20 38C10 38 5 38 5 35Z" fill="#D9CAB3"/>
+                <path d="M20 30V10" stroke="#6DBE45" stroke-width="2.5" stroke-linecap="round"/>
+                <circle cx="20" cy="8" r="8" fill="#6DBE45" opacity="0.9"/>
+                <circle cx="14" cy="12" r="5" fill="#6DBE45" opacity="0.7"/>
+                <circle cx="26" cy="12" r="5" fill="#6DBE45" opacity="0.7"/>
+            </svg>
+            <div class="icon-name">Stage 3: Tree</div>
+            <div class="icon-id">75-100% progress</div>
+        </div>
+    </div>
+
+    <footer style="text-align: center; margin-top: 60px; color: #9BA99C;">
+        <p>MatchWell v0.1.0 - Earth-Inspired Minimal Design</p>
+    </footer>
+</body>
+</html>

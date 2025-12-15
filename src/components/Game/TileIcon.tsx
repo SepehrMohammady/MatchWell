@@ -1,192 +1,76 @@
-// SVG Tile Icons for MatchWell
+// Material Icon Tile Component for MatchWell
 import React from 'react';
-import Svg, { Path, Circle, Rect, Ellipse, G } from 'react-native-svg';
+import { View, StyleSheet } from 'react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { COLORS } from '../../config/theme';
 
 interface TileIconProps {
-    size?: number;
     type: string;
-    theme?: string;
+    size?: number;
+    color?: string;
 }
 
-// Organic/Leaf Icon
-const OrganicIcon: React.FC<{ size: number; color: string }> = ({ size, color }) => (
-    <Svg width={size} height={size} viewBox="0 0 40 40" fill="none">
-        <Path
-            d="M20 8C12 8 8 16 8 24C8 28 12 32 20 32C28 32 32 24 24 16C28 20 26 28 20 28C14 28 12 24 14 18C16 12 20 8 20 8Z"
-            fill={color}
-        />
-        <Path
-            d="M20 16V28"
-            stroke={color}
-            strokeWidth="2"
-            strokeLinecap="round"
-            opacity="0.5"
-        />
-    </Svg>
-);
+// Complete Material Icon mapping for all 25 tile types across 5 themes
+const TILE_ICON_MAP: Record<string, { icon: string; color: string }> = {
+    // Theme 1: Trash Sorting
+    plastic: { icon: 'bottle-soda-classic', color: '#4A90E2' },
+    paper: { icon: 'file-document-outline', color: '#D9CAB3' },
+    glass: { icon: 'cup-outline', color: '#7AD1C7' },
+    metal: { icon: 'archive', color: '#8E8E93' },
+    organic: { icon: 'food-apple', color: '#6DBE45' },
 
-// Paper/Document Icon
-const PaperIcon: React.FC<{ size: number; color: string }> = ({ size, color }) => (
-    <Svg width={size} height={size} viewBox="0 0 40 40" fill="none">
-        <Path
-            d="M10 8H24L30 14V32H10V8Z"
-            fill={color}
-        />
-        <Path
-            d="M24 8V14H30"
-            stroke="rgba(255,255,255,0.5)"
-            strokeWidth="1.5"
-            fill="none"
-        />
-        <Rect x="14" y="18" width="12" height="2" rx="1" fill="rgba(255,255,255,0.4)" />
-        <Rect x="14" y="23" width="8" height="2" rx="1" fill="rgba(255,255,255,0.4)" />
-    </Svg>
-);
+    // Theme 2: Clear the Air (Pollution)
+    car: { icon: 'car', color: '#E74C3C' },
+    truck: { icon: 'truck', color: '#34495E' },
+    bus: { icon: 'bus', color: '#F1C40F' },
+    factory: { icon: 'factory', color: '#2C3E50' },
+    bicycle: { icon: 'bicycle', color: '#2ECC71' },
 
-// Plastic/Bottle Icon
-const PlasticIcon: React.FC<{ size: number; color: string }> = ({ size, color }) => (
-    <Svg width={size} height={size} viewBox="0 0 40 40" fill="none">
-        <Rect x="16" y="4" width="8" height="4" rx="1" fill={color} />
-        <Path
-            d="M14 8H26L28 14V34C28 35 27 36 26 36H14C13 36 12 35 12 34V14L14 8Z"
-            fill={color}
-        />
-        <Ellipse cx="20" cy="22" rx="4" ry="6" fill="rgba(255,255,255,0.2)" />
-    </Svg>
-);
+    // Theme 3: Water Conservation
+    droplet: { icon: 'water', color: '#3498DB' },
+    faucet: { icon: 'faucet', color: '#7F8C8D' },
+    shower: { icon: 'shower-head', color: '#1ABC9C' },
+    bottle: { icon: 'bottle-wine-outline', color: '#2980B9' },
+    ocean: { icon: 'waves', color: '#0077BE' },
 
-// Glass/Jar Icon
-const GlassIcon: React.FC<{ size: number; color: string }> = ({ size, color }) => (
-    <Svg width={size} height={size} viewBox="0 0 40 40" fill="none">
-        <Rect x="10" y="4" width="20" height="4" rx="1" fill={color} opacity="0.8" />
-        <Path
-            d="M12 8H28V34C28 35 27 36 26 36H14C13 36 12 35 12 34V8Z"
-            fill={color}
-            opacity="0.6"
-        />
-        <Path
-            d="M16 12V28"
-            stroke="rgba(255,255,255,0.3)"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-        />
-    </Svg>
-);
+    // Theme 4: Energy Efficiency
+    bulb: { icon: 'lightbulb-outline', color: '#F1C40F' },
+    solar: { icon: 'solar-panel', color: '#E67E22' },
+    wind: { icon: 'wind-turbine', color: '#3498DB' },
+    plug: { icon: 'power-plug', color: '#2C3E50' },
+    battery: { icon: 'battery-charging', color: '#27AE60' },
 
-// Metal/Can Icon
-const MetalIcon: React.FC<{ size: number; color: string }> = ({ size, color }) => (
-    <Svg width={size} height={size} viewBox="0 0 40 40" fill="none">
-        <Ellipse cx="20" cy="8" rx="10" ry="4" fill={color} />
-        <Path
-            d="M10 8V32C10 34.2 14.5 36 20 36C25.5 36 30 34.2 30 32V8"
-            fill={color}
-        />
-        <Ellipse cx="20" cy="32" rx="10" ry="4" fill={color} opacity="0.8" />
-        <Path
-            d="M12 16H28"
-            stroke="rgba(255,255,255,0.3)"
-            strokeWidth="1"
-        />
-        <Path
-            d="M12 24H28"
-            stroke="rgba(255,255,255,0.3)"
-            strokeWidth="1"
-        />
-    </Svg>
-);
+    // Theme 5: Save the Forests
+    tree: { icon: 'pine-tree', color: '#27AE60' },
+    axe: { icon: 'axe', color: '#8B4513' },
+    leaf: { icon: 'leaf', color: '#2ECC71' },
+    seedling: { icon: 'sprout', color: '#90EE90' },
+    forest: { icon: 'forest', color: '#228B22' },
 
-// Tile color mapping
-const TILE_COLORS: Record<string, string> = {
-    organic: COLORS.organicWaste,
-    paper: COLORS.paper,
-    plastic: COLORS.plastic,
-    glass: COLORS.glass,
-    metal: COLORS.metal,
-    // Pollution theme
-    cloud: '#87CEEB',
-    factory: COLORS.metal,
-    tree: COLORS.organicWaste,
-    wind: COLORS.glass,
-    solar: COLORS.accentHighlight,
-    // Water conservation
-    droplet: COLORS.plastic,
-    faucet: COLORS.metal,
-    plant: COLORS.organicWaste,
-    rain: COLORS.glass,
-    bucket: COLORS.paper,
-    // Energy efficiency
-    bulb: COLORS.accentHighlight,
-    plug: COLORS.metal,
-    battery: COLORS.organicWaste,
-    // Deforestation
-    seedling: '#90EE90',
-    axe: COLORS.metal,
-    bird: COLORS.glass,
-    leaf: COLORS.organicWaste,
+    // Default/empty
+    empty: { icon: 'circle-outline', color: 'transparent' },
 };
 
-// Main TileIcon component
-export const TileIcon: React.FC<TileIconProps> = ({ size = 36, type }) => {
-    const color = TILE_COLORS[type] || COLORS.textSecondary;
+export const TileIcon: React.FC<TileIconProps> = ({ type, size = 28, color }) => {
+    const iconInfo = TILE_ICON_MAP[type] || TILE_ICON_MAP.empty;
+    const iconColor = color || iconInfo.color;
 
-    switch (type) {
-        case 'organic':
-        case 'tree':
-        case 'plant':
-        case 'leaf':
-            return <OrganicIcon size={size} color={color} />;
-        case 'paper':
-        case 'bucket':
-            return <PaperIcon size={size} color={color} />;
-        case 'plastic':
-        case 'droplet':
-        case 'rain':
-            return <PlasticIcon size={size} color={color} />;
-        case 'glass':
-        case 'cloud':
-        case 'wind':
-        case 'bird':
-            return <GlassIcon size={size} color={color} />;
-        case 'metal':
-        case 'factory':
-        case 'faucet':
-        case 'axe':
-        case 'plug':
-            return <MetalIcon size={size} color={color} />;
-        case 'solar':
-        case 'bulb':
-            return (
-                <Svg width={size} height={size} viewBox="0 0 40 40" fill="none">
-                    <Circle cx="20" cy="18" r="10" fill={color} />
-                    <Rect x="16" y="28" width="8" height="4" rx="1" fill={color} opacity="0.7" />
-                    <Rect x="17" y="32" width="6" height="2" rx="1" fill={color} opacity="0.5" />
-                </Svg>
-            );
-        case 'seedling':
-            return (
-                <Svg width={size} height={size} viewBox="0 0 40 40" fill="none">
-                    <Path d="M20 36V20" stroke={color} strokeWidth="2" strokeLinecap="round" />
-                    <Path d="M20 24C16 20 10 20 10 16C14 16 18 18 20 24Z" fill={color} />
-                    <Path d="M20 18C24 14 30 14 30 10C26 10 22 12 20 18Z" fill={color} opacity="0.7" />
-                </Svg>
-            );
-        case 'battery':
-            return (
-                <Svg width={size} height={size} viewBox="0 0 40 40" fill="none">
-                    <Rect x="8" y="12" width="24" height="16" rx="2" fill={color} />
-                    <Rect x="32" y="18" width="4" height="6" rx="1" fill={color} />
-                    <Rect x="12" y="16" width="8" height="8" fill="rgba(255,255,255,0.3)" />
-                </Svg>
-            );
-        default:
-            // Default circular icon
-            return (
-                <Svg width={size} height={size} viewBox="0 0 40 40" fill="none">
-                    <Circle cx="20" cy="20" r="14" fill={color} />
-                </Svg>
-            );
-    }
+    return (
+        <MaterialCommunityIcons
+            name={iconInfo.icon}
+            size={size}
+            color={iconColor}
+        />
+    );
+};
+
+// Export icon map for use elsewhere
+export const getTileIconName = (type: string): string => {
+    return TILE_ICON_MAP[type]?.icon || 'circle-outline';
+};
+
+export const getTileIconColor = (type: string): string => {
+    return TILE_ICON_MAP[type]?.color || COLORS.textSecondary;
 };
 
 export default TileIcon;

@@ -81,12 +81,12 @@ const MainMenu: React.FC<Props> = ({ navigation }) => {
                 </TouchableOpacity>
             </View>
 
-            {/* Bottom ambient decoration - SVG seedlings */}
+            {/* Bottom ambient decoration */}
             <View style={styles.bottomDecor}>
                 <View style={styles.seedlingRow}>
-                    <SeedlingIcon size={28} color={COLORS.organicWaste} stage={1} />
-                    <SeedlingIcon size={32} color={COLORS.organicWaste} stage={2} />
-                    <SeedlingIcon size={28} color={COLORS.organicWaste} stage={1} />
+                    <SeedlingIcon size={24} color={COLORS.organicWaste} />
+                    <SeedlingIcon size={28} color={COLORS.organicWaste} />
+                    <SeedlingIcon size={24} color={COLORS.organicWaste} />
                 </View>
             </View>
 
