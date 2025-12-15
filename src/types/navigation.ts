@@ -2,5 +2,6 @@
 export type RootStackParamList = {
     MainMenu: undefined;
     LevelSelect: undefined;
-    Game: { levelId: number };
+    Settings: undefined;
+    Game: { levelId: number; isEndless?: boolean };
 };

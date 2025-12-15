@@ -19,8 +19,8 @@ const SOUND_CONFIG: Record<SoundName, SoundConfig> = {
     tile_select: { filename: 'tile_select.mp3', volume: 0.5, loop: false },
     combo: { filename: 'combo.mp3', volume: 0.7, loop: false },
     invalid_move: { filename: 'invalid_move.mp3', volume: 0.4, loop: false },
-    bgm_menu: { filename: 'bgm_menu.mp3', volume: 0.3, loop: true },
-    bgm_gameplay: { filename: 'bgm_gameplay.mp3', volume: 0.25, loop: true },
+    bgm_menu: { filename: 'bgm_menu.mp3', volume: 0.4, loop: true },
+    bgm_gameplay: { filename: 'bgm_gameplay.mp3', volume: 0.5, loop: true },
 };
 
 // Cache for loaded sounds

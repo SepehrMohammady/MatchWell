@@ -1,25 +1,38 @@
 // Level Select Screen
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
     View,
     Text,
     StyleSheet,
     TouchableOpacity,
-    SafeAreaView,
     ScrollView,
     StatusBar,
+    BackHandler,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { RootStackParamList } from '../types';
 import { useGameStore } from '../context/GameStore';
 import { LEVELS, THEME_CONFIGS } from '../themes';
 import { ThemeType } from '../types';
+import { playSfx } from '../utils/SoundManager';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'LevelSelect'>;
 
 const LevelSelect: React.FC<Props> = ({ navigation }) => {
+    const insets = useSafeAreaInsets();
     const completedLevels = useGameStore((state) => state.completedLevels);
     const highScores = useGameStore((state) => state.highScores);
+
+    // Handle hardware back button to go to MainMenu
+    useEffect(() => {
+        const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+            handleBack();
+            return true; // Prevent default behavior
+        });
+
+        return () => backHandler.remove();
+    }, []);
 
     const isLevelUnlocked = (levelId: number): boolean => {
         if (levelId === 1) return true;
@@ -39,11 +52,13 @@ const LevelSelect: React.FC<Props> = ({ navigation }) => {
 
     const handleLevelSelect = (levelId: number) => {
         if (isLevelUnlocked(levelId)) {
+            playSfx('tile_select');
             navigation.navigate('Game', { levelId });
         }
     };
 
     const handleBack = () => {
+        playSfx('tile_select');
         navigation.navigate('MainMenu');
     };
 
@@ -57,7 +72,7 @@ const LevelSelect: React.FC<Props> = ({ navigation }) => {
     }, {} as Record<ThemeType, typeof LEVELS>);
 
     return (
-        <SafeAreaView style={styles.container}>
+        <View style={[styles.container, { paddingTop: insets.top }]}>
             <StatusBar barStyle="light-content" />
 
             {/* Header */}
@@ -136,7 +151,7 @@ const LevelSelect: React.FC<Props> = ({ navigation }) => {
                     </Text>
                 </View>
             </ScrollView>
-        </SafeAreaView>
+        </View>
     );
 };
 

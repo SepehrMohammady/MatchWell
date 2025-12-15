@@ -16,6 +16,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MainMenu from './src/screens/MainMenu';
 import LevelSelect from './src/screens/LevelSelect';
 import GameScreen from './src/screens/GameScreen';
+import Settings from './src/screens/Settings';
 
 // Types
 import { RootStackParamList } from './src/types';
@@ -45,6 +46,7 @@ function App(): React.JSX.Element {
                 animation: 'fade',
               }}
             />
+            <Stack.Screen name="Settings" component={Settings} />
           </Stack.Navigator>
         </NavigationContainer>
       </SafeAreaProvider>

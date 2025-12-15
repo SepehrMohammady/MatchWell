@@ -1,4 +1,4 @@
-// Game State Store using Zustand
+// Game State Store using Zustand with AsyncStorage persistence
 import { create } from 'zustand';
 import { GameState, Tile, ThemeType, Position, Match } from '../types';
 import {
@@ -18,10 +18,18 @@ import {
 } from '../engine/MatchDetector';
 import { getLevelById, LEVELS } from '../themes';
 import { playSfx } from '../utils/SoundManager';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const STORAGE_KEY = 'matchwell_progress';
+
+interface SavedProgress {
+    completedLevels: number[];
+    highScores: Record<number, number>;
+}
 
 interface GameStore extends GameState {
     // Actions
-    initializeGame: (levelId: number) => void;
+    initializeGame: (levelId: number, isEndless?: boolean) => void;
     selectTile: (position: Position) => void;
     swapSelectedTiles: (pos1: Position, pos2: Position) => void;
     swapWithDirection: (position: Position, direction: 'up' | 'down' | 'left' | 'right') => void;
@@ -29,11 +37,14 @@ interface GameStore extends GameState {
     resetCombo: () => void;
     pauseGame: () => void;
     resumeGame: () => void;
+    loadProgress: () => Promise<void>;
+    saveProgress: () => Promise<void>;
 
     // UI State
     selectedTile: Position | null;
     isPaused: boolean;
     isProcessing: boolean;
+    isEndlessMode: boolean;
     completedLevels: number[];
     highScores: Record<number, number>;
 
@@ -60,11 +71,41 @@ export const useGameStore = create<GameStore>((set, get) => ({
     selectedTile: null,
     isPaused: false,
     isProcessing: false,
+    isEndlessMode: false,
     completedLevels: [],
     highScores: {},
 
+    // Load progress from AsyncStorage
+    loadProgress: async () => {
+        try {
+            const saved = await AsyncStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                const progress: SavedProgress = JSON.parse(saved);
+                set({
+                    completedLevels: progress.completedLevels || [],
+                    highScores: progress.highScores || {},
+                });
+                console.log('✅ Progress loaded:', progress);
+            }
+        } catch (error) {
+            console.warn('Failed to load progress:', error);
+        }
+    },
+
+    // Save progress to AsyncStorage
+    saveProgress: async () => {
+        try {
+            const { completedLevels, highScores } = get();
+            const progress: SavedProgress = { completedLevels, highScores };
+            await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+            console.log('✅ Progress saved:', progress);
+        } catch (error) {
+            console.warn('Failed to save progress:', error);
+        }
+    },
+
     // Initialize a new game with a specific level
-    initializeGame: (levelId: number) => {
+    initializeGame: (levelId: number, isEndless: boolean = false) => {
         const level = getLevelById(levelId);
         if (!level) {
             console.error(`Level ${levelId} not found`);
@@ -77,8 +118,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
             grid,
             score: 0,
             moves: 0,
-            movesRemaining: level.moves,
-            targetScore: level.targetScore,
+            // Endless mode has 9999 moves (effectively infinite)
+            movesRemaining: isEndless ? 9999 : level.moves,
+            targetScore: isEndless ? 999999 : level.targetScore,
             level: levelId,
             isGameOver: false,
             isLevelComplete: false,
@@ -87,14 +129,16 @@ export const useGameStore = create<GameStore>((set, get) => ({
             selectedTile: null,
             isPaused: false,
             isProcessing: false,
+            isEndlessMode: isEndless,
         });
     },
 
     // Select a tile (for swap mechanic)
     selectTile: (position: Position) => {
-        const { selectedTile, grid, isProcessing, movesRemaining } = get();
+        const { selectedTile, grid, isProcessing, movesRemaining, isEndlessMode } = get();
 
-        if (isProcessing || movesRemaining <= 0) return;
+        // In endless mode, don't check moves (always have moves)
+        if (isProcessing || (!isEndlessMode && movesRemaining <= 0)) return;
 
         // If no tile selected, select this one
         if (!selectedTile) {
@@ -114,15 +158,17 @@ export const useGameStore = create<GameStore>((set, get) => ({
             get().swapSelectedTiles(selectedTile, position);
         } else {
             // Select the new tile instead
+            playSfx('tile_select');
             set({ selectedTile: position });
         }
     },
 
     // Swap two tiles
     swapSelectedTiles: (pos1: Position, pos2: Position) => {
-        const { grid, theme, movesRemaining } = get();
+        const { grid, theme, movesRemaining, isEndlessMode } = get();
 
-        if (movesRemaining <= 0) return;
+        // In endless mode, don't check moves
+        if (!isEndlessMode && movesRemaining <= 0) return;
 
         // Check if swap would create a match
         if (!wouldSwapCreateMatch(grid, pos1, pos2)) {
@@ -139,7 +185,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
             grid: newGrid,
             selectedTile: null,
             moves: get().moves + 1,
-            movesRemaining: movesRemaining - 1,
+            movesRemaining: isEndlessMode ? 9999 : movesRemaining - 1,
             isProcessing: true,
         });
 
@@ -151,9 +197,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     // Swap tile in a direction (for swipe gesture)
     swapWithDirection: (position: Position, direction: 'up' | 'down' | 'left' | 'right') => {
-        const { grid, movesRemaining, isProcessing } = get();
+        const { grid, movesRemaining, isProcessing, isEndlessMode } = get();
 
-        if (isProcessing || movesRemaining <= 0) return;
+        if (isProcessing || (!isEndlessMode && movesRemaining <= 0)) return;
 
         // Calculate target position based on direction
         let targetPos: Position;
@@ -183,7 +229,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     // Process all matches, apply gravity, fill, repeat
     processMatches: () => {
-        const { grid, theme, score, combo, targetScore, movesRemaining } = get();
+        const { grid, theme, score, combo, targetScore, movesRemaining, isEndlessMode } = get();
 
         // Find matches
         const matches = findAllMatches(cloneGrid(grid));
@@ -192,14 +238,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
             // No more matches - check game state
             const newCombo = 0;
 
-            // Check for game over or level complete
-            if (score >= targetScore) {
+            // In endless mode, never end the game for score
+            if (!isEndlessMode && score >= targetScore) {
                 set({
                     isLevelComplete: true,
                     isProcessing: false,
                     combo: newCombo
                 });
-            } else if (movesRemaining <= 0) {
+            } else if (!isEndlessMode && movesRemaining <= 0) {
                 set({
                     isGameOver: true,
                     isProcessing: false,
@@ -262,7 +308,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
     setIsProcessing: (value) => set({ isProcessing: value }),
 
     markLevelComplete: (levelId: number, score: number) => {
-        const { completedLevels, highScores } = get();
+        const { completedLevels, highScores, isEndlessMode } = get();
+
+        // Don't save endless mode progress
+        if (isEndlessMode) return;
 
         const newCompletedLevels = completedLevels.includes(levelId)
             ? completedLevels
@@ -278,5 +327,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
             completedLevels: newCompletedLevels,
             highScores: newHighScores,
         });
+
+        // Save progress to AsyncStorage
+        get().saveProgress();
     },
 }));

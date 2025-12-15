@@ -47,10 +47,11 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
         };
     }, []);
 
-    // Initialize the game level
+    // Initialize the game level with isEndless flag
     useEffect(() => {
-        initializeGame(levelId);
-    }, [levelId, initializeGame]);
+        const isEndless = route.params?.isEndless || false;
+        initializeGame(levelId, isEndless);
+    }, [levelId, initializeGame, route.params?.isEndless]);
 
     useEffect(() => {
         if (isLevelComplete) {

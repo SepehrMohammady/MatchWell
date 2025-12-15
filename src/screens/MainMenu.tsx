@@ -12,15 +12,20 @@ import {
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types';
 import { preloadSounds, playBgm, playSfx, stopBgm } from '../utils/SoundManager';
+import { useGameStore } from '../context/GameStore';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'MainMenu'>;
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 const MainMenu: React.FC<Props> = ({ navigation }) => {
+    const loadProgress = useGameStore((state) => state.loadProgress);
 
-    // Preload sounds and start menu music
+    // Preload sounds, load saved progress, and start menu music
     useEffect(() => {
+        // Load saved progress from AsyncStorage
+        loadProgress();
+
         preloadSounds().then(() => {
             playBgm('bgm_menu');
         });
@@ -28,7 +33,7 @@ const MainMenu: React.FC<Props> = ({ navigation }) => {
         return () => {
             stopBgm();
         };
-    }, []);
+    }, [loadProgress]);
 
     const handlePlay = () => {
         playSfx('tile_select');
@@ -37,8 +42,13 @@ const MainMenu: React.FC<Props> = ({ navigation }) => {
 
     const handleEndless = () => {
         playSfx('tile_select');
-        // Start endless mode with level 1 settings but infinite moves
-        navigation.navigate('Game', { levelId: 1 });
+        // Start endless mode with infinite moves
+        navigation.navigate('Game', { levelId: 1, isEndless: true });
+    };
+
+    const handleSettings = () => {
+        playSfx('tile_select');
+        navigation.navigate('Settings');
     };
 
 
@@ -67,6 +77,10 @@ const MainMenu: React.FC<Props> = ({ navigation }) => {
 
                 <TouchableOpacity style={styles.secondaryButton} onPress={handleEndless}>
                     <Text style={styles.secondaryButtonText}>♾️ Endless Mode</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.settingsButton} onPress={handleSettings}>
+                    <Text style={styles.settingsButtonText}>⚙️ Settings</Text>
                 </TouchableOpacity>
             </View>
 
@@ -162,6 +176,17 @@ const styles = StyleSheet.create({
         color: '#3498db',
         fontSize: 20,
         fontWeight: '600',
+    },
+    settingsButton: {
+        backgroundColor: 'transparent',
+        paddingVertical: 12,
+        borderRadius: 20,
+        alignItems: 'center',
+    },
+    settingsButtonText: {
+        color: '#888',
+        fontSize: 16,
+        fontWeight: '500',
     },
     bottomDecor: {
         flexDirection: 'row',
