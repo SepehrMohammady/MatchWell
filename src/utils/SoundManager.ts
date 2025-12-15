@@ -229,14 +229,34 @@ export const playThemeBgm = async (theme: ThemeType): Promise<void> => {
 };
 
 /**
- * Stop background music
+ * Stop background music - stops all cached BGM sounds to prevent overlap
  */
 export const stopBgm = (): void => {
+    // Stop the tracked currentBgm
     if (currentBgm) {
         currentBgm.stop();
-        currentBgm = null;
-        currentBgmName = null;
     }
+
+    // Also stop ALL cached BGM sounds to prevent any overlap
+    const bgmNames: SoundName[] = [
+        'bgm_menu',
+        'bgm_theme_trash',
+        'bgm_theme_pollution',
+        'bgm_theme_water',
+        'bgm_theme_energy',
+        'bgm_theme_forest',
+    ];
+
+    bgmNames.forEach(bgmName => {
+        const cachedSound = soundCache[bgmName];
+        if (cachedSound) {
+            cachedSound.stop();
+        }
+    });
+
+    currentBgm = null;
+    currentBgmName = null;
+    console.log('🔇 All BGM stopped');
 };
 
 /**

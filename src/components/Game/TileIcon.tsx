@@ -53,7 +53,8 @@ const TILE_ICON_MAP: Record<string, { icon: string; color: string }> = {
 
 export const TileIcon: React.FC<TileIconProps> = ({ type, size = 28, color }) => {
     const iconInfo = TILE_ICON_MAP[type] || TILE_ICON_MAP.empty;
-    const iconColor = color || iconInfo.color;
+    // Use white with slight transparency for visibility on colored backgrounds
+    const iconColor = color || 'rgba(255, 255, 255, 0.9)';
 
     return (
         <MaterialCommunityIcons
