@@ -18,7 +18,7 @@ import HUD from '../components/UI/HUD';
 import { THEME_CONFIGS, getLevelById } from '../themes';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types';
-import { playBgm, stopBgm, pauseBgm, resumeBgm, playSfx, getSoundSettings, toggleSfx, toggleMusic } from '../utils/SoundManager';
+import { playBgm, playThemeBgm, stopBgm, pauseBgm, resumeBgm, playSfx, getSoundSettings, toggleSfx, toggleMusic } from '../utils/SoundManager';
 import { COLORS, TYPOGRAPHY, SPACING, RADIUS } from '../config/theme';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Game'>;
@@ -58,14 +58,14 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
         }
     }, [isPaused]);
 
-    // Start gameplay music when entering the game
+    // Start theme-specific music when entering the game
     useEffect(() => {
-        playBgm('bgm_gameplay');
+        playThemeBgm(theme);
 
         return () => {
             stopBgm();
         };
-    }, []);
+    }, [theme]);
 
     // Initialize the game level with isEndless flag and optional endlessTheme
     useEffect(() => {
