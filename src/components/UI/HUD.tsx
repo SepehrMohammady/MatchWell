@@ -5,7 +5,7 @@ import { useGameStore } from '../../context/GameStore';
 import { THEME_CONFIGS } from '../../themes';
 import { COLORS, TYPOGRAPHY, SPACING, RADIUS } from '../../config/theme';
 import { PauseIcon } from './Icons';
-import SproutingProgress from './SproutingProgress';
+import ThemeProgress from './ThemeProgress';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -60,10 +60,11 @@ const HUD: React.FC<HUDProps> = ({ onPause }) => {
                 )}
             </View>
 
-            {/* Sprouting Progress - only for story mode */}
+            {/* Theme-specific Progress - only for story mode */}
             {!isEndlessMode && (
-                <SproutingProgress
+                <ThemeProgress
                     progress={progress}
+                    theme={theme}
                     width={SCREEN_WIDTH - SPACING.lg * 4}
                     height={48}
                 />

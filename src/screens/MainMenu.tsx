@@ -24,10 +24,10 @@ type Props = NativeStackScreenProps<RootStackParamList, 'MainMenu'>;
 
 // Earth stage images based on story progress
 const EARTH_STAGES = {
-    1: require('../assets/images/01.png'), // Polluted (0-20 levels)
-    2: require('../assets/images/02.png'), // Recovering (21-30 levels)
-    3: require('../assets/images/03.png'), // Healing (31-50 levels)
-    4: require('../assets/images/04.png'), // Thriving (all 50 levels complete)
+    1: require('../assets/images/earrth_1.png'), // Polluted (0-20 levels)
+    2: require('../assets/images/earrth_2.png'), // Recovering (21-30 levels)
+    3: require('../assets/images/earrth_3.png'), // Healing (31-50 levels)
+    4: require('../assets/images/earrth_4.png'), // Thriving (all 50 levels complete)
 };
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
@@ -47,18 +47,20 @@ const MainMenu: React.FC<Props> = ({ navigation }) => {
     const loadProgress = useGameStore((state) => state.loadProgress);
     const completedLevels = useGameStore((state) => state.completedLevels);
 
-    // Load progress on mount
+    // Load progress and sounds on mount, then start menu music
     useEffect(() => {
         loadProgress();
-        preloadSounds();
+        preloadSounds().then(() => {
+            // Play menu music after settings are loaded
+            playBgm('bgm_menu');
+        });
     }, [loadProgress]);
 
-    // Handle music with focus - play menu music when screen is focused
+    // Keep menu music playing when returning to this screen
     useFocusEffect(
         useCallback(() => {
-            // Play menu music - playBgm internally stops any playing BGM first
+            // Only play if returning from a game (settings already loaded)
             playBgm('bgm_menu');
-            // No cleanup needed - next screen's playBgm will handle stopping
         }, [])
     );
 

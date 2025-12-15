@@ -74,6 +74,7 @@ let sfxEnabled = true;
 let musicEnabled = true;
 let sfxVolume = 1.0;
 let musicVolume = 1.0;
+let settingsLoaded = false; // Track if settings have been loaded from storage
 
 /**
  * Load sound settings from AsyncStorage
@@ -89,8 +90,10 @@ export const loadSoundSettings = async (): Promise<void> => {
             musicVolume = settings.musicVolume ?? 1.0;
             console.log('✅ Sound settings loaded:', { sfxEnabled, musicEnabled });
         }
+        settingsLoaded = true;
     } catch (error) {
         console.warn('Failed to load sound settings:', error);
+        settingsLoaded = true; // Mark as loaded even on error to unblock
     }
 };
 
@@ -189,6 +192,11 @@ export const playSfx = async (name: SoundName): Promise<void> => {
  * Play background music (menu or theme-specific)
  */
 export const playBgm = async (name: SoundName): Promise<void> => {
+    // Wait for settings to load before playing (prevents playing when disabled)
+    if (!settingsLoaded) {
+        console.log('⏳ Waiting for settings to load before playing BGM');
+        return;
+    }
     if (!musicEnabled) return;
 
     // Don't restart if same music is already playing
