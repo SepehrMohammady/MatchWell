@@ -21,7 +21,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types';
 import { playBgm, playThemeBgm, pauseBgm, resumeBgm, playSfx, getSoundSettings, toggleSfx, toggleMusic } from '../utils/SoundManager';
 import { COLORS, TYPOGRAPHY, SPACING, RADIUS } from '../config/theme';
-import { PauseIcon, PlayIcon, RestartIcon, MusicIcon, VolumeIcon, HomeIcon, PaletteIcon, ListIcon, StarFilledIcon, StarEmptyIcon } from '../components/UI/Icons';
+import { PauseIcon, PlayIcon, RestartIcon, MusicIcon, VolumeIcon, HomeIcon, PaletteIcon, ListIcon, StarFilledIcon, StarEmptyIcon, TrophyIcon, EmoticonSadIcon, ArrowRightIcon } from '../components/UI/Icons';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Game'>;
 
@@ -251,27 +251,39 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
             <Modal visible={isLevelComplete} transparent animationType="fade">
                 <View style={styles.modalOverlay}>
                     <View style={styles.modalContent}>
-                        {/* Celebration Emojis */}
-                        <Text style={styles.celebration}>🎊🎉✨🎊🎉</Text>
-                        <Text style={styles.modalTitle}>🎉 Level Complete!</Text>
-                        <Text style={styles.scoreText}>Score: {score.toLocaleString()}</Text>
-                        {/* Stars based on remaining moves: 1 star always, 2 stars if >25% moves left, 3 stars if >50% moves left */}
-                        <View style={styles.starsContainer}>
-                            <Text style={styles.star}>⭐</Text>
-                            <Text style={styles.star}>{movesRemaining > (levelConfig?.moves || 20) * 0.25 ? '⭐' : '☆'}</Text>
-                            <Text style={styles.star}>{movesRemaining > (levelConfig?.moves || 20) * 0.50 ? '⭐' : '☆'}</Text>
+                        <View style={styles.modalIconContainer}>
+                            <TrophyIcon size={48} color={COLORS.organicWaste} />
                         </View>
-                        <Text style={styles.movesLeftText}>Moves left: {movesRemaining}</Text>
-                        <Text style={styles.environmentMessage}>🌍 You're helping save the planet!</Text>
-                        <TouchableOpacity style={styles.modalButton} onPress={handleNextLevel}>
-                            <Text style={styles.modalButtonText}>➡️ Next Level</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.modalButton} onPress={handleRestart}>
-                            <Text style={styles.modalButtonText}>🔄 Play Again</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={[styles.modalButton, styles.secondaryButton]} onPress={handleBackToLevels}>
-                            <Text style={styles.modalButtonText}>📋 Levels</Text>
-                        </TouchableOpacity>
+                        <Text style={styles.modalTitle}>Level Complete!</Text>
+                        <Text style={styles.scoreText}>{score.toLocaleString()}</Text>
+                        <Text style={styles.scoreLabel}>Score</Text>
+
+                        {/* Star Rating */}
+                        <View style={styles.starsContainer}>
+                            <StarFilledIcon size={32} />
+                            {movesRemaining > (levelConfig?.moves || 20) * 0.25
+                                ? <StarFilledIcon size={32} />
+                                : <StarEmptyIcon size={32} />}
+                            {movesRemaining > (levelConfig?.moves || 20) * 0.50
+                                ? <StarFilledIcon size={32} />
+                                : <StarEmptyIcon size={32} />}
+                        </View>
+
+                        <Text style={styles.movesLeftText}>{movesRemaining} moves remaining</Text>
+
+                        <View style={styles.modalButtonsContainer}>
+                            <TouchableOpacity style={styles.modalButton} onPress={handleNextLevel}>
+                                <ArrowRightIcon size={20} color="#fff" />
+                                <Text style={styles.modalButtonText}>Next Level</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={[styles.modalButton, styles.secondaryButton]} onPress={handleRestart}>
+                                <RestartIcon size={20} color={COLORS.textSecondary} />
+                                <Text style={styles.secondaryButtonText}>Play Again</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.textButton} onPress={handleBackToLevels}>
+                                <Text style={styles.textButtonLabel}>Back to Levels</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 </View>
             </Modal>
@@ -280,16 +292,23 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
             <Modal visible={isGameOver} transparent animationType="fade">
                 <View style={styles.modalOverlay}>
                     <View style={styles.modalContent}>
-                        <Text style={styles.modalTitle}>😢 Out of Moves!</Text>
-                        <Text style={styles.scoreText}>Score: {score.toLocaleString()}</Text>
-                        <Text style={styles.targetText}>Target was: {targetScore.toLocaleString()}</Text>
-                        <Text style={styles.encourageText}>Don't give up! The planet needs you! 🌎</Text>
-                        <TouchableOpacity style={styles.modalButton} onPress={handleRestart}>
-                            <Text style={styles.modalButtonText}>🔄 Try Again</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={[styles.modalButton, styles.secondaryButton]} onPress={handleBackToLevels}>
-                            <Text style={styles.modalButtonText}>📋 Levels</Text>
-                        </TouchableOpacity>
+                        <View style={styles.modalIconContainer}>
+                            <EmoticonSadIcon size={48} color={COLORS.accentDanger} />
+                        </View>
+                        <Text style={styles.modalTitle}>Out of Moves</Text>
+                        <Text style={styles.scoreText}>{score.toLocaleString()}</Text>
+                        <Text style={styles.scoreLabel}>Your Score</Text>
+                        <Text style={styles.targetText}>Target: {targetScore.toLocaleString()}</Text>
+
+                        <View style={styles.modalButtonsContainer}>
+                            <TouchableOpacity style={styles.modalButton} onPress={handleRestart}>
+                                <RestartIcon size={20} color="#fff" />
+                                <Text style={styles.modalButtonText}>Try Again</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.textButton} onPress={handleBackToLevels}>
+                                <Text style={styles.textButtonLabel}>Back to Levels</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 </View>
             </Modal>
@@ -322,6 +341,7 @@ const styles = StyleSheet.create({
         flex: 1,
         color: '#fff',
         fontSize: 12,
+        fontFamily: TYPOGRAPHY.fontFamily,
         fontStyle: 'italic',
     },
     modalOverlay: {
@@ -445,6 +465,35 @@ const styles = StyleSheet.create({
         fontFamily: TYPOGRAPHY.fontFamily,
         color: COLORS.organicWaste,
         marginBottom: SPACING.sm,
+    },
+    modalIconContainer: {
+        width: 80,
+        height: 80,
+        borderRadius: 40,
+        backgroundColor: COLORS.backgroundSecondary,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: SPACING.lg,
+    },
+    scoreLabel: {
+        fontSize: TYPOGRAPHY.caption,
+        fontFamily: TYPOGRAPHY.fontFamily,
+        color: COLORS.textMuted,
+        marginBottom: SPACING.lg,
+    },
+    modalButtonsContainer: {
+        width: '100%',
+        marginTop: SPACING.md,
+        gap: SPACING.sm,
+    },
+    textButton: {
+        paddingVertical: SPACING.md,
+        alignItems: 'center',
+    },
+    textButtonLabel: {
+        fontSize: TYPOGRAPHY.body,
+        fontFamily: TYPOGRAPHY.fontFamily,
+        color: COLORS.textSecondary,
     },
 });
 

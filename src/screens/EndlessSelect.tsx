@@ -179,10 +179,12 @@ const styles = StyleSheet.create({
     backButtonText: {
         color: COLORS.organicWaste,
         fontSize: TYPOGRAPHY.body,
+        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
         fontWeight: TYPOGRAPHY.semibold,
     },
     title: {
         fontSize: TYPOGRAPHY.h3,
+        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
         fontWeight: TYPOGRAPHY.semibold,
         color: COLORS.textPrimary,
     },
@@ -201,6 +203,7 @@ const styles = StyleSheet.create({
     descriptionText: {
         color: COLORS.textSecondary,
         fontSize: TYPOGRAPHY.bodySmall,
+        fontFamily: TYPOGRAPHY.fontFamily,
         lineHeight: 20,
     },
     scrollView: {

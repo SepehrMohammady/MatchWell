@@ -82,6 +82,21 @@ export const ListIcon: React.FC<IconProps> = ({ size = 24, color = COLORS.textPr
     <MaterialCommunityIcons name="format-list-bulleted" size={size} color={color} />
 );
 
+// Trophy Icon (for level complete)
+export const TrophyIcon: React.FC<IconProps> = ({ size = 24, color = COLORS.organicWaste }) => (
+    <MaterialCommunityIcons name="trophy" size={size} color={color} />
+);
+
+// Emoticon Sad Icon (for game over)
+export const EmoticonSadIcon: React.FC<IconProps> = ({ size = 24, color = COLORS.accentDanger }) => (
+    <MaterialCommunityIcons name="emoticon-sad-outline" size={size} color={color} />
+);
+
+// Arrow Right Icon (for next)
+export const ArrowRightIcon: React.FC<IconProps> = ({ size = 24, color = COLORS.textPrimary }) => (
+    <MaterialCommunityIcons name="arrow-right" size={size} color={color} />
+);
+
 // Theme icons for theme selection
 export const getThemeIcon = (theme: string, size = 32, color?: string): React.ReactNode => {
     const iconMap: Record<string, { name: string; defaultColor: string }> = {
