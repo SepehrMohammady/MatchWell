@@ -1,5 +1,5 @@
 // Endless Mode Theme Selection Screen - Earth-Inspired Minimal Design
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
     View,
     Text,
@@ -33,12 +33,29 @@ const EndlessSelect: React.FC<Props> = ({ navigation }) => {
     const insets = useSafeAreaInsets();
     const completedLevels = useGameStore((state) => state.completedLevels);
     const highScores = useGameStore((state) => state.highScores);
+    const hasEndlessState = useGameStore((state) => state.hasEndlessState);
+    const loadEndlessState = useGameStore((state) => state.loadEndlessState);
+    const clearEndlessState = useGameStore((state) => state.clearEndlessState);
 
-    // Play menu music when screen is focused
+    // Track which theme has saved state
+    const [savedTheme, setSavedTheme] = useState<ThemeType | null>(null);
+
+    // Check for saved endless state when screen is focused
     useFocusEffect(
         useCallback(() => {
+            const checkSavedState = async () => {
+                for (const theme of THEME_ORDER) {
+                    const hasSaved = await hasEndlessState(theme);
+                    if (hasSaved) {
+                        setSavedTheme(theme);
+                        return;
+                    }
+                }
+                setSavedTheme(null);
+            };
+            checkSavedState();
             playBgm('bgm_menu');
-        }, [])
+        }, [hasEndlessState])
     );
 
     // Check if a theme is unlocked (all levels in that theme completed in story mode)
@@ -69,6 +86,31 @@ const EndlessSelect: React.FC<Props> = ({ navigation }) => {
                 endlessTheme: theme
             });
         }
+    };
+
+    const handleContinue = async (theme: ThemeType) => {
+        playSfx('tile_select');
+        const loaded = await loadEndlessState(theme);
+        if (loaded) {
+            navigation.navigate('Game', {
+                levelId: 1,
+                isEndless: true,
+                endlessTheme: theme
+            });
+        } else {
+            handleThemeSelect(theme);
+        }
+    };
+
+    const handleNewGame = async (theme: ThemeType) => {
+        playSfx('tile_select');
+        await clearEndlessState();
+        setSavedTheme(null);
+        navigation.navigate('Game', {
+            levelId: 1,
+            isEndless: true,
+            endlessTheme: theme
+        });
     };
 
     const handleBack = () => {
@@ -141,9 +183,26 @@ const EndlessSelect: React.FC<Props> = ({ navigation }) => {
                                             {highScore > 0 ? highScore.toLocaleString() : '—'}
                                         </Text>
                                     </View>
-                                    <View style={styles.playButton}>
-                                        <Text style={styles.playButtonText}>Play</Text>
-                                    </View>
+                                    {savedTheme === themeId ? (
+                                        <View style={styles.resumeButtonsRow}>
+                                            <TouchableOpacity
+                                                style={styles.continueButton}
+                                                onPress={() => handleContinue(themeId)}
+                                            >
+                                                <Text style={styles.continueButtonText}>Continue</Text>
+                                            </TouchableOpacity>
+                                            <TouchableOpacity
+                                                style={styles.newGameButton}
+                                                onPress={() => handleNewGame(themeId)}
+                                            >
+                                                <Text style={styles.newGameButtonText}>New</Text>
+                                            </TouchableOpacity>
+                                        </View>
+                                    ) : (
+                                        <View style={styles.playButton}>
+                                            <Text style={styles.playButtonText}>Play</Text>
+                                        </View>
+                                    )}
                                 </View>
                             )}
                         </TouchableOpacity>
@@ -287,6 +346,34 @@ const styles = StyleSheet.create({
         fontSize: TYPOGRAPHY.body,
         fontFamily: TYPOGRAPHY.fontFamilySemiBold,
         fontWeight: TYPOGRAPHY.semibold,
+    },
+    resumeButtonsRow: {
+        flexDirection: 'row',
+        gap: SPACING.sm,
+    },
+    continueButton: {
+        backgroundColor: COLORS.organicWaste,
+        borderRadius: RADIUS.sm,
+        paddingVertical: SPACING.sm,
+        paddingHorizontal: SPACING.md,
+    },
+    continueButtonText: {
+        color: COLORS.textLight,
+        fontSize: TYPOGRAPHY.bodySmall,
+        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
+        fontWeight: TYPOGRAPHY.semibold,
+    },
+    newGameButton: {
+        backgroundColor: COLORS.backgroundSecondary,
+        borderRadius: RADIUS.sm,
+        paddingVertical: SPACING.sm,
+        paddingHorizontal: SPACING.md,
+    },
+    newGameButtonText: {
+        color: COLORS.textSecondary,
+        fontSize: TYPOGRAPHY.bodySmall,
+        fontFamily: TYPOGRAPHY.fontFamilyMedium,
+        fontWeight: TYPOGRAPHY.medium,
     },
 });
 

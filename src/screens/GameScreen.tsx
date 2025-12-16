@@ -43,6 +43,8 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
     const isEndlessMode = useGameStore((state) => state.isEndlessMode);
     const movesRemaining = useGameStore((state) => state.movesRemaining);
     const saveEndlessHighScore = useGameStore((state) => state.saveEndlessHighScore);
+    const saveEndlessState = useGameStore((state) => state.saveEndlessState);
+    const clearEndlessState = useGameStore((state) => state.clearEndlessState);
 
     const levelConfig = getLevelById(levelId);
     const themeConfig = THEME_CONFIGS[theme];
@@ -128,12 +130,18 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
         }
     }, [levelId, initializeGame, navigation]);
 
-    const handleBackToMenu = useCallback(() => {
+    const handleBackToMenu = useCallback(async () => {
+        if (isEndlessMode && !isGameOver) {
+            await saveEndlessState(); // Save endless state for resume
+        }
         resetGameState(); // Reset all game state flags before navigating
         navigation.navigate('MainMenu');
-    }, [navigation, resetGameState]);
+    }, [navigation, resetGameState, isEndlessMode, isGameOver, saveEndlessState]);
 
-    const handleBackToLevels = useCallback(() => {
+    const handleBackToLevels = useCallback(async () => {
+        if (isEndlessMode && !isGameOver) {
+            await saveEndlessState(); // Save endless state for resume
+        }
         resetGameState(); // Reset all game state flags before navigating
         // Navigate to appropriate screen based on mode
         if (isEndlessMode) {
@@ -141,7 +149,7 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
         } else {
             navigation.navigate('LevelSelect');
         }
-    }, [navigation, resetGameState, isEndlessMode]);
+    }, [navigation, resetGameState, isEndlessMode, isGameOver, saveEndlessState]);
 
     const handleSfxToggle = (value: boolean) => {
         setSfxEnabled(value);

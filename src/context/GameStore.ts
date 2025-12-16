@@ -21,10 +21,20 @@ import { playSfx } from '../utils/SoundManager';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const STORAGE_KEY = 'matchwell_progress';
+const ENDLESS_STATE_KEY = 'matchwell_endless_state';
 
 interface SavedProgress {
     completedLevels: number[];
     highScores: Record<number, number>;
+}
+
+interface SavedEndlessState {
+    theme: ThemeType;
+    grid: (Tile | null)[][];
+    score: number;
+    moves: number;
+    combo: number;
+    timestamp: number;
 }
 
 interface GameStore extends GameState {
@@ -41,6 +51,10 @@ interface GameStore extends GameState {
     loadProgress: () => Promise<void>;
     saveProgress: () => Promise<void>;
     resetProgress: () => Promise<void>;
+    saveEndlessState: () => Promise<void>;
+    loadEndlessState: (theme: ThemeType) => Promise<boolean>;
+    clearEndlessState: () => Promise<void>;
+    hasEndlessState: (theme: ThemeType) => Promise<boolean>;
 
     // UI State
     selectedTile: Position | null;
@@ -118,6 +132,99 @@ export const useGameStore = create<GameStore>((set, get) => ({
             console.log('✅ Progress reset');
         } catch (error) {
             console.warn('Failed to reset progress:', error);
+        }
+    },
+
+    // Save current endless mode state for resume
+    saveEndlessState: async () => {
+        try {
+            const { grid, score, moves, combo, theme, isEndlessMode } = get();
+            if (!isEndlessMode) return;
+
+            const endlessState: SavedEndlessState = {
+                theme,
+                grid,
+                score,
+                moves,
+                combo,
+                timestamp: Date.now(),
+            };
+            await AsyncStorage.setItem(ENDLESS_STATE_KEY, JSON.stringify(endlessState));
+            console.log('✅ Endless state saved:', theme, score);
+        } catch (error) {
+            console.warn('Failed to save endless state:', error);
+        }
+    },
+
+    // Load saved endless state for a specific theme
+    loadEndlessState: async (theme: ThemeType): Promise<boolean> => {
+        try {
+            const saved = await AsyncStorage.getItem(ENDLESS_STATE_KEY);
+            if (!saved) return false;
+
+            const state: SavedEndlessState = JSON.parse(saved);
+            if (state.theme !== theme) return false;
+
+            // Check if state is not too old (24 hours)
+            const maxAge = 24 * 60 * 60 * 1000;
+            if (Date.now() - state.timestamp > maxAge) {
+                await AsyncStorage.removeItem(ENDLESS_STATE_KEY);
+                return false;
+            }
+
+            set({
+                grid: state.grid,
+                score: state.score,
+                moves: state.moves,
+                combo: state.combo,
+                theme: state.theme,
+                level: 0,
+                targetScore: 999999,
+                movesRemaining: 0,
+                isGameOver: false,
+                isLevelComplete: false,
+                isPaused: false,
+                selectedTile: null,
+                isProcessing: false,
+                isEndlessMode: true,
+            });
+            console.log('✅ Endless state loaded:', theme, state.score);
+            return true;
+        } catch (error) {
+            console.warn('Failed to load endless state:', error);
+            return false;
+        }
+    },
+
+    // Clear saved endless state
+    clearEndlessState: async () => {
+        try {
+            await AsyncStorage.removeItem(ENDLESS_STATE_KEY);
+            console.log('✅ Endless state cleared');
+        } catch (error) {
+            console.warn('Failed to clear endless state:', error);
+        }
+    },
+
+    // Check if there's a saved endless state for a theme
+    hasEndlessState: async (theme: ThemeType): Promise<boolean> => {
+        try {
+            const saved = await AsyncStorage.getItem(ENDLESS_STATE_KEY);
+            if (!saved) return false;
+
+            const state: SavedEndlessState = JSON.parse(saved);
+            if (state.theme !== theme) return false;
+
+            // Check if state is not too old (24 hours)
+            const maxAge = 24 * 60 * 60 * 1000;
+            if (Date.now() - state.timestamp > maxAge) {
+                await AsyncStorage.removeItem(ENDLESS_STATE_KEY);
+                return false;
+            }
+
+            return true;
+        } catch (error) {
+            return false;
         }
     },
 
