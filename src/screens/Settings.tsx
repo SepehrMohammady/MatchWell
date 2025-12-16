@@ -15,7 +15,8 @@ import {
     getSoundSettings,
     toggleSfx,
     toggleMusic,
-    playSfx
+    playSfx,
+    playBgm
 } from '../utils/SoundManager';
 import VERSION from '../config/version';
 import { COLORS, TYPOGRAPHY, SPACING, RADIUS, SHADOWS } from '../config/theme';
@@ -44,6 +45,10 @@ const Settings: React.FC<Props> = ({ navigation }) => {
     const handleMusicToggle = (value: boolean) => {
         setMusicEnabled(value);
         toggleMusic(value);
+        if (value) {
+            // Start playing menu music when enabled
+            playBgm('bgm_menu');
+        }
     };
 
     const handleBack = () => {
@@ -143,10 +148,12 @@ const styles = StyleSheet.create({
     backButtonText: {
         color: COLORS.organicWaste,
         fontSize: TYPOGRAPHY.body,
+        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
         fontWeight: TYPOGRAPHY.semibold,
     },
     title: {
         fontSize: TYPOGRAPHY.h3,
+        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
         fontWeight: TYPOGRAPHY.semibold,
         color: COLORS.textPrimary,
     },
@@ -166,6 +173,7 @@ const styles = StyleSheet.create({
     },
     sectionTitle: {
         fontSize: TYPOGRAPHY.bodySmall,
+        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
         fontWeight: TYPOGRAPHY.semibold,
         color: COLORS.textMuted,
         textTransform: 'uppercase',
@@ -188,11 +196,13 @@ const styles = StyleSheet.create({
     },
     settingLabel: {
         fontSize: TYPOGRAPHY.body,
+        fontFamily: TYPOGRAPHY.fontFamilyMedium,
         fontWeight: TYPOGRAPHY.medium,
         color: COLORS.textPrimary,
     },
     settingDescription: {
         fontSize: TYPOGRAPHY.caption,
+        fontFamily: TYPOGRAPHY.fontFamily,
         color: COLORS.textSecondary,
         marginTop: 2,
     },
@@ -222,6 +232,7 @@ const styles = StyleSheet.create({
     },
     tagline: {
         fontSize: TYPOGRAPHY.bodySmall,
+        fontFamily: TYPOGRAPHY.fontFamily,
         color: COLORS.textSecondary,
     },
 });

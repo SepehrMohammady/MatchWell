@@ -233,6 +233,7 @@ const styles = StyleSheet.create({
     },
     themeName: {
         fontSize: TYPOGRAPHY.h4,
+        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
         fontWeight: TYPOGRAPHY.semibold,
         color: COLORS.textPrimary,
         marginBottom: 2,
@@ -242,6 +243,7 @@ const styles = StyleSheet.create({
     },
     themeDescription: {
         fontSize: TYPOGRAPHY.caption,
+        fontFamily: TYPOGRAPHY.fontFamily,
         color: COLORS.textSecondary,
     },
     statsRow: {
@@ -258,10 +260,12 @@ const styles = StyleSheet.create({
     },
     highScoreLabel: {
         fontSize: TYPOGRAPHY.caption,
+        fontFamily: TYPOGRAPHY.fontFamily,
         color: COLORS.textMuted,
     },
     highScoreValue: {
         fontSize: TYPOGRAPHY.h4,
+        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
         fontWeight: TYPOGRAPHY.semibold,
         color: COLORS.accentHighlight,
     },
@@ -274,6 +278,7 @@ const styles = StyleSheet.create({
     playButtonText: {
         color: COLORS.textLight,
         fontSize: TYPOGRAPHY.body,
+        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
         fontWeight: TYPOGRAPHY.semibold,
     },
 });

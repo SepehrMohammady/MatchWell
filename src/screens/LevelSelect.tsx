@@ -221,11 +221,13 @@ const styles = StyleSheet.create({
     },
     themeName: {
         fontSize: TYPOGRAPHY.h4,
+        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
         fontWeight: TYPOGRAPHY.semibold,
         color: COLORS.textPrimary,
     },
     themeDescription: {
         fontSize: TYPOGRAPHY.caption,
+        fontFamily: TYPOGRAPHY.fontFamily,
         color: COLORS.textSecondary,
         marginTop: 2,
     },
@@ -253,6 +255,7 @@ const styles = StyleSheet.create({
     },
     levelNumber: {
         fontSize: TYPOGRAPHY.h3,
+        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
         fontWeight: TYPOGRAPHY.semibold,
         color: COLORS.textPrimary,
         marginBottom: 4,
@@ -283,12 +286,14 @@ const styles = StyleSheet.create({
     },
     comingSoonTitle: {
         fontSize: TYPOGRAPHY.h4,
+        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
         fontWeight: TYPOGRAPHY.semibold,
         color: COLORS.textSecondary,
         marginBottom: SPACING.sm,
     },
     comingSoonText: {
         fontSize: TYPOGRAPHY.bodySmall,
+        fontFamily: TYPOGRAPHY.fontFamily,
         color: COLORS.textMuted,
         textAlign: 'center',
         lineHeight: 20,

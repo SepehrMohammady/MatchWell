@@ -104,12 +104,12 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
     }, [isPaused, isLevelComplete, isGameOver, pauseGame]);
 
     const handlePause = useCallback(() => {
-        pauseBgm();
+        // Don't pause BGM - theme music continues during pause
         pauseGame();
     }, [pauseGame]);
 
     const handleResume = useCallback(() => {
-        resumeBgm();
+        // BGM was never paused, just resume game state
         resumeGameState();
     }, [resumeGameState]);
 
@@ -155,6 +155,10 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
     const handleMusicToggle = (value: boolean) => {
         setMusicEnabled(value);
         toggleMusic(value);
+        if (value) {
+            // Start playing theme music when enabled
+            playThemeBgm(theme);
+        }
     };
 
     // Calculate sky color based on score progress
