@@ -1,5 +1,5 @@
 // Settings Screen - Earth-Inspired Minimal Design
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
     View,
     Text,
@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useFocusEffect } from '@react-navigation/native';
 import { RootStackParamList } from '../types';
 import {
     getSoundSettings,
@@ -33,6 +34,13 @@ const Settings: React.FC<Props> = ({ navigation }) => {
         setSfxEnabled(settings.sfxEnabled);
         setMusicEnabled(settings.musicEnabled);
     }, []);
+
+    // Play menu music when screen is focused
+    useFocusEffect(
+        useCallback(() => {
+            playBgm('bgm_menu');
+        }, [])
+    );
 
     const handleSfxToggle = (value: boolean) => {
         setSfxEnabled(value);

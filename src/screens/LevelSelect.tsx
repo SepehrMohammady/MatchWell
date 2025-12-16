@@ -1,5 +1,5 @@
 // Level Select Screen - Earth-Inspired Minimal Design
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import {
     View,
     Text,
@@ -11,11 +11,12 @@ import {
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useFocusEffect } from '@react-navigation/native';
 import { RootStackParamList } from '../types';
 import { useGameStore } from '../context/GameStore';
 import { LEVELS, THEME_CONFIGS, getThemeEmoji } from '../themes';
 import { ThemeType } from '../types';
-import { playSfx } from '../utils/SoundManager';
+import { playSfx, playBgm } from '../utils/SoundManager';
 import { COLORS, TYPOGRAPHY, SPACING, RADIUS, SHADOWS } from '../config/theme';
 import { LockIcon } from '../components/UI/Icons';
 
@@ -35,6 +36,13 @@ const LevelSelect: React.FC<Props> = ({ navigation }) => {
 
         return () => backHandler.remove();
     }, []);
+
+    // Play menu music when screen is focused
+    useFocusEffect(
+        useCallback(() => {
+            playBgm('bgm_menu');
+        }, [])
+    );
 
     const isLevelUnlocked = (levelId: number): boolean => {
         if (levelId === 1) return true;

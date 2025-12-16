@@ -256,12 +256,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
             // In endless mode, never end the game for score
             if (!isEndlessMode && score >= targetScore) {
+                playSfx('level_complete');
                 set({
                     isLevelComplete: true,
                     isProcessing: false,
                     combo: newCombo
                 });
             } else if (!isEndlessMode && movesRemaining <= 0) {
+                playSfx('game_over');
                 set({
                     isGameOver: true,
                     isProcessing: false,
@@ -291,6 +293,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
         // Play combo sound
         playSfx('combo');
+
+        // Play special sounds for longer matches
+        const maxMatchLength = Math.max(...matches.map(m => m.length));
+        if (maxMatchLength >= 5) {
+            playSfx('match_5');
+        } else if (maxMatchLength >= 4) {
+            playSfx('match_4');
+        }
 
         // Remove matched tiles
         let newGrid = removeMatchedTiles(grid, matches);

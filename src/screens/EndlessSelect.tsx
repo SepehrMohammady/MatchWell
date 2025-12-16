@@ -1,5 +1,5 @@
 // Endless Mode Theme Selection Screen - Earth-Inspired Minimal Design
-import React from 'react';
+import React, { useCallback } from 'react';
 import {
     View,
     Text,
@@ -10,11 +10,12 @@ import {
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useFocusEffect } from '@react-navigation/native';
 import { RootStackParamList } from '../types';
 import { ThemeType } from '../types';
 import { useGameStore } from '../context/GameStore';
 import { THEME_CONFIGS, getThemeEmoji, getLevelsByTheme } from '../themes';
-import { playSfx } from '../utils/SoundManager';
+import { playSfx, playBgm } from '../utils/SoundManager';
 import { COLORS, TYPOGRAPHY, SPACING, RADIUS, SHADOWS } from '../config/theme';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'EndlessSelect'>;
@@ -32,6 +33,13 @@ const EndlessSelect: React.FC<Props> = ({ navigation }) => {
     const insets = useSafeAreaInsets();
     const completedLevels = useGameStore((state) => state.completedLevels);
     const highScores = useGameStore((state) => state.highScores);
+
+    // Play menu music when screen is focused
+    useFocusEffect(
+        useCallback(() => {
+            playBgm('bgm_menu');
+        }, [])
+    );
 
     // Check if a theme is unlocked (at least one level completed in that theme)
     const isThemeUnlocked = (theme: ThemeType): boolean => {
