@@ -61,20 +61,17 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
         }
     }, [isPaused]);
 
-    // Start theme-specific music when screen gains focus
-    useFocusEffect(
-        useCallback(() => {
-            // Play theme music - playThemeBgm internally stops any playing BGM first
-            playThemeBgm(theme);
-            // No cleanup needed - next screen's playBgm will handle stopping
-        }, [theme])
-    );
-
     // Initialize the game level with isEndless flag and optional endlessTheme
+    // Then play the correct theme music AFTER initialization
     useEffect(() => {
         const isEndless = route.params?.isEndless || false;
         const endlessTheme = route.params?.endlessTheme;
         initializeGame(levelId, isEndless, endlessTheme);
+
+        // Play theme music AFTER initialization so we have the correct theme
+        // In endless mode, use endlessTheme; otherwise get from level
+        const themeToPlay = (isEndless && endlessTheme) ? endlessTheme : getLevelById(levelId)?.theme || 'trash-sorting';
+        playThemeBgm(themeToPlay);
     }, [levelId, initializeGame, route.params?.isEndless, route.params?.endlessTheme]);
 
     useEffect(() => {
