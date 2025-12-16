@@ -207,7 +207,11 @@ const Achievements: React.FC<Props> = ({ navigation }) => {
                                                 {unlocked ? a.emoji : '🔒'}
                                             </Text>
                                             <Text style={styles.endlessMedalTier}>
-                                                {a.tier?.charAt(0).toUpperCase()}
+                                                {a.tier === 'bronze' ? 'Bronze' :
+                                                    a.tier === 'silver' ? 'Silver' :
+                                                        a.tier === 'gold' ? 'Gold' :
+                                                            a.tier === 'diamond' ? 'Diamond' :
+                                                                a.tier === 'earth-saver' ? 'Earth' : ''}
                                             </Text>
                                         </View>
                                     );

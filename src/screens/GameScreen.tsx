@@ -45,6 +45,7 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
     const saveEndlessHighScore = useGameStore((state) => state.saveEndlessHighScore);
     const saveEndlessState = useGameStore((state) => state.saveEndlessState);
     const clearEndlessState = useGameStore((state) => state.clearEndlessState);
+    const grid = useGameStore((state) => state.grid);
 
     const levelConfig = getLevelById(levelId);
     const themeConfig = THEME_CONFIGS[theme];
@@ -63,17 +64,21 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
     }, [isPaused]);
 
     // Initialize the game level with isEndless flag and optional endlessTheme
-    // Then play the correct theme music AFTER initialization
+    // Skip if grid is already populated (e.g., from loadEndlessState resume)
     useEffect(() => {
         const isEndless = route.params?.isEndless || false;
         const endlessTheme = route.params?.endlessTheme;
-        initializeGame(levelId, isEndless, endlessTheme);
+
+        // Only initialize if grid is empty (not resuming)
+        if (grid.length === 0) {
+            initializeGame(levelId, isEndless, endlessTheme);
+        }
 
         // Play theme music AFTER initialization so we have the correct theme
         // In endless mode, use endlessTheme; otherwise get from level
         const themeToPlay = (isEndless && endlessTheme) ? endlessTheme : getLevelById(levelId)?.theme || 'trash-sorting';
         playThemeBgm(themeToPlay);
-    }, [levelId, initializeGame, route.params?.isEndless, route.params?.endlessTheme]);
+    }, [levelId, initializeGame, route.params?.isEndless, route.params?.endlessTheme, grid.length]);
 
     useEffect(() => {
         if (isLevelComplete) {
