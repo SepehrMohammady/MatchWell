@@ -24,10 +24,10 @@ type Props = NativeStackScreenProps<RootStackParamList, 'MainMenu'>;
 
 // Earth stage images based on story progress
 const EARTH_STAGES = {
-    1: require('../assets/images/earrth_1.png'), // Polluted (0-20 levels)
-    2: require('../assets/images/earrth_2.png'), // Recovering (21-30 levels)
-    3: require('../assets/images/earrth_3.png'), // Healing (31-50 levels)
-    4: require('../assets/images/earrth_4.png'), // Thriving (all 50 levels complete)
+    1: require('../assets/images/earth_1.png'), // Polluted (0-20 levels)
+    2: require('../assets/images/earth_2.png'), // Recovering (21-30 levels)
+    3: require('../assets/images/earth_3.png'), // Healing (31-50 levels)
+    4: require('../assets/images/earth_4.png'), // Thriving (all 50 levels complete)
 };
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
@@ -197,11 +197,11 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: TYPOGRAPHY.h1,
-        fontFamily: TYPOGRAPHY.fontFamilyBold,
-        fontWeight: TYPOGRAPHY.bold,
+        fontFamily: TYPOGRAPHY.fontFamilyBlack,
+        fontWeight: '900' as const,
         color: '#ffffff',
         marginBottom: SPACING.xs,
-        letterSpacing: 1,
+        letterSpacing: 2,
     },
     subtitle: {
         fontSize: TYPOGRAPHY.bodySmall,

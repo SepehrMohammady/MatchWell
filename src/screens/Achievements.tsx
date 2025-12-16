@@ -211,7 +211,7 @@ const Achievements: React.FC<Props> = ({ navigation }) => {
                                                     a.tier === 'silver' ? 'Silver' :
                                                         a.tier === 'gold' ? 'Gold' :
                                                             a.tier === 'diamond' ? 'Diamond' :
-                                                                a.tier === 'earth-saver' ? 'Earth' : ''}
+                                                                a.tier === 'earth-saver' ? 'Earth Saver' : ''}
                                             </Text>
                                         </View>
                                     );

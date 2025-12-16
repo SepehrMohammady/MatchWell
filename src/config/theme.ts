@@ -46,6 +46,8 @@ export const TYPOGRAPHY = {
     fontFamilyMedium: 'Nunito-Medium',
     fontFamilySemiBold: 'Nunito-SemiBold',
     fontFamilyBold: 'Nunito-Bold',
+    fontFamilyExtraBold: 'Nunito-ExtraBold',
+    fontFamilyBlack: 'Nunito-Black',
 
     // Font Sizes
     h1: 32,
