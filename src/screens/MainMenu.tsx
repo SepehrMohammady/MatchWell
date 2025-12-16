@@ -84,6 +84,11 @@ const MainMenu: React.FC<Props> = ({ navigation }) => {
         navigation.navigate('Settings');
     };
 
+    const handleAchievements = () => {
+        playSfx('tile_select');
+        navigation.navigate('Achievements');
+    };
+
     return (
         <View style={[styles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
             <StatusBar barStyle="light-content" backgroundColor="#000000" />
@@ -134,6 +139,10 @@ const MainMenu: React.FC<Props> = ({ navigation }) => {
 
                 <TouchableOpacity style={styles.secondaryButton} onPress={handleEndless} activeOpacity={0.8}>
                     <Text style={styles.secondaryButtonText}>Endless mode</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.secondaryButton} onPress={handleAchievements} activeOpacity={0.8}>
+                    <Text style={styles.secondaryButtonText}>🏆 Achievements</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.settingsButton} onPress={handleSettings} activeOpacity={0.6}>
