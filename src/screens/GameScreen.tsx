@@ -256,13 +256,13 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
                         <Text style={styles.scoreText}>{score.toLocaleString()}</Text>
                         <Text style={styles.scoreLabel}>Score</Text>
 
-                        {/* Star Rating */}
+                        {/* Star Rating - based on score vs targetScore */}
                         <View style={styles.starsContainer}>
                             <StarFilledIcon size={32} />
-                            {movesRemaining > (levelConfig?.moves || 20) * 0.25
+                            {score >= targetScore * 1.5
                                 ? <StarFilledIcon size={32} />
                                 : <StarEmptyIcon size={32} />}
-                            {movesRemaining > (levelConfig?.moves || 20) * 0.50
+                            {score >= targetScore * 2
                                 ? <StarFilledIcon size={32} />
                                 : <StarEmptyIcon size={32} />}
                         </View>

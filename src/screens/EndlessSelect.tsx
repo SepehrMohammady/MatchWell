@@ -41,21 +41,17 @@ const EndlessSelect: React.FC<Props> = ({ navigation }) => {
         }, [])
     );
 
-    // Check if a theme is unlocked (at least one level completed in that theme)
+    // Check if a theme is unlocked (all levels in that theme completed in story mode)
     const isThemeUnlocked = (theme: ThemeType): boolean => {
-        if (theme === 'trash-sorting') return true;
+        if (theme === 'trash-sorting') {
+            // Trash sorting requires at least 1 level completed
+            const themeLevels = getLevelsByTheme(theme);
+            return themeLevels.some(level => completedLevels.includes(level.id));
+        }
 
-        const themeIndex = THEME_ORDER.indexOf(theme);
-        if (themeIndex <= 0) return true;
-
-        const prevTheme = THEME_ORDER[themeIndex - 1];
-        const prevThemeLevels = getLevelsByTheme(prevTheme);
-
-        const completedInPrevTheme = prevThemeLevels.filter(
-            level => completedLevels.includes(level.id)
-        ).length;
-
-        return completedInPrevTheme >= 5;
+        // Other themes require ALL levels in that theme to be completed
+        const themeLevels = getLevelsByTheme(theme);
+        return themeLevels.every(level => completedLevels.includes(level.id));
     };
 
     // Get endless high score for a theme (stored with negative IDs)
