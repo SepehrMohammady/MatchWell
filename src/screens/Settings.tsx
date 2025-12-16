@@ -150,10 +150,9 @@ const Settings: React.FC<Props> = ({ navigation }) => {
                     <Text style={styles.sectionTitle}>About</Text>
 
                     <View style={styles.aboutCard}>
-                        {/* App Name & Description */}
+                        {/* App Name */}
                         <View style={styles.aboutCardRow}>
                             <Text style={styles.aboutAppName}>MatchWell</Text>
-                            <Text style={styles.aboutAppDesc}>Eco-conscious match-3 puzzle game</Text>
                         </View>
 
                         {/* Version */}
@@ -165,7 +164,7 @@ const Settings: React.FC<Props> = ({ navigation }) => {
                         {/* Developer */}
                         <TouchableOpacity
                             style={styles.aboutCardRow}
-                            onPress={() => Linking.openURL('https://github.com/SepehrMohammady')}
+                            onPress={() => Linking.openURL('https://sepehrmohammady.ir/')}
                         >
                             <View>
                                 <Text style={styles.aboutCardLabel}>Developer</Text>
@@ -328,15 +327,17 @@ const styles = StyleSheet.create({
         fontWeight: TYPOGRAPHY.semibold,
     },
     aboutCard: {
-        backgroundColor: COLORS.backgroundDark,
+        backgroundColor: COLORS.cardBackground,
         borderRadius: RADIUS.md,
         overflow: 'hidden',
+        borderWidth: 1,
+        borderColor: COLORS.cardBorder,
     },
     aboutCardRow: {
         paddingVertical: SPACING.md,
         paddingHorizontal: SPACING.lg,
         borderBottomWidth: 1,
-        borderBottomColor: 'rgba(255, 255, 255, 0.1)',
+        borderBottomColor: COLORS.backgroundSecondary,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -348,29 +349,29 @@ const styles = StyleSheet.create({
         fontSize: TYPOGRAPHY.h4,
         fontFamily: TYPOGRAPHY.fontFamilySemiBold,
         fontWeight: TYPOGRAPHY.semibold,
-        color: COLORS.textLight,
+        color: COLORS.textPrimary,
     },
     aboutAppDesc: {
         fontSize: TYPOGRAPHY.caption,
         fontFamily: TYPOGRAPHY.fontFamily,
-        color: 'rgba(255, 255, 255, 0.6)',
+        color: COLORS.textSecondary,
         marginTop: 2,
     },
     aboutCardLabel: {
         fontSize: TYPOGRAPHY.bodySmall,
         fontFamily: TYPOGRAPHY.fontFamilySemiBold,
         fontWeight: TYPOGRAPHY.semibold,
-        color: COLORS.textLight,
+        color: COLORS.textPrimary,
     },
     aboutCardValue: {
         fontSize: TYPOGRAPHY.caption,
         fontFamily: TYPOGRAPHY.fontFamily,
-        color: 'rgba(255, 255, 255, 0.6)',
+        color: COLORS.textSecondary,
         marginTop: 2,
     },
     linkIcon: {
         fontSize: TYPOGRAPHY.body,
-        color: 'rgba(255, 255, 255, 0.4)',
+        color: COLORS.textMuted,
     },
     copyright: {
         fontSize: TYPOGRAPHY.caption,

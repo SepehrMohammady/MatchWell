@@ -198,7 +198,6 @@ const styles = StyleSheet.create({
     title: {
         fontSize: TYPOGRAPHY.h1,
         fontFamily: TYPOGRAPHY.fontFamilyBlack,
-        fontWeight: '900' as const,
         color: '#ffffff',
         marginBottom: SPACING.xs,
         letterSpacing: 2,
