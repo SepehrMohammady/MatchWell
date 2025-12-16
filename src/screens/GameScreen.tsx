@@ -39,6 +39,7 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
     const isPaused = useGameStore((state) => state.isPaused);
     const pauseGame = useGameStore((state) => state.pauseGame);
     const resumeGameState = useGameStore((state) => state.resumeGame);
+    const resetGameState = useGameStore((state) => state.resetGameState);
     const markLevelComplete = useGameStore((state) => state.markLevelComplete);
     const isEndlessMode = useGameStore((state) => state.isEndlessMode);
     const movesRemaining = useGameStore((state) => state.movesRemaining);
@@ -132,19 +133,19 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
     }, [levelId, initializeGame, navigation]);
 
     const handleBackToMenu = useCallback(() => {
-        resumeGameState(); // Dismiss the pause menu first
+        resetGameState(); // Reset all game state flags before navigating
         navigation.navigate('MainMenu');
-    }, [navigation, resumeGameState]);
+    }, [navigation, resetGameState]);
 
     const handleBackToLevels = useCallback(() => {
-        resumeGameState(); // Dismiss the pause menu first
+        resetGameState(); // Reset all game state flags before navigating
         // Navigate to appropriate screen based on mode
         if (isEndlessMode) {
             navigation.navigate('EndlessSelect');
         } else {
             navigation.navigate('LevelSelect');
         }
-    }, [navigation, resumeGameState, isEndlessMode]);
+    }, [navigation, resetGameState, isEndlessMode]);
 
     const handleSfxToggle = (value: boolean) => {
         setSfxEnabled(value);

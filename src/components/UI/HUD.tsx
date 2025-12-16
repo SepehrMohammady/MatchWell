@@ -117,6 +117,7 @@ const styles = StyleSheet.create({
     },
     levelText: {
         color: COLORS.textLight,
+        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
         fontWeight: TYPOGRAPHY.semibold,
         fontSize: TYPOGRAPHY.bodySmall,
     },
@@ -135,11 +136,13 @@ const styles = StyleSheet.create({
     scoreValue: {
         color: COLORS.textPrimary,
         fontSize: 40,
+        fontFamily: TYPOGRAPHY.fontFamilyBold,
         fontWeight: TYPOGRAPHY.bold,
         letterSpacing: -1,
     },
     targetText: {
         color: COLORS.textMuted,
+        fontFamily: TYPOGRAPHY.fontFamily,
         fontSize: TYPOGRAPHY.bodySmall,
     },
     bottomRow: {
@@ -153,11 +156,13 @@ const styles = StyleSheet.create({
     },
     statLabel: {
         color: COLORS.textMuted,
+        fontFamily: TYPOGRAPHY.fontFamily,
         fontSize: TYPOGRAPHY.caption,
     },
     statValue: {
         color: COLORS.textPrimary,
         fontSize: TYPOGRAPHY.h2,
+        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
         fontWeight: TYPOGRAPHY.semibold,
     },
     lowMoves: {
@@ -171,6 +176,7 @@ const styles = StyleSheet.create({
     },
     comboText: {
         color: COLORS.textLight,
+        fontFamily: TYPOGRAPHY.fontFamilyBold,
         fontWeight: TYPOGRAPHY.bold,
         fontSize: TYPOGRAPHY.body,
     },

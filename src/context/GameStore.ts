@@ -37,6 +37,7 @@ interface GameStore extends GameState {
     resetCombo: () => void;
     pauseGame: () => void;
     resumeGame: () => void;
+    resetGameState: () => void;
     loadProgress: () => Promise<void>;
     saveProgress: () => Promise<void>;
 
@@ -328,6 +329,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
     pauseGame: () => set({ isPaused: true }),
 
     resumeGame: () => set({ isPaused: false }),
+
+    // Reset all game state flags (used when navigating away from game)
+    resetGameState: () => set({
+        isPaused: false,
+        isLevelComplete: false,
+        isGameOver: false
+    }),
 
     setSelectedTile: (position) => set({ selectedTile: position }),
 
