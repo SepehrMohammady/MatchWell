@@ -67,6 +67,16 @@ export const VolumeIcon: React.FC<IconProps> = ({ size = 24, color = COLORS.text
     <MaterialCommunityIcons name="volume-high" size={size} color={color} />
 );
 
+// Volume Off Icon
+export const VolumeOffIcon: React.FC<IconProps> = ({ size = 24, color = COLORS.textMuted }) => (
+    <MaterialCommunityIcons name="volume-off" size={size} color={color} />
+);
+
+// Music Off Icon
+export const MusicOffIcon: React.FC<IconProps> = ({ size = 24, color = COLORS.textMuted }) => (
+    <MaterialCommunityIcons name="music-off" size={size} color={color} />
+);
+
 // Home Icon
 export const HomeIcon: React.FC<IconProps> = ({ size = 24, color = COLORS.textPrimary }) => (
     <MaterialCommunityIcons name="home" size={size} color={color} />

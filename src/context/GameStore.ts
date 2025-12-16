@@ -40,6 +40,7 @@ interface GameStore extends GameState {
     resetGameState: () => void;
     loadProgress: () => Promise<void>;
     saveProgress: () => Promise<void>;
+    resetProgress: () => Promise<void>;
 
     // UI State
     selectedTile: Position | null;
@@ -103,6 +104,20 @@ export const useGameStore = create<GameStore>((set, get) => ({
             console.log('✅ Progress saved:', progress);
         } catch (error) {
             console.warn('Failed to save progress:', error);
+        }
+    },
+
+    // Reset all progress data
+    resetProgress: async () => {
+        try {
+            await AsyncStorage.removeItem(STORAGE_KEY);
+            set({
+                completedLevels: [],
+                highScores: {},
+            });
+            console.log('✅ Progress reset');
+        } catch (error) {
+            console.warn('Failed to reset progress:', error);
         }
     },
 

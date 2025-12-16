@@ -18,7 +18,7 @@ import { LEVELS, THEME_CONFIGS, getThemeEmoji } from '../themes';
 import { ThemeType } from '../types';
 import { playSfx, playBgm } from '../utils/SoundManager';
 import { COLORS, TYPOGRAPHY, SPACING, RADIUS, SHADOWS } from '../config/theme';
-import { LockIcon } from '../components/UI/Icons';
+import { LockIcon, StarFilledIcon } from '../components/UI/Icons';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'LevelSelect'>;
 
@@ -72,6 +72,16 @@ const LevelSelect: React.FC<Props> = ({ navigation }) => {
         navigation.navigate('MainMenu');
     };
 
+    // Get total stars for a theme
+    const getTotalThemeStars = (themeLevels: typeof LEVELS): { earned: number; total: number } => {
+        let earned = 0;
+        const total = themeLevels.length * 3; // Max 3 stars per level
+        themeLevels.forEach(level => {
+            earned += getStars(level.id);
+        });
+        return { earned, total };
+    };
+
     // Group levels by theme
     const levelsByTheme = LEVELS.reduce((acc, level) => {
         if (!acc[level.theme]) {
@@ -97,6 +107,7 @@ const LevelSelect: React.FC<Props> = ({ navigation }) => {
             <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent}>
                 {Object.entries(levelsByTheme).map(([themeId, levels]) => {
                     const theme = THEME_CONFIGS[themeId as ThemeType];
+                    const themeStars = getTotalThemeStars(levels);
                     return (
                         <View key={themeId} style={styles.themeSection}>
                             <View style={styles.themeTitleContainer}>
@@ -106,7 +117,15 @@ const LevelSelect: React.FC<Props> = ({ navigation }) => {
                                     </Text>
                                 </View>
                                 <View style={styles.themeTextContainer}>
-                                    <Text style={styles.themeName}>{theme.name}</Text>
+                                    <View style={styles.themeNameRow}>
+                                        <Text style={styles.themeName}>{theme.name}</Text>
+                                        <View style={styles.themeStarsContainer}>
+                                            <StarFilledIcon size={14} />
+                                            <Text style={styles.themeStarsText}>
+                                                {themeStars.earned}/{themeStars.total}
+                                            </Text>
+                                        </View>
+                                    </View>
                                     <Text style={styles.themeDescription}>{theme.description}</Text>
                                 </View>
                             </View>
@@ -234,6 +253,21 @@ const styles = StyleSheet.create({
         fontFamily: TYPOGRAPHY.fontFamilySemiBold,
         fontWeight: TYPOGRAPHY.semibold,
         color: COLORS.textPrimary,
+    },
+    themeNameRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    },
+    themeStarsContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 4,
+    },
+    themeStarsText: {
+        fontSize: TYPOGRAPHY.caption,
+        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
+        color: COLORS.starFilled,
     },
     themeDescription: {
         fontSize: TYPOGRAPHY.caption,

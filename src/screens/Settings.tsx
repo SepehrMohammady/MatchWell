@@ -7,6 +7,7 @@ import {
     TouchableOpacity,
     StatusBar,
     Switch,
+    Alert,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -20,6 +21,7 @@ import {
     playBgm
 } from '../utils/SoundManager';
 import VERSION from '../config/version';
+import { useGameStore } from '../context/GameStore';
 import { COLORS, TYPOGRAPHY, SPACING, RADIUS, SHADOWS } from '../config/theme';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Settings'>;
@@ -62,6 +64,26 @@ const Settings: React.FC<Props> = ({ navigation }) => {
     const handleBack = () => {
         playSfx('tile_select');
         navigation.navigate('MainMenu');
+    };
+
+    const resetProgress = useGameStore((state) => state.resetProgress);
+
+    const handleResetData = () => {
+        Alert.alert(
+            'Reset Progress',
+            'Are you sure you want to reset all your progress? This cannot be undone.',
+            [
+                { text: 'Cancel', style: 'cancel' },
+                {
+                    text: 'Reset',
+                    style: 'destructive',
+                    onPress: async () => {
+                        await resetProgress();
+                        Alert.alert('Done', 'All progress has been reset.');
+                    },
+                },
+            ]
+        );
     };
 
     return (
@@ -108,6 +130,18 @@ const Settings: React.FC<Props> = ({ navigation }) => {
                             thumbColor={sfxEnabled ? COLORS.textLight : COLORS.textMuted}
                         />
                     </View>
+                </View>
+
+                {/* Data Section */}
+                <View style={styles.section}>
+                    <Text style={styles.sectionTitle}>Data</Text>
+
+                    <TouchableOpacity
+                        style={styles.dangerButton}
+                        onPress={handleResetData}
+                    >
+                        <Text style={styles.dangerButtonText}>Reset All Progress</Text>
+                    </TouchableOpacity>
                 </View>
 
                 {/* About Section */}
@@ -242,6 +276,21 @@ const styles = StyleSheet.create({
         fontSize: TYPOGRAPHY.bodySmall,
         fontFamily: TYPOGRAPHY.fontFamily,
         color: COLORS.textSecondary,
+    },
+    dangerButton: {
+        backgroundColor: 'rgba(231, 76, 60, 0.1)',
+        borderWidth: 1,
+        borderColor: COLORS.accentDanger,
+        paddingVertical: SPACING.md,
+        paddingHorizontal: SPACING.lg,
+        borderRadius: RADIUS.md,
+        alignItems: 'center',
+    },
+    dangerButtonText: {
+        color: COLORS.accentDanger,
+        fontSize: TYPOGRAPHY.body,
+        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
+        fontWeight: TYPOGRAPHY.semibold,
     },
 });
 

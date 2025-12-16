@@ -8,7 +8,6 @@ import {
     TouchableOpacity,
     ImageBackground,
     StatusBar,
-    Switch,
     BackHandler,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -21,7 +20,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types';
 import { playBgm, playThemeBgm, pauseBgm, resumeBgm, playSfx, getSoundSettings, toggleSfx, toggleMusic } from '../utils/SoundManager';
 import { COLORS, TYPOGRAPHY, SPACING, RADIUS } from '../config/theme';
-import { PauseIcon, PlayIcon, RestartIcon, MusicIcon, VolumeIcon, HomeIcon, PaletteIcon, ListIcon, StarFilledIcon, StarEmptyIcon, TrophyIcon, EmoticonSadIcon, ArrowRightIcon } from '../components/UI/Icons';
+import { PauseIcon, PlayIcon, RestartIcon, MusicIcon, MusicOffIcon, VolumeIcon, VolumeOffIcon, HomeIcon, PaletteIcon, ListIcon, StarFilledIcon, StarEmptyIcon, TrophyIcon, EmoticonSadIcon, ArrowRightIcon } from '../components/UI/Icons';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Game'>;
 
@@ -204,31 +203,6 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
                             <RestartIcon size={20} color="#fff" />
                             <Text style={styles.modalButtonText}>Restart</Text>
                         </TouchableOpacity>
-
-                        {/* Sound Controls */}
-                        <View style={styles.soundControlsContainer}>
-                            <View style={styles.soundRow}>
-                                <MusicIcon size={20} color={COLORS.textSecondary} />
-                                <Text style={styles.soundLabel}>Music</Text>
-                                <Switch
-                                    value={musicEnabled}
-                                    onValueChange={handleMusicToggle}
-                                    trackColor={{ false: '#ccc', true: COLORS.organicWaste }}
-                                    thumbColor={musicEnabled ? '#fff' : '#eee'}
-                                />
-                            </View>
-                            <View style={styles.soundRow}>
-                                <VolumeIcon size={20} color={COLORS.textSecondary} />
-                                <Text style={styles.soundLabel}>SFX</Text>
-                                <Switch
-                                    value={sfxEnabled}
-                                    onValueChange={handleSfxToggle}
-                                    trackColor={{ false: '#ccc', true: COLORS.organicWaste }}
-                                    thumbColor={sfxEnabled ? '#fff' : '#eee'}
-                                />
-                            </View>
-                        </View>
-
                         <TouchableOpacity style={[styles.modalButton, styles.secondaryButton]} onPress={handleBackToLevels}>
                             {isEndlessMode ? (
                                 <PaletteIcon size={20} color={COLORS.textSecondary} />
@@ -243,6 +217,30 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
                             <HomeIcon size={20} color={COLORS.textSecondary} />
                             <Text style={styles.secondaryButtonText}>Main Menu</Text>
                         </TouchableOpacity>
+
+                        {/* Sound Toggle Footer */}
+                        <View style={styles.soundToggleFooter}>
+                            <TouchableOpacity
+                                style={[styles.soundToggleButton, musicEnabled && styles.soundToggleActive]}
+                                onPress={() => handleMusicToggle(!musicEnabled)}
+                            >
+                                {musicEnabled ? (
+                                    <MusicIcon size={24} color={COLORS.organicWaste} />
+                                ) : (
+                                    <MusicOffIcon size={24} color={COLORS.textMuted} />
+                                )}
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={[styles.soundToggleButton, sfxEnabled && styles.soundToggleActive]}
+                                onPress={() => handleSfxToggle(!sfxEnabled)}
+                            >
+                                {sfxEnabled ? (
+                                    <VolumeIcon size={24} color={COLORS.organicWaste} />
+                                ) : (
+                                    <VolumeOffIcon size={24} color={COLORS.textMuted} />
+                                )}
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 </View>
             </Modal>
@@ -494,6 +492,26 @@ const styles = StyleSheet.create({
         fontSize: TYPOGRAPHY.body,
         fontFamily: TYPOGRAPHY.fontFamily,
         color: COLORS.textSecondary,
+    },
+    soundToggleFooter: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        gap: SPACING.xl,
+        marginTop: SPACING.lg,
+        paddingTop: SPACING.md,
+        borderTopWidth: 1,
+        borderTopColor: COLORS.cardBorder,
+    },
+    soundToggleButton: {
+        width: 48,
+        height: 48,
+        borderRadius: 24,
+        backgroundColor: COLORS.backgroundSecondary,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    soundToggleActive: {
+        backgroundColor: 'rgba(139, 195, 74, 0.15)',
     },
 });
 

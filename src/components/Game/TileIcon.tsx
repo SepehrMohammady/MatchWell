@@ -28,10 +28,10 @@ const TILE_ICON_MAP: Record<string, { icon: string; color: string }> = {
 
     // Theme 3: Water Conservation
     droplet: { icon: 'water', color: '#3498DB' },
-    faucet: { icon: 'faucet', color: '#7F8C8D' },
-    shower: { icon: 'shower-head', color: '#1ABC9C' },
-    bottle: { icon: 'bottle-wine-outline', color: '#2980B9' },
-    ocean: { icon: 'waves', color: '#0077BE' },
+    faucet: { icon: 'water-pump', color: '#7F8C8D' },
+    shower: { icon: 'shower', color: '#1ABC9C' },
+    bottle: { icon: 'cup-water', color: '#2980B9' },
+    ocean: { icon: 'wave', color: '#0077BE' },
 
     // Theme 4: Energy Efficiency
     bulb: { icon: 'lightbulb-outline', color: '#F1C40F' },
