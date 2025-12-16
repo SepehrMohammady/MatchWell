@@ -8,6 +8,7 @@ import {
     StatusBar,
     Switch,
     Alert,
+    Linking,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -144,25 +145,59 @@ const Settings: React.FC<Props> = ({ navigation }) => {
                     </TouchableOpacity>
                 </View>
 
-                {/* About Section */}
+                {/* About Section - FeedWell Style */}
                 <View style={styles.section}>
                     <Text style={styles.sectionTitle}>About</Text>
 
-                    <View style={styles.aboutRow}>
-                        <Text style={styles.aboutLabel}>Version</Text>
-                        <Text style={styles.aboutValue}>{VERSION.string}</Text>
-                    </View>
+                    <View style={styles.aboutCard}>
+                        {/* App Name & Description */}
+                        <View style={styles.aboutCardRow}>
+                            <Text style={styles.aboutAppName}>MatchWell</Text>
+                            <Text style={styles.aboutAppDesc}>Eco-conscious match-3 puzzle game</Text>
+                        </View>
 
-                    <View style={[styles.aboutRow, styles.lastRow]}>
-                        <Text style={styles.aboutLabel}>Developer</Text>
-                        <Text style={styles.aboutValue}>SepehrMohammady</Text>
+                        {/* Version */}
+                        <View style={styles.aboutCardRow}>
+                            <Text style={styles.aboutCardLabel}>Version</Text>
+                            <Text style={styles.aboutCardValue}>{VERSION.string}</Text>
+                        </View>
+
+                        {/* Developer */}
+                        <TouchableOpacity
+                            style={styles.aboutCardRow}
+                            onPress={() => Linking.openURL('https://github.com/SepehrMohammady')}
+                        >
+                            <View>
+                                <Text style={styles.aboutCardLabel}>Developer</Text>
+                                <Text style={styles.aboutCardValue}>Sepehr Mohammady</Text>
+                            </View>
+                            <Text style={styles.linkIcon}>↗</Text>
+                        </TouchableOpacity>
+
+                        {/* Source Code */}
+                        <TouchableOpacity
+                            style={styles.aboutCardRow}
+                            onPress={() => Linking.openURL('https://github.com/SepehrMohammady/MatchWell')}
+                        >
+                            <View>
+                                <Text style={styles.aboutCardLabel}>Source Code</Text>
+                                <Text style={styles.aboutCardValue}>github.com/SepehrMohammady/MatchWell</Text>
+                            </View>
+                            <Text style={styles.linkIcon}>⎋</Text>
+                        </TouchableOpacity>
+
+                        {/* Privacy */}
+                        <View style={[styles.aboutCardRow, styles.aboutCardLastRow]}>
+                            <Text style={styles.aboutCardLabel}>Privacy</Text>
+                            <Text style={styles.aboutCardValue}>No data is collected or shared</Text>
+                        </View>
                     </View>
                 </View>
 
                 {/* Tagline */}
                 <View style={styles.taglineContainer}>
-                    <Text style={styles.taglineEmoji}>🌱</Text>
-                    <Text style={styles.tagline}>Save the planet, one match at a time</Text>
+                    <Text style={styles.tagline}>🌱 Save the planet, one match at a time</Text>
+                    <Text style={styles.copyright}>© 2025 Sepehr Mohammady. Open source under MIT License.</Text>
                 </View>
             </View>
         </View>
@@ -291,6 +326,58 @@ const styles = StyleSheet.create({
         fontSize: TYPOGRAPHY.body,
         fontFamily: TYPOGRAPHY.fontFamilySemiBold,
         fontWeight: TYPOGRAPHY.semibold,
+    },
+    aboutCard: {
+        backgroundColor: COLORS.backgroundDark,
+        borderRadius: RADIUS.md,
+        overflow: 'hidden',
+    },
+    aboutCardRow: {
+        paddingVertical: SPACING.md,
+        paddingHorizontal: SPACING.lg,
+        borderBottomWidth: 1,
+        borderBottomColor: 'rgba(255, 255, 255, 0.1)',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+    aboutCardLastRow: {
+        borderBottomWidth: 0,
+    },
+    aboutAppName: {
+        fontSize: TYPOGRAPHY.h4,
+        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
+        fontWeight: TYPOGRAPHY.semibold,
+        color: COLORS.textLight,
+    },
+    aboutAppDesc: {
+        fontSize: TYPOGRAPHY.caption,
+        fontFamily: TYPOGRAPHY.fontFamily,
+        color: 'rgba(255, 255, 255, 0.6)',
+        marginTop: 2,
+    },
+    aboutCardLabel: {
+        fontSize: TYPOGRAPHY.bodySmall,
+        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
+        fontWeight: TYPOGRAPHY.semibold,
+        color: COLORS.textLight,
+    },
+    aboutCardValue: {
+        fontSize: TYPOGRAPHY.caption,
+        fontFamily: TYPOGRAPHY.fontFamily,
+        color: 'rgba(255, 255, 255, 0.6)',
+        marginTop: 2,
+    },
+    linkIcon: {
+        fontSize: TYPOGRAPHY.body,
+        color: 'rgba(255, 255, 255, 0.4)',
+    },
+    copyright: {
+        fontSize: TYPOGRAPHY.caption,
+        fontFamily: TYPOGRAPHY.fontFamily,
+        color: COLORS.textMuted,
+        marginTop: SPACING.sm,
+        textAlign: 'center',
     },
 });
 
