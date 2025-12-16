@@ -4,10 +4,14 @@
 
 import Sound from 'react-native-sound';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AppState, AppStateStatus } from 'react-native';
 import { ThemeType } from '../types';
 
 // Enable playback in silence mode (iOS)
 Sound.setCategory('Playback');
+
+// Track app state for background/foreground music control
+let currentAppState: AppStateStatus = AppState.currentState;
 
 // Storage key for sound settings
 const SOUND_SETTINGS_KEY = '@MatchWell:soundSettings';
@@ -75,6 +79,24 @@ let musicEnabled = true;
 let sfxVolume = 1.0;
 let musicVolume = 1.0;
 let settingsLoaded = false; // Track if settings have been loaded from storage
+
+// Set up AppState listener to pause music when app goes to background
+AppState.addEventListener('change', (nextAppState: AppStateStatus) => {
+    if (currentAppState.match(/active/) && nextAppState.match(/inactive|background/)) {
+        // App is going to background - pause all BGM
+        console.log('📱 App going to background - pausing BGM');
+        if (currentBgm) {
+            currentBgm.pause();
+        }
+    } else if (currentAppState.match(/inactive|background/) && nextAppState === 'active') {
+        // App is coming to foreground - resume BGM if music is enabled
+        console.log('📱 App coming to foreground - resuming BGM');
+        if (currentBgm && musicEnabled) {
+            currentBgm.play();
+        }
+    }
+    currentAppState = nextAppState;
+});
 
 /**
  * Load sound settings from AsyncStorage
