@@ -270,15 +270,16 @@ export const playThemeBgm = async (theme: ThemeType): Promise<void> => {
 };
 
 /**
- * Stop background music - stops all cached BGM sounds to prevent overlap
+ * Stop background music - stops, releases, and clears all cached BGM sounds
  */
 export const stopBgm = (): void => {
-    // Stop the tracked currentBgm
+    // Stop and release the tracked currentBgm
     if (currentBgm) {
         currentBgm.stop();
+        currentBgm.release();
     }
 
-    // Also stop ALL cached BGM sounds to prevent any overlap
+    // Also stop and release ALL cached BGM sounds to prevent any overlap
     const bgmNames: SoundName[] = [
         'bgm_menu',
         'bgm_theme_trash',
@@ -292,12 +293,14 @@ export const stopBgm = (): void => {
         const cachedSound = soundCache[bgmName];
         if (cachedSound) {
             cachedSound.stop();
+            cachedSound.release();
+            delete soundCache[bgmName]; // Remove from cache so it gets recreated fresh
         }
     });
 
     currentBgm = null;
     currentBgmName = null;
-    console.log('🔇 All BGM stopped');
+    console.log('🔇 All BGM stopped and released');
 };
 
 /**
