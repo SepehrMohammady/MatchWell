@@ -27,6 +27,8 @@ const LevelSelect: React.FC<Props> = ({ navigation }) => {
     const completedLevels = useGameStore((state) => state.completedLevels);
     const highScores = useGameStore((state) => state.highScores);
 
+    const levelMovesRemaining = useGameStore((state) => state.levelMovesRemaining);
+
     // Handle hardware back button to go to MainMenu
     useEffect(() => {
         const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
@@ -49,15 +51,22 @@ const LevelSelect: React.FC<Props> = ({ navigation }) => {
         return completedLevels.includes(levelId - 1);
     };
 
+    // Stars based on moves remaining (percentage of total moves saved)
     const getStars = (levelId: number): number => {
         const level = LEVELS.find(l => l.id === levelId);
-        const score = highScores[levelId] || 0;
-        if (!level || score === 0) return 0;
+        const movesRemaining = levelMovesRemaining[levelId] || 0;
+        if (!level || !completedLevels.includes(levelId)) return 0;
 
-        if (score >= level.targetScore * 2) return 3;
-        if (score >= level.targetScore * 1.5) return 2;
-        if (score >= level.targetScore) return 1;
-        return 0;
+        // Calculate percentage of moves remaining
+        const totalMoves = level.moves;
+        const percentRemaining = (movesRemaining / totalMoves) * 100;
+
+        // 3 stars: 50%+ moves remaining
+        // 2 stars: 25-49% moves remaining
+        // 1 star: completed with less than 25% moves remaining
+        if (percentRemaining >= 50) return 3;
+        if (percentRemaining >= 25) return 2;
+        return 1;
     };
 
     const handleLevelSelect = (levelId: number) => {

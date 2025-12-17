@@ -26,6 +26,7 @@ const ENDLESS_STATE_KEY = 'matchwell_endless_state';
 interface SavedProgress {
     completedLevels: number[];
     highScores: Record<number, number>;
+    levelMovesRemaining: Record<number, number>; // Best remaining moves for each level
 }
 
 interface SavedEndlessState {
@@ -63,11 +64,12 @@ interface GameStore extends GameState {
     isEndlessMode: boolean;
     completedLevels: number[];
     highScores: Record<number, number>;
+    levelMovesRemaining: Record<number, number>; // Best remaining moves for star calculation
 
     // Setters
     setSelectedTile: (position: Position | null) => void;
     setIsProcessing: (value: boolean) => void;
-    markLevelComplete: (levelId: number, score: number) => void;
+    markLevelComplete: (levelId: number, score: number, movesRemaining: number) => void;
     saveEndlessHighScore: (theme: ThemeType, score: number) => void;
 }
 
@@ -91,6 +93,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     isEndlessMode: false,
     completedLevels: [],
     highScores: {},
+    levelMovesRemaining: {},
 
     // Load progress from AsyncStorage
     loadProgress: async () => {
@@ -101,6 +104,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
                 set({
                     completedLevels: progress.completedLevels || [],
                     highScores: progress.highScores || {},
+                    levelMovesRemaining: progress.levelMovesRemaining || {},
                 });
                 console.log('✅ Progress loaded:', progress);
             }
@@ -112,8 +116,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // Save progress to AsyncStorage
     saveProgress: async () => {
         try {
-            const { completedLevels, highScores } = get();
-            const progress: SavedProgress = { completedLevels, highScores };
+            const { completedLevels, highScores, levelMovesRemaining } = get();
+            const progress: SavedProgress = { completedLevels, highScores, levelMovesRemaining };
             await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
             console.log('✅ Progress saved:', progress);
         } catch (error) {
@@ -463,8 +467,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     setIsProcessing: (value) => set({ isProcessing: value }),
 
-    markLevelComplete: (levelId: number, score: number) => {
-        const { completedLevels, highScores, isEndlessMode } = get();
+    markLevelComplete: (levelId: number, score: number, movesRemaining: number) => {
+        const { completedLevels, highScores, levelMovesRemaining, isEndlessMode } = get();
 
         // Don't save endless mode progress
         if (isEndlessMode) return;
@@ -479,9 +483,17 @@ export const useGameStore = create<GameStore>((set, get) => ({
             [levelId]: Math.max(currentHighScore, score),
         };
 
+        // Save best moves remaining (higher is better)
+        const currentBestMoves = levelMovesRemaining[levelId] || 0;
+        const newLevelMovesRemaining = {
+            ...levelMovesRemaining,
+            [levelId]: Math.max(currentBestMoves, movesRemaining),
+        };
+
         set({
             completedLevels: newCompletedLevels,
             highScores: newHighScores,
+            levelMovesRemaining: newLevelMovesRemaining,
         });
 
         // Save progress to AsyncStorage

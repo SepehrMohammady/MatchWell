@@ -60,13 +60,7 @@ const EndlessSelect: React.FC<Props> = ({ navigation }) => {
 
     // Check if a theme is unlocked (all levels in that theme completed in story mode)
     const isThemeUnlocked = (theme: ThemeType): boolean => {
-        if (theme === 'trash-sorting') {
-            // Trash sorting requires at least 1 level completed
-            const themeLevels = getLevelsByTheme(theme);
-            return themeLevels.some(level => completedLevels.includes(level.id));
-        }
-
-        // Other themes require ALL levels in that theme to be completed
+        // ALL themes require ALL levels in that theme to be completed
         const themeLevels = getLevelsByTheme(theme);
         return themeLevels.every(level => completedLevels.includes(level.id));
     };
@@ -170,7 +164,7 @@ const EndlessSelect: React.FC<Props> = ({ navigation }) => {
                                         {theme.name}
                                     </Text>
                                     <Text style={styles.themeDescription}>
-                                        {unlocked ? theme.description : 'Complete 5 levels of previous theme'}
+                                        {unlocked ? theme.description : 'Complete all levels of this theme'}
                                     </Text>
                                 </View>
                             </View>

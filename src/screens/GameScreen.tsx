@@ -82,9 +82,9 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
 
     useEffect(() => {
         if (isLevelComplete) {
-            markLevelComplete(levelId, score);
+            markLevelComplete(levelId, score, movesRemaining);
         }
-    }, [isLevelComplete, levelId, score, markLevelComplete]);
+    }, [isLevelComplete, levelId, score, movesRemaining, markLevelComplete]);
 
     // Save endless high score when score changes in endless mode
     useEffect(() => {
