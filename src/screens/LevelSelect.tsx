@@ -1,4 +1,4 @@
-// Level Select Screen - Earth-Inspired Minimal Design
+// Level Select Screen - Minimal Flat Design
 import React, { useEffect, useCallback } from 'react';
 import {
     View,
@@ -14,30 +14,18 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
 import { RootStackParamList } from '../types';
 import { useGameStore } from '../context/GameStore';
-import { LEVELS, THEME_CONFIGS, getThemeEmoji } from '../themes';
-import { ThemeType } from '../types';
+import { LEVELS, THEME_CONFIGS, getLevelsByTheme } from '../themes';
+import { ThemeType, Level } from '../types';
 import { playSfx, playBgm } from '../utils/SoundManager';
-import { COLORS, TYPOGRAPHY, SPACING, RADIUS, SHADOWS } from '../config/theme';
-import { LockIcon, StarFilledIcon } from '../components/UI/Icons';
+import { COLORS, TYPOGRAPHY, SPACING, RADIUS } from '../config/theme';
+import { LockIcon } from '../components/UI/Icons';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'LevelSelect'>;
 
 const LevelSelect: React.FC<Props> = ({ navigation }) => {
     const insets = useSafeAreaInsets();
     const completedLevels = useGameStore((state) => state.completedLevels);
-    const highScores = useGameStore((state) => state.highScores);
-
     const levelMovesRemaining = useGameStore((state) => state.levelMovesRemaining);
-
-    // Handle hardware back button to go to MainMenu
-    useEffect(() => {
-        const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
-            handleBack();
-            return true;
-        });
-
-        return () => backHandler.remove();
-    }, []);
 
     // Play menu music when screen is focused
     useFocusEffect(
@@ -46,6 +34,19 @@ const LevelSelect: React.FC<Props> = ({ navigation }) => {
         }, [])
     );
 
+    // Handle back button
+    useFocusEffect(
+        useCallback(() => {
+            const onBackPress = () => {
+                handleBack();
+                return true;
+            };
+            const subscription = BackHandler.addEventListener('hardwareBackPress', onBackPress);
+            return () => subscription.remove();
+        }, [])
+    );
+
+    // Check if level is unlocked (first level always unlocked, others need previous level complete)
     const isLevelUnlocked = (levelId: number): boolean => {
         if (levelId === 1) return true;
         return completedLevels.includes(levelId - 1);
@@ -53,52 +54,45 @@ const LevelSelect: React.FC<Props> = ({ navigation }) => {
 
     // Stars based on moves remaining (percentage of total moves saved)
     const getStars = (levelId: number): number => {
-        const level = LEVELS.find(l => l.id === levelId);
-        const movesRemaining = levelMovesRemaining[levelId] || 0;
-        if (!level || !completedLevels.includes(levelId)) return 0;
+        const movesRemaining = levelMovesRemaining[levelId];
+        if (movesRemaining === undefined) return 0;
 
-        // Calculate percentage of moves remaining
-        const totalMoves = level.moves;
-        const percentRemaining = (movesRemaining / totalMoves) * 100;
+        const level = LEVELS.find((l) => l.id === levelId);
+        if (!level) return 0;
 
-        // 3 stars: 50%+ moves remaining
-        // 2 stars: 25-49% moves remaining
-        // 1 star: completed with less than 25% moves remaining
-        if (percentRemaining >= 50) return 3;
-        if (percentRemaining >= 25) return 2;
+        const movesPercentage = movesRemaining / level.moves;
+        if (movesPercentage >= 0.50) return 3;
+        if (movesPercentage >= 0.25) return 2;
         return 1;
     };
 
     const handleLevelSelect = (levelId: number) => {
-        if (isLevelUnlocked(levelId)) {
-            playSfx('tile_select');
-            navigation.navigate('Game', { levelId });
-        }
+        playSfx('tile_select');
+        navigation.navigate('Game', { levelId });
     };
 
     const handleBack = () => {
         playSfx('tile_select');
-        navigation.navigate('MainMenu');
+        navigation.goBack();
     };
 
     // Get total stars for a theme
-    const getTotalThemeStars = (themeLevels: typeof LEVELS): { earned: number; total: number } => {
+    const getTotalThemeStars = (themeLevels: Level[]): { earned: number; total: number } => {
         let earned = 0;
-        const total = themeLevels.length * 3; // Max 3 stars per level
-        themeLevels.forEach(level => {
+        themeLevels.forEach((level: Level) => {
             earned += getStars(level.id);
         });
-        return { earned, total };
+        return { earned, total: themeLevels.length * 3 };
     };
 
     // Group levels by theme
-    const levelsByTheme = LEVELS.reduce((acc, level) => {
+    const levelsByTheme = LEVELS.reduce((acc: Record<ThemeType, Level[]>, level: Level) => {
         if (!acc[level.theme]) {
             acc[level.theme] = [];
         }
         acc[level.theme].push(level);
         return acc;
-    }, {} as Record<ThemeType, typeof LEVELS>);
+    }, {} as Record<ThemeType, Level[]>);
 
     return (
         <View style={[styles.container, { paddingTop: insets.top }]}>
@@ -109,38 +103,25 @@ const LevelSelect: React.FC<Props> = ({ navigation }) => {
                 <TouchableOpacity style={styles.backButton} onPress={handleBack}>
                     <Text style={styles.backButtonText}>← Back</Text>
                 </TouchableOpacity>
-                <Text style={styles.title}>Select level</Text>
+                <Text style={styles.title}>Levels</Text>
                 <View style={styles.placeholder} />
             </View>
 
             <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent}>
-                {Object.entries(levelsByTheme).map(([themeId, levels]) => {
+                {Object.entries(levelsByTheme).map(([themeId, levels]: [string, Level[]]) => {
                     const theme = THEME_CONFIGS[themeId as ThemeType];
                     const themeStars = getTotalThemeStars(levels);
                     return (
                         <View key={themeId} style={styles.themeSection}>
-                            <View style={styles.themeTitleContainer}>
-                                <View style={styles.themeIconContainer}>
-                                    <Text style={styles.themeEmoji}>
-                                        {getThemeEmoji(themeId as ThemeType)}
-                                    </Text>
-                                </View>
-                                <View style={styles.themeTextContainer}>
-                                    <View style={styles.themeNameRow}>
-                                        <Text style={styles.themeName}>{theme.name}</Text>
-                                        <View style={styles.themeStarsContainer}>
-                                            <StarFilledIcon size={14} />
-                                            <Text style={styles.themeStarsText}>
-                                                {themeStars.earned}/{themeStars.total}
-                                            </Text>
-                                        </View>
-                                    </View>
-                                    <Text style={styles.themeDescription}>{theme.description}</Text>
-                                </View>
+                            {/* Theme Header */}
+                            <View style={styles.themeHeader}>
+                                <Text style={styles.themeName}>{theme.name}</Text>
+                                <Text style={styles.themeStars}>★ {themeStars.earned}/{themeStars.total}</Text>
                             </View>
 
+                            {/* Level Grid */}
                             <View style={styles.levelsGrid}>
-                                {levels.map((level) => {
+                                {levels.map((level: Level) => {
                                     const unlocked = isLevelUnlocked(level.id);
                                     const stars = getStars(level.id);
 
@@ -149,8 +130,8 @@ const LevelSelect: React.FC<Props> = ({ navigation }) => {
                                             key={level.id}
                                             style={[
                                                 styles.levelButton,
-                                                !unlocked && styles.lockedLevel,
                                                 stars > 0 && styles.completedLevel,
+                                                !unlocked && styles.lockedLevel,
                                             ]}
                                             onPress={() => handleLevelSelect(level.id)}
                                             disabled={!unlocked}
@@ -158,20 +139,28 @@ const LevelSelect: React.FC<Props> = ({ navigation }) => {
                                         >
                                             {unlocked ? (
                                                 <>
-                                                    <Text style={styles.levelNumber}>{level.id}</Text>
+                                                    <Text style={[
+                                                        styles.levelNumber,
+                                                        stars > 0 && styles.completedText
+                                                    ]}>
+                                                        {level.id}
+                                                    </Text>
                                                     <View style={styles.starsRow}>
                                                         {[1, 2, 3].map((s) => (
-                                                            <Text key={s} style={[
-                                                                styles.starSmall,
-                                                                s <= stars && styles.starFilled
-                                                            ]}>
+                                                            <Text
+                                                                key={s}
+                                                                style={[
+                                                                    styles.star,
+                                                                    s <= stars && styles.starFilled
+                                                                ]}
+                                                            >
                                                                 ★
                                                             </Text>
                                                         ))}
                                                     </View>
                                                 </>
                                             ) : (
-                                                <LockIcon size={24} color={COLORS.textMuted} />
+                                                <LockIcon size={20} color={COLORS.textMuted} />
                                             )}
                                         </TouchableOpacity>
                                     );
@@ -180,14 +169,6 @@ const LevelSelect: React.FC<Props> = ({ navigation }) => {
                         </View>
                     );
                 })}
-
-                {/* Coming Soon section */}
-                <View style={styles.comingSoon}>
-                    <Text style={styles.comingSoonTitle}>More coming soon</Text>
-                    <Text style={styles.comingSoonText}>
-                        Ocean cleanup, wildlife protection, sustainable cities, and more themes!
-                    </Text>
-                </View>
             </ScrollView>
         </View>
     );
@@ -206,7 +187,6 @@ const styles = StyleSheet.create({
         paddingVertical: SPACING.md,
         borderBottomWidth: 1,
         borderBottomColor: COLORS.cardBorder,
-        backgroundColor: COLORS.cardBackground,
     },
     backButton: {
         padding: SPACING.sm,
@@ -214,13 +194,11 @@ const styles = StyleSheet.create({
     backButtonText: {
         color: COLORS.organicWaste,
         fontSize: TYPOGRAPHY.body,
-        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
-        fontWeight: TYPOGRAPHY.semibold,
+        fontWeight: '600',
     },
     title: {
         fontSize: TYPOGRAPHY.h3,
-        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
-        fontWeight: TYPOGRAPHY.semibold,
+        fontWeight: '600',
         color: COLORS.textPrimary,
     },
     placeholder: {
@@ -236,120 +214,66 @@ const styles = StyleSheet.create({
     themeSection: {
         marginBottom: SPACING.xl,
     },
-    themeTitleContainer: {
+    themeHeader: {
         flexDirection: 'row',
+        justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: SPACING.lg,
-        gap: SPACING.md,
-    },
-    themeIconContainer: {
-        width: 48,
-        height: 48,
-        borderRadius: RADIUS.md,
-        backgroundColor: COLORS.cardBackground,
-        justifyContent: 'center',
-        alignItems: 'center',
-        ...SHADOWS.sm,
-    },
-    themeEmoji: {
-        fontSize: 24,
-    },
-    themeTextContainer: {
-        flex: 1,
+        marginBottom: SPACING.md,
+        paddingBottom: SPACING.sm,
+        borderBottomWidth: 1,
+        borderBottomColor: COLORS.cardBorder,
     },
     themeName: {
-        fontSize: TYPOGRAPHY.h4,
-        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
-        fontWeight: TYPOGRAPHY.semibold,
+        fontSize: TYPOGRAPHY.body,
+        fontWeight: '600',
         color: COLORS.textPrimary,
     },
-    themeNameRow: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-    },
-    themeStarsContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: 4,
-    },
-    themeStarsText: {
-        fontSize: TYPOGRAPHY.caption,
-        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
+    themeStars: {
+        fontSize: TYPOGRAPHY.bodySmall,
         color: COLORS.starFilled,
-    },
-    themeDescription: {
-        fontSize: TYPOGRAPHY.caption,
-        fontFamily: TYPOGRAPHY.fontFamily,
-        color: COLORS.textSecondary,
-        marginTop: 2,
+        fontWeight: '600',
     },
     levelsGrid: {
         flexDirection: 'row',
         flexWrap: 'wrap',
-        gap: SPACING.md,
+        gap: SPACING.sm,
     },
     levelButton: {
-        width: 64,
-        height: 72,
-        backgroundColor: COLORS.cardBackground,
-        borderRadius: RADIUS.md,
+        width: 56,
+        height: 64,
+        backgroundColor: COLORS.backgroundSecondary,
+        borderRadius: RADIUS.sm,
         justifyContent: 'center',
         alignItems: 'center',
-        ...SHADOWS.sm,
-    },
-    lockedLevel: {
-        backgroundColor: COLORS.backgroundSecondary,
-        opacity: 0.5,
+        borderWidth: 1,
+        borderColor: COLORS.cardBorder,
     },
     completedLevel: {
-        borderWidth: 2,
+        backgroundColor: COLORS.cardBackground,
         borderColor: COLORS.organicWaste,
     },
+    lockedLevel: {
+        opacity: 0.4,
+    },
     levelNumber: {
-        fontSize: TYPOGRAPHY.h3,
-        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
-        fontWeight: TYPOGRAPHY.semibold,
+        fontSize: TYPOGRAPHY.h4,
+        fontWeight: '600',
+        color: COLORS.textSecondary,
+        marginBottom: 2,
+    },
+    completedText: {
         color: COLORS.textPrimary,
-        marginBottom: 4,
     },
     starsRow: {
         flexDirection: 'row',
-        gap: 2,
+        gap: 1,
     },
-    starSmall: {
-        fontSize: 10,
+    star: {
+        fontSize: 8,
         color: COLORS.starEmpty,
     },
     starFilled: {
         color: COLORS.starFilled,
-    },
-    lockIcon: {
-        fontSize: 20,
-    },
-    comingSoon: {
-        backgroundColor: COLORS.cardBackground,
-        borderRadius: RADIUS.lg,
-        padding: SPACING.xl,
-        alignItems: 'center',
-        marginTop: SPACING.lg,
-        borderWidth: 1,
-        borderColor: COLORS.cardBorder,
-        borderStyle: 'dashed',
-    },
-    comingSoonTitle: {
-        fontSize: TYPOGRAPHY.h4,
-        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
-        fontWeight: TYPOGRAPHY.semibold,
-        color: COLORS.textSecondary,
-        marginBottom: SPACING.sm,
-    },
-    comingSoonText: {
-        fontSize: TYPOGRAPHY.bodySmall,
-        fontFamily: TYPOGRAPHY.fontFamily,
-        color: COLORS.textMuted,
-        textAlign: 'center',
-        lineHeight: 20,
     },
 });
 

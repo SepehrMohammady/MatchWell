@@ -1,4 +1,4 @@
-// Achievements Screen - Earth-Inspired Minimal Design
+// Achievements Screen - Minimal Flat Design
 import React, { useCallback, useMemo } from 'react';
 import {
     View,
@@ -12,11 +12,11 @@ import {
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
-import { RootStackParamList, ThemeType } from '../types';
+import { RootStackParamList } from '../types';
 import { useGameStore } from '../context/GameStore';
-import { getLevelsByTheme, LEVELS, getLevelById } from '../themes';
+import { LEVELS, getLevelsByTheme, getLevelById } from '../themes';
 import { playSfx, playBgm } from '../utils/SoundManager';
-import { COLORS, TYPOGRAPHY, SPACING, RADIUS, SHADOWS } from '../config/theme';
+import { COLORS, TYPOGRAPHY, SPACING, RADIUS } from '../config/theme';
 import {
     THEME_ACHIEVEMENTS,
     STAR_ACHIEVEMENTS,
@@ -37,30 +37,33 @@ const Achievements: React.FC<Props> = ({ navigation }) => {
     const levelMovesRemaining = useGameStore((state) => state.levelMovesRemaining);
     const clearUnseenAchievements = useGameStore((state) => state.clearUnseenAchievements);
 
-    // Handle hardware back button
-    React.useEffect(() => {
-        const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
-            handleBack();
-            return true;
-        });
-        return () => backHandler.remove();
-    }, []);
-
-    // Play menu music and clear unseen achievements when screen is focused
+    // Clear unseen achievements when screen is focused
     useFocusEffect(
         useCallback(() => {
+            clearUnseenAchievements();
             playBgm('bgm_menu');
-            clearUnseenAchievements(); // Clear red dot when user views achievements
         }, [clearUnseenAchievements])
+    );
+
+    // Handle back button
+    useFocusEffect(
+        useCallback(() => {
+            const onBackPress = () => {
+                handleBack();
+                return true;
+            };
+            const subscription = BackHandler.addEventListener('hardwareBackPress', onBackPress);
+            return () => subscription.remove();
+        }, [])
     );
 
     const handleBack = () => {
         playSfx('tile_select');
-        navigation.navigate('MainMenu');
+        navigation.goBack();
     };
 
     // All level IDs for star calculation
-    const allLevelIds = useMemo(() => LEVELS.map((l) => l.id), []);
+    const allLevelIds = useMemo(() => LEVELS.map((l: { id: number }) => l.id), []);
 
     // Check if achievement is unlocked
     const isUnlocked = useCallback(
@@ -110,22 +113,22 @@ const Achievements: React.FC<Props> = ({ navigation }) => {
         [levelMovesRemaining, allLevelIds]
     );
 
-    // Render a single achievement medal
+    // Render a single achievement
     const renderAchievement = (achievement: Achievement) => {
         const unlocked = isUnlocked(achievement);
         return (
             <View
                 key={achievement.id}
-                style={[styles.medalCard, !unlocked && styles.medalLocked]}
+                style={[styles.achievementRow, !unlocked && styles.achievementLocked]}
             >
-                <Text style={[styles.medalEmoji, !unlocked && styles.medalEmojiLocked]}>
+                <Text style={[styles.achievementEmoji, !unlocked && styles.emojiLocked]}>
                     {unlocked ? achievement.emoji : '🔒'}
                 </Text>
-                <View style={styles.medalInfo}>
-                    <Text style={[styles.medalName, !unlocked && styles.medalTextLocked]}>
+                <View style={styles.achievementInfo}>
+                    <Text style={[styles.achievementName, !unlocked && styles.textLocked]}>
                         {achievement.name}
                     </Text>
-                    <Text style={[styles.medalDescription, !unlocked && styles.medalTextLocked]}>
+                    <Text style={[styles.achievementDesc, !unlocked && styles.textLocked]}>
                         {achievement.description}
                     </Text>
                 </View>
@@ -158,40 +161,30 @@ const Achievements: React.FC<Props> = ({ navigation }) => {
             </View>
 
             {/* Summary */}
-            <View style={styles.summaryBox}>
-                <View style={styles.summaryItem}>
-                    <Text style={styles.summaryValue}>{unlockedCount}/{totalCount}</Text>
-                    <Text style={styles.summaryLabel}>Medals</Text>
-                </View>
-                <View style={styles.summaryDivider} />
-                <View style={styles.summaryItem}>
-                    <Text style={styles.summaryValue}>⭐ {totalStars}/150</Text>
-                    <Text style={styles.summaryLabel}>Stars</Text>
-                </View>
+            <View style={styles.summaryRow}>
+                <Text style={styles.summaryText}>{unlockedCount}/{totalCount} Medals</Text>
+                <Text style={styles.summaryDivider}>•</Text>
+                <Text style={styles.summaryText}>★ {totalStars}/150 Stars</Text>
             </View>
 
             <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent}>
                 {/* Theme Completion Section */}
                 <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>🎯 Theme Completion</Text>
-                    <View style={styles.medalGrid}>
-                        {THEME_ACHIEVEMENTS.map(renderAchievement)}
-                    </View>
+                    <Text style={styles.sectionTitle}>Theme Completion</Text>
+                    {THEME_ACHIEVEMENTS.map(renderAchievement)}
                 </View>
 
                 {/* Star Milestones Section */}
                 <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>⭐ Star Milestones</Text>
-                    <View style={styles.medalGrid}>
-                        {STAR_ACHIEVEMENTS.map(renderAchievement)}
-                    </View>
+                    <Text style={styles.sectionTitle}>Star Milestones</Text>
+                    {STAR_ACHIEVEMENTS.map(renderAchievement)}
                 </View>
 
-                {/* Endless Score Section */}
+                {/* Endless Mode Section */}
                 <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>♾️ Endless Mode</Text>
+                    <Text style={styles.sectionTitle}>Endless Mode</Text>
                     {Object.entries(endlessByTheme).map(([theme, achievements]) => (
-                        <View key={theme} style={styles.endlessThemeGroup}>
+                        <View key={theme} style={styles.endlessGroup}>
                             <Text style={styles.endlessThemeName}>
                                 {achievements[0].name.split(' ').slice(1).join(' ')}
                             </Text>
@@ -202,19 +195,12 @@ const Achievements: React.FC<Props> = ({ navigation }) => {
                                         <View
                                             key={a.id}
                                             style={[
-                                                styles.endlessMedal,
-                                                !unlocked && styles.endlessMedalLocked,
+                                                styles.endlessTier,
+                                                !unlocked && styles.endlessTierLocked,
                                             ]}
                                         >
-                                            <Text style={styles.endlessMedalEmoji}>
+                                            <Text style={styles.endlessEmoji}>
                                                 {unlocked ? a.emoji : '🔒'}
-                                            </Text>
-                                            <Text style={styles.endlessMedalTier}>
-                                                {a.tier === 'bronze' ? 'Bronze' :
-                                                    a.tier === 'silver' ? 'Silver' :
-                                                        a.tier === 'gold' ? 'Gold' :
-                                                            a.tier === 'diamond' ? 'Diamond' :
-                                                                a.tier === 'earth-saver' ? 'Earth Saver' : ''}
                                             </Text>
                                         </View>
                                     );
@@ -241,154 +227,121 @@ const styles = StyleSheet.create({
         paddingVertical: SPACING.md,
         borderBottomWidth: 1,
         borderBottomColor: COLORS.cardBorder,
-        backgroundColor: COLORS.backgroundPrimary,
     },
     backButton: {
-        paddingVertical: SPACING.xs,
-        paddingRight: SPACING.md,
+        padding: SPACING.sm,
     },
     backButtonText: {
+        color: COLORS.organicWaste,
         fontSize: TYPOGRAPHY.body,
-        fontFamily: TYPOGRAPHY.fontFamilyMedium,
-        fontWeight: TYPOGRAPHY.medium,
-        color: COLORS.textSecondary,
+        fontWeight: '600',
     },
     title: {
         fontSize: TYPOGRAPHY.h3,
-        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
-        fontWeight: TYPOGRAPHY.semibold,
+        fontWeight: '600',
         color: COLORS.textPrimary,
     },
     placeholder: {
         width: 60,
     },
-    summaryBox: {
+    summaryRow: {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: COLORS.backgroundSecondary,
-        marginHorizontal: SPACING.lg,
-        marginVertical: SPACING.md,
         paddingVertical: SPACING.md,
-        paddingHorizontal: SPACING.xl,
-        borderRadius: RADIUS.md,
-        gap: SPACING.xl,
+        gap: SPACING.md,
+        borderBottomWidth: 1,
+        borderBottomColor: COLORS.cardBorder,
     },
-    summaryItem: {
-        alignItems: 'center',
-    },
-    summaryValue: {
-        fontSize: TYPOGRAPHY.h4,
-        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
-        fontWeight: TYPOGRAPHY.semibold,
-        color: COLORS.textPrimary,
-    },
-    summaryLabel: {
-        fontSize: TYPOGRAPHY.caption,
-        fontFamily: TYPOGRAPHY.fontFamily,
+    summaryText: {
+        fontSize: TYPOGRAPHY.bodySmall,
         color: COLORS.textSecondary,
-        marginTop: 2,
+        fontWeight: '500',
     },
     summaryDivider: {
-        width: 1,
-        height: 30,
-        backgroundColor: COLORS.cardBorder,
+        color: COLORS.textMuted,
     },
     scrollView: {
         flex: 1,
     },
     scrollContent: {
-        paddingHorizontal: SPACING.lg,
-        paddingBottom: SPACING.xl,
+        padding: SPACING.lg,
+        paddingBottom: SPACING.xxl,
     },
     section: {
-        marginTop: SPACING.lg,
+        marginBottom: SPACING.xl,
     },
     sectionTitle: {
-        fontSize: TYPOGRAPHY.h4,
-        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
-        fontWeight: TYPOGRAPHY.semibold,
+        fontSize: TYPOGRAPHY.body,
+        fontWeight: '600',
         color: COLORS.textPrimary,
         marginBottom: SPACING.md,
+        paddingBottom: SPACING.sm,
+        borderBottomWidth: 1,
+        borderBottomColor: COLORS.cardBorder,
     },
-    medalGrid: {
-        gap: SPACING.sm,
-    },
-    medalCard: {
+    achievementRow: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: COLORS.cardBackground,
-        padding: SPACING.md,
-        borderRadius: RADIUS.md,
-        borderWidth: 1,
-        borderColor: COLORS.cardBorder,
-        ...SHADOWS.sm,
-    },
-    medalLocked: {
+        paddingVertical: SPACING.sm,
+        paddingHorizontal: SPACING.md,
+        marginBottom: SPACING.xs,
         backgroundColor: COLORS.backgroundSecondary,
-        opacity: 0.7,
+        borderRadius: RADIUS.sm,
     },
-    medalEmoji: {
-        fontSize: 32,
-        marginRight: SPACING.md,
-    },
-    medalEmojiLocked: {
+    achievementLocked: {
         opacity: 0.5,
     },
-    medalInfo: {
+    achievementEmoji: {
+        fontSize: 24,
+        marginRight: SPACING.md,
+    },
+    emojiLocked: {
+        opacity: 0.6,
+    },
+    achievementInfo: {
         flex: 1,
     },
-    medalName: {
-        fontSize: TYPOGRAPHY.body,
-        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
-        fontWeight: TYPOGRAPHY.semibold,
+    achievementName: {
+        fontSize: TYPOGRAPHY.bodySmall,
+        fontWeight: '600',
         color: COLORS.textPrimary,
     },
-    medalDescription: {
+    achievementDesc: {
         fontSize: TYPOGRAPHY.caption,
-        fontFamily: TYPOGRAPHY.fontFamily,
         color: COLORS.textSecondary,
-        marginTop: 2,
+        marginTop: 1,
     },
-    medalTextLocked: {
+    textLocked: {
         color: COLORS.textMuted,
     },
-    endlessThemeGroup: {
+    endlessGroup: {
         marginBottom: SPACING.md,
     },
     endlessThemeName: {
-        fontSize: TYPOGRAPHY.bodySmall,
-        fontFamily: TYPOGRAPHY.fontFamilyMedium,
-        fontWeight: TYPOGRAPHY.medium,
+        fontSize: TYPOGRAPHY.caption,
         color: COLORS.textSecondary,
         marginBottom: SPACING.xs,
     },
     endlessTierRow: {
         flexDirection: 'row',
-        gap: SPACING.sm,
+        gap: SPACING.xs,
     },
-    endlessMedal: {
-        alignItems: 'center',
-        backgroundColor: COLORS.cardBackground,
-        paddingVertical: SPACING.sm,
-        paddingHorizontal: SPACING.md,
+    endlessTier: {
+        width: 40,
+        height: 40,
+        backgroundColor: COLORS.backgroundSecondary,
         borderRadius: RADIUS.sm,
+        justifyContent: 'center',
+        alignItems: 'center',
         borderWidth: 1,
         borderColor: COLORS.cardBorder,
-        minWidth: 56,
     },
-    endlessMedalLocked: {
-        backgroundColor: COLORS.backgroundSecondary,
-        opacity: 0.6,
+    endlessTierLocked: {
+        opacity: 0.4,
     },
-    endlessMedalEmoji: {
-        fontSize: 20,
-    },
-    endlessMedalTier: {
-        fontSize: TYPOGRAPHY.caption,
-        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
-        color: COLORS.textMuted,
-        marginTop: 2,
+    endlessEmoji: {
+        fontSize: 18,
     },
 });
 

@@ -144,7 +144,7 @@ const MainMenu: React.FC<Props> = ({ navigation }) => {
 
                 <TouchableOpacity style={styles.secondaryButton} onPress={handleAchievements} activeOpacity={0.8}>
                     <View style={styles.achievementButtonContent}>
-                        <Text style={styles.secondaryButtonText}>🏆 Achievements</Text>
+                        <Text style={styles.secondaryButtonText}>Achievements</Text>
                         {unseenAchievements.length > 0 && (
                             <View style={styles.redDot} />
                         )}

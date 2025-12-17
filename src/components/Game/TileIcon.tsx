@@ -23,12 +23,12 @@ const TILE_ICON_MAP: Record<string, { icon: string; color: string }> = {
     car: { icon: 'car-side', color: '#E74C3C' },
     truck: { icon: 'truck', color: '#34495E' },
     bus: { icon: 'bus-side', color: '#F1C40F' },
-    motorbike: { icon: 'atv', color: '#2C3E50' },
+    motorbike: { icon: 'motorbike', color: '#2C3E50' },
     airplane: { icon: 'airplane', color: '#2ECC71' },
 
     // Theme 3: Water Conservation
     droplet: { icon: 'water', color: '#3498DB' },
-    faucet: { icon: 'faucet', color: '#7F8C8D' },
+    faucet: { icon: 'water-pump', color: '#7F8C8D' },
     shower: { icon: 'shower-head', color: '#1ABC9C' },
     ocean: { icon: 'waves', color: '#0077BE' },
     washing: { icon: 'washing-machine', color: '#2980B9' },
