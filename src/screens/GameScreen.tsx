@@ -15,7 +15,8 @@ import { useFocusEffect } from '@react-navigation/native';
 import { useGameStore } from '../context/GameStore';
 import GameBoard from '../components/Game/GameBoard';
 import HUD from '../components/UI/HUD';
-import { THEME_CONFIGS, getLevelById } from '../themes';
+import { THEME_CONFIGS, getLevelById, getLevelsByTheme } from '../themes';
+import { THEME_ACHIEVEMENTS, checkThemeAchievement, Achievement } from '../config/achievements';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types';
 import { playBgm, playThemeBgm, pauseBgm, resumeBgm, stopBgm, playSfx, getSoundSettings, toggleSfx, toggleMusic } from '../utils/SoundManager';
@@ -46,6 +47,7 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
     const saveEndlessState = useGameStore((state) => state.saveEndlessState);
     const clearEndlessState = useGameStore((state) => state.clearEndlessState);
     const grid = useGameStore((state) => state.grid);
+    const completedLevels = useGameStore((state) => state.completedLevels);
 
     const levelConfig = getLevelById(levelId);
     const themeConfig = THEME_CONFIGS[theme];
@@ -53,6 +55,7 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
     // Sound settings state
     const [sfxEnabled, setSfxEnabled] = useState(true);
     const [musicEnabled, setMusicEnabled] = useState(true);
+    const [newAchievement, setNewAchievement] = useState<Achievement | null>(null);
 
     // Load sound settings when pausing
     useEffect(() => {
@@ -95,8 +98,25 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
     useEffect(() => {
         if (isLevelComplete) {
             markLevelComplete(levelId, score, movesRemaining);
+
+            // Check for new theme achievement
+            if (!isEndlessMode && theme) {
+                const themeAchievement = THEME_ACHIEVEMENTS.find(a => a.theme === theme);
+                if (themeAchievement) {
+                    // Check if achievement was just earned (need to include this level)
+                    const updatedCompletedLevels = [...completedLevels, levelId];
+                    const wasCompleted = checkThemeAchievement(theme, completedLevels, getLevelsByTheme);
+                    const isNowCompleted = checkThemeAchievement(theme, updatedCompletedLevels, getLevelsByTheme);
+                    if (!wasCompleted && isNowCompleted) {
+                        setNewAchievement(themeAchievement);
+                        playSfx('level_complete'); // Play extra celebration sound
+                    }
+                }
+            }
+        } else {
+            setNewAchievement(null);
         }
-    }, [isLevelComplete, levelId, score, movesRemaining, markLevelComplete]);
+    }, [isLevelComplete, levelId, score, movesRemaining, markLevelComplete, isEndlessMode, theme, completedLevels]);
 
     // Save endless high score when score changes in endless mode
     useEffect(() => {
@@ -296,6 +316,17 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
                         </View>
 
                         <Text style={styles.movesLeftText}>{movesRemaining} moves remaining</Text>
+
+                        {/* Achievement Notification */}
+                        {newAchievement && (
+                            <View style={styles.achievementBanner}>
+                                <Text style={styles.achievementEmoji}>{newAchievement.emoji}</Text>
+                                <View style={styles.achievementTextContainer}>
+                                    <Text style={styles.achievementTitle}>🎉 Achievement Unlocked!</Text>
+                                    <Text style={styles.achievementName}>{newAchievement.name}</Text>
+                                </View>
+                            </View>
+                        )}
 
                         <View style={styles.modalButtonsContainer}>
                             <TouchableOpacity style={styles.modalButton} onPress={handleNextLevel}>
@@ -540,6 +571,35 @@ const styles = StyleSheet.create({
     },
     soundToggleActive: {
         backgroundColor: 'rgba(139, 195, 74, 0.15)',
+    },
+    achievementBanner: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: 'rgba(255, 215, 0, 0.15)',
+        borderWidth: 1,
+        borderColor: '#FFD700',
+        borderRadius: RADIUS.lg,
+        padding: SPACING.md,
+        marginTop: SPACING.lg,
+        marginBottom: SPACING.sm,
+    },
+    achievementEmoji: {
+        fontSize: 40,
+        marginRight: SPACING.md,
+    },
+    achievementTextContainer: {
+        flex: 1,
+    },
+    achievementTitle: {
+        fontSize: TYPOGRAPHY.caption,
+        fontFamily: TYPOGRAPHY.fontFamily,
+        color: '#B8860B',
+        marginBottom: 2,
+    },
+    achievementName: {
+        fontSize: TYPOGRAPHY.body,
+        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
+        color: '#B8860B',
     },
 });
 
