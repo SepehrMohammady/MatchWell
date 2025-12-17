@@ -194,18 +194,19 @@ export const checkThemeAchievement = (
 
 export const checkStarAchievement = (
     requirement: number,
-    highScores: Record<number, number>,
-    getLevelById: (id: number) => { targetScore: number } | undefined,
+    levelMovesRemaining: Record<number, number>,
+    getLevelById: (id: number) => { moves: number } | undefined,
     allLevelIds: number[]
 ): boolean => {
     let totalStars = 0;
     allLevelIds.forEach((levelId) => {
         const level = getLevelById(levelId);
-        const score = highScores[levelId] || 0;
-        if (level && score > 0) {
-            if (score >= level.targetScore * 2) totalStars += 3;
-            else if (score >= level.targetScore * 1.5) totalStars += 2;
-            else if (score >= level.targetScore) totalStars += 1;
+        const movesRemaining = levelMovesRemaining[levelId];
+        if (level && movesRemaining !== undefined) {
+            const movesPercentage = movesRemaining / level.moves;
+            if (movesPercentage >= 0.50) totalStars += 3;
+            else if (movesPercentage >= 0.25) totalStars += 2;
+            else totalStars += 1;
         }
     });
     return totalStars >= requirement;
@@ -222,20 +223,21 @@ export const checkEndlessAchievement = (
     return score >= requirement;
 };
 
-// Get total stars earned
+// Get total stars earned (moves-based calculation)
 export const getTotalStars = (
-    highScores: Record<number, number>,
-    getLevelById: (id: number) => { targetScore: number } | undefined,
+    levelMovesRemaining: Record<number, number>,
+    getLevelById: (id: number) => { moves: number } | undefined,
     allLevelIds: number[]
 ): number => {
     let total = 0;
     allLevelIds.forEach((levelId) => {
         const level = getLevelById(levelId);
-        const score = highScores[levelId] || 0;
-        if (level && score > 0) {
-            if (score >= level.targetScore * 2) total += 3;
-            else if (score >= level.targetScore * 1.5) total += 2;
-            else if (score >= level.targetScore) total += 1;
+        const movesRemaining = levelMovesRemaining[levelId];
+        if (level && movesRemaining !== undefined) {
+            const movesPercentage = movesRemaining / level.moves;
+            if (movesPercentage >= 0.50) total += 3;
+            else if (movesPercentage >= 0.25) total += 2;
+            else total += 1;
         }
     });
     return total;

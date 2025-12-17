@@ -34,6 +34,7 @@ const Achievements: React.FC<Props> = ({ navigation }) => {
     const insets = useSafeAreaInsets();
     const completedLevels = useGameStore((state) => state.completedLevels);
     const highScores = useGameStore((state) => state.highScores);
+    const levelMovesRemaining = useGameStore((state) => state.levelMovesRemaining);
 
     // Handle hardware back button
     React.useEffect(() => {
@@ -72,7 +73,7 @@ const Achievements: React.FC<Props> = ({ navigation }) => {
                 case 'stars':
                     return checkStarAchievement(
                         achievement.requirement,
-                        highScores,
+                        levelMovesRemaining,
                         getLevelById,
                         allLevelIds
                     );
@@ -86,7 +87,7 @@ const Achievements: React.FC<Props> = ({ navigation }) => {
                     return false;
             }
         },
-        [completedLevels, highScores, allLevelIds]
+        [completedLevels, highScores, levelMovesRemaining, allLevelIds]
     );
 
     // Count unlocked achievements
@@ -103,8 +104,8 @@ const Achievements: React.FC<Props> = ({ navigation }) => {
 
     // Get total stars for display
     const totalStars = useMemo(
-        () => getTotalStars(highScores, getLevelById, allLevelIds),
-        [highScores, allLevelIds]
+        () => getTotalStars(levelMovesRemaining, getLevelById, allLevelIds),
+        [levelMovesRemaining, allLevelIds]
     );
 
     // Render a single achievement medal
