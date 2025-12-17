@@ -16,8 +16,8 @@ import { useFocusEffect } from '@react-navigation/native';
 import { useGameStore } from '../context/GameStore';
 import GameBoard from '../components/Game/GameBoard';
 import HUD from '../components/UI/HUD';
-import { THEME_CONFIGS, getLevelById, getLevelsByTheme } from '../themes';
-import { THEME_ACHIEVEMENTS, checkThemeAchievement, Achievement } from '../config/achievements';
+import { THEME_CONFIGS, getLevelById, getLevelsByTheme, LEVELS } from '../themes';
+import { THEME_ACHIEVEMENTS, STAR_ACHIEVEMENTS, ENDLESS_ACHIEVEMENTS, checkThemeAchievement, checkStarAchievement, checkEndlessAchievement, Achievement } from '../config/achievements';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types';
 import { playBgm, playThemeBgm, pauseBgm, resumeBgm, stopBgm, playSfx, getSoundSettings, toggleSfx, toggleMusic } from '../utils/SoundManager';
@@ -49,6 +49,8 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
     const clearEndlessState = useGameStore((state) => state.clearEndlessState);
     const grid = useGameStore((state) => state.grid);
     const completedLevels = useGameStore((state) => state.completedLevels);
+    const highScores = useGameStore((state) => state.highScores);
+    const levelMovesRemaining = useGameStore((state) => state.levelMovesRemaining);
     const addUnseenAchievement = useGameStore((state) => state.addUnseenAchievement);
 
     const levelConfig = getLevelById(levelId);
@@ -98,46 +100,82 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
         }, [levelId, route.params?.isEndless, route.params?.endlessTheme])
     );
 
+    // Helper to show toast for new achievement
+    const showAchievementToast = useCallback((achievement: Achievement) => {
+        setToastAchievement(achievement);
+        addUnseenAchievement(achievement.id);
+        playSfx('level_complete');
+
+        Animated.timing(toastOpacity, {
+            toValue: 1,
+            duration: 300,
+            useNativeDriver: true,
+        }).start(() => {
+            setTimeout(() => {
+                Animated.timing(toastOpacity, {
+                    toValue: 0,
+                    duration: 300,
+                    useNativeDriver: true,
+                }).start(() => {
+                    setToastAchievement(null);
+                });
+            }, 3000);
+        });
+    }, [addUnseenAchievement, toastOpacity]);
+
+    // Check for new achievements when level completes
     useEffect(() => {
         if (isLevelComplete) {
             markLevelComplete(levelId, score, movesRemaining);
 
-            // Check for new theme achievement
+            const allLevelIds = LEVELS.map(l => l.id);
+            const updatedCompletedLevels = [...completedLevels, levelId];
+            const updatedMovesRemaining = { ...levelMovesRemaining, [levelId]: movesRemaining };
+
+            // Check theme achievements (story mode only)
             if (!isEndlessMode && theme) {
                 const themeAchievement = THEME_ACHIEVEMENTS.find(a => a.theme === theme);
                 if (themeAchievement) {
-                    // Check if achievement was just earned (need to include this level)
-                    const updatedCompletedLevels = [...completedLevels, levelId];
                     const wasCompleted = checkThemeAchievement(theme, completedLevels, getLevelsByTheme);
                     const isNowCompleted = checkThemeAchievement(theme, updatedCompletedLevels, getLevelsByTheme);
                     if (!wasCompleted && isNowCompleted) {
-                        // Show toast notification
-                        setToastAchievement(themeAchievement);
-                        addUnseenAchievement(themeAchievement.id);
-                        playSfx('level_complete'); // Play extra celebration sound
+                        showAchievementToast(themeAchievement);
+                        return; // Only show one toast at a time
+                    }
+                }
+            }
 
-                        // Fade in toast
-                        Animated.timing(toastOpacity, {
-                            toValue: 1,
-                            duration: 300,
-                            useNativeDriver: true,
-                        }).start(() => {
-                            // Auto-dismiss after 3 seconds
-                            setTimeout(() => {
-                                Animated.timing(toastOpacity, {
-                                    toValue: 0,
-                                    duration: 300,
-                                    useNativeDriver: true,
-                                }).start(() => {
-                                    setToastAchievement(null);
-                                });
-                            }, 3000);
-                        });
+            // Check star achievements (story mode only)
+            if (!isEndlessMode) {
+                for (const starAchievement of STAR_ACHIEVEMENTS) {
+                    const wasEarned = checkStarAchievement(starAchievement.requirement, levelMovesRemaining, getLevelById, allLevelIds);
+                    const isNowEarned = checkStarAchievement(starAchievement.requirement, updatedMovesRemaining, getLevelById, allLevelIds);
+                    if (!wasEarned && isNowEarned) {
+                        showAchievementToast(starAchievement);
+                        return; // Only show one toast at a time
+                    }
+                }
+            }
+
+            // Check endless achievements (endless mode only)
+            if (isEndlessMode && theme) {
+                for (const endlessAchievement of ENDLESS_ACHIEVEMENTS.filter(a => a.theme === theme)) {
+                    const wasEarned = checkEndlessAchievement(theme, endlessAchievement.requirement, highScores);
+                    const updatedHighScores = { ...highScores };
+                    const themeIndex = ['trash-sorting', 'pollution', 'water-conservation', 'energy-efficiency', 'deforestation'].indexOf(theme);
+                    const endlessId = -(themeIndex + 1);
+                    if (score > (updatedHighScores[endlessId] || 0)) {
+                        updatedHighScores[endlessId] = score;
+                    }
+                    const isNowEarned = checkEndlessAchievement(theme, endlessAchievement.requirement, updatedHighScores);
+                    if (!wasEarned && isNowEarned) {
+                        showAchievementToast(endlessAchievement);
+                        return; // Only show one toast at a time
                     }
                 }
             }
         }
-    }, [isLevelComplete, levelId, score, movesRemaining, markLevelComplete, isEndlessMode, theme, completedLevels, addUnseenAchievement, toastOpacity]);
+    }, [isLevelComplete, levelId, score, movesRemaining, markLevelComplete, isEndlessMode, theme, completedLevels, levelMovesRemaining, highScores, showAchievementToast]);
 
     // Save endless high score when score changes in endless mode
     useEffect(() => {

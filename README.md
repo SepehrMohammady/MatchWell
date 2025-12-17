@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://img.shields.io/badge/Platform-Android%20%7C%20iOS%20%7C%20Windows-brightgreen" alt="Platform">
+  <img src="https://img.shields.io/badge/Platform-Android-brightgreen" alt="Platform">
   <img src="https://img.shields.io/badge/React%20Native-0.83-blue" alt="React Native">
   <img src="https://img.shields.io/badge/License-MIT-yellow" alt="License">
 </p>
@@ -25,30 +25,63 @@ Match 3 or more items in a row or column to clear them from the board. Complete 
 | Feature | Description |
 |---------|-------------|
 | 🧩 **Match-3 Mechanics** | Classic puzzle gameplay with satisfying combos |
-| 🌍 **Environmental Themes** | Learn about recycling, pollution, and more |
-| ⭐ **10 Levels** | Progressive difficulty across 2 unique themes |
+| 🌍 **5 Environmental Themes** | Trash Sorting, Pollution, Water Conservation, Energy Efficiency, Deforestation |
+| ⭐ **50 Story Levels** | 10 levels per theme with progressive difficulty |
+| ♾️ **Endless Mode** | Unlimited play, no move limits, high score tracking |
+| 🏆 **35 Achievements** | Theme completion, star milestones, endless score tiers |
 | 🔥 **Combo System** | Chain reactions multiply your score |
 | 📚 **Eco Facts** | Learn real environmental facts as you play |
+| 🎵 **Themed Music** | Unique background music for each theme |
 
 ---
 
 ## 🎨 Themes
 
-### ♻️ Trash Sorting (Levels 1-5)
-Learn to separate recyclables! Match plastic bottles, paper, glass, metal cans, and organic waste.
-
-> 💡 *"Recycling one aluminum can saves enough energy to run a TV for 3 hours!"*
-
-### 🏭 Clear the Air (Levels 6-10)  
-Remove polluting vehicles from our cities! Match cars, trucks, buses, and factories to clean the sky.
-
-> 💡 *"Cycling instead of driving for short trips can significantly reduce your carbon footprint!"*
+| Theme | Icon | Description |
+|-------|------|-------------|
+| **Trash Sorting** | ♻️ | Learn to separate recyclables: plastic, paper, glass, metal, organic |
+| **Pollution** | 🏭 | Remove polluting vehicles from cities: cars, trucks, buses, factories |
+| **Water Conservation** | 💧 | Save water resources: droplets, showers, faucets, waves |
+| **Energy Efficiency** | ⚡ | Conserve energy: light bulbs, plugs, batteries, solar, wind |
+| **Deforestation** | 🌳 | Protect forests: pine trees, palm trees, logs, seedlings, leaves |
 
 ---
 
-## 📱 Screenshots
+## ⭐ Star System
 
-*Coming soon!*
+Stars are awarded based on **moves remaining** when completing a level:
+
+| Moves Remaining | Stars |
+|-----------------|-------|
+| ≥50% of total | ⭐⭐⭐ |
+| 25-49% of total | ⭐⭐☆ |
+| <25% of total | ⭐☆☆ |
+
+**Maximum: 150 stars** (50 levels × 3 stars each)
+
+---
+
+## 🏆 Achievements
+
+### Theme Completion (5)
+Complete all 10 levels of a theme to earn its medal:
+- ♻️ **Recycler** - Trash Sorting
+- 🌬️ **Clean Air Champion** - Pollution
+- 💧 **Water Guardian** - Water Conservation
+- ⚡ **Energy Saver** - Energy Efficiency
+- 🌳 **Forest Protector** - Deforestation
+
+### Star Milestones (5)
+| Achievement | Requirement |
+|-------------|-------------|
+| 🥉 Bronze Collector | 30 stars |
+| 🥈 Silver Collector | 60 stars |
+| 🥇 Gold Collector | 90 stars |
+| 💎 Diamond Collector | 120 stars |
+| 🏆 Star Master | 150 stars |
+
+### Endless Score Tiers (25)
+5 tiers per theme (Bronze → Silver → Gold → Diamond → Earth Saver)
 
 ---
 
@@ -57,8 +90,7 @@ Remove polluting vehicles from our cities! Match cars, trucks, buses, and factor
 ### Prerequisites
 - Node.js 18+
 - React Native CLI
-- Android Studio (for Android)
-- Xcode (for iOS, macOS only)
+- Android Studio
 
 ### Installation
 
@@ -72,9 +104,6 @@ npm install
 
 # Run on Android
 npx react-native run-android
-
-# Run on iOS (macOS only)
-npx react-native run-ios
 ```
 
 ### Build Release APK
@@ -88,6 +117,17 @@ The APK will be at `android/app/build/outputs/apk/release/app-release.apk`
 
 ---
 
+## 📖 Documentation
+
+Open `icon-preview.html` in a browser to see:
+- All theme icons
+- UI icons
+- Star calculation details
+- Achievement requirements
+- Game mechanics guide
+
+---
+
 ## 🛠️ Tech Stack
 
 | Technology | Purpose |
@@ -96,21 +136,8 @@ The APK will be at `android/app/build/outputs/apk/release/app-release.apk`
 | TypeScript | Type-safe development |
 | Zustand | State management |
 | React Navigation | Screen navigation |
-
----
-
-## 🗺️ Roadmap
-
-- [x] Core Match-3 gameplay
-- [x] Trash Sorting theme
-- [x] Pollution theme
-- [ ] 💧 Water Conservation theme
-- [ ] ⚡ Energy Efficiency theme
-- [ ] 🌳 Deforestation theme
-- [ ] 🎵 Sound effects & music
-- [ ] 🏆 Leaderboards
-- [ ] 📅 Daily challenges
-- [ ] 🌐 Multiple languages
+| react-native-sound | Audio playback |
+| AsyncStorage | Progress persistence |
 
 ---
 

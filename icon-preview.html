@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MatchWell - Icon Preview & Game Guide</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        h1 { text-align: center; font-size: 2.5rem; margin-bottom: 10px; }
+        h1 span { font-size: 3rem; }
+        .subtitle { text-align: center; color: #8BC34A; margin-bottom: 40px; font-size: 1.2rem; }
+        h2 { color: #8BC34A; margin: 40px 0 20px; border-bottom: 2px solid #8BC34A; padding-bottom: 10px; }
+        h3 { color: #FFD700; margin: 25px 0 15px; }
+        
+        /* Icon Grid */
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .icon-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+        .icon-card:hover { transform: scale(1.05); }
+        .icon-card .emoji { font-size: 3rem; margin-bottom: 10px; }
+        .icon-card .name { font-size: 0.85rem; color: #ccc; }
+        
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        th, td { padding: 12px 16px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        th { background: rgba(139, 195, 74, 0.2); color: #8BC34A; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Info Cards */
+        .info-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .info-card h4 { color: #FFD700; margin-bottom: 10px; }
+        .info-card ul { padding-left: 20px; }
+        .info-card li { margin: 8px 0; }
+        
+        /* Achievements */
+        .achievement-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        .achievement-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .achievement-card .emoji { font-size: 2rem; }
+        .achievement-card .info h5 { color: #FFD700; margin-bottom: 4px; }
+        .achievement-card .info p { color: #aaa; font-size: 0.85rem; }
+        
+        /* Stars */
+        .star { color: #FFD700; }
+        .star-empty { color: #555; }
+        
+        code { background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 4px; font-family: monospace; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><span>🌍</span> MatchWell</h1>
+        <p class="subtitle">Save the Planet, One Match at a Time!</p>
+        
+        <!-- THEME ICONS -->
+        <h2>🎨 Theme Icons</h2>
+        
+        <h3>♻️ Trash Sorting</h3>
+        <div class="icon-grid">
+            <div class="icon-card"><div class="emoji">🍶</div><div class="name">Plastic</div></div>
+            <div class="icon-card"><div class="emoji">📄</div><div class="name">Paper</div></div>
+            <div class="icon-card"><div class="emoji">🍾</div><div class="name">Glass</div></div>
+            <div class="icon-card"><div class="emoji">🥫</div><div class="name">Metal</div></div>
+            <div class="icon-card"><div class="emoji">🍌</div><div class="name">Organic</div></div>
+            <div class="icon-card"><div class="emoji">🔋</div><div class="name">E-Waste</div></div>
+        </div>
+        
+        <h3>🏭 Pollution</h3>
+        <div class="icon-grid">
+            <div class="icon-card"><div class="emoji">🚗</div><div class="name">Car</div></div>
+            <div class="icon-card"><div class="emoji">🚛</div><div class="name">Truck</div></div>
+            <div class="icon-card"><div class="emoji">🚌</div><div class="name">Bus</div></div>
+            <div class="icon-card"><div class="emoji">🏭</div><div class="name">Factory</div></div>
+            <div class="icon-card"><div class="emoji">✈️</div><div class="name">Plane</div></div>
+            <div class="icon-card"><div class="emoji">🚢</div><div class="name">Ship</div></div>
+        </div>
+        
+        <h3>💧 Water Conservation</h3>
+        <div class="icon-grid">
+            <div class="icon-card"><div class="emoji">💧</div><div class="name">Droplet</div></div>
+            <div class="icon-card"><div class="emoji">🚿</div><div class="name">Shower</div></div>
+            <div class="icon-card"><div class="emoji">🚰</div><div class="name">Faucet</div></div>
+            <div class="icon-card"><div class="emoji">🌊</div><div class="name">Waves</div></div>
+            <div class="icon-card"><div class="emoji">🏊</div><div class="name">Swimmer</div></div>
+            <div class="icon-card"><div class="emoji">🧊</div><div class="name">Ice</div></div>
+        </div>
+        
+        <h3>⚡ Energy Efficiency</h3>
+        <div class="icon-grid">
+            <div class="icon-card"><div class="emoji">💡</div><div class="name">Light Bulb</div></div>
+            <div class="icon-card"><div class="emoji">🔌</div><div class="name">Plug</div></div>
+            <div class="icon-card"><div class="emoji">🔋</div><div class="name">Battery</div></div>
+            <div class="icon-card"><div class="emoji">☀️</div><div class="name">Solar</div></div>
+            <div class="icon-card"><div class="emoji">🌬️</div><div class="name">Wind</div></div>
+            <div class="icon-card"><div class="emoji">⚡</div><div class="name">Energy</div></div>
+        </div>
+        
+        <h3>🌳 Deforestation</h3>
+        <div class="icon-grid">
+            <div class="icon-card"><div class="emoji">🌲</div><div class="name">Pine Tree</div></div>
+            <div class="icon-card"><div class="emoji">🌳</div><div class="name">Tree</div></div>
+            <div class="icon-card"><div class="emoji">🌴</div><div class="name">Palm</div></div>
+            <div class="icon-card"><div class="emoji">🪵</div><div class="name">Log</div></div>
+            <div class="icon-card"><div class="emoji">🌱</div><div class="name">Seedling</div></div>
+            <div class="icon-card"><div class="emoji">🍃</div><div class="name">Leaves</div></div>
+        </div>
+        
+        <!-- UI ICONS -->
+        <h2>🎮 UI Icons</h2>
+        <div class="icon-grid">
+            <div class="icon-card"><div class="emoji">⏸️</div><div class="name">Pause</div></div>
+            <div class="icon-card"><div class="emoji">▶️</div><div class="name">Play</div></div>
+            <div class="icon-card"><div class="emoji">🔄</div><div class="name">Restart</div></div>
+            <div class="icon-card"><div class="emoji">🏠</div><div class="name">Home</div></div>
+            <div class="icon-card"><div class="emoji">⚙️</div><div class="name">Settings</div></div>
+            <div class="icon-card"><div class="emoji">🏆</div><div class="name">Trophy</div></div>
+            <div class="icon-card"><div class="emoji">⭐</div><div class="name">Star Filled</div></div>
+            <div class="icon-card"><div class="emoji">☆</div><div class="name">Star Empty</div></div>
+            <div class="icon-card"><div class="emoji">🔊</div><div class="name">Sound On</div></div>
+            <div class="icon-card"><div class="emoji">🔇</div><div class="name">Sound Off</div></div>
+            <div class="icon-card"><div class="emoji">🎵</div><div class="name">Music On</div></div>
+            <div class="icon-card"><div class="emoji">🔕</div><div class="name">Music Off</div></div>
+            <div class="icon-card"><div class="emoji">◀️</div><div class="name">Back</div></div>
+            <div class="icon-card"><div class="emoji">▶️</div><div class="name">Next</div></div>
+            <div class="icon-card"><div class="emoji">🔒</div><div class="name">Locked</div></div>
+        </div>
+        
+        <!-- STAR SYSTEM -->
+        <h2>⭐ Star System</h2>
+        <div class="info-card">
+            <h4>How Stars Are Calculated (Moves-Based)</h4>
+            <p>Stars are awarded based on the percentage of moves remaining when you complete a level:</p>
+            <table>
+                <tr><th>Moves Remaining</th><th>Stars Awarded</th></tr>
+                <tr><td>≥50% of total moves</td><td><span class="star">⭐⭐⭐</span> 3 Stars</td></tr>
+                <tr><td>25-49% of total moves</td><td><span class="star">⭐⭐</span><span class="star-empty">☆</span> 2 Stars</td></tr>
+                <tr><td>&lt;25% of total moves</td><td><span class="star">⭐</span><span class="star-empty">☆☆</span> 1 Star</td></tr>
+            </table>
+            <p><strong>Example:</strong> A level with 20 moves:</p>
+            <ul>
+                <li>10+ moves remaining = 3 stars</li>
+                <li>5-9 moves remaining = 2 stars</li>
+                <li>0-4 moves remaining = 1 star</li>
+            </ul>
+        </div>
+        
+        <!-- ACHIEVEMENTS -->
+        <h2>🏆 Achievements</h2>
+        
+        <h3>🎯 Theme Completion (5 Achievements)</h3>
+        <div class="achievement-section">
+            <div class="achievement-card">
+                <div class="emoji">♻️</div>
+                <div class="info"><h5>Recycler</h5><p>Complete all Trash Sorting levels</p></div>
+            </div>
+            <div class="achievement-card">
+                <div class="emoji">🌬️</div>
+                <div class="info"><h5>Clean Air Champion</h5><p>Complete all Pollution levels</p></div>
+            </div>
+            <div class="achievement-card">
+                <div class="emoji">💧</div>
+                <div class="info"><h5>Water Guardian</h5><p>Complete all Water Conservation levels</p></div>
+            </div>
+            <div class="achievement-card">
+                <div class="emoji">⚡</div>
+                <div class="info"><h5>Energy Saver</h5><p>Complete all Energy Efficiency levels</p></div>
+            </div>
+            <div class="achievement-card">
+                <div class="emoji">🌳</div>
+                <div class="info"><h5>Forest Protector</h5><p>Complete all Deforestation levels</p></div>
+            </div>
+        </div>
+        
+        <h3>⭐ Star Milestones (5 Achievements)</h3>
+        <div class="achievement-section">
+            <div class="achievement-card">
+                <div class="emoji">🥉</div>
+                <div class="info"><h5>Bronze Collector</h5><p>Earn 30 total stars</p></div>
+            </div>
+            <div class="achievement-card">
+                <div class="emoji">🥈</div>
+                <div class="info"><h5>Silver Collector</h5><p>Earn 60 total stars</p></div>
+            </div>
+            <div class="achievement-card">
+                <div class="emoji">🥇</div>
+                <div class="info"><h5>Gold Collector</h5><p>Earn 90 total stars</p></div>
+            </div>
+            <div class="achievement-card">
+                <div class="emoji">💎</div>
+                <div class="info"><h5>Diamond Collector</h5><p>Earn 120 total stars</p></div>
+            </div>
+            <div class="achievement-card">
+                <div class="emoji">🏆</div>
+                <div class="info"><h5>Star Master</h5><p>Earn all 150 stars</p></div>
+            </div>
+        </div>
+        
+        <h3>🎮 Endless Score Tiers (25 Achievements - 5 per theme)</h3>
+        <table>
+            <tr><th>Tier</th><th>Score Required</th><th>Emoji</th></tr>
+            <tr><td>Bronze</td><td>50,000</td><td>🥉</td></tr>
+            <tr><td>Silver</td><td>500,000</td><td>🥈</td></tr>
+            <tr><td>Gold</td><td>5,000,000</td><td>🥇</td></tr>
+            <tr><td>Diamond</td><td>50,000,000</td><td>💎</td></tr>
+            <tr><td>Earth Saver</td><td>500,000,000</td><td>🌍</td></tr>
+        </table>
+        
+        <!-- GAME MODES -->
+        <h2>🎮 Game Modes</h2>
+        
+        <div class="info-card">
+            <h4>📖 Story Mode</h4>
+            <ul>
+                <li><strong>50 Levels</strong> across 5 environmental themes (10 levels each)</li>
+                <li>Progressive difficulty with target scores and move limits</li>
+                <li>Complete a theme to unlock it in Endless Mode</li>
+                <li>Earn up to 150 stars total (3 per level)</li>
+            </ul>
+        </div>
+        
+        <div class="info-card">
+            <h4>♾️ Endless Mode</h4>
+            <ul>
+                <li>Play without a target score or move limit</li>
+                <li>Game ends when no valid moves remain</li>
+                <li>High scores tracked per theme</li>
+                <li>Unlock by completing all 10 levels of a theme in Story Mode</li>
+            </ul>
+        </div>
+        
+        <!-- COMBO SYSTEM -->
+        <h2>🔥 Combo & Scoring</h2>
+        <div class="info-card">
+            <h4>Combo Multiplier</h4>
+            <ul>
+                <li><strong>Match 3:</strong> Base score</li>
+                <li><strong>Match 4:</strong> Higher score + special effects</li>
+                <li><strong>Match 5+:</strong> Maximum score + cascading effects</li>
+                <li><strong>Chain Reactions:</strong> Combos multiply with consecutive matches</li>
+            </ul>
+        </div>
+        
+        <!-- EARTH STAGES -->
+        <h2>🌍 Earth Healing Stages</h2>
+        <p>As you complete more levels, Earth transforms on the main menu:</p>
+        <table>
+            <tr><th>Stage</th><th>Levels Completed</th><th>Description</th></tr>
+            <tr><td>🌍 Stage 1</td><td>0-20</td><td>Polluted Earth</td></tr>
+            <tr><td>🌍 Stage 2</td><td>21-30</td><td>Recovering Earth</td></tr>
+            <tr><td>🌍 Stage 3</td><td>31-50</td><td>Healing Earth</td></tr>
+            <tr><td>🌍 Stage 4</td><td>All 50</td><td>Thriving Earth</td></tr>
+        </table>
+        
+        <p style="text-align: center; margin-top: 60px; color: #8BC34A; font-size: 1.2rem;">
+            Made with 💚 for Earth<br>
+            <strong>Every match counts. Every action matters.</strong>
+        </p>
+    </div>
+</body>
+</html>
