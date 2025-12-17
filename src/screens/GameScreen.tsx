@@ -1,5 +1,5 @@
 // Game Screen - Main gameplay screen
-import React, { useEffect, useCallback, useState } from 'react';
+import React, { useEffect, useCallback, useState, useRef } from 'react';
 import {
     View,
     StyleSheet,
@@ -9,6 +9,7 @@ import {
     ImageBackground,
     StatusBar,
     BackHandler,
+    Animated,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
@@ -48,6 +49,7 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
     const clearEndlessState = useGameStore((state) => state.clearEndlessState);
     const grid = useGameStore((state) => state.grid);
     const completedLevels = useGameStore((state) => state.completedLevels);
+    const addUnseenAchievement = useGameStore((state) => state.addUnseenAchievement);
 
     const levelConfig = getLevelById(levelId);
     const themeConfig = THEME_CONFIGS[theme];
@@ -55,7 +57,8 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
     // Sound settings state
     const [sfxEnabled, setSfxEnabled] = useState(true);
     const [musicEnabled, setMusicEnabled] = useState(true);
-    const [newAchievement, setNewAchievement] = useState<Achievement | null>(null);
+    const [toastAchievement, setToastAchievement] = useState<Achievement | null>(null);
+    const toastOpacity = useRef(new Animated.Value(0)).current;
 
     // Load sound settings when pausing
     useEffect(() => {
@@ -108,15 +111,33 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
                     const wasCompleted = checkThemeAchievement(theme, completedLevels, getLevelsByTheme);
                     const isNowCompleted = checkThemeAchievement(theme, updatedCompletedLevels, getLevelsByTheme);
                     if (!wasCompleted && isNowCompleted) {
-                        setNewAchievement(themeAchievement);
+                        // Show toast notification
+                        setToastAchievement(themeAchievement);
+                        addUnseenAchievement(themeAchievement.id);
                         playSfx('level_complete'); // Play extra celebration sound
+
+                        // Fade in toast
+                        Animated.timing(toastOpacity, {
+                            toValue: 1,
+                            duration: 300,
+                            useNativeDriver: true,
+                        }).start(() => {
+                            // Auto-dismiss after 3 seconds
+                            setTimeout(() => {
+                                Animated.timing(toastOpacity, {
+                                    toValue: 0,
+                                    duration: 300,
+                                    useNativeDriver: true,
+                                }).start(() => {
+                                    setToastAchievement(null);
+                                });
+                            }, 3000);
+                        });
                     }
                 }
             }
-        } else {
-            setNewAchievement(null);
         }
-    }, [isLevelComplete, levelId, score, movesRemaining, markLevelComplete, isEndlessMode, theme, completedLevels]);
+    }, [isLevelComplete, levelId, score, movesRemaining, markLevelComplete, isEndlessMode, theme, completedLevels, addUnseenAchievement, toastOpacity]);
 
     // Save endless high score when score changes in endless mode
     useEffect(() => {
@@ -221,6 +242,17 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
         <View style={[styles.container, getBackgroundStyle(), { paddingTop: insets.top }]}>
             <StatusBar barStyle="light-content" />
 
+            {/* Achievement Toast Notification */}
+            {toastAchievement && (
+                <Animated.View style={[styles.toastContainer, { opacity: toastOpacity }]}>
+                    <Text style={styles.toastEmoji}>{toastAchievement.emoji}</Text>
+                    <View style={styles.toastTextContainer}>
+                        <Text style={styles.toastTitle}>🎉 Achievement Unlocked!</Text>
+                        <Text style={styles.toastName}>{toastAchievement.name}</Text>
+                    </View>
+                </Animated.View>
+            )}
+
             <HUD onPause={handlePause} />
 
             <View style={styles.boardContainer}>
@@ -316,17 +348,6 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
                         </View>
 
                         <Text style={styles.movesLeftText}>{movesRemaining} moves remaining</Text>
-
-                        {/* Achievement Notification */}
-                        {newAchievement && (
-                            <View style={styles.achievementBanner}>
-                                <Text style={styles.achievementEmoji}>{newAchievement.emoji}</Text>
-                                <View style={styles.achievementTextContainer}>
-                                    <Text style={styles.achievementTitle}>🎉 Achievement Unlocked!</Text>
-                                    <Text style={styles.achievementName}>{newAchievement.name}</Text>
-                                </View>
-                            </View>
-                        )}
 
                         <View style={styles.modalButtonsContainer}>
                             <TouchableOpacity style={styles.modalButton} onPress={handleNextLevel}>
@@ -600,6 +621,43 @@ const styles = StyleSheet.create({
         fontSize: TYPOGRAPHY.body,
         fontFamily: TYPOGRAPHY.fontFamilySemiBold,
         color: '#B8860B',
+    },
+    toastContainer: {
+        position: 'absolute',
+        top: 60,
+        left: SPACING.lg,
+        right: SPACING.lg,
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.9)',
+        borderWidth: 2,
+        borderColor: '#FFD700',
+        borderRadius: RADIUS.lg,
+        padding: SPACING.md,
+        zIndex: 1000,
+        elevation: 10,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.3,
+        shadowRadius: 8,
+    },
+    toastEmoji: {
+        fontSize: 36,
+        marginRight: SPACING.md,
+    },
+    toastTextContainer: {
+        flex: 1,
+    },
+    toastTitle: {
+        fontSize: TYPOGRAPHY.caption,
+        fontFamily: TYPOGRAPHY.fontFamily,
+        color: '#FFD700',
+        marginBottom: 2,
+    },
+    toastName: {
+        fontSize: TYPOGRAPHY.body,
+        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
+        color: '#FFFFFF',
     },
 });
 

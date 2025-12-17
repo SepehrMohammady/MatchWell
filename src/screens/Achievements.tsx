@@ -35,6 +35,7 @@ const Achievements: React.FC<Props> = ({ navigation }) => {
     const completedLevels = useGameStore((state) => state.completedLevels);
     const highScores = useGameStore((state) => state.highScores);
     const levelMovesRemaining = useGameStore((state) => state.levelMovesRemaining);
+    const clearUnseenAchievements = useGameStore((state) => state.clearUnseenAchievements);
 
     // Handle hardware back button
     React.useEffect(() => {
@@ -45,11 +46,12 @@ const Achievements: React.FC<Props> = ({ navigation }) => {
         return () => backHandler.remove();
     }, []);
 
-    // Play menu music when screen is focused
+    // Play menu music and clear unseen achievements when screen is focused
     useFocusEffect(
         useCallback(() => {
             playBgm('bgm_menu');
-        }, [])
+            clearUnseenAchievements(); // Clear red dot when user views achievements
+        }, [clearUnseenAchievements])
     );
 
     const handleBack = () => {

@@ -46,6 +46,7 @@ const MainMenu: React.FC<Props> = ({ navigation }) => {
     const insets = useSafeAreaInsets();
     const loadProgress = useGameStore((state) => state.loadProgress);
     const completedLevels = useGameStore((state) => state.completedLevels);
+    const unseenAchievements = useGameStore((state) => state.unseenAchievements);
 
     const [soundsReady, setSoundsReady] = React.useState(false);
 
@@ -142,7 +143,12 @@ const MainMenu: React.FC<Props> = ({ navigation }) => {
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.secondaryButton} onPress={handleAchievements} activeOpacity={0.8}>
-                    <Text style={styles.secondaryButtonText}>🏆 Achievements</Text>
+                    <View style={styles.achievementButtonContent}>
+                        <Text style={styles.secondaryButtonText}>🏆 Achievements</Text>
+                        {unseenAchievements.length > 0 && (
+                            <View style={styles.redDot} />
+                        )}
+                    </View>
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.settingsButton} onPress={handleSettings} activeOpacity={0.6}>
@@ -268,6 +274,18 @@ const styles = StyleSheet.create({
         color: 'rgba(255, 255, 255, 0.3)',
         textAlign: 'center',
         marginBottom: SPACING.sm,
+    },
+    achievementButtonContent: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    redDot: {
+        width: 10,
+        height: 10,
+        borderRadius: 5,
+        backgroundColor: '#FF3B30',
+        marginLeft: SPACING.sm,
     },
 });
 

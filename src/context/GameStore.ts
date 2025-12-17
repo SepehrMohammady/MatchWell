@@ -27,6 +27,7 @@ interface SavedProgress {
     completedLevels: number[];
     highScores: Record<number, number>;
     levelMovesRemaining: Record<number, number>; // Best remaining moves for each level
+    unseenAchievements: string[]; // Achievement IDs that user hasn't seen yet
 }
 
 interface SavedEndlessState {
@@ -71,6 +72,9 @@ interface GameStore extends GameState {
     setIsProcessing: (value: boolean) => void;
     markLevelComplete: (levelId: number, score: number, movesRemaining: number) => void;
     saveEndlessHighScore: (theme: ThemeType, score: number) => void;
+    addUnseenAchievement: (achievementId: string) => void;
+    clearUnseenAchievements: () => void;
+    unseenAchievements: string[];
 }
 
 export const useGameStore = create<GameStore>((set, get) => ({
@@ -94,6 +98,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     completedLevels: [],
     highScores: {},
     levelMovesRemaining: {},
+    unseenAchievements: [],
 
     // Load progress from AsyncStorage
     loadProgress: async () => {
@@ -105,6 +110,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
                     completedLevels: progress.completedLevels || [],
                     highScores: progress.highScores || {},
                     levelMovesRemaining: progress.levelMovesRemaining || {},
+                    unseenAchievements: progress.unseenAchievements || [],
                 });
                 console.log('✅ Progress loaded:', progress);
             }
@@ -116,8 +122,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // Save progress to AsyncStorage
     saveProgress: async () => {
         try {
-            const { completedLevels, highScores, levelMovesRemaining } = get();
-            const progress: SavedProgress = { completedLevels, highScores, levelMovesRemaining };
+            const { completedLevels, highScores, levelMovesRemaining, unseenAchievements } = get();
+            const progress: SavedProgress = { completedLevels, highScores, levelMovesRemaining, unseenAchievements };
             await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
             console.log('✅ Progress saved:', progress);
         } catch (error) {
@@ -137,6 +143,22 @@ export const useGameStore = create<GameStore>((set, get) => ({
         } catch (error) {
             console.warn('Failed to reset progress:', error);
         }
+    },
+
+    // Add a new unseen achievement
+    addUnseenAchievement: (achievementId: string) => {
+        const { unseenAchievements, saveProgress } = get();
+        if (!unseenAchievements.includes(achievementId)) {
+            set({ unseenAchievements: [...unseenAchievements, achievementId] });
+            saveProgress();
+        }
+    },
+
+    // Clear all unseen achievements (when user views Achievements screen)
+    clearUnseenAchievements: () => {
+        const { saveProgress } = get();
+        set({ unseenAchievements: [] });
+        saveProgress();
     },
 
     // Save current endless mode state for resume
