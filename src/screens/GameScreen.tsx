@@ -18,7 +18,7 @@ import HUD from '../components/UI/HUD';
 import { THEME_CONFIGS, getLevelById } from '../themes';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types';
-import { playBgm, playThemeBgm, pauseBgm, resumeBgm, playSfx, getSoundSettings, toggleSfx, toggleMusic } from '../utils/SoundManager';
+import { playBgm, playThemeBgm, pauseBgm, resumeBgm, stopBgm, playSfx, getSoundSettings, toggleSfx, toggleMusic } from '../utils/SoundManager';
 import { COLORS, TYPOGRAPHY, SPACING, RADIUS } from '../config/theme';
 import { PauseIcon, PlayIcon, RestartIcon, MusicIcon, MusicOffIcon, VolumeIcon, VolumeOffIcon, HomeIcon, PaletteIcon, ListIcon, StarFilledIcon, StarEmptyIcon, TrophyIcon, EmoticonSadIcon, ArrowRightIcon } from '../components/UI/Icons';
 
@@ -64,13 +64,14 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
     }, [isPaused]);
 
     // Initialize the game level with isEndless flag and optional endlessTheme
-    // Skip if grid is already populated (e.g., from loadEndlessState resume)
+    // Only skip initialization if resuming ENDLESS mode (grid already populated from loadEndlessState)
     useEffect(() => {
         const isEndless = route.params?.isEndless || false;
         const endlessTheme = route.params?.endlessTheme;
 
-        // Only initialize if grid is empty (not resuming)
-        if (grid.length === 0) {
+        // In story mode, always re-initialize
+        // In endless mode, only initialize if grid is empty (not resuming)
+        if (!isEndless || grid.length === 0) {
             initializeGame(levelId, isEndless, endlessTheme);
         }
 
@@ -148,6 +149,7 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
             await saveEndlessState(); // Save endless state for resume
         }
         resetGameState(); // Reset all game state flags before navigating
+        stopBgm(); // Stop theme music to prevent overlap
         // Navigate to appropriate screen based on mode
         if (isEndlessMode) {
             navigation.navigate('EndlessSelect');
@@ -269,13 +271,13 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
                         <Text style={styles.scoreText}>{score.toLocaleString()}</Text>
                         <Text style={styles.scoreLabel}>Score</Text>
 
-                        {/* Star Rating - based on score vs targetScore */}
+                        {/* Star Rating - based on moves remaining percentage */}
                         <View style={styles.starsContainer}>
                             <StarFilledIcon size={32} />
-                            {score >= targetScore * 1.5
+                            {levelConfig && (movesRemaining / levelConfig.moves) >= 0.25
                                 ? <StarFilledIcon size={32} />
                                 : <StarEmptyIcon size={32} />}
-                            {score >= targetScore * 2
+                            {levelConfig && (movesRemaining / levelConfig.moves) >= 0.50
                                 ? <StarFilledIcon size={32} />
                                 : <StarEmptyIcon size={32} />}
                         </View>

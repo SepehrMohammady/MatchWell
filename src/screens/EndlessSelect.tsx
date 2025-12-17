@@ -164,7 +164,7 @@ const EndlessSelect: React.FC<Props> = ({ navigation }) => {
                                         {theme.name}
                                     </Text>
                                     <Text style={styles.themeDescription}>
-                                        {unlocked ? theme.description : 'Complete all levels of this theme'}
+                                        {unlocked ? theme.description : 'To unlock, complete all story levels of this theme'}
                                     </Text>
                                 </View>
                             </View>
