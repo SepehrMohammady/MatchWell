@@ -64,17 +64,18 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
     }, [isPaused]);
 
     // Initialize the game level with isEndless flag and optional endlessTheme
-    // Only skip initialization if resuming ENDLESS mode (grid already populated from loadEndlessState)
+    // Only skip initialization if resuming ENDLESS mode (grid populated AND already in endless mode)
     useEffect(() => {
         const isEndless = route.params?.isEndless || false;
         const endlessTheme = route.params?.endlessTheme;
 
         // In story mode, always re-initialize
-        // In endless mode, only initialize if grid is empty (not resuming)
-        if (!isEndless || grid.length === 0) {
+        // In endless mode, only skip if already in endless mode AND grid is populated (resuming)
+        const isResumingEndless = isEndless && isEndlessMode && grid.length > 0;
+        if (!isResumingEndless) {
             initializeGame(levelId, isEndless, endlessTheme);
         }
-    }, [levelId, initializeGame, route.params?.isEndless, route.params?.endlessTheme, grid.length]);
+    }, [levelId, initializeGame, route.params?.isEndless, route.params?.endlessTheme, grid.length, isEndlessMode]);
 
     // Play theme music only when screen is focused (prevents restart after stopBgm)
     useFocusEffect(

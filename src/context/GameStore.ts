@@ -263,7 +263,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
             moves: 0,
             movesRemaining,
             targetScore,
-            level: levelId,
+            level: isEndless ? 0 : levelId, // 0 for endless mode, actual level for story
             isGameOver: false,
             isLevelComplete: false,
             combo: 0,
