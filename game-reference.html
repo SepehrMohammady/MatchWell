@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MatchWell - Game Design Reference</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.3.67/css/materialdesignicons.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        h1 .mdi {
+            font-size: 3rem;
+            vertical-align: middle;
+            color: #3498DB;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #8BC34A;
+            margin-bottom: 40px;
+            font-size: 1.2rem;
+        }
+
+        h2 {
+            color: #8BC34A;
+            margin: 40px 0 20px;
+            border-bottom: 2px solid #8BC34A;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            color: #FFD700;
+            margin: 25px 0 15px;
+        }
+
+        h4 {
+            color: #FF6B6B;
+            margin: 15px 0 10px;
+            font-size: 0.9rem;
+        }
+
+        /* Icon Grid */
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        .icon-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px 10px;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+
+        .icon-card:hover {
+            transform: scale(1.05);
+        }
+
+        .icon-card.current {
+            border: 2px solid #8BC34A;
+        }
+
+        .icon-card.alternative {
+            border: 2px dashed #666;
+            opacity: 0.8;
+        }
+
+        .icon-card .tile-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 8px;
+        }
+
+        .icon-card .tile-icon .mdi {
+            font-size: 24px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .icon-card .name {
+            font-size: 0.75rem;
+            color: #ccc;
+        }
+
+        .icon-card .code {
+            font-size: 0.65rem;
+            color: #666;
+            font-family: monospace;
+            margin-top: 3px;
+        }
+
+        .icon-card .label {
+            font-size: 0.6rem;
+            color: #8BC34A;
+            text-transform: uppercase;
+            margin-top: 5px;
+        }
+
+        .icon-card.alternative .label {
+            color: #FF6B6B;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        th,
+        td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        th {
+            background: rgba(139, 195, 74, 0.2);
+            color: #8BC34A;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Fact Cards */
+        .fact-card {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+            border-left: 4px solid #FFD700;
+        }
+
+        .fact-card .fact-text {
+            font-size: 1rem;
+            margin-bottom: 8px;
+        }
+
+        .fact-card .fact-source {
+            font-size: 0.75rem;
+            color: #888;
+        }
+
+        .fact-card .fact-source a {
+            color: #3498DB;
+            text-decoration: none;
+        }
+
+        .fact-card .fact-source a:hover {
+            text-decoration: underline;
+        }
+
+        .warning {
+            background: rgba(255, 107, 107, 0.2);
+            border-left-color: #FF6B6B;
+        }
+
+        .warning .note {
+            font-size: 0.8rem;
+            color: #FF6B6B;
+            margin-top: 8px;
+        }
+
+        /* Info Cards */
+        .info-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .info-card h4 {
+            color: #FFD700;
+            margin-bottom: 10px;
+        }
+
+        .info-card ul {
+            padding-left: 20px;
+        }
+
+        .info-card li {
+            margin: 8px 0;
+        }
+
+        .star {
+            color: #FFD700;
+        }
+
+        code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+
+        /* Section divider */
+        .divider {
+            height: 2px;
+            background: linear-gradient(to right, transparent, #333, transparent);
+            margin: 40px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1><span class="mdi mdi-earth"></span> MatchWell</h1>
+        <p class="subtitle">Game Design Reference & Environmental Facts</p>
+
+        <!-- ================= THEME ICONS ================= -->
+        <h2><span class="mdi mdi-palette"></span> Theme Icons (Material Design Icons)</h2>
+        <p style="color: #888; margin-bottom: 10px;">Icons marked <span style="color:#8BC34A;">CURRENT</span> are used
+            in the game. Icons marked <span style="color:#FF6B6B;">ALT</span> are alternatives you can switch to.</p>
+
+        <!-- TRASH SORTING -->
+        <h3>♻️ Trash Sorting</h3>
+        <div class="icon-grid">
+            <div class="icon-card current">
+                <div class="tile-icon" style="background: #4A90E2;"><span class="mdi mdi-bottle-soda-classic"></span>
+                </div>
+                <div class="name">Plastic</div>
+                <div class="code">bottle-soda-classic</div>
+                <div class="label">Current</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #4A90E2;"><span class="mdi mdi-bottle-soda-outline"></span>
+                </div>
+                <div class="name">Plastic</div>
+                <div class="code">bottle-soda-outline</div>
+                <div class="label">Alt</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #4A90E2;"><span class="mdi mdi-recycle"></span></div>
+                <div class="name">Plastic</div>
+                <div class="code">recycle</div>
+                <div class="label">Alt</div>
+            </div>
+            <div class="icon-card current">
+                <div class="tile-icon" style="background: #D9CAB3;"><span class="mdi mdi-file-document-outline"></span>
+                </div>
+                <div class="name">Paper</div>
+                <div class="code">file-document-outline</div>
+                <div class="label">Current</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #D9CAB3;"><span class="mdi mdi-newspaper"></span></div>
+                <div class="name">Paper</div>
+                <div class="code">newspaper</div>
+                <div class="label">Alt</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #D9CAB3;"><span class="mdi mdi-note-outline"></span></div>
+                <div class="name">Paper</div>
+                <div class="code">note-outline</div>
+                <div class="label">Alt</div>
+            </div>
+            <div class="icon-card current">
+                <div class="tile-icon" style="background: #7AD1C7;"><span class="mdi mdi-cup-outline"></span></div>
+                <div class="name">Glass</div>
+                <div class="code">cup-outline</div>
+                <div class="label">Current</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #7AD1C7;"><span class="mdi mdi-glass-fragile"></span></div>
+                <div class="name">Glass</div>
+                <div class="code">glass-fragile</div>
+                <div class="label">Alt</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #7AD1C7;"><span class="mdi mdi-bottle-wine-outline"></span>
+                </div>
+                <div class="name">Glass</div>
+                <div class="code">bottle-wine-outline</div>
+                <div class="label">Alt</div>
+            </div>
+            <div class="icon-card current">
+                <div class="tile-icon" style="background: #8E8E93;"><span class="mdi mdi-archive"></span></div>
+                <div class="name">Metal</div>
+                <div class="code">archive</div>
+                <div class="label">Current</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #8E8E93;"><span class="mdi mdi-cup"></span></div>
+                <div class="name">Metal</div>
+                <div class="code">cup</div>
+                <div class="label">Alt</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #8E8E93;"><span class="mdi mdi-food-fork-drink"></span></div>
+                <div class="name">Metal</div>
+                <div class="code">food-fork-drink</div>
+                <div class="label">Alt</div>
+            </div>
+            <div class="icon-card current">
+                <div class="tile-icon" style="background: #6DBE45;"><span class="mdi mdi-food-apple"></span></div>
+                <div class="name">Organic</div>
+                <div class="code">food-apple</div>
+                <div class="label">Current</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #6DBE45;"><span class="mdi mdi-leaf"></span></div>
+                <div class="name">Organic</div>
+                <div class="code">leaf</div>
+                <div class="label">Alt</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #6DBE45;"><span class="mdi mdi-food-variant"></span></div>
+                <div class="name">Organic</div>
+                <div class="code">food-variant</div>
+                <div class="label">Alt</div>
+            </div>
+        </div>
+
+        <!-- POLLUTION -->
+        <h3>🏭 Pollution (Clear the Air)</h3>
+        <div class="icon-grid">
+            <div class="icon-card current">
+                <div class="tile-icon" style="background: #E74C3C;"><span class="mdi mdi-car"></span></div>
+                <div class="name">Car</div>
+                <div class="code">car</div>
+                <div class="label">Current</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #E74C3C;"><span class="mdi mdi-car-side"></span></div>
+                <div class="name">Car</div>
+                <div class="code">car-side</div>
+                <div class="label">Alt</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #E74C3C;"><span class="mdi mdi-car-hatchback"></span></div>
+                <div class="name">Car</div>
+                <div class="code">car-hatchback</div>
+                <div class="label">Alt</div>
+            </div>
+            <div class="icon-card current">
+                <div class="tile-icon" style="background: #34495E;"><span class="mdi mdi-truck"></span></div>
+                <div class="name">Truck</div>
+                <div class="code">truck</div>
+                <div class="label">Current</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #34495E;"><span class="mdi mdi-truck-outline"></span></div>
+                <div class="name">Truck</div>
+                <div class="code">truck-outline</div>
+                <div class="label">Alt</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #34495E;"><span class="mdi mdi-truck-delivery"></span></div>
+                <div class="name">Truck</div>
+                <div class="code">truck-delivery</div>
+                <div class="label">Alt</div>
+            </div>
+            <div class="icon-card current">
+                <div class="tile-icon" style="background: #F1C40F;"><span class="mdi mdi-bus"></span></div>
+                <div class="name">Bus</div>
+                <div class="code">bus</div>
+                <div class="label">Current</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #F1C40F;"><span class="mdi mdi-bus-side"></span></div>
+                <div class="name">Bus</div>
+                <div class="code">bus-side</div>
+                <div class="label">Alt</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #F1C40F;"><span class="mdi mdi-bus-school"></span></div>
+                <div class="name">Bus</div>
+                <div class="code">bus-school</div>
+                <div class="label">Alt</div>
+            </div>
+            <div class="icon-card current">
+                <div class="tile-icon" style="background: #2C3E50;"><span class="mdi mdi-factory"></span></div>
+                <div class="name">Factory</div>
+                <div class="code">factory</div>
+                <div class="label">Current</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #2C3E50;"><span class="mdi mdi-smoke"></span></div>
+                <div class="name">Factory</div>
+                <div class="code">smoke</div>
+                <div class="label">Alt</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #2C3E50;"><span class="mdi mdi-warehouse"></span></div>
+                <div class="name">Factory</div>
+                <div class="code">warehouse</div>
+                <div class="label">Alt</div>
+            </div>
+            <div class="icon-card current">
+                <div class="tile-icon" style="background: #2ECC71;"><span class="mdi mdi-bicycle"></span></div>
+                <div class="name">Bicycle</div>
+                <div class="code">bicycle</div>
+                <div class="label">Current</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #2ECC71;"><span class="mdi mdi-bike"></span></div>
+                <div class="name">Bicycle</div>
+                <div class="code">bike</div>
+                <div class="label">Alt</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #2ECC71;"><span class="mdi mdi-walk"></span></div>
+                <div class="name">Walking</div>
+                <div class="code">walk</div>
+                <div class="label">Alt</div>
+            </div>
+        </div>
+
+        <!-- WATER -->
+        <h3>💧 Water Conservation</h3>
+        <div class="icon-grid">
+            <div class="icon-card current">
+                <div class="tile-icon" style="background: #3498DB;"><span class="mdi mdi-water"></span></div>
+                <div class="name">Droplet</div>
+                <div class="code">water</div>
+                <div class="label">Current</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #3498DB;"><span class="mdi mdi-water-outline"></span></div>
+                <div class="name">Droplet</div>
+                <div class="code">water-outline</div>
+                <div class="label">Alt</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #3498DB;"><span class="mdi mdi-water-circle"></span></div>
+                <div class="name">Droplet</div>
+                <div class="code">water-circle</div>
+                <div class="label">Alt</div>
+            </div>
+            <div class="icon-card current">
+                <div class="tile-icon" style="background: #7F8C8D;"><span class="mdi mdi-water-pump"></span></div>
+                <div class="name">Faucet</div>
+                <div class="code">water-pump</div>
+                <div class="label">Current</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #7F8C8D;"><span class="mdi mdi-faucet"></span></div>
+                <div class="name">Faucet</div>
+                <div class="code">faucet</div>
+                <div class="label">Alt</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #7F8C8D;"><span class="mdi mdi-pipe-valve"></span></div>
+                <div class="name">Faucet</div>
+                <div class="code">pipe-valve</div>
+                <div class="label">Alt</div>
+            </div>
+            <div class="icon-card current">
+                <div class="tile-icon" style="background: #1ABC9C;"><span class="mdi mdi-shower"></span></div>
+                <div class="name">Shower</div>
+                <div class="code">shower</div>
+                <div class="label">Current</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #1ABC9C;"><span class="mdi mdi-shower-head"></span></div>
+                <div class="name">Shower</div>
+                <div class="code">shower-head</div>
+                <div class="label">Alt</div>
+            </div>
+            <div class="icon-card current">
+                <div class="tile-icon" style="background: #2980B9;"><span class="mdi mdi-cup-water"></span></div>
+                <div class="name">Bottle</div>
+                <div class="code">cup-water</div>
+                <div class="label">Current</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #2980B9;"><span class="mdi mdi-bottle-tonic"></span></div>
+                <div class="name">Bottle</div>
+                <div class="code">bottle-tonic</div>
+                <div class="label">Alt</div>
+            </div>
+            <div class="icon-card current">
+                <div class="tile-icon" style="background: #0077BE;"><span class="mdi mdi-wave"></span></div>
+                <div class="name">Ocean</div>
+                <div class="code">wave</div>
+                <div class="label">Current</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #0077BE;"><span class="mdi mdi-waves"></span></div>
+                <div class="name">Ocean</div>
+                <div class="code">waves</div>
+                <div class="label">Alt</div>
+            </div>
+        </div>
+
+        <!-- ENERGY -->
+        <h3>⚡ Energy Efficiency</h3>
+        <div class="icon-grid">
+            <div class="icon-card current">
+                <div class="tile-icon" style="background: #F1C40F;"><span class="mdi mdi-lightbulb-outline"></span>
+                </div>
+                <div class="name">Bulb</div>
+                <div class="code">lightbulb-outline</div>
+                <div class="label">Current</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #F1C40F;"><span class="mdi mdi-lightbulb"></span></div>
+                <div class="name">Bulb</div>
+                <div class="code">lightbulb</div>
+                <div class="label">Alt</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #F1C40F;"><span class="mdi mdi-lightbulb-on-outline"></span>
+                </div>
+                <div class="name">Bulb</div>
+                <div class="code">lightbulb-on-outline</div>
+                <div class="label">Alt</div>
+            </div>
+            <div class="icon-card current">
+                <div class="tile-icon" style="background: #E67E22;"><span class="mdi mdi-solar-panel"></span></div>
+                <div class="name">Solar</div>
+                <div class="code">solar-panel</div>
+                <div class="label">Current</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #E67E22;"><span class="mdi mdi-solar-panel-large"></span>
+                </div>
+                <div class="name">Solar</div>
+                <div class="code">solar-panel-large</div>
+                <div class="label">Alt</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #E67E22;"><span class="mdi mdi-white-balance-sunny"></span>
+                </div>
+                <div class="name">Solar</div>
+                <div class="code">white-balance-sunny</div>
+                <div class="label">Alt</div>
+            </div>
+            <div class="icon-card current">
+                <div class="tile-icon" style="background: #3498DB;"><span class="mdi mdi-wind-turbine"></span></div>
+                <div class="name">Wind</div>
+                <div class="code">wind-turbine</div>
+                <div class="label">Current</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #3498DB;"><span class="mdi mdi-weather-windy"></span></div>
+                <div class="name">Wind</div>
+                <div class="code">weather-windy</div>
+                <div class="label">Alt</div>
+            </div>
+            <div class="icon-card current">
+                <div class="tile-icon" style="background: #2C3E50;"><span class="mdi mdi-power-plug"></span></div>
+                <div class="name">Plug</div>
+                <div class="code">power-plug</div>
+                <div class="label">Current</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #2C3E50;"><span class="mdi mdi-power-plug-off"></span></div>
+                <div class="name">Plug</div>
+                <div class="code">power-plug-off</div>
+                <div class="label">Alt</div>
+            </div>
+            <div class="icon-card current">
+                <div class="tile-icon" style="background: #27AE60;"><span class="mdi mdi-battery-charging"></span></div>
+                <div class="name">Battery</div>
+                <div class="code">battery-charging</div>
+                <div class="label">Current</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #27AE60;"><span class="mdi mdi-battery-high"></span></div>
+                <div class="name">Battery</div>
+                <div class="code">battery-high</div>
+                <div class="label">Alt</div>
+            </div>
+        </div>
+
+        <!-- FOREST -->
+        <h3>🌳 Deforestation (Save the Forests)</h3>
+        <div class="icon-grid">
+            <div class="icon-card current">
+                <div class="tile-icon" style="background: #27AE60;"><span class="mdi mdi-pine-tree"></span></div>
+                <div class="name">Tree</div>
+                <div class="code">pine-tree</div>
+                <div class="label">Current</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #27AE60;"><span class="mdi mdi-tree"></span></div>
+                <div class="name">Tree</div>
+                <div class="code">tree</div>
+                <div class="label">Alt</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #27AE60;"><span class="mdi mdi-tree-outline"></span></div>
+                <div class="name">Tree</div>
+                <div class="code">tree-outline</div>
+                <div class="label">Alt</div>
+            </div>
+            <div class="icon-card current">
+                <div class="tile-icon" style="background: #8B4513;"><span class="mdi mdi-axe"></span></div>
+                <div class="name">Axe</div>
+                <div class="code">axe</div>
+                <div class="label">Current</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #8B4513;"><span class="mdi mdi-saw-blade"></span></div>
+                <div class="name">Saw</div>
+                <div class="code">saw-blade</div>
+                <div class="label">Alt</div>
+            </div>
+            <div class="icon-card current">
+                <div class="tile-icon" style="background: #2ECC71;"><span class="mdi mdi-leaf"></span></div>
+                <div class="name">Leaf</div>
+                <div class="code">leaf</div>
+                <div class="label">Current</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #2ECC71;"><span class="mdi mdi-leaf-maple"></span></div>
+                <div class="name">Leaf</div>
+                <div class="code">leaf-maple</div>
+                <div class="label">Alt</div>
+            </div>
+            <div class="icon-card current">
+                <div class="tile-icon" style="background: #90EE90;"><span class="mdi mdi-sprout"></span></div>
+                <div class="name">Seedling</div>
+                <div class="code">sprout</div>
+                <div class="label">Current</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #90EE90;"><span class="mdi mdi-sprout-outline"></span></div>
+                <div class="name">Seedling</div>
+                <div class="code">sprout-outline</div>
+                <div class="label">Alt</div>
+            </div>
+            <div class="icon-card current">
+                <div class="tile-icon" style="background: #228B22;"><span class="mdi mdi-forest"></span></div>
+                <div class="name">Forest</div>
+                <div class="code">forest</div>
+                <div class="label">Current</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #228B22;"><span class="mdi mdi-nature"></span></div>
+                <div class="name">Forest</div>
+                <div class="code">nature</div>
+                <div class="label">Alt</div>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- ================= ACHIEVEMENTS ================= -->
+        <h2>🏆 Achievement Icons</h2>
+        <p style="color: #888; margin-bottom: 20px;">Current achievements use emojis. Here are flat, minimal MDI
+            alternatives.</p>
+
+        <h3>Theme Completion Achievements</h3>
+        <div class="icon-grid">
+            <div class="icon-card current">
+                <div class="tile-icon" style="background: #27AE60;"><span style="font-size:28px;">♻️</span></div>
+                <div class="name">Recycler</div>
+                <div class="code">emoji</div>
+                <div class="label">Current</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #27AE60;"><span class="mdi mdi-recycle"></span></div>
+                <div class="name">Recycler</div>
+                <div class="code">recycle</div>
+                <div class="label">Alt</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #27AE60;"><span class="mdi mdi-recycle-variant"></span></div>
+                <div class="name">Recycler</div>
+                <div class="code">recycle-variant</div>
+                <div class="label">Alt</div>
+            </div>
+
+            <div class="icon-card current">
+                <div class="tile-icon" style="background: #3498DB;"><span style="font-size:28px;">🌬️</span></div>
+                <div class="name">Clean Air</div>
+                <div class="code">emoji</div>
+                <div class="label">Current</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #3498DB;"><span class="mdi mdi-weather-windy"></span></div>
+                <div class="name">Clean Air</div>
+                <div class="code">weather-windy</div>
+                <div class="label">Alt</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #3498DB;"><span class="mdi mdi-air-filter"></span></div>
+                <div class="name">Clean Air</div>
+                <div class="code">air-filter</div>
+                <div class="label">Alt</div>
+            </div>
+
+            <div class="icon-card current">
+                <div class="tile-icon" style="background: #2980B9;"><span style="font-size:28px;">💧</span></div>
+                <div class="name">Water Guardian</div>
+                <div class="code">emoji</div>
+                <div class="label">Current</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #2980B9;"><span class="mdi mdi-water"></span></div>
+                <div class="name">Water Guardian</div>
+                <div class="code">water</div>
+                <div class="label">Alt</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #2980B9;"><span class="mdi mdi-water-check"></span></div>
+                <div class="name">Water Guardian</div>
+                <div class="code">water-check</div>
+                <div class="label">Alt</div>
+            </div>
+
+            <div class="icon-card current">
+                <div class="tile-icon" style="background: #F1C40F;"><span style="font-size:28px;">⚡</span></div>
+                <div class="name">Energy Saver</div>
+                <div class="code">emoji</div>
+                <div class="label">Current</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #F1C40F;"><span class="mdi mdi-flash"></span></div>
+                <div class="name">Energy Saver</div>
+                <div class="code">flash</div>
+                <div class="label">Alt</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #F1C40F;"><span class="mdi mdi-lightning-bolt"></span></div>
+                <div class="name">Energy Saver</div>
+                <div class="code">lightning-bolt</div>
+                <div class="label">Alt</div>
+            </div>
+
+            <div class="icon-card current">
+                <div class="tile-icon" style="background: #27AE60;"><span style="font-size:28px;">🌳</span></div>
+                <div class="name">Forest Protector</div>
+                <div class="code">emoji</div>
+                <div class="label">Current</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #27AE60;"><span class="mdi mdi-tree"></span></div>
+                <div class="name">Forest Protector</div>
+                <div class="code">tree</div>
+                <div class="label">Alt</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #27AE60;"><span class="mdi mdi-forest"></span></div>
+                <div class="name">Forest Protector</div>
+                <div class="code">forest</div>
+                <div class="label">Alt</div>
+            </div>
+        </div>
+
+        <h3>Star Milestone Achievements</h3>
+        <div class="icon-grid">
+            <div class="icon-card current">
+                <div class="tile-icon" style="background: #CD7F32;"><span style="font-size:28px;">🥉</span></div>
+                <div class="name">Bronze</div>
+                <div class="code">emoji</div>
+                <div class="label">Current</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #CD7F32;"><span class="mdi mdi-medal"></span></div>
+                <div class="name">Bronze</div>
+                <div class="code">medal</div>
+                <div class="label">Alt</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #CD7F32;"><span class="mdi mdi-star-circle"></span></div>
+                <div class="name">Bronze</div>
+                <div class="code">star-circle</div>
+                <div class="label">Alt</div>
+            </div>
+
+            <div class="icon-card current">
+                <div class="tile-icon" style="background: #C0C0C0;"><span style="font-size:28px;">🥈</span></div>
+                <div class="name">Silver</div>
+                <div class="code">emoji</div>
+                <div class="label">Current</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #C0C0C0;"><span class="mdi mdi-medal-outline"></span></div>
+                <div class="name">Silver</div>
+                <div class="code">medal-outline</div>
+                <div class="label">Alt</div>
+            </div>
+
+            <div class="icon-card current">
+                <div class="tile-icon" style="background: #FFD700;"><span style="font-size:28px;">🥇</span></div>
+                <div class="name">Gold</div>
+                <div class="code">emoji</div>
+                <div class="label">Current</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #FFD700;"><span class="mdi mdi-trophy"></span></div>
+                <div class="name">Gold</div>
+                <div class="code">trophy</div>
+                <div class="label">Alt</div>
+            </div>
+
+            <div class="icon-card current">
+                <div class="tile-icon" style="background: #B9F2FF;"><span style="font-size:28px;">💎</span></div>
+                <div class="name">Diamond</div>
+                <div class="code">emoji</div>
+                <div class="label">Current</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #B9F2FF;"><span class="mdi mdi-diamond-stone"></span></div>
+                <div class="name">Diamond</div>
+                <div class="code">diamond-stone</div>
+                <div class="label">Alt</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #B9F2FF;"><span class="mdi mdi-diamond-outline"></span></div>
+                <div class="name">Diamond</div>
+                <div class="code">diamond-outline</div>
+                <div class="label">Alt</div>
+            </div>
+
+            <div class="icon-card current">
+                <div class="tile-icon" style="background: #FF6B6B;"><span style="font-size:28px;">🏆</span></div>
+                <div class="name">Star Master</div>
+                <div class="code">emoji</div>
+                <div class="label">Current</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #FF6B6B;"><span class="mdi mdi-trophy-award"></span></div>
+                <div class="name">Star Master</div>
+                <div class="code">trophy-award</div>
+                <div class="label">Alt</div>
+            </div>
+            <div class="icon-card alternative">
+                <div class="tile-icon" style="background: #FF6B6B;"><span class="mdi mdi-crown"></span></div>
+                <div class="name">Star Master</div>
+                <div class="code">crown</div>
+                <div class="label">Alt</div>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- ================= ENVIRONMENTAL FACTS ================= -->
+        <h2>🌍 Environmental Facts (Used in Game)</h2>
+        <div class="fact-card warning">
+            <div class="fact-text"><strong>⚠️ Important Notice</strong></div>
+            <div class="note">The facts below are used in the game to educate players. Sources are provided where
+                available. Please verify these facts before using in production. Some statistics may vary by source or
+                have been updated since research.</div>
+        </div>
+
+        <h3>♻️ Trash Sorting Facts (10)</h3>
+        <div class="fact-card">
+            <div class="fact-text">1. "Recycling one aluminum can saves enough energy to run a TV for 3 hours!"</div>
+            <div class="fact-source">Source: <a href="https://www.epa.gov/recycle" target="_blank">EPA - Recycling
+                    Basics</a>, <a href="https://www.aluminum.org" target="_blank">Aluminum Association</a></div>
+        </div>
+        <div class="fact-card">
+            <div class="fact-text">2. "Paper can be recycled 5-7 times before the fibers become too short!"</div>
+            <div class="fact-source">Source: <a
+                    href="https://www.epa.gov/facts-and-figures-about-materials-waste-and-recycling/paper-and-paperboard-material-specific-data"
+                    target="_blank">EPA Paper Recycling</a></div>
+        </div>
+        <div class="fact-card">
+            <div class="fact-text">3. "Glass is 100% recyclable and can be recycled endlessly without quality loss!"
+            </div>
+            <div class="fact-source">Source: <a href="https://www.gpi.org" target="_blank">Glass Packaging Institute</a>
+            </div>
+        </div>
+        <div class="fact-card">
+            <div class="fact-text">4. "Organic waste in landfills produces methane, a powerful greenhouse gas!"</div>
+            <div class="fact-source">Source: <a href="https://www.epa.gov/lmop/basic-information-about-landfill-gas"
+                    target="_blank">EPA Landfill Gas</a></div>
+        </div>
+        <div class="fact-card">
+            <div class="fact-text">5. "Proper waste sorting can reduce household waste by up to 80%!"</div>
+            <div class="fact-source">Source: Various waste management studies - <em>verify specific percentage</em>
+            </div>
+        </div>
+        <div class="fact-card">
+            <div class="fact-text">6. "Recycling one ton of plastic saves 7.4 cubic yards of landfill space!"</div>
+            <div class="fact-source">Source: <a href="https://www.epa.gov" target="_blank">EPA Waste Statistics</a>
+            </div>
+        </div>
+        <div class="fact-card">
+            <div class="fact-text">7. "It takes 500 years for a plastic bottle to decompose in a landfill!"</div>
+            <div class="fact-source">Source: <a href="https://www.wwf.org.au" target="_blank">WWF</a> - <em>estimates
+                    vary from 450-1000 years</em></div>
+        </div>
+        <div class="fact-card">
+            <div class="fact-text">8. "Composting food scraps reduces methane emissions significantly!"</div>
+            <div class="fact-source">Source: <a href="https://www.epa.gov/recycle/composting-home" target="_blank">EPA
+                    Composting</a></div>
+        </div>
+        <div class="fact-card">
+            <div class="fact-text">9. "E-waste is the fastest growing waste stream in the world!"</div>
+            <div class="fact-source">Source: <a href="https://www.unep.org" target="_blank">UN Environment Programme</a>
+            </div>
+        </div>
+        <div class="fact-card">
+            <div class="fact-text">10. "The average person generates 4.5 pounds of trash per day!"</div>
+            <div class="fact-source">Source: <a
+                    href="https://www.epa.gov/facts-and-figures-about-materials-waste-and-recycling" target="_blank">EPA
+                    Facts & Figures</a> - US average</div>
+        </div>
+
+        <h3>🏭 Pollution Facts (10)</h3>
+        <div class="fact-card">
+            <div class="fact-text">1. "Transportation accounts for about 29% of greenhouse gas emissions!"</div>
+            <div class="fact-source">Source: <a href="https://www.epa.gov/ghgemissions/sources-greenhouse-gas-emissions"
+                    target="_blank">EPA GHG Emissions</a> - US data</div>
+        </div>
+        <div class="fact-card">
+            <div class="fact-text">2. "Electric vehicles produce zero direct emissions!"</div>
+            <div class="fact-source">Source: <a href="https://www.epa.gov/greenvehicles" target="_blank">EPA Green
+                    Vehicles</a> - <em>note: manufacturing & electricity source matter</em></div>
+        </div>
+        <div class="fact-card">
+            <div class="fact-text">3. "Cycling instead of driving can reduce your carbon footprint significantly!"</div>
+            <div class="fact-source">Source: Various studies - <a href="https://www.itdp.org" target="_blank">ITDP</a>
+            </div>
+        </div>
+        <div class="fact-card">
+            <div class="fact-text">4. "Public transportation uses 50% less fuel per passenger mile than private cars!"
+            </div>
+            <div class="fact-source">Source: <a href="https://www.apta.com" target="_blank">American Public
+                    Transportation Association</a></div>
+        </div>
+        <div class="fact-card">
+            <div class="fact-text">5. "Planting trees can help absorb CO2 and clean the air we breathe!"</div>
+            <div class="fact-source">Source: <a href="https://www.nature.org" target="_blank">The Nature Conservancy</a>
+            </div>
+        </div>
+        <div class="fact-card">
+            <div class="fact-text">6. "Air pollution causes 7 million premature deaths worldwide every year!"</div>
+            <div class="fact-source">Source: <a href="https://www.who.int/health-topics/air-pollution"
+                    target="_blank">World Health Organization</a></div>
+        </div>
+        <div class="fact-card">
+            <div class="fact-text">7. "Walking instead of driving prevents 1 pound of CO2 per mile!"</div>
+            <div class="fact-source">Source: Average car emissions calculations - <em>varies by vehicle</em></div>
+        </div>
+        <div class="fact-card">
+            <div class="fact-text">8. "Carpooling with one other person cuts your emissions in half!"</div>
+            <div class="fact-source">Source: Basic emission division logic</div>
+        </div>
+        <div class="fact-card">
+            <div class="fact-text">9. "Remote work can reduce your carbon footprint by up to 54%!"</div>
+            <div class="fact-source">Source: <a href="https://www.nature.com/articles/s41893-022-00842-5"
+                    target="_blank">Nature Sustainability Study</a> - <em>varies by scenario</em></div>
+        </div>
+        <div class="fact-card">
+            <div class="fact-text">10. "Green spaces in cities can reduce urban temperatures by up to 5°C!"</div>
+            <div class="fact-source">Source: Urban heat island studies - <a href="https://www.epa.gov/heatislands"
+                    target="_blank">EPA Heat Islands</a></div>
+        </div>
+
+        <h3>💧 Water Conservation Facts (10)</h3>
+        <div class="fact-card">
+            <div class="fact-text">1. "Only 3% of Earth's water is freshwater, and most is frozen!"</div>
+            <div class="fact-source">Source: <a href="https://www.usgs.gov/special-topics/water-science-school"
+                    target="_blank">USGS Water Science School</a></div>
+        </div>
+        <div class="fact-card">
+            <div class="fact-text">2. "Turning off the tap while brushing saves 8 gallons of water daily!"</div>
+            <div class="fact-source">Source: <a href="https://www.epa.gov/watersense" target="_blank">EPA WaterSense</a>
+            </div>
+        </div>
+        <div class="fact-card">
+            <div class="fact-text">3. "A leaky faucet can waste over 3,000 gallons of water per year!"</div>
+            <div class="fact-source">Source: <a href="https://www.epa.gov/watersense/fix-leak-week" target="_blank">EPA
+                    Fix a Leak Week</a></div>
+        </div>
+        <div class="fact-card">
+            <div class="fact-text">4. "Shorter showers can save up to 150 gallons of water per month!"</div>
+            <div class="fact-source">Source: Water conservation estimates - <em>depends on showerhead flow rate</em>
+            </div>
+        </div>
+        <div class="fact-card">
+            <div class="fact-text">5. "Rainwater harvesting can reduce household water use by 50%!"</div>
+            <div class="fact-source">Source: Various rainwater harvesting studies - <em>varies by climate</em></div>
+        </div>
+        <div class="fact-card">
+            <div class="fact-text">6. "Agriculture uses 70% of the world's freshwater supply!"</div>
+            <div class="fact-source">Source: <a href="https://www.fao.org" target="_blank">UN Food and Agriculture
+                    Organization</a></div>
+        </div>
+        <div class="fact-card">
+            <div class="fact-text">7. "One dripping tap can waste enough water to fill a bathtub in a week!"</div>
+            <div class="fact-source">Source: Water utility awareness campaigns</div>
+        </div>
+        <div class="fact-card">
+            <div class="fact-text">8. "Low-flow showerheads can save 2,700 gallons of water annually!"</div>
+            <div class="fact-source">Source: <a href="https://www.epa.gov/watersense" target="_blank">EPA WaterSense</a>
+            </div>
+        </div>
+        <div class="fact-card">
+            <div class="fact-text">9. "Fixing leaks can save the average household 10,000 gallons per year!"</div>
+            <div class="fact-source">Source: <a href="https://www.epa.gov/watersense" target="_blank">EPA WaterSense</a>
+            </div>
+        </div>
+        <div class="fact-card">
+            <div class="fact-text">10. "Water is the essence of life - conservation ensures our future!"</div>
+            <div class="fact-source">Source: General awareness statement</div>
+        </div>
+
+        <h3>⚡ Energy Efficiency Facts (10)</h3>
+        <div class="fact-card">
+            <div class="fact-text">1. "LED bulbs use 75% less energy than traditional incandescent lighting!"</div>
+            <div class="fact-source">Source: <a href="https://www.energy.gov/energysaver/led-lighting"
+                    target="_blank">Department of Energy</a></div>
+        </div>
+        <div class="fact-card">
+            <div class="fact-text">2. "Solar panels can reduce electricity bills by 50% to 100%!"</div>
+            <div class="fact-source">Source: Solar industry data - <em>varies by location and system size</em></div>
+        </div>
+        <div class="fact-card">
+            <div class="fact-text">3. "Wind energy could power the world 18 times over!"</div>
+            <div class="fact-source">Source: <a href="https://www.nrel.gov" target="_blank">NREL</a> theoretical
+                potential studies - <em>theoretical maximum</em></div>
+        </div>
+        <div class="fact-card">
+            <div class="fact-text">4. "Unplugging devices when not in use can save 10% on electricity!"</div>
+            <div class="fact-source">Source: <a href="https://www.energy.gov" target="_blank">Department of Energy</a> -
+                phantom load estimates</div>
+        </div>
+        <div class="fact-card">
+            <div class="fact-text">5. "Energy-efficient appliances can cut utility bills by 30%!"</div>
+            <div class="fact-source">Source: <a href="https://www.energystar.gov" target="_blank">ENERGY STAR</a></div>
+        </div>
+        <div class="fact-card">
+            <div class="fact-text">6. "Renewable energy creates 3x more jobs than fossil fuels!"</div>
+            <div class="fact-source">Source: <a href="https://www.irena.org" target="_blank">IRENA</a> - International
+                Renewable Energy Agency</div>
+        </div>
+        <div class="fact-card">
+            <div class="fact-text">7. "A single wind turbine can power up to 500 homes!"</div>
+            <div class="fact-source">Source: <a href="https://www.awea.org" target="_blank">American Wind Energy
+                    Association</a> - <em>depends on turbine size</em></div>
+        </div>
+        <div class="fact-card">
+            <div class="fact-text">8. "Smart thermostats can save 10-15% on heating and cooling costs!"</div>
+            <div class="fact-source">Source: <a href="https://www.energystar.gov" target="_blank">ENERGY STAR</a></div>
+        </div>
+        <div class="fact-card">
+            <div class="fact-text">9. "Solar energy is the fastest-growing power source worldwide!"</div>
+            <div class="fact-source">Source: <a href="https://www.iea.org" target="_blank">International Energy
+                    Agency</a></div>
+        </div>
+        <div class="fact-card">
+            <div class="fact-text">10. "Batteries are key to storing clean energy for when the sun doesn't shine!"</div>
+            <div class="fact-source">Source: General energy storage awareness</div>
+        </div>
+
+        <h3>🌳 Forest/Deforestation Facts (10)</h3>
+        <div class="fact-card">
+            <div class="fact-text">1. "Forests are home to 80% of Earth's terrestrial biodiversity!"</div>
+            <div class="fact-source">Source: <a href="https://www.worldwildlife.org" target="_blank">World Wildlife
+                    Fund</a></div>
+        </div>
+        <div class="fact-card">
+            <div class="fact-text">2. "One tree can absorb 48 pounds of CO2 per year!"</div>
+            <div class="fact-source">Source: <a href="https://www.arborday.org" target="_blank">Arbor Day Foundation</a>
+                - <em>varies by tree species and age</em></div>
+        </div>
+        <div class="fact-card">
+            <div class="fact-text">3. "We lose 18 million acres of forest each year - that's 27 soccer fields per
+                minute!"</div>
+            <div class="fact-source">Source: <a href="https://www.fao.org" target="_blank">UN FAO</a> - <em>rates have
+                    varied, check current data</em></div>
+        </div>
+        <div class="fact-card">
+            <div class="fact-text">4. "Planting trees is one of the most effective ways to combat climate change!"</div>
+            <div class="fact-source">Source: <a href="https://www.ipcc.ch" target="_blank">IPCC</a> climate reports
+            </div>
+        </div>
+        <div class="fact-card">
+            <div class="fact-text">5. "Forests provide oxygen, clean water, and homes for wildlife!"</div>
+            <div class="fact-source">Source: General ecological knowledge</div>
+        </div>
+        <div class="fact-card">
+            <div class="fact-text">6. "Bamboo can grow up to 3 feet in 24 hours - nature's fastest renewable!"</div>
+            <div class="fact-source">Source: <a href="https://www.guinnessworldrecords.com" target="_blank">Guinness
+                    World Records</a> - <em>fastest growing plant</em></div>
+        </div>
+        <div class="fact-card">
+            <div class="fact-text">7. "Forest restoration can bring back lost biodiversity in decades!"</div>
+            <div class="fact-source">Source: <a href="https://www.iucn.org" target="_blank">IUCN</a> restoration studies
+            </div>
+        </div>
+        <div class="fact-card">
+            <div class="fact-text">8. "Old-growth forests store more carbon than young forests!"</div>
+            <div class="fact-source">Source: <a href="https://www.nature.com" target="_blank">Nature</a> - forest carbon
+                studies</div>
+        </div>
+        <div class="fact-card">
+            <div class="fact-text">9. "Paper made from recycled fibers saves 17 trees per ton!"</div>
+            <div class="fact-source">Source: <a href="https://www.epa.gov" target="_blank">EPA</a> recycling statistics
+            </div>
+        </div>
+        <div class="fact-card">
+            <div class="fact-text">10. "Protecting forests protects our future - every tree counts!"</div>
+            <div class="fact-source">Source: General awareness statement</div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- ================= GAME MECHANICS ================= -->
+        <h2>⭐ Star System</h2>
+        <table>
+            <tr>
+                <th>Moves Remaining</th>
+                <th>Stars</th>
+            </tr>
+            <tr>
+                <td>≥50% of total moves</td>
+                <td>⭐⭐⭐ 3 Stars</td>
+            </tr>
+            <tr>
+                <td>25-49% of total moves</td>
+                <td>⭐⭐☆ 2 Stars</td>
+            </tr>
+            <tr>
+                <td>&lt;25% of total moves</td>
+                <td>⭐☆☆ 1 Star</td>
+            </tr>
+        </table>
+
+        <h2>🌍 Earth Healing Stages</h2>
+        <table>
+            <tr>
+                <th>Stage</th>
+                <th>Levels</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>0-20</td>
+                <td>Polluted Earth</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>21-30</td>
+                <td>Recovering Earth</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>31-50</td>
+                <td>Healing Earth</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>All 50</td>
+                <td>Thriving Earth</td>
+            </tr>
+        </table>
+
+        <p style="text-align: center; margin-top: 60px; color: #8BC34A;">
+            Made with 💚 for Earth<br>
+            <strong>Every match counts. Every action matters.</strong>
+        </p>
+    </div>
+</body>
+
+</html>
