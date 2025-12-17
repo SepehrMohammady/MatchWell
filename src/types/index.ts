@@ -11,13 +11,13 @@ export type TileType =
     | 'car'
     | 'truck'
     | 'bus'
-    | 'factory'
-    | 'bicycle'
+    | 'motorbike'
+    | 'airplane'
     // Water Conservation Theme
     | 'droplet'
     | 'faucet'
     | 'shower'
-    | 'bottle'
+    | 'washing'
     | 'ocean'
     // Energy Efficiency Theme
     | 'bulb'
@@ -27,10 +27,10 @@ export type TileType =
     | 'battery'
     // Deforestation Theme
     | 'tree'
-    | 'axe'
     | 'leaf'
     | 'seedling'
     | 'forest'
+    | 'grass'
     | 'empty';
 
 export interface Position {

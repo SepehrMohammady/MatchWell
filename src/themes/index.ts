@@ -14,14 +14,14 @@ export const THEME_CONFIGS: Record<ThemeType, Theme> = {
         id: 'pollution',
         name: 'Clear the Air',
         description: 'Remove polluting vehicles to clean up our cities!',
-        tileTypes: ['car', 'truck', 'bus', 'factory', 'bicycle'],
+        tileTypes: ['car', 'truck', 'bus', 'motorbike', 'airplane'],
         backgroundColor: '#708090',
     },
     'water-conservation': {
         id: 'water-conservation',
         name: 'Water Conservation',
         description: 'Save water! Every drop counts for our future.',
-        tileTypes: ['droplet', 'faucet', 'shower', 'bottle', 'ocean'],
+        tileTypes: ['droplet', 'faucet', 'shower', 'washing', 'ocean'],
         backgroundColor: '#4169E1',
     },
     'energy-efficiency': {
@@ -35,7 +35,7 @@ export const THEME_CONFIGS: Record<ThemeType, Theme> = {
         id: 'deforestation',
         name: 'Save the Forests',
         description: 'Plant trees! Protect our forests for future generations.',
-        tileTypes: ['tree', 'axe', 'leaf', 'seedling', 'forest'],
+        tileTypes: ['tree', 'leaf', 'seedling', 'forest', 'grass'],
         backgroundColor: '#228B22',
     },
 };
@@ -46,21 +46,21 @@ export const TILE_INFO: Record<TileType, { name: string; color: string; emoji: s
     plastic: { name: 'Plastic', color: '#3498db', emoji: '🧴' },
     paper: { name: 'Paper', color: '#a0522d', emoji: '📄' },
     glass: { name: 'Glass', color: '#27ae60', emoji: '🫙' },
-    metal: { name: 'Metal', color: '#95a5a6', emoji: '🥫' },
+    metal: { name: 'Metal', color: '#95a5a6', emoji: '🔩' },
     organic: { name: 'Organic', color: '#f39c12', emoji: '🍌' },
 
     // Pollution Theme
     car: { name: 'Car', color: '#e74c3c', emoji: '🚗' },
     truck: { name: 'Truck', color: '#34495e', emoji: '🚛' },
     bus: { name: 'Bus', color: '#f1c40f', emoji: '🚌' },
-    factory: { name: 'Factory', color: '#2c3e50', emoji: '🏭' },
-    bicycle: { name: 'Bicycle', color: '#2ecc71', emoji: '🚲' },
+    motorbike: { name: 'Motorbike', color: '#2c3e50', emoji: '🏍️' },
+    airplane: { name: 'Airplane', color: '#2ecc71', emoji: '✈️' },
 
     // Water Conservation Theme
     droplet: { name: 'Droplet', color: '#3498db', emoji: '💧' },
     faucet: { name: 'Faucet', color: '#7f8c8d', emoji: '🚰' },
     shower: { name: 'Shower', color: '#1abc9c', emoji: '🚿' },
-    bottle: { name: 'Bottle', color: '#2980b9', emoji: '🧊' },
+    washing: { name: 'Washing', color: '#2980b9', emoji: '🧺' },
     ocean: { name: 'Ocean', color: '#0077be', emoji: '🌊' },
 
     // Energy Efficiency Theme
@@ -72,10 +72,10 @@ export const TILE_INFO: Record<TileType, { name: string; color: string; emoji: s
 
     // Deforestation Theme
     tree: { name: 'Tree', color: '#27ae60', emoji: '🌲' },
-    axe: { name: 'Axe', color: '#8b4513', emoji: '🪓' },
     leaf: { name: 'Leaf', color: '#2ecc71', emoji: '🍃' },
     seedling: { name: 'Seedling', color: '#90ee90', emoji: '🌱' },
     forest: { name: 'Forest', color: '#228b22', emoji: '🌳' },
+    grass: { name: 'Grass', color: '#8b4513', emoji: '🌿' },
 
     empty: { name: 'Empty', color: 'transparent', emoji: '' },
 };

@@ -25,16 +25,16 @@ export const THEME_ACHIEVEMENTS: Achievement[] = [
         category: 'theme',
         name: 'Recycler',
         description: 'Complete all Trash Sorting levels',
-        emoji: '♻️',
+        emoji: '♻️', // mdi: recycle
         theme: 'trash-sorting',
         requirement: 10, // 10 levels
     },
     {
         id: 'theme-pollution',
         category: 'theme',
-        name: 'Clean Air Champion',
+        name: 'Air Cleaner',
         description: 'Complete all Pollution levels',
-        emoji: '🌬️',
+        emoji: '🌀', // mdi: air-filter
         theme: 'pollution',
         requirement: 10,
     },
@@ -52,7 +52,7 @@ export const THEME_ACHIEVEMENTS: Achievement[] = [
         category: 'theme',
         name: 'Energy Saver',
         description: 'Complete all Energy Efficiency levels',
-        emoji: '⚡',
+        emoji: '⚡', // mdi: flash
         theme: 'energy-efficiency',
         requirement: 10,
     },
@@ -61,7 +61,7 @@ export const THEME_ACHIEVEMENTS: Achievement[] = [
         category: 'theme',
         name: 'Forest Protector',
         description: 'Complete all Deforestation levels',
-        emoji: '🌳',
+        emoji: '🌲', // mdi: forest
         theme: 'deforestation',
         requirement: 10,
     },
@@ -74,7 +74,7 @@ export const STAR_ACHIEVEMENTS: Achievement[] = [
         category: 'stars',
         name: 'Bronze Collector',
         description: 'Earn 30 total stars',
-        emoji: '🥉',
+        emoji: '🏅', // mdi: medal (bronze background #CD7F32)
         requirement: 30,
     },
     {
@@ -82,7 +82,7 @@ export const STAR_ACHIEVEMENTS: Achievement[] = [
         category: 'stars',
         name: 'Silver Collector',
         description: 'Earn 60 total stars',
-        emoji: '🥈',
+        emoji: '🏅', // mdi: medal (silver background #C0C0C0)
         requirement: 60,
     },
     {
@@ -90,7 +90,7 @@ export const STAR_ACHIEVEMENTS: Achievement[] = [
         category: 'stars',
         name: 'Gold Collector',
         description: 'Earn 90 total stars',
-        emoji: '🥇',
+        emoji: '🏅', // mdi: medal (gold background #FFD700)
         requirement: 90,
     },
     {
@@ -98,7 +98,7 @@ export const STAR_ACHIEVEMENTS: Achievement[] = [
         category: 'stars',
         name: 'Diamond Collector',
         description: 'Earn 120 total stars',
-        emoji: '💎',
+        emoji: '💎', // mdi: diamond-stone (darker background #7CB9E8)
         requirement: 120,
     },
     {
@@ -106,7 +106,7 @@ export const STAR_ACHIEVEMENTS: Achievement[] = [
         category: 'stars',
         name: 'Star Master',
         description: 'Earn all 150 stars',
-        emoji: '🏆',
+        emoji: '🏆', // mdi: trophy-award
         requirement: 150,
     },
 ];
