@@ -132,6 +132,7 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
             initializeGame(nextLevelId);
             navigation.setParams({ levelId: nextLevelId });
         } else {
+            stopBgm(); // Stop theme music before going to level select
             navigation.navigate('LevelSelect');
         }
     }, [levelId, initializeGame, navigation]);
@@ -141,6 +142,7 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
             await saveEndlessState(); // Save endless state for resume
         }
         resetGameState(); // Reset all game state flags before navigating
+        stopBgm(); // Stop theme music to prevent overlap
         navigation.navigate('MainMenu');
     }, [navigation, resetGameState, isEndlessMode, isGameOver, saveEndlessState]);
 

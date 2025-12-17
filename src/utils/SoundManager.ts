@@ -83,13 +83,24 @@ let settingsLoaded = false; // Track if settings have been loaded from storage
 // Set up AppState listener to pause music when app goes to background
 AppState.addEventListener('change', (nextAppState: AppStateStatus) => {
     if (currentAppState.match(/active/) && nextAppState.match(/inactive|background/)) {
-        // App is going to background - pause all BGM
-        console.log('📱 App going to background - pausing BGM');
-        if (currentBgm) {
-            currentBgm.pause();
-        }
+        // App is going to background - pause ALL BGM sounds
+        console.log('📱 App going to background - pausing ALL BGM');
+        const bgmNames: SoundName[] = [
+            'bgm_menu',
+            'bgm_theme_trash',
+            'bgm_theme_pollution',
+            'bgm_theme_water',
+            'bgm_theme_energy',
+            'bgm_theme_forest',
+        ];
+        bgmNames.forEach(bgmName => {
+            const cachedSound = soundCache[bgmName];
+            if (cachedSound) {
+                cachedSound.pause();
+            }
+        });
     } else if (currentAppState.match(/inactive|background/) && nextAppState === 'active') {
-        // App is coming to foreground - resume BGM if music is enabled
+        // App is coming to foreground - resume only currentBgm if music is enabled
         console.log('📱 App coming to foreground - resuming BGM');
         if (currentBgm && musicEnabled) {
             currentBgm.play();
