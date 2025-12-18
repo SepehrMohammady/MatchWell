@@ -377,10 +377,10 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
                         {/* Star Rating - based on moves remaining percentage */}
                         <View style={styles.starsContainer}>
                             <StarFilledIcon size={32} />
-                            {levelConfig && (movesRemaining / levelConfig.moves) >= 0.25
+                            {levelConfig && levelConfig.moves > 0 && (movesRemaining / levelConfig.moves) >= 0.25
                                 ? <StarFilledIcon size={32} />
                                 : <StarEmptyIcon size={32} />}
-                            {levelConfig && (movesRemaining / levelConfig.moves) >= 0.50
+                            {levelConfig && levelConfig.moves > 0 && (movesRemaining / levelConfig.moves) >= 0.50
                                 ? <StarFilledIcon size={32} />
                                 : <StarEmptyIcon size={32} />}
                         </View>
