@@ -61,6 +61,14 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
     const [musicEnabled, setMusicEnabled] = useState(true);
     const [toastAchievement, setToastAchievement] = useState<Achievement | null>(null);
     const toastOpacity = useRef(new Animated.Value(0)).current;
+    const levelCompleteProcessed = useRef(false);
+
+    // Loading screen state for story mode
+    const [isLoading, setIsLoading] = useState(!route.params?.isEndless);
+    const [loadingCountdown, setLoadingCountdown] = useState(5);
+
+    // Track already shown endless achievements to avoid duplicates
+    const shownEndlessAchievements = useRef<Set<string>>(new Set());
 
     // Load sound settings when pausing
     useEffect(() => {
@@ -72,18 +80,37 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
     }, [isPaused]);
 
     // Initialize the game level with isEndless flag and optional endlessTheme
-    // Only skip initialization if resuming ENDLESS mode (grid populated AND already in endless mode)
+    // Use ref to prevent re-initialization on state changes
+    const gameInitialized = useRef(false);
+    const lastLevelId = useRef(levelId);
+    const lastEndlessTheme = useRef(route.params?.endlessTheme);
+    // Capture initial grid state at mount to detect if resuming from saved state
+    const initialGridLength = useRef(grid.length);
+
     useEffect(() => {
         const isEndless = route.params?.isEndless || false;
         const endlessTheme = route.params?.endlessTheme;
+        const forceNew = route.params?.forceNew || false;
 
-        // In story mode, always re-initialize
-        // In endless mode, only skip if already in endless mode AND grid is populated (resuming)
-        const isResumingEndless = isEndless && isEndlessMode && grid.length > 0;
-        if (!isResumingEndless) {
+        // Check if theme changed (different endless game requested)
+        const themeChanged = endlessTheme !== lastEndlessTheme.current;
+
+        // Never resume if forceNew is set
+        // Only resume if: endless mode, grid populated at mount, theme matches store theme, AND theme didn't change
+        const isResumingEndless = !forceNew && isEndless && isEndlessMode && initialGridLength.current > 0
+            && theme === endlessTheme && !themeChanged;
+
+        // Initialize if: first mount (not resuming), levelId changed, theme changed, or forceNew
+        if ((!gameInitialized.current && !isResumingEndless) || lastLevelId.current !== levelId || themeChanged || forceNew) {
+            gameInitialized.current = true;
+            lastLevelId.current = levelId;
+            lastEndlessTheme.current = endlessTheme;
             initializeGame(levelId, isEndless, endlessTheme);
+        } else {
+            gameInitialized.current = true;
+            lastEndlessTheme.current = endlessTheme;
         }
-    }, [levelId, initializeGame, route.params?.isEndless, route.params?.endlessTheme, grid.length, isEndlessMode]);
+    }, [levelId, route.params?.isEndless, route.params?.endlessTheme, route.params?.forceNew]);
 
     // Play theme music only when screen is focused (prevents restart after stopBgm)
     useFocusEffect(
@@ -125,7 +152,8 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
 
     // Check for new achievements when level completes
     useEffect(() => {
-        if (isLevelComplete) {
+        if (isLevelComplete && !levelCompleteProcessed.current) {
+            levelCompleteProcessed.current = true;
             markLevelComplete(levelId, score, movesRemaining);
 
             const allLevelIds = LEVELS.map(l => l.id);
@@ -174,8 +202,11 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
                     }
                 }
             }
+        } else if (!isLevelComplete) {
+            // Reset the flag when level is not complete (new game started)
+            levelCompleteProcessed.current = false;
         }
-    }, [isLevelComplete, levelId, score, movesRemaining, markLevelComplete, isEndlessMode, theme, completedLevels, levelMovesRemaining, highScores, showAchievementToast]);
+    }, [isLevelComplete, levelId, score, movesRemaining]);
 
     // Save endless high score when score changes in endless mode
     useEffect(() => {
@@ -184,9 +215,51 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
         }
     }, [isEndlessMode, score, theme, saveEndlessHighScore]);
 
+    // Check endless achievements during gameplay (not just on level complete)
+    useEffect(() => {
+        if (isEndlessMode && theme && score > 0) {
+            for (const endlessAchievement of ENDLESS_ACHIEVEMENTS.filter(a => a.theme === theme)) {
+                // Skip if already shown this session
+                if (shownEndlessAchievements.current.has(endlessAchievement.id)) continue;
+
+                // Check if score meets requirement
+                if (score >= endlessAchievement.requirement) {
+                    // Check if this is a new achievement (wasn't already earned)
+                    const wasEarned = checkEndlessAchievement(theme, endlessAchievement.requirement, highScores);
+                    if (!wasEarned) {
+                        shownEndlessAchievements.current.add(endlessAchievement.id);
+                        showAchievementToast(endlessAchievement);
+                        break; // Only show one toast at a time
+                    }
+                }
+            }
+        }
+    }, [isEndlessMode, theme, score, highScores, showAchievementToast]);
+
+    // Loading screen countdown for story mode
+    useEffect(() => {
+        if (isLoading && !route.params?.isEndless) {
+            const timer = setInterval(() => {
+                setLoadingCountdown(prev => {
+                    if (prev <= 1) {
+                        clearInterval(timer);
+                        setIsLoading(false);
+                        return 0;
+                    }
+                    return prev - 1;
+                });
+            }, 1000);
+            return () => clearInterval(timer);
+        }
+    }, [isLoading, route.params?.isEndless]);
+
     // Handle hardware back button to open pause menu
     useEffect(() => {
         const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+            if (isLoading) {
+                setIsLoading(false);
+                return true;
+            }
             if (!isPaused && !isLevelComplete && !isGameOver) {
                 pauseBgm();
                 pauseGame();
@@ -196,7 +269,7 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
         });
 
         return () => backHandler.remove();
-    }, [isPaused, isLevelComplete, isGameOver, pauseGame]);
+    }, [isPaused, isLevelComplete, isGameOver, pauseGame, isLoading]);
 
     const handlePause = useCallback(() => {
         // Don't pause BGM - theme music continues during pause
@@ -276,6 +349,38 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
         };
     };
 
+    // Loading screen for story mode
+    if (isLoading && !route.params?.isEndless && levelConfig) {
+        return (
+            <View style={[styles.loadingContainer, { paddingTop: insets.top }]}>
+                <StatusBar barStyle="light-content" />
+                <View style={styles.loadingContent}>
+                    <Text style={styles.loadingLevel}>Level {levelId}</Text>
+                    <Text style={styles.loadingTheme}>{themeConfig?.name}</Text>
+
+                    {levelConfig.environmentalFact && (
+                        <View style={styles.loadingFactContainer}>
+                            <Text style={styles.loadingFactIcon}>💡</Text>
+                            <Text style={styles.loadingFactText}>{levelConfig.environmentalFact}</Text>
+                        </View>
+                    )}
+
+                    <View style={styles.loadingCountdownContainer}>
+                        <Text style={styles.loadingCountdownText}>Starting in</Text>
+                        <Text style={styles.loadingCountdown}>{loadingCountdown}</Text>
+                    </View>
+
+                    <TouchableOpacity
+                        style={styles.loadingSkipButton}
+                        onPress={() => setIsLoading(false)}
+                    >
+                        <Text style={styles.loadingSkipText}>Tap to skip</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        );
+    }
+
     return (
         <View style={[styles.container, getBackgroundStyle(), { paddingTop: insets.top }]}>
             <StatusBar barStyle="light-content" />
@@ -293,17 +398,17 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
 
             <HUD onPause={handlePause} />
 
-            <View style={styles.boardContainer}>
-                <GameBoard />
-            </View>
-
-            {/* Environmental Fact */}
+            {/* Environmental Fact - between HUD and board */}
             {levelConfig?.environmentalFact && (
                 <View style={styles.factContainer}>
                     <Text style={styles.factIcon}>💡</Text>
                     <Text style={styles.factText}>{levelConfig.environmentalFact}</Text>
                 </View>
             )}
+
+            <View style={styles.boardContainer}>
+                <GameBoard />
+            </View>
 
             {/* Pause Modal */}
             <Modal visible={isPaused} transparent animationType="fade">
@@ -696,6 +801,74 @@ const styles = StyleSheet.create({
         fontSize: TYPOGRAPHY.body,
         fontFamily: TYPOGRAPHY.fontFamilySemiBold,
         color: '#FFFFFF',
+    },
+    // Loading screen styles
+    loadingContainer: {
+        flex: 1,
+        backgroundColor: COLORS.backgroundDark,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    loadingContent: {
+        alignItems: 'center',
+        paddingHorizontal: SPACING.xl,
+    },
+    loadingLevel: {
+        fontSize: TYPOGRAPHY.h1,
+        fontFamily: TYPOGRAPHY.fontFamilyBold,
+        fontWeight: TYPOGRAPHY.bold,
+        color: COLORS.textLight,
+        marginBottom: SPACING.sm,
+    },
+    loadingTheme: {
+        fontSize: TYPOGRAPHY.h3,
+        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
+        color: COLORS.organicWaste,
+        marginBottom: SPACING.xl,
+    },
+    loadingFactContainer: {
+        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+        borderRadius: RADIUS.lg,
+        padding: SPACING.lg,
+        marginBottom: SPACING.xl,
+        maxWidth: 320,
+    },
+    loadingFactIcon: {
+        fontSize: 32,
+        textAlign: 'center',
+        marginBottom: SPACING.sm,
+    },
+    loadingFactText: {
+        fontSize: TYPOGRAPHY.body,
+        fontFamily: TYPOGRAPHY.fontFamily,
+        color: COLORS.textLight,
+        textAlign: 'center',
+        lineHeight: 24,
+    },
+    loadingCountdownContainer: {
+        alignItems: 'center',
+        marginBottom: SPACING.lg,
+    },
+    loadingCountdownText: {
+        fontSize: TYPOGRAPHY.bodySmall,
+        fontFamily: TYPOGRAPHY.fontFamily,
+        color: COLORS.textMuted,
+        marginBottom: SPACING.xs,
+    },
+    loadingCountdown: {
+        fontSize: 48,
+        fontFamily: TYPOGRAPHY.fontFamilyBold,
+        fontWeight: TYPOGRAPHY.bold,
+        color: COLORS.accentHighlight,
+    },
+    loadingSkipButton: {
+        paddingVertical: SPACING.md,
+        paddingHorizontal: SPACING.xl,
+    },
+    loadingSkipText: {
+        fontSize: TYPOGRAPHY.bodySmall,
+        fontFamily: TYPOGRAPHY.fontFamily,
+        color: COLORS.textMuted,
     },
 });
 

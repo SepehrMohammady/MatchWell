@@ -7,5 +7,5 @@ export type RootStackParamList = {
     EndlessSelect: undefined;
     Settings: undefined;
     Achievements: undefined;
-    Game: { levelId: number; isEndless?: boolean; endlessTheme?: ThemeType };
+    Game: { levelId: number; isEndless?: boolean; endlessTheme?: ThemeType; forceNew?: boolean };
 };

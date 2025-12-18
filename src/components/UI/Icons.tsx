@@ -111,7 +111,7 @@ export const ArrowRightIcon: React.FC<IconProps> = ({ size = 24, color = COLORS.
 export const getThemeIcon = (theme: string, size = 32, color?: string): React.ReactNode => {
     const iconMap: Record<string, { name: string; defaultColor: string }> = {
         'trash-sorting': { name: 'recycle', defaultColor: '#27AE60' },
-        'pollution': { name: 'factory', defaultColor: '#708090' },
+        'pollution': { name: 'car-side', defaultColor: '#708090' },
         'water-conservation': { name: 'water', defaultColor: '#3498DB' },
         'energy-efficiency': { name: 'flash', defaultColor: '#F5A623' },
         'deforestation': { name: 'pine-tree', defaultColor: '#228B22' },

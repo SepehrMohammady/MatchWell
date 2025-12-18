@@ -14,11 +14,11 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
 import { RootStackParamList } from '../types';
 import { useGameStore } from '../context/GameStore';
-import { LEVELS, THEME_CONFIGS, getThemeEmoji } from '../themes';
+import { LEVELS, THEME_CONFIGS } from '../themes';
 import { ThemeType } from '../types';
 import { playSfx, playBgm } from '../utils/SoundManager';
 import { COLORS, TYPOGRAPHY, SPACING, RADIUS, SHADOWS } from '../config/theme';
-import { LockIcon, StarFilledIcon } from '../components/UI/Icons';
+import { LockIcon, StarFilledIcon, getThemeIcon } from '../components/UI/Icons';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'LevelSelect'>;
 
@@ -121,9 +121,7 @@ const LevelSelect: React.FC<Props> = ({ navigation }) => {
                         <View key={themeId} style={styles.themeSection}>
                             <View style={styles.themeTitleContainer}>
                                 <View style={styles.themeIconContainer}>
-                                    <Text style={styles.themeEmoji}>
-                                        {getThemeEmoji(themeId as ThemeType)}
-                                    </Text>
+                                    {getThemeIcon(themeId as ThemeType, 24)}
                                 </View>
                                 <View style={styles.themeTextContainer}>
                                     <View style={styles.themeNameRow}>

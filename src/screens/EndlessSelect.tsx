@@ -1,5 +1,5 @@
 // Endless Mode Theme Selection Screen - Earth-Inspired Minimal Design
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import {
     View,
     Text,
@@ -7,6 +7,7 @@ import {
     TouchableOpacity,
     ScrollView,
     StatusBar,
+    BackHandler,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -14,9 +15,10 @@ import { useFocusEffect } from '@react-navigation/native';
 import { RootStackParamList } from '../types';
 import { ThemeType } from '../types';
 import { useGameStore } from '../context/GameStore';
-import { THEME_CONFIGS, getThemeEmoji, getLevelsByTheme } from '../themes';
+import { THEME_CONFIGS, getLevelsByTheme } from '../themes';
 import { playSfx, playBgm } from '../utils/SoundManager';
 import { COLORS, TYPOGRAPHY, SPACING, RADIUS, SHADOWS } from '../config/theme';
+import { getThemeIcon, LockIcon } from '../components/UI/Icons';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'EndlessSelect'>;
 
@@ -37,26 +39,36 @@ const EndlessSelect: React.FC<Props> = ({ navigation }) => {
     const loadEndlessState = useGameStore((state) => state.loadEndlessState);
     const clearEndlessState = useGameStore((state) => state.clearEndlessState);
 
-    // Track which theme has saved state
-    const [savedTheme, setSavedTheme] = useState<ThemeType | null>(null);
+    // Track which themes have saved state (multiple themes can have saves)
+    const [savedThemes, setSavedThemes] = useState<Set<ThemeType>>(new Set());
 
     // Check for saved endless state when screen is focused
     useFocusEffect(
         useCallback(() => {
-            const checkSavedState = async () => {
+            const checkSavedStates = async () => {
+                const themesWithSaves = new Set<ThemeType>();
                 for (const theme of THEME_ORDER) {
                     const hasSaved = await hasEndlessState(theme);
                     if (hasSaved) {
-                        setSavedTheme(theme);
-                        return;
+                        themesWithSaves.add(theme);
                     }
                 }
-                setSavedTheme(null);
+                setSavedThemes(themesWithSaves);
             };
-            checkSavedState();
+            checkSavedStates();
             playBgm('bgm_menu');
         }, [hasEndlessState])
     );
+
+    // Handle hardware back button to go to MainMenu
+    useEffect(() => {
+        const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+            handleBack();
+            return true;
+        });
+
+        return () => backHandler.remove();
+    }, []);
 
     // Check if a theme is unlocked (all levels in that theme completed in story mode)
     const isThemeUnlocked = (theme: ThemeType): boolean => {
@@ -98,12 +110,18 @@ const EndlessSelect: React.FC<Props> = ({ navigation }) => {
 
     const handleNewGame = async (theme: ThemeType) => {
         playSfx('tile_select');
-        await clearEndlessState();
-        setSavedTheme(null);
+        await clearEndlessState(theme);
+        // Remove this theme from saved themes set
+        setSavedThemes(prev => {
+            const newSet = new Set(prev);
+            newSet.delete(theme);
+            return newSet;
+        });
         navigation.navigate('Game', {
             levelId: 1,
             isEndless: true,
-            endlessTheme: theme
+            endlessTheme: theme,
+            forceNew: true,
         });
     };
 
@@ -152,9 +170,11 @@ const EndlessSelect: React.FC<Props> = ({ navigation }) => {
                         >
                             <View style={styles.themeHeader}>
                                 <View style={styles.themeIconContainer}>
-                                    <Text style={styles.themeEmoji}>
-                                        {unlocked ? getThemeEmoji(themeId) : '🔒'}
-                                    </Text>
+                                    {unlocked ? (
+                                        getThemeIcon(themeId, 28)
+                                    ) : (
+                                        <LockIcon size={24} color={COLORS.textMuted} />
+                                    )}
                                 </View>
                                 <View style={styles.themeInfo}>
                                     <Text style={[
@@ -177,7 +197,7 @@ const EndlessSelect: React.FC<Props> = ({ navigation }) => {
                                             {highScore > 0 ? highScore.toLocaleString() : '—'}
                                         </Text>
                                     </View>
-                                    {savedTheme === themeId ? (
+                                    {savedThemes.has(themeId) ? (
                                         <View style={styles.resumeButtonsRow}>
                                             <TouchableOpacity
                                                 style={styles.continueButton}

@@ -17,6 +17,8 @@ import { useGameStore } from '../context/GameStore';
 import { getLevelsByTheme, LEVELS, getLevelById } from '../themes';
 import { playSfx, playBgm } from '../utils/SoundManager';
 import { COLORS, TYPOGRAPHY, SPACING, RADIUS, SHADOWS } from '../config/theme';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { LockIcon } from '../components/UI/Icons';
 import {
     THEME_ACHIEVEMENTS,
     STAR_ACHIEVEMENTS,
@@ -118,9 +120,17 @@ const Achievements: React.FC<Props> = ({ navigation }) => {
                 key={achievement.id}
                 style={[styles.medalCard, !unlocked && styles.medalLocked]}
             >
-                <Text style={[styles.medalEmoji, !unlocked && styles.medalEmojiLocked]}>
-                    {unlocked ? achievement.emoji : '🔒'}
-                </Text>
+                <View style={[styles.medalIconContainer, unlocked && { backgroundColor: achievement.iconColor + '20' }]}>
+                    {unlocked && achievement.icon ? (
+                        <MaterialCommunityIcons
+                            name={achievement.icon}
+                            size={28}
+                            color={achievement.iconColor || COLORS.organicWaste}
+                        />
+                    ) : (
+                        <LockIcon size={24} color={COLORS.textMuted} />
+                    )}
+                </View>
                 <View style={styles.medalInfo}>
                     <Text style={[styles.medalName, !unlocked && styles.medalTextLocked]}>
                         {achievement.name}
@@ -206,9 +216,17 @@ const Achievements: React.FC<Props> = ({ navigation }) => {
                                                 !unlocked && styles.endlessMedalLocked,
                                             ]}
                                         >
-                                            <Text style={styles.endlessMedalEmoji}>
-                                                {unlocked ? a.emoji : '🔒'}
-                                            </Text>
+                                            <View style={[styles.endlessMedalIconContainer, unlocked && a.iconColor && { backgroundColor: a.iconColor + '20' }]}>
+                                                {unlocked && a.icon ? (
+                                                    <MaterialCommunityIcons
+                                                        name={a.icon}
+                                                        size={20}
+                                                        color={a.iconColor || COLORS.organicWaste}
+                                                    />
+                                                ) : (
+                                                    <LockIcon size={16} color={COLORS.textMuted} />
+                                                )}
+                                            </View>
                                             <Text style={styles.endlessMedalTier}>
                                                 {a.tier === 'bronze' ? 'Bronze' :
                                                     a.tier === 'silver' ? 'Silver' :
@@ -328,12 +346,14 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.backgroundSecondary,
         opacity: 0.7,
     },
-    medalEmoji: {
-        fontSize: 32,
+    medalIconContainer: {
+        width: 48,
+        height: 48,
+        borderRadius: RADIUS.md,
+        alignItems: 'center',
+        justifyContent: 'center',
         marginRight: SPACING.md,
-    },
-    medalEmojiLocked: {
-        opacity: 0.5,
+        backgroundColor: COLORS.backgroundSecondary,
     },
     medalInfo: {
         flex: 1,
@@ -381,8 +401,13 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.backgroundSecondary,
         opacity: 0.6,
     },
-    endlessMedalEmoji: {
-        fontSize: 20,
+    endlessMedalIconContainer: {
+        width: 32,
+        height: 32,
+        borderRadius: RADIUS.sm,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: COLORS.backgroundSecondary,
     },
     endlessMedalTier: {
         fontSize: TYPOGRAPHY.caption,

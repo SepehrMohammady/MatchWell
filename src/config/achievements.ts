@@ -12,7 +12,9 @@ export interface Achievement {
     category: AchievementCategory;
     name: string;
     description: string;
-    emoji: string;
+    emoji: string; // Keep for backward compatibility
+    icon?: string; // Material Community Icon name
+    iconColor?: string; // Icon color
     theme?: ThemeType; // For theme-specific achievements
     tier?: EndlessTier; // For endless score tiers
     requirement: number; // Stars for star achievements, score for endless
@@ -25,16 +27,20 @@ export const THEME_ACHIEVEMENTS: Achievement[] = [
         category: 'theme',
         name: 'Recycler',
         description: 'Complete all Trash Sorting levels',
-        emoji: '♻️', // mdi: recycle
+        emoji: '♻️',
+        icon: 'recycle-variant',
+        iconColor: '#27AE60',
         theme: 'trash-sorting',
-        requirement: 10, // 10 levels
+        requirement: 10,
     },
     {
         id: 'theme-pollution',
         category: 'theme',
         name: 'Air Cleaner',
         description: 'Complete all Pollution levels',
-        emoji: '🌀', // mdi: air-filter
+        emoji: '🌀',
+        icon: 'air-filter',
+        iconColor: '#708090',
         theme: 'pollution',
         requirement: 10,
     },
@@ -44,6 +50,8 @@ export const THEME_ACHIEVEMENTS: Achievement[] = [
         name: 'Water Guardian',
         description: 'Complete all Water Conservation levels',
         emoji: '💧',
+        icon: 'water',
+        iconColor: '#3498DB',
         theme: 'water-conservation',
         requirement: 10,
     },
@@ -52,7 +60,9 @@ export const THEME_ACHIEVEMENTS: Achievement[] = [
         category: 'theme',
         name: 'Energy Saver',
         description: 'Complete all Energy Efficiency levels',
-        emoji: '⚡', // mdi: flash
+        emoji: '⚡',
+        icon: 'flash',
+        iconColor: '#F5A623',
         theme: 'energy-efficiency',
         requirement: 10,
     },
@@ -61,7 +71,9 @@ export const THEME_ACHIEVEMENTS: Achievement[] = [
         category: 'theme',
         name: 'Forest Protector',
         description: 'Complete all Deforestation levels',
-        emoji: '🌲', // mdi: forest
+        emoji: '🌲',
+        icon: 'forest',
+        iconColor: '#228B22',
         theme: 'deforestation',
         requirement: 10,
     },
@@ -74,7 +86,9 @@ export const STAR_ACHIEVEMENTS: Achievement[] = [
         category: 'stars',
         name: 'Bronze Collector',
         description: 'Earn 30 total stars',
-        emoji: '🏅', // mdi: medal (bronze background #CD7F32)
+        emoji: '🏅',
+        icon: 'medal',
+        iconColor: '#CD7F32',
         requirement: 30,
     },
     {
@@ -82,7 +96,9 @@ export const STAR_ACHIEVEMENTS: Achievement[] = [
         category: 'stars',
         name: 'Silver Collector',
         description: 'Earn 60 total stars',
-        emoji: '🏅', // mdi: medal (silver background #C0C0C0)
+        emoji: '🏅',
+        icon: 'medal',
+        iconColor: '#C0C0C0',
         requirement: 60,
     },
     {
@@ -90,7 +106,9 @@ export const STAR_ACHIEVEMENTS: Achievement[] = [
         category: 'stars',
         name: 'Gold Collector',
         description: 'Earn 90 total stars',
-        emoji: '🏅', // mdi: medal (gold background #FFD700)
+        emoji: '🏅',
+        icon: 'medal',
+        iconColor: '#FFD700',
         requirement: 90,
     },
     {
@@ -98,7 +116,9 @@ export const STAR_ACHIEVEMENTS: Achievement[] = [
         category: 'stars',
         name: 'Diamond Collector',
         description: 'Earn 120 total stars',
-        emoji: '💎', // mdi: diamond-stone (darker background #7CB9E8)
+        emoji: '💎',
+        icon: 'diamond-stone',
+        iconColor: '#7CB9E8',
         requirement: 120,
     },
     {
@@ -106,18 +126,20 @@ export const STAR_ACHIEVEMENTS: Achievement[] = [
         category: 'stars',
         name: 'Star Master',
         description: 'Earn all 150 stars',
-        emoji: '🏆', // mdi: trophy-award
+        emoji: '🏆',
+        icon: 'trophy-award',
+        iconColor: '#FFD700',
         requirement: 150,
     },
 ];
 
 // Endless Score Tiers Configuration
-const ENDLESS_TIERS: { tier: EndlessTier; name: string; emoji: string; score: number }[] = [
-    { tier: 'bronze', name: 'Bronze', emoji: '🥉', score: 50000 },
-    { tier: 'silver', name: 'Silver', emoji: '🥈', score: 500000 },
-    { tier: 'gold', name: 'Gold', emoji: '🥇', score: 5000000 },
-    { tier: 'diamond', name: 'Diamond', emoji: '💎', score: 50000000 },
-    { tier: 'earth-saver', name: 'Earth Saver', emoji: '🌍', score: 500000000 },
+const ENDLESS_TIERS: { tier: EndlessTier; name: string; emoji: string; icon: string; iconColor: string; score: number }[] = [
+    { tier: 'bronze', name: 'Bronze', emoji: '🥉', icon: 'medal', iconColor: '#CD7F32', score: 50000 },
+    { tier: 'silver', name: 'Silver', emoji: '🥈', icon: 'medal', iconColor: '#C0C0C0', score: 500000 },
+    { tier: 'gold', name: 'Gold', emoji: '🥇', icon: 'medal', iconColor: '#FFD700', score: 5000000 },
+    { tier: 'diamond', name: 'Diamond', emoji: '💎', icon: 'diamond-stone', iconColor: '#7CB9E8', score: 50000000 },
+    { tier: 'earth-saver', name: 'Earth Saver', emoji: '🌍', icon: 'earth', iconColor: '#4CAF50', score: 500000000 },
 ];
 
 // Theme names for display
@@ -141,13 +163,15 @@ export const ENDLESS_ACHIEVEMENTS: Achievement[] = (() => {
     ];
 
     themes.forEach((theme) => {
-        ENDLESS_TIERS.forEach(({ tier, name, emoji, score }) => {
+        ENDLESS_TIERS.forEach(({ tier, name, emoji, icon, iconColor, score }) => {
             achievements.push({
                 id: `endless-${theme}-${tier}`,
                 category: 'endless',
                 name: `${name} ${THEME_NAMES[theme]}`,
                 description: `Score ${formatScore(score)} in ${THEME_NAMES[theme]} Endless`,
                 emoji,
+                icon,
+                iconColor,
                 theme,
                 tier,
                 requirement: score,
