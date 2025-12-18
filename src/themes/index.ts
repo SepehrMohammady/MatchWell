@@ -81,46 +81,46 @@ export const TILE_INFO: Record<TileType, { name: string; color: string; emoji: s
 };
 
 // Environmental facts by theme
-const TRASH_FACTS = [
+export const TRASH_FACTS = [
     'Recycling one aluminum can saves enough energy to run a TV for 3 hours!',
     'Paper can be recycled 5-7 times before the fibers become too short!',
     'Glass is 100% recyclable and can be recycled endlessly without quality loss!',
     'Organic waste in landfills produces methane, a powerful greenhouse gas!',
     'Proper waste sorting can reduce household waste by up to 80%!',
-    'Recycling one ton of plastic saves 7.4 cubic yards of landfill space!',
+    'The world produces over 350 million tonnes of plastic waste each year!',
     'It takes 500 years for a plastic bottle to decompose in a landfill!',
     'Composting food scraps reduces methane emissions significantly!',
     'E-waste is the fastest growing waste stream in the world!',
-    'The average person generates 4.5 pounds of trash per day!',
+    'Globally, only 9% of all plastic ever produced has been recycled!',
 ];
 
-const POLLUTION_FACTS = [
-    'Transportation accounts for about 29% of greenhouse gas emissions!',
+export const POLLUTION_FACTS = [
+    'Transportation accounts for about 16% of global greenhouse gas emissions!',
     'Electric vehicles produce zero direct emissions!',
     'Cycling instead of driving can reduce your carbon footprint significantly!',
-    'Public transportation uses 50% less fuel per passenger mile than private cars!',
+    'Public transport uses 50% less fuel per passenger-km than private cars!',
     'Planting trees can help absorb CO2 and clean the air we breathe!',
     'Air pollution causes 7 million premature deaths worldwide every year!',
-    'Walking instead of driving prevents 1 pound of CO2 per mile!',
+    'Walking instead of driving saves about 0.2 kg of CO2 per kilometer!',
     'Carpooling with one other person cuts your emissions in half!',
     'Remote work can reduce your carbon footprint by up to 54%!',
     'Green spaces in cities can reduce urban temperatures by up to 5°C!',
 ];
 
-const WATER_FACTS = [
+export const WATER_FACTS = [
     'Only 3% of Earth\'s water is freshwater, and most is frozen!',
-    'Turning off the tap while brushing saves 8 gallons of water daily!',
-    'A leaky faucet can waste over 3,000 gallons of water per year!',
-    'Shorter showers can save up to 150 gallons of water per month!',
+    'Turning off the tap while brushing saves 30 liters of water daily!',
+    'A leaky faucet can waste over 11,000 liters of water per year!',
+    'Shorter showers can save up to 550 liters of water per month!',
     'Rainwater harvesting can reduce household water use by 50%!',
     'Agriculture uses 70% of the world\'s freshwater supply!',
     'One dripping tap can waste enough water to fill a bathtub in a week!',
-    'Low-flow showerheads can save 2,700 gallons of water annually!',
-    'Fixing leaks can save the average household 10,000 gallons per year!',
+    'Low-flow showerheads can save 10,000 liters of water annually!',
+    'Two billion people worldwide lack access to safe drinking water!',
     'Water is the essence of life - conservation ensures our future!',
 ];
 
-const ENERGY_FACTS = [
+export const ENERGY_FACTS = [
     'LED bulbs use 75% less energy than traditional incandescent lighting!',
     'Solar panels can reduce electricity bills by 50% to 100%!',
     'Wind energy could power the world 18 times over!',
@@ -133,13 +133,13 @@ const ENERGY_FACTS = [
     'Batteries are key to storing clean energy for when the sun doesn\'t shine!',
 ];
 
-const FOREST_FACTS = [
+export const FOREST_FACTS = [
     'Forests are home to 80% of Earth\'s terrestrial biodiversity!',
-    'One tree can absorb 48 pounds of CO2 per year!',
-    'We lose 18 million acres of forest each year - that\'s 27 soccer fields per minute!',
+    'One tree can absorb about 22 kg of CO2 per year!',
+    'We lose 10 million hectares of forest each year globally!',
     'Planting trees is one of the most effective ways to combat climate change!',
     'Forests provide oxygen, clean water, and homes for wildlife!',
-    'Bamboo can grow up to 3 feet in 24 hours - nature\'s fastest renewable!',
+    'Bamboo can grow up to 1 meter in 24 hours - nature\'s fastest renewable!',
     'Forest restoration can bring back lost biodiversity in decades!',
     'Old-growth forests store more carbon than young forests!',
     'Paper made from recycled fibers saves 17 trees per ton!',

@@ -16,7 +16,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { useGameStore } from '../context/GameStore';
 import GameBoard from '../components/Game/GameBoard';
 import HUD from '../components/UI/HUD';
-import { THEME_CONFIGS, getLevelById, getLevelsByTheme, LEVELS } from '../themes';
+import { THEME_CONFIGS, getLevelById, getLevelsByTheme, LEVELS, TRASH_FACTS, POLLUTION_FACTS, WATER_FACTS, ENERGY_FACTS, FOREST_FACTS } from '../themes';
 import { THEME_ACHIEVEMENTS, STAR_ACHIEVEMENTS, ENDLESS_ACHIEVEMENTS, checkThemeAchievement, checkStarAchievement, checkEndlessAchievement, Achievement } from '../config/achievements';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types';
@@ -63,9 +63,13 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
     const toastOpacity = useRef(new Animated.Value(0)).current;
     const levelCompleteProcessed = useRef(false);
 
-    // Loading screen state for story mode
-    const [isLoading, setIsLoading] = useState(!route.params?.isEndless);
-    const [loadingCountdown, setLoadingCountdown] = useState(5);
+    // Loading screen state (for both story and endless)
+    const [isLoading, setIsLoading] = useState(true);
+    const [loadingProgress, setLoadingProgress] = useState(0);
+    const loadingDuration = 7000; // 7 seconds
+
+    // Endless mode rotating facts
+    const [endlessFactIndex, setEndlessFactIndex] = useState(0);
 
     // Track already shown endless achievements to avoid duplicates
     const shownEndlessAchievements = useRef<Set<string>>(new Set());
@@ -236,22 +240,33 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
         }
     }, [isEndlessMode, theme, score, highScores, showAchievementToast]);
 
-    // Loading screen countdown for story mode
+    // Loading screen progress bar (7 seconds)
     useEffect(() => {
-        if (isLoading && !route.params?.isEndless) {
+        if (isLoading) {
+            setLoadingProgress(0);
+            const startTime = Date.now();
             const timer = setInterval(() => {
-                setLoadingCountdown(prev => {
-                    if (prev <= 1) {
-                        clearInterval(timer);
-                        setIsLoading(false);
-                        return 0;
-                    }
-                    return prev - 1;
-                });
-            }, 1000);
+                const elapsed = Date.now() - startTime;
+                const progress = Math.min((elapsed / loadingDuration) * 100, 100);
+                setLoadingProgress(progress);
+                if (progress >= 100) {
+                    clearInterval(timer);
+                    setIsLoading(false);
+                }
+            }, 50); // Update every 50ms for smooth progress
             return () => clearInterval(timer);
         }
-    }, [isLoading, route.params?.isEndless]);
+    }, [isLoading]);
+
+    // Endless mode: rotate facts every minute
+    useEffect(() => {
+        if (isEndlessMode && !isLoading) {
+            const factTimer = setInterval(() => {
+                setEndlessFactIndex(prev => prev + 1);
+            }, 60000); // Every 60 seconds
+            return () => clearInterval(factTimer);
+        }
+    }, [isEndlessMode, isLoading]);
 
     // Handle hardware back button to open pause menu
     useEffect(() => {
@@ -292,6 +307,9 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
     const handleNextLevel = useCallback(() => {
         const nextLevelId = levelId + 1;
         if (getLevelById(nextLevelId)) {
+            // Trigger loading screen for next level
+            setIsLoading(true);
+            setLoadingProgress(0);
             initializeGame(nextLevelId);
             navigation.setParams({ levelId: nextLevelId });
         } else {
@@ -349,33 +367,69 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
         };
     };
 
-    // Loading screen for story mode
-    if (isLoading && !route.params?.isEndless && levelConfig) {
+    // Get facts for current theme (for endless mode rotating facts)
+    const getThemeFacts = () => {
+        switch (theme) {
+            case 'trash-sorting': return TRASH_FACTS;
+            case 'pollution': return POLLUTION_FACTS;
+            case 'water-conservation': return WATER_FACTS;
+            case 'energy-efficiency': return ENERGY_FACTS;
+            case 'deforestation': return FOREST_FACTS;
+            default: return TRASH_FACTS;
+        }
+    };
+
+    const getCurrentFact = () => {
+        if (isEndlessMode) {
+            const facts = getThemeFacts();
+            return facts[endlessFactIndex % facts.length];
+        }
+        return levelConfig?.environmentalFact || '';
+    };
+
+    // Loading screen for both story and endless modes
+    if (isLoading) {
+        const displayFact = levelConfig?.environmentalFact || getCurrentFact();
         return (
             <View style={[styles.loadingContainer, { paddingTop: insets.top }]}>
                 <StatusBar barStyle="light-content" />
                 <View style={styles.loadingContent}>
-                    <Text style={styles.loadingLevel}>Level {levelId}</Text>
+                    {isEndlessMode ? (
+                        <Text style={styles.loadingLevel}>Endless Mode</Text>
+                    ) : (
+                        <Text style={styles.loadingLevel}>Level {levelId}</Text>
+                    )}
                     <Text style={styles.loadingTheme}>{themeConfig?.name}</Text>
 
-                    {levelConfig.environmentalFact && (
+                    {displayFact && (
                         <View style={styles.loadingFactContainer}>
                             <Text style={styles.loadingFactIcon}>💡</Text>
-                            <Text style={styles.loadingFactText}>{levelConfig.environmentalFact}</Text>
+                            <Text style={styles.loadingFactText}>{displayFact}</Text>
                         </View>
                     )}
 
-                    <View style={styles.loadingCountdownContainer}>
-                        <Text style={styles.loadingCountdownText}>Starting in</Text>
-                        <Text style={styles.loadingCountdown}>{loadingCountdown}</Text>
+                    {/* Progress Bar */}
+                    <View style={styles.loadingProgressContainer}>
+                        <View style={styles.loadingProgressTrack}>
+                            <View style={[styles.loadingProgressFill, { width: `${loadingProgress}%` }]} />
+                        </View>
+                        <Text style={styles.loadingProgressText}>Loading...</Text>
                     </View>
 
-                    <TouchableOpacity
-                        style={styles.loadingSkipButton}
-                        onPress={() => setIsLoading(false)}
-                    >
-                        <Text style={styles.loadingSkipText}>Tap to skip</Text>
-                    </TouchableOpacity>
+                    {/* Skip button - only show if theme story is completed or endless mode */}
+                    {(() => {
+                        const themeLevels = getLevelsByTheme(theme);
+                        const themeCompleted = themeLevels.every(l => completedLevels.includes(l.id));
+                        const canSkip = isEndlessMode || themeCompleted;
+                        return canSkip ? (
+                            <TouchableOpacity
+                                style={styles.loadingSkipButton}
+                                onPress={() => setIsLoading(false)}
+                            >
+                                <Text style={styles.loadingSkipText}>Tap to skip</Text>
+                            </TouchableOpacity>
+                        ) : null;
+                    })()}
                 </View>
             </View>
         );
@@ -399,10 +453,10 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
             <HUD onPause={handlePause} />
 
             {/* Environmental Fact - between HUD and board */}
-            {levelConfig?.environmentalFact && (
+            {(levelConfig?.environmentalFact || isEndlessMode) && (
                 <View style={styles.factContainer}>
                     <Text style={styles.factIcon}>💡</Text>
-                    <Text style={styles.factText}>{levelConfig.environmentalFact}</Text>
+                    <Text style={styles.factText}>{getCurrentFact()}</Text>
                 </View>
             )}
 
@@ -549,21 +603,23 @@ const styles = StyleSheet.create({
     factContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        margin: 10,
-        padding: 12,
-        borderRadius: 12,
+        backgroundColor: 'rgba(0, 0, 0, 0.6)',
+        marginHorizontal: SPACING.md,
+        marginVertical: SPACING.sm,
+        paddingVertical: SPACING.md,
+        paddingHorizontal: SPACING.md,
+        borderRadius: RADIUS.lg,
     },
     factIcon: {
-        fontSize: 20,
-        marginRight: 8,
+        fontSize: 24,
+        marginRight: SPACING.sm,
     },
     factText: {
         flex: 1,
         color: '#fff',
-        fontSize: 12,
+        fontSize: TYPOGRAPHY.body,
         fontFamily: TYPOGRAPHY.fontFamily,
-        fontStyle: 'italic',
+        lineHeight: 22,
     },
     modalOverlay: {
         flex: 1,
@@ -845,21 +901,28 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         lineHeight: 24,
     },
-    loadingCountdownContainer: {
+    loadingProgressContainer: {
         alignItems: 'center',
         marginBottom: SPACING.lg,
+        width: '100%',
     },
-    loadingCountdownText: {
+    loadingProgressTrack: {
+        width: 250,
+        height: 8,
+        backgroundColor: 'rgba(255, 255, 255, 0.2)',
+        borderRadius: 4,
+        overflow: 'hidden',
+        marginBottom: SPACING.sm,
+    },
+    loadingProgressFill: {
+        height: '100%',
+        backgroundColor: COLORS.organicWaste,
+        borderRadius: 4,
+    },
+    loadingProgressText: {
         fontSize: TYPOGRAPHY.bodySmall,
         fontFamily: TYPOGRAPHY.fontFamily,
         color: COLORS.textMuted,
-        marginBottom: SPACING.xs,
-    },
-    loadingCountdown: {
-        fontSize: 48,
-        fontFamily: TYPOGRAPHY.fontFamilyBold,
-        fontWeight: TYPOGRAPHY.bold,
-        color: COLORS.accentHighlight,
     },
     loadingSkipButton: {
         paddingVertical: SPACING.md,
