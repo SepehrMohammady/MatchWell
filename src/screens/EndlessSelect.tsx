@@ -264,10 +264,11 @@ const styles = StyleSheet.create({
     },
     themeCard: {
         backgroundColor: COLORS.cardBackground,
-        borderRadius: RADIUS.lg,
-        padding: SPACING.lg,
+        borderRadius: RADIUS.sm,
+        padding: SPACING.md,
         marginBottom: SPACING.md,
-        ...SHADOWS.sm,
+        borderWidth: 1,
+        borderColor: COLORS.cardBorder,
     },
     lockedCard: {
         opacity: 0.5,
@@ -277,16 +278,16 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     themeIconContainer: {
-        width: 48,
-        height: 48,
-        borderRadius: RADIUS.md,
+        width: 40,
+        height: 40,
+        borderRadius: RADIUS.sm,
         backgroundColor: COLORS.backgroundSecondary,
         justifyContent: 'center',
         alignItems: 'center',
-        marginRight: SPACING.md,
+        marginRight: SPACING.sm,
     },
     themeEmoji: {
-        fontSize: 24,
+        fontSize: 20,
     },
     themeInfo: {
         flex: 1,
