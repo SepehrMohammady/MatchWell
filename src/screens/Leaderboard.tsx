@@ -185,6 +185,15 @@ const Leaderboard: React.FC<Props> = ({ navigation }) => {
         const totalStars = getTotalStars();
         const medals = getMedalCounts();
 
+        // Debug: log what we're publishing
+        console.log('📊 Publishing data:', {
+            total_stars: totalStars,
+            completed_levels: completedLevels.length,
+            medals,
+            endless_scores: endlessScores,
+            highScores_raw: highScores,
+        });
+
         const result = await publishScores({
             total_stars: totalStars,
             completed_levels: completedLevels.length,

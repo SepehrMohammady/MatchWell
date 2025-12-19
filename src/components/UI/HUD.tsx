@@ -17,6 +17,7 @@ const HUD: React.FC<HUDProps> = ({ onPause }) => {
     const score = useGameStore((state) => state.score);
     const targetScore = useGameStore((state) => state.targetScore);
     const movesRemaining = useGameStore((state) => state.movesRemaining);
+    const moves = useGameStore((state) => state.moves);
     const level = useGameStore((state) => state.level);
     const combo = useGameStore((state) => state.combo);
     const theme = useGameStore((state) => state.theme);
@@ -78,7 +79,7 @@ const HUD: React.FC<HUDProps> = ({ onPause }) => {
                         styles.statValue,
                         !isEndlessMode && movesRemaining <= 5 && styles.lowMoves,
                     ]}>
-                        {movesRemaining}
+                        {isEndlessMode ? moves : movesRemaining}
                     </Text>
                 </View>
                 {combo > 1 && (
