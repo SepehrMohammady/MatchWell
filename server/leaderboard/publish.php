@@ -99,7 +99,8 @@ try {
         foreach ($scores as $theme => $score) {
             $column = $themeMap[strtolower($theme)] ?? null;
             if ($column) {
-                $updates[] = "$column = GREATEST($column, ?)";
+                // Use COALESCE to handle NULL column values (GREATEST returns NULL if any arg is NULL)
+                $updates[] = "$column = GREATEST(COALESCE($column, 0), ?)";
                 $params[] = max(0, (int)$score);
             }
         }
