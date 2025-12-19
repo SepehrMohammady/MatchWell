@@ -50,7 +50,7 @@ try {
             SELECT 
                 username,
                 total_stars,
-                (SELECT COUNT(*) + 1 FROM leaderboard l2 WHERE l2.total_stars > leaderboard.total_stars) as rank
+                (SELECT COUNT(*) + 1 FROM leaderboard l2 WHERE l2.total_stars > leaderboard.total_stars) as `rank`
             FROM leaderboard 
             WHERE device_id = ?
         ");

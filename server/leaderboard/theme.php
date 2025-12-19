@@ -70,7 +70,7 @@ try {
             SELECT 
                 username,
                 $column as score,
-                (SELECT COUNT(*) + 1 FROM leaderboard l2 WHERE l2.$column > leaderboard.$column AND l2.$column > 0) as rank
+                (SELECT COUNT(*) + 1 FROM leaderboard l2 WHERE l2.$column > leaderboard.$column AND l2.$column > 0) as `rank`
             FROM leaderboard 
             WHERE device_id = ? AND $column > 0
         ");
