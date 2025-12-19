@@ -1,0 +1,33 @@
+# MatchWell Leaderboard API - Apache Configuration
+# Clean URLs for API endpoints
+
+RewriteEngine On
+RewriteBase /semolab/matchwell/leaderboard/
+
+# Handle API routes
+RewriteRule ^check-username$ check-username.php [L,QSA]
+RewriteRule ^register$ register.php [L,QSA]
+RewriteRule ^publish$ publish.php [L,QSA]
+RewriteRule ^global$ global.php [L,QSA]
+RewriteRule ^theme/(.+)$ theme.php?theme=$1 [L,QSA]
+RewriteRule ^player$ player.php [L,QSA]
+
+# Security headers
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "DENY"
+</IfModule>
+
+# Prevent directory listing
+Options -Indexes
+
+# Block access to config file
+<Files "config.php">
+    Order Allow,Deny
+    Deny from all
+</Files>
+
+<Files "schema.sql">
+    Order Allow,Deny
+    Deny from all
+</Files>

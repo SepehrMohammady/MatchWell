@@ -18,7 +18,7 @@ import { preloadSounds, playBgm, playSfx } from '../utils/SoundManager';
 import { useGameStore } from '../context/GameStore';
 import VERSION from '../config/version';
 import { COLORS, TYPOGRAPHY, SPACING, RADIUS } from '../config/theme';
-import { SeedlingIcon } from '../components/UI/Icons';
+import { SeedlingIcon, TrophyIcon } from '../components/UI/Icons';
 import ClimateClock from '../components/UI/ClimateClock';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'MainMenu'>;
@@ -91,6 +91,11 @@ const MainMenu: React.FC<Props> = ({ navigation }) => {
         navigation.navigate('Achievements');
     };
 
+    const handleLeaderboard = () => {
+        playSfx('tile_select');
+        navigation.navigate('Leaderboard');
+    };
+
     return (
         <View style={[styles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
             <StatusBar barStyle="light-content" backgroundColor="#000000" />
@@ -155,6 +160,11 @@ const MainMenu: React.FC<Props> = ({ navigation }) => {
                             <View style={styles.redDot} />
                         )}
                     </View>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.leaderboardButton} onPress={handleLeaderboard} activeOpacity={0.8}>
+                    <TrophyIcon size={20} color="#FFD700" />
+                    <Text style={styles.leaderboardButtonText}>Leaderboard</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.settingsButton} onPress={handleSettings} activeOpacity={0.6}>
@@ -295,6 +305,23 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         backgroundColor: '#FF3B30',
         marginLeft: SPACING.sm,
+    },
+    leaderboardButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: SPACING.sm,
+        backgroundColor: 'rgba(255, 215, 0, 0.15)',
+        paddingVertical: SPACING.md,
+        paddingHorizontal: SPACING.xl,
+        borderRadius: RADIUS.lg,
+        borderWidth: 1,
+        borderColor: 'rgba(255, 215, 0, 0.3)',
+    },
+    leaderboardButtonText: {
+        fontSize: TYPOGRAPHY.body,
+        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
+        color: '#FFD700',
     },
 });
 

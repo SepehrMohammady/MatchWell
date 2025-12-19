@@ -19,6 +19,7 @@ import EndlessSelect from './src/screens/EndlessSelect';
 import GameScreen from './src/screens/GameScreen';
 import Settings from './src/screens/Settings';
 import Achievements from './src/screens/Achievements';
+import Leaderboard from './src/screens/Leaderboard';
 
 // Types
 import { RootStackParamList } from './src/types';
@@ -51,6 +52,7 @@ function App(): React.JSX.Element {
             />
             <Stack.Screen name="Settings" component={Settings} />
             <Stack.Screen name="Achievements" component={Achievements} />
+            <Stack.Screen name="Leaderboard" component={Leaderboard} />
           </Stack.Navigator>
         </NavigationContainer>
       </SafeAreaProvider>
