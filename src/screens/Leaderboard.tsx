@@ -12,6 +12,7 @@ import {
     ScrollView,
     RefreshControl,
     StatusBar,
+    Alert,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -48,7 +49,8 @@ const Leaderboard: React.FC<Props> = ({ navigation }) => {
 
     // Game store data
     const completedLevels = useGameStore(state => state.completedLevels);
-    const highScores = useGameStore(state => state.highScores) as Record<string, number>;
+    const highScores = useGameStore(state => state.highScores) as Record<number, number>;
+    const levelMovesRemaining = useGameStore(state => state.levelMovesRemaining) as Record<number, number>;
 
     // State
     const [activeTab, setActiveTab] = useState('global');
@@ -64,18 +66,46 @@ const Leaderboard: React.FC<Props> = ({ navigation }) => {
     const [totalPlayers, setTotalPlayers] = useState(0);
 
     // Calculate medals from achievements
+    // Endless scores use negative IDs: -1 = trash, -2 = pollution, -3 = water, -4 = energy, -5 = forest
+    const getEndlessScore = useCallback((themeIndex: number) => {
+        return highScores[-(themeIndex + 1)] || 0;
+    }, [highScores]);
+
+    // Get all endless scores
+    const endlessScores = {
+        trash: getEndlessScore(0),
+        pollution: getEndlessScore(1),
+        water: getEndlessScore(2),
+        energy: getEndlessScore(3),
+        forest: getEndlessScore(4),
+    };
+
+    // Calculate stars from levelMovesRemaining
+    // Stars: 3 if movesRemaining >= 3, 2 if >= 1, 1 otherwise for completed levels
+    const getTotalStars = useCallback(() => {
+        let total = 0;
+        completedLevels.forEach(levelId => {
+            const movesRemaining = levelMovesRemaining[levelId] || 0;
+            if (movesRemaining >= 3) total += 3;
+            else if (movesRemaining >= 1) total += 2;
+            else total += 1;
+        });
+        return total;
+    }, [completedLevels, levelMovesRemaining]);
+
+    // Calculate medals from achievements
     const getMedalCounts = useCallback(() => {
         const medals = { bronze: 0, silver: 0, gold: 0, platinum: 0, earth: 0 };
-        const themes = ['trash-sorting', 'pollution', 'water-conservation', 'energy-efficiency', 'deforestation'];
+        const themeKeys = ['trash-sorting', 'pollution', 'water-conservation', 'energy-efficiency', 'deforestation'];
 
-        themes.forEach(theme => {
-            const themeScore = highScores[theme] || 0;
+        themeKeys.forEach((theme, index) => {
+            const themeScore = getEndlessScore(index);
             const themeAchievements = ENDLESS_ACHIEVEMENTS.filter(a => a.theme === theme);
 
             themeAchievements.forEach(achievement => {
                 if (themeScore >= achievement.requirement) {
                     const tier = achievement.id.split('_').pop();
-                    if (tier && medals.hasOwnProperty(tier)) {
+                    if (tier && tier in medals) {
                         medals[tier as keyof typeof medals]++;
                     }
                 }
@@ -83,7 +113,7 @@ const Leaderboard: React.FC<Props> = ({ navigation }) => {
         });
 
         return medals;
-    }, [highScores]);
+    }, [getEndlessScore]);
 
     // Load player info on mount
     useEffect(() => {
@@ -150,21 +180,15 @@ const Leaderboard: React.FC<Props> = ({ navigation }) => {
 
         setPublishing(true);
 
-        // Calculate total stars - estimate 2 stars average per completed level
-        const totalStars = completedLevels.length * 2;
+        // Calculate total stars from actual game progress
+        const totalStars = getTotalStars();
         const medals = getMedalCounts();
 
         const result = await publishScores({
             total_stars: totalStars,
             completed_levels: completedLevels.length,
             medals,
-            endless_scores: {
-                trash: highScores['trash-sorting'] || 0,
-                pollution: highScores['pollution'] || 0,
-                water: highScores['water-conservation'] || 0,
-                energy: highScores['energy-efficiency'] || 0,
-                forest: highScores['deforestation'] || 0,
-            },
+            endless_scores: endlessScores,
         });
 
         setPublishing(false);
@@ -174,6 +198,9 @@ const Leaderboard: React.FC<Props> = ({ navigation }) => {
                 setPlayerInfo(result.player);
             }
             loadRankings();
+            Alert.alert('Success!', 'Your score has been published to the leaderboard!');
+        } else {
+            Alert.alert('Error', result.error || 'Failed to publish score');
         }
     };
 
@@ -202,6 +229,7 @@ const Leaderboard: React.FC<Props> = ({ navigation }) => {
         if (result.success) {
             setIsRegistered(true);
             setShowUsernameModal(false);
+            Alert.alert('Welcome!', `You're now registered as "${username}". Publishing your score...`);
             handlePublish();
         } else {
             setUsernameError(result.error || 'Registration failed');
