@@ -19,6 +19,7 @@ import { useGameStore } from '../context/GameStore';
 import VERSION from '../config/version';
 import { COLORS, TYPOGRAPHY, SPACING, RADIUS } from '../config/theme';
 import { SeedlingIcon } from '../components/UI/Icons';
+import ClimateClock from '../components/UI/ClimateClock';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'MainMenu'>;
 
@@ -114,6 +115,11 @@ const MainMenu: React.FC<Props> = ({ navigation }) => {
                 ))}
             </View>
 
+            {/* Climate Clock at top */}
+            <View style={styles.climateClockSection}>
+                <ClimateClock />
+            </View>
+
             {/* Spacer */}
             <View style={styles.spacer} />
 
@@ -186,8 +192,11 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffffff',
         borderRadius: 10,
     },
+    climateClockSection: {
+        marginTop: SPACING.sm,
+    },
     spacer: {
-        flex: 0.5,
+        flex: 0.3,
     },
     earthSection: {
         alignItems: 'center',
