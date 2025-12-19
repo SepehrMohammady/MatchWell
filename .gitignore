@@ -66,10 +66,22 @@ yarn-error.log
 # testing
 /coverage
 
-# Yarn
 .yarn/*
 !.yarn/patches
 !.yarn/plugins
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+# Environment and secrets
+.env
+.env.local
+.env.production
+*.env
+
+# Release keystores (keep only template)
+*.keystore
+!debug.keystore
+
+# Server config with real credentials (keep template only)
+# Note: server/leaderboard/config.php has placeholder values for safety

@@ -401,22 +401,6 @@ const Leaderboard: React.FC<Props> = ({ navigation }) => {
                     renderItem={renderRankItem}
                     keyExtractor={(item, index) => `${item.username}-${index}`}
                     contentContainerStyle={styles.listContent}
-                    stickyHeaderIndices={[0]}
-                    ListHeaderComponent={
-                        <View style={styles.tableHeader}>
-                            <Text style={styles.tableHeaderRank}>#</Text>
-                            <Text style={styles.tableHeaderPlayer}>Player</Text>
-                            <Text style={styles.tableHeaderScore}>
-                                {activeTab === 'global' ? 'Score' : 'Score'}
-                            </Text>
-                            {activeTab === 'global' && (
-                                <View style={styles.tableHeaderExtra}>
-                                    <Text style={styles.tableHeaderSmall}>⭐</Text>
-                                    <Text style={styles.tableHeaderSmall}>🥉</Text>
-                                </View>
-                            )}
-                        </View>
-                    }
                     refreshControl={
                         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={COLORS.organicWaste} />
                     }
