@@ -141,8 +141,8 @@ export interface PublishData {
         bronze: number;
         silver: number;
         gold: number;
-        platinum: number;
-        earth: number;
+        diamond: number;
+        'earth-saver': number;
     };
     endless_scores: {
         trash: number;

@@ -94,8 +94,9 @@ const Leaderboard: React.FC<Props> = ({ navigation }) => {
     }, [completedLevels, levelMovesRemaining]);
 
     // Calculate medals from achievements
+    // Tier names: bronze, silver, gold, diamond, earth-saver
     const getMedalCounts = useCallback(() => {
-        const medals = { bronze: 0, silver: 0, gold: 0, platinum: 0, earth: 0 };
+        const medals = { bronze: 0, silver: 0, gold: 0, diamond: 0, 'earth-saver': 0 };
         const themeKeys = ['trash-sorting', 'pollution', 'water-conservation', 'energy-efficiency', 'deforestation'];
 
         themeKeys.forEach((theme, index) => {
@@ -103,9 +104,9 @@ const Leaderboard: React.FC<Props> = ({ navigation }) => {
             const themeAchievements = ENDLESS_ACHIEVEMENTS.filter(a => a.theme === theme);
 
             themeAchievements.forEach(achievement => {
-                if (themeScore >= achievement.requirement) {
-                    const tier = achievement.id.split('_').pop();
-                    if (tier && tier in medals) {
+                if (themeScore >= achievement.requirement && achievement.tier) {
+                    const tier = achievement.tier;
+                    if (tier in medals) {
                         medals[tier as keyof typeof medals]++;
                     }
                 }

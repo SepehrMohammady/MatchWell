@@ -67,13 +67,17 @@ try {
             $updates[] = "medals_gold = ?";
             $params[] = max(0, (int)$medals['gold']);
         }
-        if (isset($medals['platinum'])) {
+        // Support both 'platinum' and 'diamond' keys (maps to medals_platinum)
+        $platinumValue = $medals['platinum'] ?? $medals['diamond'] ?? null;
+        if ($platinumValue !== null) {
             $updates[] = "medals_platinum = ?";
-            $params[] = max(0, (int)$medals['platinum']);
+            $params[] = max(0, (int)$platinumValue);
         }
-        if (isset($medals['earth'])) {
+        // Support both 'earth' and 'earth-saver' keys (maps to medals_earth)
+        $earthValue = $medals['earth'] ?? $medals['earth-saver'] ?? null;
+        if ($earthValue !== null) {
             $updates[] = "medals_earth = ?";
-            $params[] = max(0, (int)$medals['earth']);
+            $params[] = max(0, (int)$earthValue);
         }
     }
     
