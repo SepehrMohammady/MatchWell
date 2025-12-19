@@ -106,6 +106,31 @@ try {
         }
     }
     
+    // Endless moves (for score per move calculation)
+    if (isset($input['endless_moves']) && is_array($input['endless_moves'])) {
+        $moves = $input['endless_moves'];
+        $movesMap = [
+            'trash' => 'moves_trash',
+            'trash-sorting' => 'moves_trash',
+            'pollution' => 'moves_pollution',
+            'water' => 'moves_water',
+            'water-conservation' => 'moves_water',
+            'energy' => 'moves_energy',
+            'energy-efficiency' => 'moves_energy',
+            'forest' => 'moves_forest',
+            'deforestation' => 'moves_forest'
+        ];
+        
+        foreach ($moves as $theme => $moveCount) {
+            $column = $movesMap[strtolower($theme)] ?? null;
+            if ($column) {
+                // Always take the higher move count (same logic as scores)
+                $updates[] = "$column = GREATEST(COALESCE($column, 0), ?)";
+                $params[] = max(0, (int)$moveCount);
+            }
+        }
+    }
+    
     if (empty($updates)) {
         sendError('No data to update');
     }

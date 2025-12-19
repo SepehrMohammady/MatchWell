@@ -151,6 +151,13 @@ export interface PublishData {
         energy: number;
         forest: number;
     };
+    endless_moves: {
+        trash: number;
+        pollution: number;
+        water: number;
+        energy: number;
+        forest: number;
+    };
 }
 
 export const publishScores = async (data: PublishData): Promise<{ success: boolean; player?: PlayerData; error?: string }> => {

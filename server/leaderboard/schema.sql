@@ -24,6 +24,13 @@ CREATE TABLE IF NOT EXISTS leaderboard (
     endless_energy INT DEFAULT 0,
     endless_forest INT DEFAULT 0,
     
+    -- Endless Mode Total Moves per Theme (for score/move calculation)
+    moves_trash INT DEFAULT 0,
+    moves_pollution INT DEFAULT 0,
+    moves_water INT DEFAULT 0,
+    moves_energy INT DEFAULT 0,
+    moves_forest INT DEFAULT 0,
+    
     -- Timestamps
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

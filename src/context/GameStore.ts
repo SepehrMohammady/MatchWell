@@ -28,6 +28,7 @@ interface SavedProgress {
     highScores: Record<number, number>;
     levelMovesRemaining: Record<number, number>; // Best remaining moves for each level
     unseenAchievements: string[]; // Achievement IDs that user hasn't seen yet
+    endlessMoves: Record<number, number>; // Moves used when achieving high score for endless (keyed by negative ID)
 }
 
 interface SavedEndlessState {
@@ -65,13 +66,14 @@ interface GameStore extends GameState {
     isEndlessMode: boolean;
     completedLevels: number[];
     highScores: Record<number, number>;
+    endlessMoves: Record<number, number>; // Moves when achieving endless high score
     levelMovesRemaining: Record<number, number>; // Best remaining moves for star calculation
 
     // Setters
     setSelectedTile: (position: Position | null) => void;
     setIsProcessing: (value: boolean) => void;
     markLevelComplete: (levelId: number, score: number, movesRemaining: number) => void;
-    saveEndlessHighScore: (theme: ThemeType, score: number) => void;
+    saveEndlessHighScore: (theme: ThemeType, score: number, moves: number) => void;
     addUnseenAchievement: (achievementId: string) => void;
     clearUnseenAchievements: () => void;
     unseenAchievements: string[];
@@ -97,6 +99,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     isEndlessMode: false,
     completedLevels: [],
     highScores: {},
+    endlessMoves: {},
     levelMovesRemaining: {},
     unseenAchievements: [],
 
@@ -111,6 +114,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
                     highScores: progress.highScores || {},
                     levelMovesRemaining: progress.levelMovesRemaining || {},
                     unseenAchievements: progress.unseenAchievements || [],
+                    endlessMoves: progress.endlessMoves || {},
                 });
                 console.log('✅ Progress loaded:', progress);
             }
@@ -122,8 +126,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // Save progress to AsyncStorage
     saveProgress: async () => {
         try {
-            const { completedLevels, highScores, levelMovesRemaining, unseenAchievements } = get();
-            const progress: SavedProgress = { completedLevels, highScores, levelMovesRemaining, unseenAchievements };
+            const { completedLevels, highScores, levelMovesRemaining, unseenAchievements, endlessMoves } = get();
+            const progress: SavedProgress = { completedLevels, highScores, levelMovesRemaining, unseenAchievements, endlessMoves: endlessMoves || {} };
             await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
             console.log('✅ Progress saved:', progress);
         } catch (error) {
@@ -522,8 +526,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
         get().saveProgress();
     },
 
-    saveEndlessHighScore: (theme: ThemeType, score: number) => {
-        const { highScores } = get();
+    saveEndlessHighScore: (theme: ThemeType, score: number, moves: number) => {
+        const { highScores, endlessMoves } = get();
 
         // Use negative IDs for endless high scores based on theme index
         const themeOrder: ThemeType[] = ['trash-sorting', 'pollution', 'water-conservation', 'energy-efficiency', 'deforestation'];
@@ -538,12 +542,16 @@ export const useGameStore = create<GameStore>((set, get) => ({
                 ...highScores,
                 [endlessId]: score,
             };
+            const newEndlessMoves = {
+                ...endlessMoves,
+                [endlessId]: moves,
+            };
 
-            set({ highScores: newHighScores });
+            set({ highScores: newHighScores, endlessMoves: newEndlessMoves });
 
             // Save progress to AsyncStorage
             get().saveProgress();
-            console.log(`✅ Endless high score saved for ${theme}: ${score}`);
+            console.log(`✅ Endless high score saved for ${theme}: ${score} in ${moves} moves`);
         }
     },
 }));

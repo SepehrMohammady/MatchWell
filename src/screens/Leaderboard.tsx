@@ -50,6 +50,7 @@ const Leaderboard: React.FC<Props> = ({ navigation }) => {
     // Game store data
     const completedLevels = useGameStore(state => state.completedLevels);
     const highScores = useGameStore(state => state.highScores) as Record<number, number>;
+    const endlessMoves = useGameStore(state => state.endlessMoves) as Record<number, number>;
     const levelMovesRemaining = useGameStore(state => state.levelMovesRemaining) as Record<number, number>;
 
     // State
@@ -71,8 +72,12 @@ const Leaderboard: React.FC<Props> = ({ navigation }) => {
         return highScores[-(themeIndex + 1)] || 0;
     }, [highScores]);
 
+    const getEndlessMoveCount = useCallback((themeIndex: number) => {
+        return endlessMoves[-(themeIndex + 1)] || 0;
+    }, [endlessMoves]);
+
     // Get all endless scores
-    const endlessScores = {
+    const endlessScoresData = {
         trash: getEndlessScore(0),
         pollution: getEndlessScore(1),
         water: getEndlessScore(2),
@@ -185,12 +190,22 @@ const Leaderboard: React.FC<Props> = ({ navigation }) => {
         const totalStars = getTotalStars();
         const medals = getMedalCounts();
 
+        // Get moves data for score per move calculation
+        const endlessMovesData = {
+            trash: getEndlessMoveCount(0),
+            pollution: getEndlessMoveCount(1),
+            water: getEndlessMoveCount(2),
+            energy: getEndlessMoveCount(3),
+            forest: getEndlessMoveCount(4),
+        };
+
         // Debug: log what we're publishing
         console.log('📊 Publishing data:', {
             total_stars: totalStars,
             completed_levels: completedLevels.length,
             medals,
-            endless_scores: endlessScores,
+            endless_scores: endlessScoresData,
+            endless_moves: endlessMovesData,
             highScores_raw: highScores,
         });
 
@@ -198,7 +213,8 @@ const Leaderboard: React.FC<Props> = ({ navigation }) => {
             total_stars: totalStars,
             completed_levels: completedLevels.length,
             medals,
-            endless_scores: endlessScores,
+            endless_scores: endlessScoresData,
+            endless_moves: endlessMovesData,
         });
 
         setPublishing(false);
@@ -291,27 +307,6 @@ const Leaderboard: React.FC<Props> = ({ navigation }) => {
                 </View>
                 <View style={styles.headerRight} />
             </View>
-
-            {/* Player Card */}
-            {isRegistered && playerInfo && (
-                <View style={styles.playerCard}>
-                    <Text style={styles.playerUsername}>{playerInfo.username}</Text>
-                    <View style={styles.playerStats}>
-                        <View style={styles.statItem}>
-                            <RankIcon size={20} color={COLORS.organicWaste} />
-                            <Text style={styles.statItemText}>#{playerInfo.global_rank}</Text>
-                        </View>
-                        <View style={styles.statItem}>
-                            <StarFilledIcon size={20} />
-                            <Text style={styles.statItemText}>{playerInfo.total_stars}</Text>
-                        </View>
-                        <View style={styles.statItem}>
-                            <MedalIcon size={20} color="#CD7F32" />
-                            <Text style={styles.statItemText}>{playerInfo.total_medals}</Text>
-                        </View>
-                    </View>
-                </View>
-            )}
 
             {/* Tabs */}
             <ScrollView

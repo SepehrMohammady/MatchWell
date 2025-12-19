@@ -35,47 +35,73 @@ if (!isset($themeColumns[$theme])) {
 
 $column = $themeColumns[$theme];
 
+// Map theme to moves column
+$movesColumns = [
+    'trash' => 'moves_trash',
+    'trash-sorting' => 'moves_trash',
+    'pollution' => 'moves_pollution',
+    'water' => 'moves_water',
+    'water-conservation' => 'moves_water',
+    'energy' => 'moves_energy',
+    'energy-efficiency' => 'moves_energy',
+    'forest' => 'moves_forest',
+    'deforestation' => 'moves_forest'
+];
+$movesColumn = $movesColumns[$theme];
+
 try {
     $db = getDB();
     
     // Get total count of players with scores in this theme
-    $stmt = $db->prepare("SELECT COUNT(*) as total FROM leaderboard WHERE $column > 0");
+    $stmt = $db->prepare("SELECT COUNT(*) as total FROM leaderboard WHERE COALESCE($column, 0) > 0");
     $stmt->execute();
     $total = $stmt->fetch()['total'];
     
-    // Get rankings for this theme
+    // Get rankings for this theme with moves and score per move
     $stmt = $db->prepare("
         SELECT 
             username, 
-            $column as score,
+            COALESCE($column, 0) as score,
+            COALESCE($movesColumn, 0) as moves,
             total_stars,
             (medals_bronze + medals_silver + medals_gold + medals_platinum + medals_earth) as total_medals
         FROM leaderboard 
-        WHERE $column > 0
+        WHERE COALESCE($column, 0) > 0
         ORDER BY $column DESC
         LIMIT ? OFFSET ?
     ");
     $stmt->execute([$limit, $offset]);
     $rankings = $stmt->fetchAll();
     
-    // Add rank numbers
+    // Add rank numbers and score per move
     foreach ($rankings as $i => &$player) {
         $player['rank'] = $offset + $i + 1;
+        $moves = (int)$player['moves'];
+        $score = (int)$player['score'];
+        $player['score_per_move'] = $moves > 0 ? round($score / $moves, 1) : 0;
     }
     
-    // Get current player's rank if device_id provided
-    $playerRank = null;
+    // Get current player's data if device_id provided
+    $playerData = null;
     if ($deviceId) {
         $stmt = $db->prepare("
             SELECT 
                 username,
-                $column as score,
-                (SELECT COUNT(*) + 1 FROM leaderboard l2 WHERE l2.$column > leaderboard.$column AND l2.$column > 0) as `rank`
+                COALESCE($column, 0) as score,
+                COALESCE($movesColumn, 0) as moves,
+                total_stars,
+                (medals_bronze + medals_silver + medals_gold + medals_platinum + medals_earth) as total_medals,
+                (SELECT COUNT(*) + 1 FROM leaderboard l2 WHERE COALESCE(l2.$column, 0) > COALESCE(leaderboard.$column, 0)) as `rank`
             FROM leaderboard 
-            WHERE device_id = ? AND $column > 0
+            WHERE device_id = ?
         ");
         $stmt->execute([$deviceId]);
-        $playerRank = $stmt->fetch();
+        $playerData = $stmt->fetch();
+        if ($playerData) {
+            $moves = (int)$playerData['moves'];
+            $score = (int)$playerData['score'];
+            $playerData['score_per_move'] = $moves > 0 ? round($score / $moves, 1) : 0;
+        }
     }
     
     sendSuccess([
@@ -84,7 +110,7 @@ try {
         'total' => (int)$total,
         'limit' => $limit,
         'offset' => $offset,
-        'player' => $playerRank
+        'player' => $playerData
     ]);
     
 } catch (Exception $e) {

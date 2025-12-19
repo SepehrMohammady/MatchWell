@@ -44,6 +44,7 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
     const markLevelComplete = useGameStore((state) => state.markLevelComplete);
     const isEndlessMode = useGameStore((state) => state.isEndlessMode);
     const movesRemaining = useGameStore((state) => state.movesRemaining);
+    const moves = useGameStore((state) => state.moves);
     const saveEndlessHighScore = useGameStore((state) => state.saveEndlessHighScore);
     const saveEndlessState = useGameStore((state) => state.saveEndlessState);
     const clearEndlessState = useGameStore((state) => state.clearEndlessState);
@@ -215,9 +216,9 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
     // Save endless high score when score changes in endless mode
     useEffect(() => {
         if (isEndlessMode && score > 0) {
-            saveEndlessHighScore(theme, score);
+            saveEndlessHighScore(theme, score, moves);
         }
-    }, [isEndlessMode, score, theme, saveEndlessHighScore]);
+    }, [isEndlessMode, score, moves, theme, saveEndlessHighScore]);
 
     // Check endless achievements during gameplay (not just on level complete)
     useEffect(() => {
