@@ -1,5 +1,5 @@
 // Leaderboard Screen - Global and per-theme rankings
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import {
     View,
     Text,
@@ -31,7 +31,16 @@ import {
     LeaderboardEntry,
     PlayerData,
 } from '../services/LeaderboardService';
-import { ENDLESS_ACHIEVEMENTS } from '../config/achievements';
+import {
+    ENDLESS_ACHIEVEMENTS,
+    THEME_ACHIEVEMENTS,
+    STAR_ACHIEVEMENTS,
+    checkThemeAchievement,
+    checkStarAchievement,
+    checkEndlessAchievement,
+    Achievement
+} from '../config/achievements';
+import { LEVELS, getLevelsByTheme, getLevelById } from '../themes';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Leaderboard'>;
 
@@ -98,28 +107,54 @@ const Leaderboard: React.FC<Props> = ({ navigation }) => {
         return total;
     }, [completedLevels, levelMovesRemaining]);
 
-    // Calculate medals from achievements
-    // Tier names: bronze, silver, gold, diamond, earth-saver
+    // Calculate medals from ALL achievements (theme, stars, endless)
+    // This matches the logic used in Achievements screen
+    const allLevelIds = useMemo(() => LEVELS.map(l => l.id), []);
+
     const getMedalCounts = useCallback(() => {
         const medals = { bronze: 0, silver: 0, gold: 0, diamond: 0, 'earth-saver': 0 };
-        const themeKeys = ['trash-sorting', 'pollution', 'water-conservation', 'energy-efficiency', 'deforestation'];
 
-        themeKeys.forEach((theme, index) => {
-            const themeScore = getEndlessScore(index);
-            const themeAchievements = ENDLESS_ACHIEVEMENTS.filter(a => a.theme === theme);
+        // Count ALL unlocked achievements
+        const allAchievements = [...THEME_ACHIEVEMENTS, ...STAR_ACHIEVEMENTS, ...ENDLESS_ACHIEVEMENTS];
 
-            themeAchievements.forEach(achievement => {
-                if (themeScore >= achievement.requirement && achievement.tier) {
-                    const tier = achievement.tier;
-                    if (tier in medals) {
-                        medals[tier as keyof typeof medals]++;
-                    }
+        allAchievements.forEach(achievement => {
+            let isUnlocked = false;
+
+            switch (achievement.category) {
+                case 'theme':
+                    isUnlocked = checkThemeAchievement(
+                        achievement.theme!,
+                        completedLevels,
+                        getLevelsByTheme
+                    );
+                    break;
+                case 'stars':
+                    isUnlocked = checkStarAchievement(
+                        achievement.requirement,
+                        levelMovesRemaining,
+                        getLevelById,
+                        allLevelIds
+                    );
+                    break;
+                case 'endless':
+                    isUnlocked = checkEndlessAchievement(
+                        achievement.theme!,
+                        achievement.requirement,
+                        highScores
+                    );
+                    break;
+            }
+
+            if (isUnlocked && achievement.tier) {
+                const tier = achievement.tier;
+                if (tier in medals) {
+                    medals[tier as keyof typeof medals]++;
                 }
-            });
+            }
         });
 
         return medals;
-    }, [getEndlessScore]);
+    }, [completedLevels, levelMovesRemaining, highScores, allLevelIds]);
 
     // Load player info on mount
     useEffect(() => {
@@ -366,6 +401,22 @@ const Leaderboard: React.FC<Props> = ({ navigation }) => {
                     renderItem={renderRankItem}
                     keyExtractor={(item, index) => `${item.username}-${index}`}
                     contentContainerStyle={styles.listContent}
+                    stickyHeaderIndices={[0]}
+                    ListHeaderComponent={
+                        <View style={styles.tableHeader}>
+                            <Text style={styles.tableHeaderRank}>#</Text>
+                            <Text style={styles.tableHeaderPlayer}>Player</Text>
+                            <Text style={styles.tableHeaderScore}>
+                                {activeTab === 'global' ? 'Score' : 'Score'}
+                            </Text>
+                            {activeTab === 'global' && (
+                                <View style={styles.tableHeaderExtra}>
+                                    <Text style={styles.tableHeaderSmall}>⭐</Text>
+                                    <Text style={styles.tableHeaderSmall}>🥉</Text>
+                                </View>
+                            )}
+                        </View>
+                    }
                     refreshControl={
                         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={COLORS.organicWaste} />
                     }
@@ -544,6 +595,43 @@ const styles = StyleSheet.create({
     listContent: {
         paddingHorizontal: SPACING.md,
         paddingBottom: 100,
+    },
+    tableHeader: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: COLORS.backgroundPrimary,
+        paddingVertical: SPACING.xs,
+        paddingHorizontal: SPACING.sm,
+        marginBottom: SPACING.xs,
+        borderBottomWidth: 1,
+        borderBottomColor: 'rgba(255, 255, 255, 0.1)',
+    },
+    tableHeaderRank: {
+        width: 32,
+        textAlign: 'center',
+        fontSize: TYPOGRAPHY.caption,
+        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
+        color: COLORS.textMuted,
+        marginRight: SPACING.sm,
+    },
+    tableHeaderPlayer: {
+        flex: 1,
+        fontSize: TYPOGRAPHY.caption,
+        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
+        color: COLORS.textMuted,
+    },
+    tableHeaderScore: {
+        fontSize: TYPOGRAPHY.caption,
+        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
+        color: COLORS.textMuted,
+    },
+    tableHeaderExtra: {
+        flexDirection: 'row',
+        gap: 8,
+        marginLeft: 8,
+    },
+    tableHeaderSmall: {
+        fontSize: TYPOGRAPHY.caption,
     },
     rankItem: {
         flexDirection: 'row',
