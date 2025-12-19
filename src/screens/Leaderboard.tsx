@@ -19,7 +19,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types';
 import { COLORS, TYPOGRAPHY, SPACING, RADIUS } from '../config/theme';
 import { useGameStore } from '../context/GameStore';
-import { BackIcon, TrophyIcon, StarFilledIcon } from '../components/UI/Icons';
+import { BackIcon, TrophyIcon, StarFilledIcon, MedalIcon, RankIcon } from '../components/UI/Icons';
 import {
     getGlobalLeaderboard,
     getThemeLeaderboard,
@@ -297,17 +297,17 @@ const Leaderboard: React.FC<Props> = ({ navigation }) => {
                 <View style={styles.playerCard}>
                     <Text style={styles.playerUsername}>{playerInfo.username}</Text>
                     <View style={styles.playerStats}>
-                        <View style={styles.playerStat}>
-                            <Text style={styles.statValue}>#{playerInfo.global_rank}</Text>
-                            <Text style={styles.statLabel}>Rank</Text>
+                        <View style={styles.statItem}>
+                            <RankIcon size={20} color={COLORS.organicWaste} />
+                            <Text style={styles.statItemText}>#{playerInfo.global_rank}</Text>
                         </View>
-                        <View style={styles.playerStat}>
-                            <Text style={styles.statValue}>{playerInfo.total_stars}</Text>
-                            <Text style={styles.statLabel}>Stars</Text>
+                        <View style={styles.statItem}>
+                            <StarFilledIcon size={20} />
+                            <Text style={styles.statItemText}>{playerInfo.total_stars}</Text>
                         </View>
-                        <View style={styles.playerStat}>
-                            <Text style={styles.statValue}>{playerInfo.total_medals}</Text>
-                            <Text style={styles.statLabel}>Medals</Text>
+                        <View style={styles.statItem}>
+                            <MedalIcon size={20} color="#CD7F32" />
+                            <Text style={styles.statItemText}>{playerInfo.total_medals}</Text>
                         </View>
                     </View>
                 </View>
@@ -478,6 +478,16 @@ const styles = StyleSheet.create({
         fontSize: TYPOGRAPHY.caption,
         fontFamily: TYPOGRAPHY.fontFamily,
         color: COLORS.textMuted,
+    },
+    statItem: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 4,
+    },
+    statItemText: {
+        fontSize: TYPOGRAPHY.h3,
+        fontFamily: TYPOGRAPHY.fontFamilyBold,
+        color: COLORS.textLight,
     },
     tabsContainer: {
         maxHeight: 50,

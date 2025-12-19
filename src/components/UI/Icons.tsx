@@ -102,6 +102,16 @@ export const EmoticonSadIcon: React.FC<IconProps> = ({ size = 24, color = COLORS
     <MaterialCommunityIcons name="emoticon-sad-outline" size={size} color={color} />
 );
 
+// Medal Icon (for achievements)
+export const MedalIcon: React.FC<IconProps> = ({ size = 24, color = '#CD7F32' }) => (
+    <MaterialCommunityIcons name="medal" size={size} color={color} />
+);
+
+// Rank/Podium Icon
+export const RankIcon: React.FC<IconProps> = ({ size = 24, color = COLORS.organicWaste }) => (
+    <MaterialCommunityIcons name="podium" size={size} color={color} />
+);
+
 // Arrow Right Icon (for next)
 export const ArrowRightIcon: React.FC<IconProps> = ({ size = 24, color = COLORS.textPrimary }) => (
     <MaterialCommunityIcons name="arrow-right" size={size} color={color} />
