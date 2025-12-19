@@ -272,22 +272,49 @@ const Leaderboard: React.FC<Props> = ({ navigation }) => {
                 <View style={[styles.rankBadge, { backgroundColor: rankColor }]}>
                     <Text style={styles.rankNumber}>{item.rank}</Text>
                 </View>
-                <Text style={[styles.rankUsername, isPlayer && styles.playerUsername]}>
-                    {item.username}
-                    {isPlayer && ' (You)'}
-                </Text>
-                <View style={styles.rankScore}>
+                <View style={styles.rankInfo}>
+                    <Text style={[styles.rankUsername, isPlayer && styles.playerUsernameHighlight]}>
+                        {item.username}
+                        {isPlayer && ' (You)'}
+                    </Text>
                     {activeTab === 'global' ? (
-                        <>
-                            <StarFilledIcon size={14} color={COLORS.starFilled} />
-                            <Text style={styles.rankScoreText}>{item.total_stars}</Text>
-                        </>
+                        <View style={styles.rankStatsRow}>
+                            <Text style={styles.rankScoreMain}>{item.total_endless?.toLocaleString() || 0}</Text>
+                            <Text style={styles.rankStatLabel}> pts</Text>
+                            {(item.score_per_move || 0) > 0 && (
+                                <>
+                                    <Text style={styles.rankStatDivider}>•</Text>
+                                    <Text style={styles.rankStatValue}>{item.score_per_move}</Text>
+                                    <Text style={styles.rankStatLabel}>/move</Text>
+                                </>
+                            )}
+                        </View>
                     ) : (
-                        <Text style={styles.rankScoreText}>
-                            {item.score?.toLocaleString()}
-                        </Text>
+                        <View style={styles.rankStatsRow}>
+                            <Text style={styles.rankScoreMain}>{item.score?.toLocaleString() || 0}</Text>
+                            <Text style={styles.rankStatLabel}> pts</Text>
+                            {(item.score_per_move || 0) > 0 && (
+                                <>
+                                    <Text style={styles.rankStatDivider}>•</Text>
+                                    <Text style={styles.rankStatValue}>{item.score_per_move}</Text>
+                                    <Text style={styles.rankStatLabel}>/move</Text>
+                                </>
+                            )}
+                        </View>
                     )}
                 </View>
+                {activeTab === 'global' && (
+                    <View style={styles.rankExtraStats}>
+                        <View style={styles.rankExtraStat}>
+                            <StarFilledIcon size={12} color={COLORS.starFilled} />
+                            <Text style={styles.rankExtraValue}>{item.total_stars}</Text>
+                        </View>
+                        <View style={styles.rankExtraStat}>
+                            <MedalIcon size={12} color="#CD7F32" />
+                            <Text style={styles.rankExtraValue}>{item.total_medals}</Text>
+                        </View>
+                    </View>
+                )}
             </View>
         );
     };
@@ -559,6 +586,53 @@ const styles = StyleSheet.create({
         fontSize: TYPOGRAPHY.body,
         fontFamily: TYPOGRAPHY.fontFamilyBold,
         color: COLORS.textLight,
+    },
+    rankInfo: {
+        flex: 1,
+    },
+    rankStatsRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginTop: 2,
+    },
+    rankScoreMain: {
+        fontSize: TYPOGRAPHY.body,
+        fontFamily: TYPOGRAPHY.fontFamilyBold,
+        color: COLORS.textLight,
+    },
+    rankStatLabel: {
+        fontSize: TYPOGRAPHY.caption,
+        fontFamily: TYPOGRAPHY.fontFamily,
+        color: COLORS.textMuted,
+    },
+    rankStatDivider: {
+        fontSize: TYPOGRAPHY.caption,
+        color: COLORS.textMuted,
+        marginHorizontal: 6,
+    },
+    rankStatValue: {
+        fontSize: TYPOGRAPHY.bodySmall,
+        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
+        color: COLORS.accentHighlight,
+    },
+    rankExtraStats: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 8,
+    },
+    rankExtraStat: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 2,
+    },
+    rankExtraValue: {
+        fontSize: TYPOGRAPHY.caption,
+        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
+        color: COLORS.textMuted,
+    },
+    playerUsernameHighlight: {
+        color: COLORS.organicWaste,
+        fontFamily: TYPOGRAPHY.fontFamilyBold,
     },
     emptyState: {
         alignItems: 'center',

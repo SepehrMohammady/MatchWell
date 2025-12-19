@@ -35,6 +35,9 @@ export interface LeaderboardEntry {
     score?: number;
     total_stars: number;
     total_medals: number;
+    total_endless?: number;
+    score_per_move?: number;
+    moves?: number;
 }
 
 export interface ApiResponse<T> {
