@@ -14,6 +14,7 @@ import {
     StatusBar,
     Alert,
 } from 'react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types';
@@ -45,12 +46,12 @@ import { LEVELS, getLevelsByTheme, getLevelById } from '../themes';
 type Props = NativeStackScreenProps<RootStackParamList, 'Leaderboard'>;
 
 const TABS = [
-    { key: 'global', label: 'Global' },
-    { key: 'trash', label: 'Trash' },
-    { key: 'pollution', label: 'Air' },
-    { key: 'water', label: 'Water' },
-    { key: 'energy', label: 'Energy' },
-    { key: 'forest', label: 'Forest' },
+    { key: 'global', label: 'Global', icon: 'earth' },
+    { key: 'trash', label: 'Trash', icon: 'recycle-variant' },
+    { key: 'pollution', label: 'Air', icon: 'air-filter' },
+    { key: 'water', label: 'Water', icon: 'water' },
+    { key: 'energy', label: 'Energy', icon: 'flash' },
+    { key: 'forest', label: 'Forest', icon: 'forest' },
 ];
 
 const Leaderboard: React.FC<Props> = ({ navigation }) => {
@@ -215,8 +216,8 @@ const Leaderboard: React.FC<Props> = ({ navigation }) => {
         setRefreshing(false);
     };
 
-    const handlePublish = async () => {
-        if (!isRegistered) {
+    const handlePublish = async (skipRegCheck = false) => {
+        if (!skipRegCheck && !isRegistered) {
             setShowUsernameModal(true);
             return;
         }
@@ -293,7 +294,7 @@ const Leaderboard: React.FC<Props> = ({ navigation }) => {
             setIsRegistered(true);
             setShowUsernameModal(false);
             Alert.alert('Welcome!', `You're now registered as "${username}". Publishing your score...`);
-            handlePublish();
+            handlePublish(true);
         } else {
             setUsernameError(result.error || 'Registration failed');
         }
@@ -385,9 +386,11 @@ const Leaderboard: React.FC<Props> = ({ navigation }) => {
                         style={[styles.tab, activeTab === tab.key && styles.tabActive]}
                         onPress={() => setActiveTab(tab.key)}
                     >
-                        <Text style={[styles.tabText, activeTab === tab.key && styles.tabTextActive]}>
-                            {tab.label}
-                        </Text>
+                        <MaterialCommunityIcons
+                            name={tab.icon}
+                            size={20}
+                            color={activeTab === tab.key ? COLORS.textLight : COLORS.textMuted}
+                        />
                     </TouchableOpacity>
                 ))}
             </ScrollView>
@@ -419,7 +422,7 @@ const Leaderboard: React.FC<Props> = ({ navigation }) => {
             <View style={[styles.publishContainer, { paddingBottom: insets.bottom + SPACING.md }]}>
                 <TouchableOpacity
                     style={styles.publishButton}
-                    onPress={handlePublish}
+                    onPress={() => handlePublish()}
                     disabled={publishing}
                 >
                     {publishing ? (

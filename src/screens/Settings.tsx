@@ -24,6 +24,7 @@ import {
 import VERSION from '../config/version';
 import { useGameStore } from '../context/GameStore';
 import { COLORS, TYPOGRAPHY, SPACING, RADIUS, SHADOWS } from '../config/theme';
+import { BackIcon } from '../components/UI/Icons';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Settings'>;
 
@@ -94,7 +95,7 @@ const Settings: React.FC<Props> = ({ navigation }) => {
             {/* Header */}
             <View style={styles.header}>
                 <TouchableOpacity style={styles.backButton} onPress={handleBack}>
-                    <Text style={styles.backButtonText}>← Back</Text>
+                    <BackIcon size={24} color={COLORS.textPrimary} />
                 </TouchableOpacity>
                 <Text style={styles.title}>Settings</Text>
                 <View style={styles.placeholder} />

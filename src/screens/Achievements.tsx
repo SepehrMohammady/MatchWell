@@ -18,7 +18,7 @@ import { getLevelsByTheme, LEVELS, getLevelById } from '../themes';
 import { playSfx, playBgm } from '../utils/SoundManager';
 import { COLORS, TYPOGRAPHY, SPACING, RADIUS, SHADOWS } from '../config/theme';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { LockIcon } from '../components/UI/Icons';
+import { LockIcon, BackIcon } from '../components/UI/Icons';
 import {
     THEME_ACHIEVEMENTS,
     STAR_ACHIEVEMENTS,
@@ -161,7 +161,7 @@ const Achievements: React.FC<Props> = ({ navigation }) => {
             {/* Header */}
             <View style={styles.header}>
                 <TouchableOpacity style={styles.backButton} onPress={handleBack}>
-                    <Text style={styles.backButtonText}>← Back</Text>
+                    <BackIcon size={24} color={COLORS.textPrimary} />
                 </TouchableOpacity>
                 <Text style={styles.title}>Achievements</Text>
                 <View style={styles.placeholder} />

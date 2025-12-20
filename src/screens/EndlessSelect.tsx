@@ -18,7 +18,7 @@ import { useGameStore } from '../context/GameStore';
 import { THEME_CONFIGS, getLevelsByTheme } from '../themes';
 import { playSfx, playBgm } from '../utils/SoundManager';
 import { COLORS, TYPOGRAPHY, SPACING, RADIUS, SHADOWS } from '../config/theme';
-import { getThemeIcon, LockIcon } from '../components/UI/Icons';
+import { getThemeIcon, LockIcon, BackIcon } from '../components/UI/Icons';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'EndlessSelect'>;
 
@@ -137,9 +137,9 @@ const EndlessSelect: React.FC<Props> = ({ navigation }) => {
             {/* Header */}
             <View style={styles.header}>
                 <TouchableOpacity style={styles.backButton} onPress={handleBack}>
-                    <Text style={styles.backButtonText}>← Back</Text>
+                    <BackIcon size={24} color={COLORS.textPrimary} />
                 </TouchableOpacity>
-                <Text style={styles.title}>Endless mode</Text>
+                <Text style={styles.title}>Endless Mode</Text>
                 <View style={styles.placeholder} />
             </View>
 

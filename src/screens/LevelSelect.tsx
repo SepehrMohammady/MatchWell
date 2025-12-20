@@ -18,7 +18,7 @@ import { LEVELS, THEME_CONFIGS } from '../themes';
 import { ThemeType } from '../types';
 import { playSfx, playBgm } from '../utils/SoundManager';
 import { COLORS, TYPOGRAPHY, SPACING, RADIUS, SHADOWS } from '../config/theme';
-import { LockIcon, StarFilledIcon, getThemeIcon } from '../components/UI/Icons';
+import { LockIcon, StarFilledIcon, BackIcon, getThemeIcon } from '../components/UI/Icons';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'LevelSelect'>;
 
@@ -107,9 +107,9 @@ const LevelSelect: React.FC<Props> = ({ navigation }) => {
             {/* Header */}
             <View style={styles.header}>
                 <TouchableOpacity style={styles.backButton} onPress={handleBack}>
-                    <Text style={styles.backButtonText}>← Back</Text>
+                    <BackIcon size={24} color={COLORS.textPrimary} />
                 </TouchableOpacity>
-                <Text style={styles.title}>Select level</Text>
+                <Text style={styles.title}>Select Level</Text>
                 <View style={styles.placeholder} />
             </View>
 
