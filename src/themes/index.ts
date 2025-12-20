@@ -146,7 +146,27 @@ export const FOREST_FACTS = [
     'Protecting forests protects our future - every tree counts!',
 ];
 
-// Generate levels for a theme
+// Level configurations - explicit targetScore and moves for each level
+// Format: [targetScore, moves]
+const LEVEL_CONFIGS: [number, number][] = [
+    // Theme 1: Trash Sorting (Levels 1-10)
+    [5000, 30], [5100, 30], [5200, 30], [5300, 30], [5400, 30],
+    [5000, 28], [5100, 28], [5250, 28], [5400, 28], [5500, 28],
+    // Theme 2: Pollution (Levels 11-20)
+    [5200, 26], [5400, 26], [5600, 26], [5800, 26], [6000, 26],
+    [5600, 24], [5700, 24], [5800, 24], [6000, 24], [6100, 24],
+    // Theme 3: Water Conservation (Levels 21-30)
+    [6400, 22], [6500, 22], [6600, 22], [6700, 22], [6800, 22],
+    [6600, 20], [6700, 20], [6800, 20], [6900, 20], [7000, 20],
+    // Theme 4: Energy Efficiency (Levels 31-40)
+    [6600, 18], [6700, 18], [6800, 18], [6900, 18], [7000, 18],
+    [6800, 16], [6900, 16], [7000, 16], [7100, 16], [7200, 16],
+    // Theme 5: Deforestation (Levels 41-50)
+    [6800, 14], [6900, 14], [7000, 14], [7100, 14], [7200, 14],
+    [7100, 12], [7200, 12], [7300, 12], [7400, 12], [7500, 12],
+];
+
+// Generate levels for a theme using explicit configs
 const generateLevelsForTheme = (
     theme: ThemeType,
     startId: number,
@@ -154,12 +174,13 @@ const generateLevelsForTheme = (
 ): Level[] => {
     const levels: Level[] = [];
     for (let i = 0; i < 10; i++) {
-        const levelNum = i + 1;
+        const levelIndex = startId - 1 + i; // 0-indexed into LEVEL_CONFIGS
+        const [targetScore, moves] = LEVEL_CONFIGS[levelIndex];
         levels.push({
             id: startId + i,
             theme,
-            targetScore: 1000 + i * 500 + Math.floor(i / 3) * 1000,
-            moves: 20 - Math.min(6, Math.floor(i * 0.8)),
+            targetScore,
+            moves,
             gridSize: { rows: 8, cols: 8 },
             difficulty: i < 3 ? 'easy' : i < 7 ? 'medium' : 'hard',
             environmentalFact: facts[i],
@@ -168,7 +189,7 @@ const generateLevelsForTheme = (
     return levels;
 };
 
-// Level configurations - 4 themes x 10 levels = 40 total
+// Level configurations - 5 themes x 10 levels = 50 total
 export const LEVELS: Level[] = [
     ...generateLevelsForTheme('trash-sorting', 1, TRASH_FACTS),
     ...generateLevelsForTheme('pollution', 11, POLLUTION_FACTS),
