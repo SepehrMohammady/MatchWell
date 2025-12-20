@@ -145,8 +145,10 @@ const Leaderboard: React.FC<Props> = ({ navigation }) => {
                     break;
             }
 
-            if (isUnlocked && achievement.tier) {
-                const tier = achievement.tier;
+            // Count the achievement based on its tier
+            // Achievements without a tier (theme/stars) count as bronze
+            if (isUnlocked) {
+                const tier = achievement.tier || 'bronze';
                 if (tier in medals) {
                     medals[tier as keyof typeof medals]++;
                 }

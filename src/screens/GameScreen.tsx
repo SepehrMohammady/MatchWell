@@ -440,16 +440,16 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
         <View style={[styles.container, getBackgroundStyle(), { paddingTop: insets.top }]}>
             <StatusBar barStyle="light-content" />
 
-            {/* Achievement Toast Notification */}
-            {toastAchievement && (
+            {/* Achievement Toast Notification - uses Modal to appear above level complete */}
+            <Modal visible={!!toastAchievement} transparent animationType="none">
                 <Animated.View style={[styles.toastContainer, { opacity: toastOpacity }]}>
-                    <Text style={styles.toastEmoji}>{toastAchievement.emoji}</Text>
+                    <Text style={styles.toastEmoji}>{toastAchievement?.emoji}</Text>
                     <View style={styles.toastTextContainer}>
                         <Text style={styles.toastTitle}>🎉 Achievement Unlocked!</Text>
-                        <Text style={styles.toastName}>{toastAchievement.name}</Text>
+                        <Text style={styles.toastName}>{toastAchievement?.name}</Text>
                     </View>
                 </Animated.View>
-            )}
+            </Modal>
 
             <HUD onPause={handlePause} />
 
