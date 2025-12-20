@@ -25,10 +25,10 @@ type Props = NativeStackScreenProps<RootStackParamList, 'MainMenu'>;
 
 // Earth stage images based on story progress
 const EARTH_STAGES = {
-    1: require('../assets/images/first_stage_icon.jpg'), // Default (0-30 levels)
-    2: require('../assets/images/earth_2.png'), // Recovering (31-40 levels)
-    3: require('../assets/images/earth_3.png'), // Healing (41-49 levels)
-    4: require('../assets/images/final_stage_icon.jpg'), // Completed all 50 levels
+    1: require('../assets/images/earth_1.png'), // Polluted (0-20 levels)
+    2: require('../assets/images/earth_2.png'), // Recovering (21-30 levels)
+    3: require('../assets/images/earth_3.png'), // Healing (31-50 levels)
+    4: require('../assets/images/earth_4.png'), // Thriving (all 50 levels complete)
 };
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
@@ -37,10 +37,10 @@ const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const getEarthStage = (completedLevels: number[]): number => {
     const maxLevel = completedLevels.length > 0 ? Math.max(...completedLevels) : 0;
 
-    if (maxLevel >= 50) return 4; // All 50 levels complete - Final stage
-    if (maxLevel >= 41) return 3; // 41-49 levels - Healing
-    if (maxLevel >= 31) return 2; // 31-40 levels - Recovering
-    return 1; // 0-30 levels - Default (first stage)
+    if (maxLevel >= 50) return 4; // All 50 levels complete - Thriving
+    if (maxLevel >= 31) return 3; // 31-50 levels - Healing
+    if (maxLevel >= 21) return 2; // 21-30 levels - Recovering
+    return 1; // 0-20 levels - Polluted
 };
 
 const MainMenu: React.FC<Props> = ({ navigation }) => {

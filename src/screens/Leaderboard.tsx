@@ -374,12 +374,7 @@ const Leaderboard: React.FC<Props> = ({ navigation }) => {
             </View>
 
             {/* Tabs */}
-            <ScrollView
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                style={styles.tabsContainer}
-                contentContainerStyle={styles.tabsContent}
-            >
+            <View style={styles.tabsContainer}>
                 {TABS.map(tab => (
                     <TouchableOpacity
                         key={tab.key}
@@ -388,12 +383,12 @@ const Leaderboard: React.FC<Props> = ({ navigation }) => {
                     >
                         <MaterialCommunityIcons
                             name={tab.icon}
-                            size={20}
+                            size={22}
                             color={activeTab === tab.key ? COLORS.textLight : COLORS.textMuted}
                         />
                     </TouchableOpacity>
                 ))}
-            </ScrollView>
+            </View>
 
             {/* Rankings List */}
             {loading ? (
@@ -552,18 +547,18 @@ const styles = StyleSheet.create({
         color: COLORS.textLight,
     },
     tabsContainer: {
-        maxHeight: 50,
+        flexDirection: 'row',
+        marginHorizontal: SPACING.md,
         marginBottom: SPACING.sm,
     },
-    tabsContent: {
-        paddingHorizontal: SPACING.md,
-        gap: SPACING.sm,
-    },
     tab: {
-        paddingHorizontal: SPACING.md,
-        paddingVertical: SPACING.sm,
+        flex: 1,
+        paddingVertical: SPACING.md,
         borderRadius: RADIUS.md,
         backgroundColor: 'rgba(255, 255, 255, 0.1)',
+        marginHorizontal: 2,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     tabActive: {
         backgroundColor: COLORS.organicWaste,
