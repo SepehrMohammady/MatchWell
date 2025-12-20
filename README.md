@@ -32,6 +32,8 @@ Match 3 or more items in a row or column to clear them from the board. Complete 
 | 🔥 **Combo System** | Chain reactions multiply your score |
 | 📚 **Eco Facts** | Learn real environmental facts as you play |
 | 🎵 **Themed Music** | Unique background music for each theme |
+| 🌐 **Global Leaderboard** | Compete worldwide, track score per move |
+| 🌎 **Earth Progression** | Watch Earth heal as you complete more levels |
 
 ---
 
