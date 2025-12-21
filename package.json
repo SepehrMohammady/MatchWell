@@ -1,6 +1,6 @@
 {
   "name": "matchwell",
-  "version": "0.5.7",
+  "version": "0.5.8",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -16,6 +16,7 @@
     "@react-navigation/native-stack": "^7.8.6",
     "react": "19.2.0",
     "react-native": "0.83.0",
+    "react-native-change-icon": "^5.0.0",
     "react-native-game-engine": "^1.2.0",
     "react-native-gesture-handler": "^2.29.1",
     "react-native-get-random-values": "^2.0.0",

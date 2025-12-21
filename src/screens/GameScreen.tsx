@@ -27,6 +27,7 @@ import { playBgm, playThemeBgm, pauseBgm, resumeBgm, stopBgm, playSfx, getSoundS
 import { COLORS, TYPOGRAPHY, SPACING, RADIUS } from '../config/theme';
 import { PauseIcon, PlayIcon, RestartIcon, MusicIcon, MusicOffIcon, VolumeIcon, VolumeOffIcon, HomeIcon, PaletteIcon, ListIcon, StarFilledIcon, StarEmptyIcon, TrophyIcon, EmoticonSadIcon, ArrowRightIcon } from '../components/UI/Icons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { changeIcon } from 'react-native-change-icon';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Game'>;
 
@@ -89,6 +90,11 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
             setTimeout(() => {
                 setShowStoryComplete(true);
             }, 1500);
+
+            // Change app icon to final stage icon when Level 50 is completed
+            changeIcon('Final').catch((error: Error) => {
+                console.log('Failed to change app icon:', error.message);
+            });
         }
     }, [isLevelComplete, levelId]);
 
