@@ -87,21 +87,23 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
         }
     }, [isPaused]);
 
-    // Block back button during loading screen - use useFocusEffect for immediate effect
+    // Block back button during loading screen - always active, checks state
     useFocusEffect(
         useCallback(() => {
-            if (!isLoading) return;
-
-            // Block hardware back button
+            // Always register the handler, check state inside
             const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
-                // Return true to prevent default back behavior during loading
-                return true;
+                // Block back during loading
+                if (isLoading) {
+                    return true; // Prevent default back
+                }
+                return false; // Allow normal back behavior
             });
 
-            // Block navigation gestures and software back
+            // Also block navigation's beforeRemove during loading
             const unsubscribe = navigation.addListener('beforeRemove', (e: { preventDefault: () => void }) => {
-                // Prevent navigation during loading
-                e.preventDefault();
+                if (isLoading) {
+                    e.preventDefault();
+                }
             });
 
             return () => {
@@ -646,14 +648,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     factContainer: {
-        flex: 1, // Fill available space between HUD and power-up
         flexDirection: 'row',
-        alignItems: 'flex-start', // Align to top so text starts at top
+        alignItems: 'center',
         backgroundColor: 'rgba(0, 0, 0, 0.6)',
         marginHorizontal: SPACING.md,
-        marginTop: SPACING.xs,
-        marginBottom: SPACING.xs,
-        paddingVertical: SPACING.sm,
+        marginVertical: SPACING.sm,
+        paddingVertical: SPACING.md,
         paddingHorizontal: SPACING.md,
         borderRadius: RADIUS.lg,
     },
