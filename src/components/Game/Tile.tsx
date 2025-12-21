@@ -45,8 +45,8 @@ const TileComponent: React.FC<TileProps> = memo(({ tile, isSelected, onPress, on
   React.useEffect(() => {
     Animated.spring(scaleAnim, {
       toValue: isSelected ? 1.15 : 1,
-      friction: 5,
-      tension: 100,
+      friction: 8,
+      tension: 80,
       useNativeDriver: true,
     }).start();
   }, [isSelected, scaleAnim]);
@@ -57,12 +57,12 @@ const TileComponent: React.FC<TileProps> = memo(({ tile, isSelected, onPress, on
       Animated.parallel([
         Animated.timing(opacityAnim, {
           toValue: 0,
-          duration: 200,
+          duration: 350,
           useNativeDriver: true,
         }),
         Animated.timing(scaleAnim, {
           toValue: 0.5,
-          duration: 200,
+          duration: 350,
           useNativeDriver: true,
         }),
       ]).start();
@@ -100,7 +100,7 @@ const TileComponent: React.FC<TileProps> = memo(({ tile, isSelected, onPress, on
         // Visual feedback on touch
         Animated.spring(scaleAnim, {
           toValue: 0.95,
-          friction: 5,
+          friction: 8,
           useNativeDriver: true,
         }).start();
       },
@@ -124,17 +124,19 @@ const TileComponent: React.FC<TileProps> = memo(({ tile, isSelected, onPress, on
         Animated.parallel([
           Animated.spring(translateX, {
             toValue: 0,
-            friction: 5,
+            friction: 8,
+            tension: 60,
             useNativeDriver: true,
           }),
           Animated.spring(translateY, {
             toValue: 0,
-            friction: 5,
+            friction: 8,
+            tension: 60,
             useNativeDriver: true,
           }),
           Animated.spring(scaleAnim, {
             toValue: isSelected ? 1.15 : 1,
-            friction: 5,
+            friction: 8,
             useNativeDriver: true,
           }),
         ]).start();
@@ -152,9 +154,9 @@ const TileComponent: React.FC<TileProps> = memo(({ tile, isSelected, onPress, on
       onPanResponderTerminate: () => {
         // Reset if gesture is cancelled
         Animated.parallel([
-          Animated.spring(translateX, { toValue: 0, friction: 5, useNativeDriver: true }),
-          Animated.spring(translateY, { toValue: 0, friction: 5, useNativeDriver: true }),
-          Animated.spring(scaleAnim, { toValue: 1, friction: 5, useNativeDriver: true }),
+          Animated.spring(translateX, { toValue: 0, friction: 8, tension: 60, useNativeDriver: true }),
+          Animated.spring(translateY, { toValue: 0, friction: 8, tension: 60, useNativeDriver: true }),
+          Animated.spring(scaleAnim, { toValue: 1, friction: 8, useNativeDriver: true }),
         ]).start();
       },
     })

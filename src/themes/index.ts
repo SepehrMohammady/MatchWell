@@ -53,7 +53,7 @@ export const TILE_INFO: Record<TileType, { name: string; color: string; emoji: s
     car: { name: 'Car', color: '#e74c3c', emoji: '🚗' },
     truck: { name: 'Truck', color: '#34495e', emoji: '🚛' },
     bus: { name: 'Bus', color: '#f1c40f', emoji: '🚌' },
-    motorbike: { name: 'Motorbike', color: '#2c3e50', emoji: '🏍️' },
+    motorbike: { name: 'Motorbike', color: '#9b59b6', emoji: '🏍️' },
     airplane: { name: 'Airplane', color: '#2ecc71', emoji: '✈️' },
 
     // Water Conservation Theme

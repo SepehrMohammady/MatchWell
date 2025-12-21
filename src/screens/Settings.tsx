@@ -146,6 +146,20 @@ const Settings: React.FC<Props> = ({ navigation }) => {
                     </TouchableOpacity>
                 </View>
 
+                {/* Testers Section */}
+                <View style={styles.section}>
+                    <Text style={styles.sectionTitle}>Testers</Text>
+
+                    <View style={styles.aboutCard}>
+                        <View style={styles.aboutCardRow}>
+                            <Text style={styles.testersThankYou}>Thank you for your valuable feedback!</Text>
+                        </View>
+                        <View style={[styles.aboutCardRow, styles.aboutCardLastRow]}>
+                            <Text style={styles.testerName}>Majid Mohammadi</Text>
+                        </View>
+                    </View>
+                </View>
+
                 {/* About Section - FeedWell Style */}
                 <View style={styles.section}>
                     <Text style={styles.sectionTitle}>About</Text>
@@ -380,6 +394,17 @@ const styles = StyleSheet.create({
         color: COLORS.textMuted,
         marginTop: SPACING.sm,
         textAlign: 'center',
+    },
+    testersThankYou: {
+        fontSize: TYPOGRAPHY.body,
+        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
+        fontWeight: TYPOGRAPHY.semibold,
+        color: COLORS.textPrimary,
+    },
+    testerName: {
+        fontSize: TYPOGRAPHY.bodySmall,
+        fontFamily: TYPOGRAPHY.fontFamily,
+        color: COLORS.textSecondary,
     },
 });
 

@@ -1,5 +1,5 @@
 // Level Select Screen - Earth-Inspired Minimal Design
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useRef } from 'react';
 import {
     View,
     Text,
@@ -38,6 +38,52 @@ const LevelSelect: React.FC<Props> = ({ navigation }) => {
 
         return () => backHandler.remove();
     }, []);
+
+    // ScrollView ref for auto-scrolling
+    const scrollViewRef = useRef<ScrollView>(null);
+    const themePositions = useRef<Record<string, number>>({});
+    const hasScrolled = useRef(false);
+
+    // Find the in-progress theme (first theme that has some but not all levels completed)
+    const getInProgressTheme = useCallback((): ThemeType | null => {
+        const themeOrder: ThemeType[] = ['trash-sorting', 'pollution', 'water-conservation', 'energy-efficiency', 'deforestation'];
+
+        for (const themeId of themeOrder) {
+            const themeLevels = LEVELS.filter(l => l.theme === themeId);
+            const completedInTheme = themeLevels.filter(l => completedLevels.includes(l.id)).length;
+
+            // Theme is in-progress if some but not all levels are completed
+            if (completedInTheme > 0 && completedInTheme < themeLevels.length) {
+                return themeId;
+            }
+            // If no levels completed in this theme but previous themes are complete, this is the current theme
+            if (completedInTheme === 0) {
+                return themeId;
+            }
+        }
+        return null;
+    }, [completedLevels]);
+
+    // Auto-scroll to in-progress theme after layout
+    useEffect(() => {
+        if (!hasScrolled.current && scrollViewRef.current) {
+            const inProgressTheme = getInProgressTheme();
+            if (inProgressTheme && themePositions.current[inProgressTheme] !== undefined) {
+                // Slight delay to ensure layout is complete
+                setTimeout(() => {
+                    scrollViewRef.current?.scrollTo({
+                        y: themePositions.current[inProgressTheme],
+                        animated: true,
+                    });
+                    hasScrolled.current = true;
+                }, 300);
+            }
+        }
+    }, [getInProgressTheme]);
+
+    const onThemeLayout = (themeId: string, y: number) => {
+        themePositions.current[themeId] = y;
+    };
 
     // Play menu music when screen is focused
     useFocusEffect(
@@ -113,12 +159,20 @@ const LevelSelect: React.FC<Props> = ({ navigation }) => {
                 <View style={styles.placeholder} />
             </View>
 
-            <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent}>
+            <ScrollView
+                ref={scrollViewRef}
+                style={styles.scrollView}
+                contentContainerStyle={styles.scrollContent}
+            >
                 {Object.entries(levelsByTheme).map(([themeId, levels]) => {
                     const theme = THEME_CONFIGS[themeId as ThemeType];
                     const themeStars = getTotalThemeStars(levels);
                     return (
-                        <View key={themeId} style={styles.themeSection}>
+                        <View
+                            key={themeId}
+                            style={styles.themeSection}
+                            onLayout={(event) => onThemeLayout(themeId, event.nativeEvent.layout.y)}
+                        >
                             <View style={styles.themeTitleContainer}>
                                 <View style={styles.themeIconContainer}>
                                     {getThemeIcon(themeId as ThemeType, 24)}

@@ -222,6 +222,19 @@ const Leaderboard: React.FC<Props> = ({ navigation }) => {
             return;
         }
 
+        // Check if user has any endless scores to publish
+        const totalEndlessScore = endlessScoresData.trash + endlessScoresData.pollution +
+            endlessScoresData.water + endlessScoresData.energy + endlessScoresData.forest;
+
+        if (totalEndlessScore === 0) {
+            Alert.alert(
+                'No Scores to Publish',
+                'Play Endless Mode first to get scores for the leaderboard! The leaderboard ranks players by their Endless Mode high scores.',
+                [{ text: 'OK' }]
+            );
+            return;
+        }
+
         setPublishing(true);
 
         // Calculate total stars from actual game progress
