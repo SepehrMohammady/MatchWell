@@ -68,15 +68,22 @@ const LevelSelect: React.FC<Props> = ({ navigation }) => {
     useEffect(() => {
         if (!hasScrolled.current && scrollViewRef.current) {
             const inProgressTheme = getInProgressTheme();
-            if (inProgressTheme && themePositions.current[inProgressTheme] !== undefined) {
-                // Slight delay to ensure layout is complete
-                setTimeout(() => {
-                    scrollViewRef.current?.scrollTo({
-                        y: themePositions.current[inProgressTheme],
-                        animated: true,
-                    });
-                    hasScrolled.current = true;
-                }, 300);
+            if (inProgressTheme) {
+                // Retry a few times to ensure layout is complete
+                const attemptScroll = (attempts: number) => {
+                    const position = themePositions.current[inProgressTheme];
+                    if (position !== undefined && position > 0) {
+                        scrollViewRef.current?.scrollTo({
+                            y: position - 50, // Slight offset for better visibility
+                            animated: true,
+                        });
+                        hasScrolled.current = true;
+                    } else if (attempts > 0) {
+                        setTimeout(() => attemptScroll(attempts - 1), 200);
+                    }
+                };
+                // Start with delay to allow initial layout
+                setTimeout(() => attemptScroll(5), 500);
             }
         }
     }, [getInProgressTheme]);

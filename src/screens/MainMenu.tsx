@@ -148,32 +148,37 @@ const MainMenu: React.FC<Props> = ({ navigation }) => {
                     <Text style={styles.subtitle}>Save the planet, one match at a time</Text>
                 </View>
 
-                {/* Menu buttons */}
+                {/* Primary buttons: Story Mode and Endless Mode */}
                 <View style={styles.buttonContainer}>
-                    <TouchableOpacity style={styles.secondaryButton} onPress={handlePlay} activeOpacity={0.8}>
-                        <Text style={styles.secondaryButtonText}>Story Mode</Text>
+                    <TouchableOpacity style={styles.primaryButton} onPress={handlePlay} activeOpacity={0.8}>
+                        <Text style={styles.primaryButtonText}>Story Mode</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.secondaryButton} onPress={handleEndless} activeOpacity={0.8}>
-                        <Text style={styles.secondaryButtonText}>Endless Mode</Text>
+                    <TouchableOpacity style={styles.primaryButton} onPress={handleEndless} activeOpacity={0.8}>
+                        <Text style={styles.primaryButtonText}>Endless Mode</Text>
                     </TouchableOpacity>
+                </View>
 
-                    <TouchableOpacity style={styles.secondaryButton} onPress={handleAchievements} activeOpacity={0.8}>
+                {/* Secondary buttons: Achievements, Leaderboard, Settings */}
+                <View style={styles.secondaryButtonContainer}>
+                    <TouchableOpacity style={styles.tertiaryButton} onPress={handleAchievements} activeOpacity={0.7}>
                         <View style={styles.achievementButtonContent}>
-                            <Text style={styles.secondaryButtonText}>Achievements</Text>
+                            <Text style={styles.tertiaryButtonText}>Achievements</Text>
                             {unseenAchievements.length > 0 && (
                                 <View style={styles.redDot} />
                             )}
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.leaderboardButton} onPress={handleLeaderboard} activeOpacity={0.8}>
-                        <TrophyIcon size={20} color="#FFD700" />
-                        <Text style={styles.leaderboardButtonText}>Leaderboard</Text>
+                    <TouchableOpacity style={styles.tertiaryButton} onPress={handleLeaderboard} activeOpacity={0.7}>
+                        <View style={styles.achievementButtonContent}>
+                            <TrophyIcon size={16} color="#FFD700" />
+                            <Text style={[styles.tertiaryButtonText, { marginLeft: SPACING.xs }]}>Leaderboard</Text>
+                        </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.settingsButton} onPress={handleSettings} activeOpacity={0.6}>
-                        <Text style={styles.settingsButtonText}>Settings</Text>
+                    <TouchableOpacity style={styles.tertiaryButton} onPress={handleSettings} activeOpacity={0.7}>
+                        <Text style={styles.tertiaryButtonText}>Settings</Text>
                     </TouchableOpacity>
                 </View>
 
@@ -260,6 +265,46 @@ const styles = StyleSheet.create({
         fontWeight: TYPOGRAPHY.semibold,
         color: '#ffffff',
     },
+    // Primary buttons: Story Mode, Endless Mode
+    primaryButton: {
+        backgroundColor: 'transparent',
+        borderWidth: 1.5,
+        borderColor: 'rgba(255, 255, 255, 0.3)',
+        paddingVertical: SPACING.lg,
+        paddingHorizontal: SPACING.xxl * 2,
+        borderRadius: RADIUS.round,
+        width: '100%',
+        alignItems: 'center',
+    },
+    primaryButtonText: {
+        fontSize: TYPOGRAPHY.h4,
+        fontFamily: TYPOGRAPHY.fontFamilyMedium,
+        fontWeight: TYPOGRAPHY.medium,
+        color: '#ffffff',
+    },
+    // Container for secondary buttons (Achievements, Leaderboard, Settings)
+    secondaryButtonContainer: {
+        width: '100%',
+        alignItems: 'center',
+        marginTop: SPACING.lg,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        flexWrap: 'wrap',
+        gap: SPACING.md,
+    },
+    // Tertiary buttons: smaller, less prominent
+    tertiaryButton: {
+        paddingVertical: SPACING.sm,
+        paddingHorizontal: SPACING.lg,
+        backgroundColor: 'rgba(255, 255, 255, 0.08)',
+        borderRadius: RADIUS.lg,
+    },
+    tertiaryButtonText: {
+        fontSize: TYPOGRAPHY.caption,
+        fontFamily: TYPOGRAPHY.fontFamily,
+        color: 'rgba(255, 255, 255, 0.7)',
+    },
+    // Legacy styles kept for compatibility
     secondaryButton: {
         backgroundColor: 'transparent',
         borderWidth: 1.5,

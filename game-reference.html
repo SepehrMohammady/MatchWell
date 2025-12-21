@@ -1844,6 +1844,109 @@
             </div>
         </div>
 
+        <div class="divider"></div>
+
+        <!-- ================= POWER-UP SYSTEM ================= -->
+        <h2><span class="mdi mdi-earth"></span> Power-Up System (v0.5.0+)</h2>
+        <p style="color: #888; margin-bottom: 20px;">Earn power points by making special matches. Use them to clear rows
+            and columns!</p>
+
+        <h3>🔋 Earning Power Points</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Match Type</th>
+                    <th>Power Points</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>3-match</td>
+                    <td>0 points</td>
+                    <td>Standard match, no power gain</td>
+                </tr>
+                <tr>
+                    <td>4-match</td>
+                    <td>+2 points</td>
+                    <td>Horizontal or vertical line of 4</td>
+                </tr>
+                <tr>
+                    <td>5+ match</td>
+                    <td>+5 points</td>
+                    <td>5 or more in a row</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>⚡ Power Levels</h3>
+        <div class="info-card">
+            <h4>Level 1: Single Line (10-14 points)</h4>
+            <ul>
+                <li>Progress bar turns <strong style="color: #FFA726;">amber</strong></li>
+                <li>Tap the <span class="mdi mdi-earth" style="color: #FFA726;"></span> Earth icon to activate</li>
+                <li><strong>Edges only:</strong> Cannot use on corners</li>
+                <li>Select a border block (first/last row or column)</li>
+                <li>Top/Bottom edge → removes entire <strong>column</strong></li>
+                <li>Left/Right edge → removes entire <strong>row</strong></li>
+                <li>Score bonus: <strong>50 points per tile</strong> removed</li>
+            </ul>
+        </div>
+        <div class="info-card">
+            <h4>Level 2: Cross Removal (15 points)</h4>
+            <ul>
+                <li>Progress bar turns <strong style="color: #FFD700;">gold</strong> and icon <strong>flashes</strong>
+                </li>
+                <li>Can now select <strong>any border block</strong> including corners</li>
+                <li>Removes <strong>BOTH</strong> row AND column (cross pattern)</li>
+                <li>Corner blocks: 15 tiles removed!</li>
+                <li>Score bonus: <strong>50 points per tile</strong> removed</li>
+            </ul>
+        </div>
+
+        <h3>🎮 Visual Indicators</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>State</th>
+                    <th>Visual</th>
+                    <th>Color</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>0-9 points</td>
+                    <td>Gray progress bar</td>
+                    <td style="color: #888;">#888888</td>
+                </tr>
+                <tr>
+                    <td>10-14 points</td>
+                    <td>Amber bar + icon glow</td>
+                    <td style="color: #FFA726;">#FFA726</td>
+                </tr>
+                <tr>
+                    <td>15 points</td>
+                    <td>Gold bar + flashing icon</td>
+                    <td style="color: #FFD700;">#FFD700</td>
+                </tr>
+                <tr>
+                    <td>Power-up active</td>
+                    <td>Border blocks highlighted</td>
+                    <td style="color: #FFA726;">#FFA726</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>🌍 Icon</h3>
+        <div class="icon-grid">
+            <div class="icon-card current">
+                <div class="tile-icon" style="background: #FFA726;"><span class="mdi mdi-earth"></span></div>
+                <div class="name">Power-Up</div>
+                <div class="code">earth</div>
+                <div class="label">Current</div>
+            </div>
+        </div>
+
         <p style="text-align: center; margin-top: 60px; color: #8BC34A;">
             Made with 💚 for Earth<br>
             <strong>Every match counts. Every action matters.</strong>

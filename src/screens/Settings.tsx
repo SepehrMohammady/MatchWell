@@ -9,6 +9,7 @@ import {
     Switch,
     Alert,
     Linking,
+    ScrollView,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -101,8 +102,8 @@ const Settings: React.FC<Props> = ({ navigation }) => {
                 <View style={styles.placeholder} />
             </View>
 
-            {/* Settings Options */}
-            <View style={styles.content}>
+            {/* Settings Options - Scrollable */}
+            <ScrollView style={styles.content} contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
                 {/* Sound Settings Section */}
                 <View style={styles.section}>
                     <Text style={styles.sectionTitle}>Sound</Text>
@@ -213,7 +214,7 @@ const Settings: React.FC<Props> = ({ navigation }) => {
                     <Text style={styles.tagline}>🌱 Save the planet, one match at a time</Text>
                     <Text style={styles.copyright}>© 2025 Sepehr Mohammady. Open source under MIT License.</Text>
                 </View>
-            </View>
+            </ScrollView>
         </View>
     );
 };
@@ -253,7 +254,10 @@ const styles = StyleSheet.create({
     },
     content: {
         flex: 1,
+    },
+    scrollContent: {
         padding: SPACING.lg,
+        paddingBottom: SPACING.xxl,
     },
     section: {
         backgroundColor: COLORS.cardBackground,

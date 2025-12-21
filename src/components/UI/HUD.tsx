@@ -59,7 +59,7 @@ const HUD: React.FC<HUDProps> = ({ onPause }) => {
                 <ThemeProgress
                     progress={progress}
                     theme={theme}
-                    width={SCREEN_WIDTH - SPACING.lg * 4}
+                    width={SCREEN_WIDTH - (SPACING.sm + SPACING.md) * 2}
                     height={40}
                 />
             )}

@@ -87,27 +87,29 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
         }
     }, [isPaused]);
 
-    // Block back button during loading screen - use both BackHandler AND navigation's beforeRemove
-    useEffect(() => {
-        if (!isLoading) return;
+    // Block back button during loading screen - use useFocusEffect for immediate effect
+    useFocusEffect(
+        useCallback(() => {
+            if (!isLoading) return;
 
-        // Block hardware back button
-        const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
-            // Return true to prevent default back behavior during loading
-            return true;
-        });
+            // Block hardware back button
+            const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+                // Return true to prevent default back behavior during loading
+                return true;
+            });
 
-        // Block navigation gestures and software back
-        const unsubscribe = navigation.addListener('beforeRemove', (e: { preventDefault: () => void }) => {
-            // Prevent navigation during loading
-            e.preventDefault();
-        });
+            // Block navigation gestures and software back
+            const unsubscribe = navigation.addListener('beforeRemove', (e: { preventDefault: () => void }) => {
+                // Prevent navigation during loading
+                e.preventDefault();
+            });
 
-        return () => {
-            backHandler.remove();
-            unsubscribe();
-        };
-    }, [isLoading, navigation]);
+            return () => {
+                backHandler.remove();
+                unsubscribe();
+            };
+        }, [isLoading, navigation])
+    );
 
     // Initialize the game level with isEndless flag and optional endlessTheme
     // Use ref to prevent re-initialization on state changes
@@ -644,12 +646,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     factContainer: {
+        flex: 1, // Fill available space between HUD and power-up
         flexDirection: 'row',
-        alignItems: 'center',
+        alignItems: 'flex-start', // Align to top so text starts at top
         backgroundColor: 'rgba(0, 0, 0, 0.6)',
         marginHorizontal: SPACING.md,
-        marginVertical: SPACING.sm,
-        paddingVertical: SPACING.md,
+        marginTop: SPACING.xs,
+        marginBottom: SPACING.xs,
+        paddingVertical: SPACING.sm,
         paddingHorizontal: SPACING.md,
         borderRadius: RADIUS.lg,
     },
