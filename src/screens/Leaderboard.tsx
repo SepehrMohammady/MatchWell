@@ -217,12 +217,7 @@ const Leaderboard: React.FC<Props> = ({ navigation }) => {
     };
 
     const handlePublish = async (skipRegCheck = false) => {
-        if (!skipRegCheck && !isRegistered) {
-            setShowUsernameModal(true);
-            return;
-        }
-
-        // Check if user has any endless scores to publish
+        // Check if user has any endless scores to publish FIRST (before registration)
         const totalEndlessScore = endlessScoresData.trash + endlessScoresData.pollution +
             endlessScoresData.water + endlessScoresData.energy + endlessScoresData.forest;
 
@@ -232,6 +227,12 @@ const Leaderboard: React.FC<Props> = ({ navigation }) => {
                 'Play Endless Mode first to get scores for the leaderboard! The leaderboard ranks players by their Endless Mode high scores.',
                 [{ text: 'OK' }]
             );
+            return;
+        }
+
+        // Now check registration (only if not skipping)
+        if (!skipRegCheck && !isRegistered) {
+            setShowUsernameModal(true);
             return;
         }
 
@@ -306,7 +307,7 @@ const Leaderboard: React.FC<Props> = ({ navigation }) => {
         if (result.success) {
             setIsRegistered(true);
             setShowUsernameModal(false);
-            Alert.alert('Welcome!', `You're now registered as "${username}". Publishing your score...`);
+            // Directly publish - the publish function will show success/error message
             handlePublish(true);
         } else {
             setUsernameError(result.error || 'Registration failed');

@@ -37,28 +37,21 @@ const HUD: React.FC<HUDProps> = ({ onPause }) => {
 
     return (
         <View style={styles.container}>
-            {/* Top row: Level/Theme and Pause */}
+            {/* Top row: Score on left, Pause on right */}
             <View style={styles.topRow}>
-                <View style={[styles.levelBadge, isEndlessMode && styles.endlessBadge]}>
-                    <Text style={styles.levelText}>
-                        {isEndlessMode ? themeConfig.name : `Level ${level}`}
-                    </Text>
+                <View style={styles.scoreSection}>
+                    <Text style={styles.scoreValue}>{score.toLocaleString()}</Text>
+                    {isEndlessMode ? (
+                        <Text style={styles.targetText}>
+                            Best: {displayBestScore > 0 ? displayBestScore.toLocaleString() : '—'}
+                        </Text>
+                    ) : (
+                        <Text style={styles.targetText}>Target: {targetScore.toLocaleString()}</Text>
+                    )}
                 </View>
                 <TouchableOpacity style={styles.pauseButton} onPress={onPause} activeOpacity={0.7}>
                     <PauseIcon size={18} color={COLORS.textSecondary} />
                 </TouchableOpacity>
-            </View>
-
-            {/* Score section */}
-            <View style={styles.scoreSection}>
-                <Text style={styles.scoreValue}>{score.toLocaleString()}</Text>
-                {isEndlessMode ? (
-                    <Text style={styles.targetText}>
-                        Best: {displayBestScore > 0 ? displayBestScore.toLocaleString() : '—'}
-                    </Text>
-                ) : (
-                    <Text style={styles.targetText}>Target: {targetScore.toLocaleString()}</Text>
-                )}
             </View>
 
             {/* Theme-specific Progress - only for story mode */}
@@ -67,11 +60,11 @@ const HUD: React.FC<HUDProps> = ({ onPause }) => {
                     progress={progress}
                     theme={theme}
                     width={SCREEN_WIDTH - SPACING.lg * 4}
-                    height={48}
+                    height={40}
                 />
             )}
 
-            {/* Bottom row: Moves and Combo */}
+            {/* Bottom row: Moves on left, Combo in middle, Level on right */}
             <View style={styles.bottomRow}>
                 <View style={styles.stat}>
                     <Text style={styles.statLabel}>{isEndlessMode ? 'Moves' : 'Moves left'}</Text>
@@ -87,6 +80,11 @@ const HUD: React.FC<HUDProps> = ({ onPause }) => {
                         <Text style={styles.comboText}>×{combo}</Text>
                     </View>
                 )}
+                <View style={[styles.levelBadge, isEndlessMode && styles.endlessBadge]}>
+                    <Text style={styles.levelText}>
+                        {isEndlessMode ? themeConfig.name : `Level ${level}`}
+                    </Text>
+                </View>
             </View>
         </View>
     );
@@ -94,18 +92,18 @@ const HUD: React.FC<HUDProps> = ({ onPause }) => {
 
 const styles = StyleSheet.create({
     container: {
-        padding: SPACING.lg,
+        padding: SPACING.md,
         backgroundColor: COLORS.cardBackground,
         borderRadius: RADIUS.lg,
-        margin: SPACING.md,
+        margin: SPACING.sm,
         borderWidth: 1,
         borderColor: COLORS.cardBorder,
     },
     topRow: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: SPACING.md,
+        alignItems: 'flex-start',
+        marginBottom: SPACING.xs,
     },
     levelBadge: {
         backgroundColor: COLORS.organicWaste,
@@ -131,15 +129,15 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     scoreSection: {
-        alignItems: 'center',
-        marginBottom: SPACING.sm,
+        alignItems: 'flex-start',
     },
     scoreValue: {
         color: COLORS.textPrimary,
-        fontSize: 40,
+        fontSize: 32,
         fontFamily: TYPOGRAPHY.fontFamilyBold,
         fontWeight: TYPOGRAPHY.bold,
         letterSpacing: -1,
+        lineHeight: 36,
     },
     targetText: {
         color: COLORS.textMuted,

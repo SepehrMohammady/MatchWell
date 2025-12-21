@@ -84,19 +84,27 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
         }
     }, [isPaused]);
 
-    // Block back button during loading screen - use useFocusEffect for proper navigation integration
-    useFocusEffect(
-        useCallback(() => {
-            if (isLoading) {
-                const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
-                    // Return true to prevent default back behavior during loading
-                    return true;
-                });
-                return () => backHandler.remove();
-            }
-            return undefined;
-        }, [isLoading])
-    );
+    // Block back button during loading screen - use both BackHandler AND navigation's beforeRemove
+    useEffect(() => {
+        if (!isLoading) return;
+
+        // Block hardware back button
+        const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+            // Return true to prevent default back behavior during loading
+            return true;
+        });
+
+        // Block navigation gestures and software back
+        const unsubscribe = navigation.addListener('beforeRemove', (e: { preventDefault: () => void }) => {
+            // Prevent navigation during loading
+            e.preventDefault();
+        });
+
+        return () => {
+            backHandler.remove();
+            unsubscribe();
+        };
+    }, [isLoading, navigation]);
 
     // Initialize the game level with isEndless flag and optional endlessTheme
     // Use ref to prevent re-initialization on state changes

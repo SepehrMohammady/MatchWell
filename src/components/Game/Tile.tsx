@@ -19,9 +19,9 @@ const TILE_MARGIN = 2;
 const BOARD_PADDING = 10;
 
 // Calculate tile size based on both width and available height
-// For height: subtract HUD area (~200px) and navigation areas (~100px), then fit 8 tiles
+// For height: subtract HUD (~160px) + fact card (~80px) + nav bar (~60px) + safe areas (~80px)
 const TILE_SIZE_BY_WIDTH = (SCREEN_WIDTH - BOARD_PADDING * 2 - TILE_MARGIN * 2 * GRID_SIZE) / GRID_SIZE;
-const AVAILABLE_HEIGHT_FOR_BOARD = SCREEN_HEIGHT - 300; // HUD + nav + padding
+const AVAILABLE_HEIGHT_FOR_BOARD = SCREEN_HEIGHT - 380; // HUD + fact + nav + padding
 const TILE_SIZE_BY_HEIGHT = (AVAILABLE_HEIGHT_FOR_BOARD - BOARD_PADDING * 2 - TILE_MARGIN * 2 * GRID_SIZE) / GRID_SIZE;
 
 // Use the smaller of the two to ensure board fits in both dimensions
