@@ -18,8 +18,9 @@ import GameBoard from '../components/Game/GameBoard';
 import HUD from '../components/UI/HUD';
 import PowerProgress from '../components/UI/PowerProgress';
 import Tutorial from '../components/UI/Tutorial';
+import StoryComplete from '../components/UI/StoryComplete';
 import { THEME_CONFIGS, getLevelById, getLevelsByTheme, LEVELS, TRASH_FACTS, POLLUTION_FACTS, WATER_FACTS, ENERGY_FACTS, FOREST_FACTS } from '../themes';
-import { THEME_ACHIEVEMENTS, STAR_ACHIEVEMENTS, ENDLESS_ACHIEVEMENTS, checkThemeAchievement, checkStarAchievement, checkEndlessAchievement, Achievement } from '../config/achievements';
+import { THEME_ACHIEVEMENTS, STAR_ACHIEVEMENTS, ENDLESS_ACHIEVEMENTS, checkThemeAchievement, checkStarAchievement, checkEndlessAchievement, getTotalStars, Achievement } from '../config/achievements';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types';
 import { playBgm, playThemeBgm, pauseBgm, resumeBgm, stopBgm, playSfx, getSoundSettings, toggleSfx, toggleMusic } from '../utils/SoundManager';
@@ -75,6 +76,21 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
 
     // Tutorial state - show for Level 1
     const [showTutorial, setShowTutorial] = useState(levelId === 1);
+
+    // Story complete modal - show when Level 50 is completed
+    const [showStoryComplete, setShowStoryComplete] = useState(false);
+    const storyCompleteShown = useRef(false);
+
+    // Trigger story complete modal when Level 50 is completed (max level)
+    useEffect(() => {
+        if (isLevelComplete && levelId === 50 && !storyCompleteShown.current) {
+            storyCompleteShown.current = true;
+            // Small delay to allow level complete modal to show first
+            setTimeout(() => {
+                setShowStoryComplete(true);
+            }, 1500);
+        }
+    }, [isLevelComplete, levelId]);
 
     // Endless mode rotating facts
     const [endlessFactIndex, setEndlessFactIndex] = useState(0);
@@ -497,6 +513,14 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
 
             {/* Level 1 Tutorial - shows after loading for level 1 */}
             <Tutorial visible={showTutorial && !isLoading} onClose={() => setShowTutorial(false)} />
+
+            {/* Story Complete Modal - shows when level 50 is completed */}
+            <StoryComplete
+                visible={showStoryComplete}
+                onClose={() => setShowStoryComplete(false)}
+                totalStars={getTotalStars(levelMovesRemaining, getLevelById, LEVELS.map(l => l.id))}
+                completedLevels={completedLevels.length}
+            />
 
             <HUD onPause={handlePause} />
 

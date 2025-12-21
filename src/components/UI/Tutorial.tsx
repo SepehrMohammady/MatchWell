@@ -14,6 +14,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { COLORS, TYPOGRAPHY, SPACING, RADIUS } from '../../config/theme';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
+const CONTAINER_WIDTH = SCREEN_WIDTH - SPACING.xl * 2;
 
 interface TutorialProps {
     visible: boolean;
@@ -54,26 +55,26 @@ const Tutorial: React.FC<TutorialProps> = ({ visible, onClose }) => {
             visual: (
                 <View style={styles.visualContainer}>
                     <View style={styles.tileRow}>
-                        <View style={styles.demoTile}>
-                            <MaterialCommunityIcons name="recycle" size={28} color="#27AE60" />
+                        <View style={[styles.demoTile, { backgroundColor: '#4A90E2' }]}>
+                            <MaterialCommunityIcons name="spray-bottle" size={24} color="rgba(255,255,255,0.9)" />
                         </View>
-                        <View style={[styles.demoTile, styles.demoTileHighlight]}>
-                            <MaterialCommunityIcons name="bottle-soda" size={28} color="#3498DB" />
+                        <View style={[styles.demoTile, styles.demoTileHighlight, { backgroundColor: '#D9CAB3' }]}>
+                            <MaterialCommunityIcons name="file-document-outline" size={24} color="rgba(255,255,255,0.9)" />
                         </View>
-                        <View style={styles.demoTile}>
-                            <MaterialCommunityIcons name="recycle" size={28} color="#27AE60" />
+                        <View style={[styles.demoTile, { backgroundColor: '#4A90E2' }]}>
+                            <MaterialCommunityIcons name="spray-bottle" size={24} color="rgba(255,255,255,0.9)" />
                         </View>
                     </View>
                     <MaterialCommunityIcons name="arrow-down" size={24} color={COLORS.textMuted} style={{ marginVertical: 8 }} />
                     <View style={styles.tileRow}>
-                        <View style={[styles.demoTile, styles.demoTileMatched]}>
-                            <MaterialCommunityIcons name="recycle" size={28} color="#27AE60" />
+                        <View style={[styles.demoTile, styles.demoTileMatched, { backgroundColor: '#4A90E2' }]}>
+                            <MaterialCommunityIcons name="spray-bottle" size={24} color="rgba(255,255,255,0.9)" />
                         </View>
-                        <View style={[styles.demoTile, styles.demoTileMatched]}>
-                            <MaterialCommunityIcons name="recycle" size={28} color="#27AE60" />
+                        <View style={[styles.demoTile, styles.demoTileMatched, { backgroundColor: '#4A90E2' }]}>
+                            <MaterialCommunityIcons name="spray-bottle" size={24} color="rgba(255,255,255,0.9)" />
                         </View>
-                        <View style={[styles.demoTile, styles.demoTileMatched]}>
-                            <MaterialCommunityIcons name="recycle" size={28} color="#27AE60" />
+                        <View style={[styles.demoTile, styles.demoTileMatched, { backgroundColor: '#4A90E2' }]}>
+                            <MaterialCommunityIcons name="spray-bottle" size={24} color="rgba(255,255,255,0.9)" />
                         </View>
                     </View>
                 </View>
@@ -163,14 +164,14 @@ const Tutorial: React.FC<TutorialProps> = ({ visible, onClose }) => {
         if (currentSlide < slides.length - 1) {
             const nextSlide = currentSlide + 1;
             setCurrentSlide(nextSlide);
-            scrollViewRef.current?.scrollTo({ x: nextSlide * SCREEN_WIDTH, animated: true });
+            scrollViewRef.current?.scrollTo({ x: nextSlide * CONTAINER_WIDTH, animated: true });
         } else {
             onClose();
         }
     };
 
     const handleScroll = (event: { nativeEvent: { contentOffset: { x: number } } }) => {
-        const slideIndex = Math.round(event.nativeEvent.contentOffset.x / SCREEN_WIDTH);
+        const slideIndex = Math.round(event.nativeEvent.contentOffset.x / CONTAINER_WIDTH);
         if (slideIndex !== currentSlide && slideIndex >= 0 && slideIndex < slides.length) {
             setCurrentSlide(slideIndex);
         }
@@ -253,7 +254,7 @@ const styles = StyleSheet.create({
         marginBottom: SPACING.md,
     },
     slide: {
-        width: SCREEN_WIDTH - SPACING.xl * 2,
+        width: CONTAINER_WIDTH,
         paddingHorizontal: SPACING.lg,
         alignItems: 'center',
     },
