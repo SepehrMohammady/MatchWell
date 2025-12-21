@@ -90,13 +90,18 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
             setTimeout(() => {
                 setShowStoryComplete(true);
             }, 1500);
-
-            // Change app icon to final stage icon when Level 50 is completed
-            changeIcon('Final').catch((error: Error) => {
-                console.log('Failed to change app icon:', error.message);
-            });
         }
     }, [isLevelComplete, levelId]);
+
+    // Handle closing the StoryComplete modal - change icon after user dismisses
+    const handleStoryCompleteClose = useCallback(() => {
+        setShowStoryComplete(false);
+        // Change app icon to final stage after user dismisses the modal
+        // This will restart the app, so we do it at the end
+        changeIcon('Final').catch((error: Error) => {
+            console.log('Failed to change app icon:', error.message);
+        });
+    }, []);
 
     // Endless mode rotating facts
     const [endlessFactIndex, setEndlessFactIndex] = useState(0);
@@ -523,7 +528,7 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
             {/* Story Complete Modal - shows when level 50 is completed */}
             <StoryComplete
                 visible={showStoryComplete}
-                onClose={() => setShowStoryComplete(false)}
+                onClose={handleStoryCompleteClose}
                 totalStars={getTotalStars(levelMovesRemaining, getLevelById, LEVELS.map(l => l.id))}
                 completedLevels={completedLevels.length}
             />
