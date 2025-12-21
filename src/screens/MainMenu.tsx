@@ -9,6 +9,7 @@ import {
     Image,
     ImageBackground,
     Dimensions,
+    ScrollView,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -100,89 +101,94 @@ const MainMenu: React.FC<Props> = ({ navigation }) => {
         <View style={[styles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
             <StatusBar barStyle="light-content" backgroundColor="#000000" />
 
-            {/* Space background with stars */}
-            <View style={styles.spaceBackground}>
-                {/* Simple star pattern */}
-                {Array.from({ length: 50 }).map((_, i) => (
-                    <View
-                        key={i}
-                        style={[
-                            styles.star,
-                            {
-                                left: `${Math.random() * 100}%`,
-                                top: `${Math.random() * 100}%`,
-                                width: Math.random() * 2 + 1,
-                                height: Math.random() * 2 + 1,
-                                opacity: Math.random() * 0.5 + 0.3,
-                            },
-                        ]}
-                    />
-                ))}
-            </View>
-
-            {/* Climate Clock at top */}
-            <View style={styles.climateClockSection}>
-                <ClimateClock />
-            </View>
-
-            {/* Spacer */}
-            <View style={styles.spacer} />
-
-            {/* Earth image section */}
-            <View style={styles.earthSection}>
-                <Image
-                    source={earthImage}
-                    style={styles.earthImage}
-                    resizeMode="contain"
-                />
-            </View>
-
-            {/* Title section */}
-            <View style={styles.titleSection}>
-                <Text style={styles.title}>MatchWell</Text>
-                <Text style={styles.subtitle}>Save the planet, one match at a time</Text>
-            </View>
-
-            {/* Menu buttons */}
-            <View style={styles.buttonContainer}>
-                <TouchableOpacity style={styles.secondaryButton} onPress={handlePlay} activeOpacity={0.8}>
-                    <Text style={styles.secondaryButtonText}>Story Mode</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.secondaryButton} onPress={handleEndless} activeOpacity={0.8}>
-                    <Text style={styles.secondaryButtonText}>Endless Mode</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.secondaryButton} onPress={handleAchievements} activeOpacity={0.8}>
-                    <View style={styles.achievementButtonContent}>
-                        <Text style={styles.secondaryButtonText}>Achievements</Text>
-                        {unseenAchievements.length > 0 && (
-                            <View style={styles.redDot} />
-                        )}
-                    </View>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.leaderboardButton} onPress={handleLeaderboard} activeOpacity={0.8}>
-                    <TrophyIcon size={20} color="#FFD700" />
-                    <Text style={styles.leaderboardButtonText}>Leaderboard</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.settingsButton} onPress={handleSettings} activeOpacity={0.6}>
-                    <Text style={styles.settingsButtonText}>Settings</Text>
-                </TouchableOpacity>
-            </View>
-
-            {/* Bottom seedling decoration */}
-            <View style={styles.bottomDecor}>
-                <View style={styles.seedlingRow}>
-                    <SeedlingIcon size={24} color={COLORS.organicWaste} />
-                    <SeedlingIcon size={28} color={COLORS.organicWaste} />
-                    <SeedlingIcon size={24} color={COLORS.organicWaste} />
+            <ScrollView
+                contentContainerStyle={styles.scrollContent}
+                showsVerticalScrollIndicator={false}
+            >
+                {/* Space background with stars */}
+                <View style={styles.spaceBackground}>
+                    {/* Simple star pattern */}
+                    {Array.from({ length: 50 }).map((_, i) => (
+                        <View
+                            key={i}
+                            style={[
+                                styles.star,
+                                {
+                                    left: `${Math.random() * 100}%`,
+                                    top: `${Math.random() * 100}%`,
+                                    width: Math.random() * 2 + 1,
+                                    height: Math.random() * 2 + 1,
+                                    opacity: Math.random() * 0.5 + 0.3,
+                                },
+                            ]}
+                        />
+                    ))}
                 </View>
-            </View>
 
-            {/* Version */}
-            <Text style={styles.version}>v{VERSION.string}</Text>
+                {/* Climate Clock at top */}
+                <View style={styles.climateClockSection}>
+                    <ClimateClock />
+                </View>
+
+                {/* Spacer */}
+                <View style={styles.spacer} />
+
+                {/* Earth image section */}
+                <View style={styles.earthSection}>
+                    <Image
+                        source={earthImage}
+                        style={styles.earthImage}
+                        resizeMode="contain"
+                    />
+                </View>
+
+                {/* Title section */}
+                <View style={styles.titleSection}>
+                    <Text style={styles.title}>MatchWell</Text>
+                    <Text style={styles.subtitle}>Save the planet, one match at a time</Text>
+                </View>
+
+                {/* Menu buttons */}
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity style={styles.secondaryButton} onPress={handlePlay} activeOpacity={0.8}>
+                        <Text style={styles.secondaryButtonText}>Story Mode</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={styles.secondaryButton} onPress={handleEndless} activeOpacity={0.8}>
+                        <Text style={styles.secondaryButtonText}>Endless Mode</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={styles.secondaryButton} onPress={handleAchievements} activeOpacity={0.8}>
+                        <View style={styles.achievementButtonContent}>
+                            <Text style={styles.secondaryButtonText}>Achievements</Text>
+                            {unseenAchievements.length > 0 && (
+                                <View style={styles.redDot} />
+                            )}
+                        </View>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={styles.leaderboardButton} onPress={handleLeaderboard} activeOpacity={0.8}>
+                        <TrophyIcon size={20} color="#FFD700" />
+                        <Text style={styles.leaderboardButtonText}>Leaderboard</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={styles.settingsButton} onPress={handleSettings} activeOpacity={0.6}>
+                        <Text style={styles.settingsButtonText}>Settings</Text>
+                    </TouchableOpacity>
+                </View>
+
+                {/* Bottom seedling decoration */}
+                <View style={styles.bottomDecor}>
+                    <View style={styles.seedlingRow}>
+                        <SeedlingIcon size={24} color={COLORS.organicWaste} />
+                        <SeedlingIcon size={28} color={COLORS.organicWaste} />
+                        <SeedlingIcon size={24} color={COLORS.organicWaste} />
+                    </View>
+                </View>
+
+                {/* Version */}
+                <Text style={styles.version}>v{VERSION.string}</Text>
+            </ScrollView>
         </View>
     );
 };
@@ -191,6 +197,9 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#030303', // Space black
+    },
+    scrollContent: {
+        flexGrow: 1,
         paddingHorizontal: SPACING.xl,
     },
     spaceBackground: {

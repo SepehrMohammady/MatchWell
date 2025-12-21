@@ -84,16 +84,19 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
         }
     }, [isPaused]);
 
-    // Block back button during loading screen
-    useEffect(() => {
-        if (isLoading) {
-            const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
-                // Return true to prevent default back behavior during loading
-                return true;
-            });
-            return () => backHandler.remove();
-        }
-    }, [isLoading]);
+    // Block back button during loading screen - use useFocusEffect for proper navigation integration
+    useFocusEffect(
+        useCallback(() => {
+            if (isLoading) {
+                const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+                    // Return true to prevent default back behavior during loading
+                    return true;
+                });
+                return () => backHandler.remove();
+            }
+            return undefined;
+        }, [isLoading])
+    );
 
     // Initialize the game level with isEndless flag and optional endlessTheme
     // Use ref to prevent re-initialization on state changes
@@ -447,8 +450,11 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
         );
     }
 
+    // Use minimum bottom padding of 24 for phones with transparent navigation bars
+    const bottomPadding = Math.max(insets.bottom, 24);
+
     return (
-        <View style={[styles.container, getBackgroundStyle(), { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
+        <View style={[styles.container, getBackgroundStyle(), { paddingTop: insets.top, paddingBottom: bottomPadding }]}>
             <StatusBar barStyle="light-content" />
 
             {/* Achievement Toast Notification - uses Modal to appear above level complete */}

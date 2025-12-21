@@ -13,11 +13,19 @@ import { TILE_INFO } from '../../themes';
 import { TileIcon } from './TileIcon';
 import { COLORS, RADIUS } from '../../config/theme';
 
-const { width: SCREEN_WIDTH } = Dimensions.get('window');
+const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 const GRID_SIZE = 8;
 const TILE_MARGIN = 2;
 const BOARD_PADDING = 10;
-const TILE_SIZE = (SCREEN_WIDTH - BOARD_PADDING * 2 - TILE_MARGIN * 2 * GRID_SIZE) / GRID_SIZE;
+
+// Calculate tile size based on both width and available height
+// For height: subtract HUD area (~200px) and navigation areas (~100px), then fit 8 tiles
+const TILE_SIZE_BY_WIDTH = (SCREEN_WIDTH - BOARD_PADDING * 2 - TILE_MARGIN * 2 * GRID_SIZE) / GRID_SIZE;
+const AVAILABLE_HEIGHT_FOR_BOARD = SCREEN_HEIGHT - 300; // HUD + nav + padding
+const TILE_SIZE_BY_HEIGHT = (AVAILABLE_HEIGHT_FOR_BOARD - BOARD_PADDING * 2 - TILE_MARGIN * 2 * GRID_SIZE) / GRID_SIZE;
+
+// Use the smaller of the two to ensure board fits in both dimensions
+const TILE_SIZE = Math.min(TILE_SIZE_BY_WIDTH, TILE_SIZE_BY_HEIGHT);
 const SWIPE_THRESHOLD = TILE_SIZE * 0.3; // Minimum distance to register swipe
 
 export type SwipeDirection = 'up' | 'down' | 'left' | 'right' | null;
@@ -45,8 +53,8 @@ const TileComponent: React.FC<TileProps> = memo(({ tile, isSelected, onPress, on
   React.useEffect(() => {
     Animated.spring(scaleAnim, {
       toValue: isSelected ? 1.15 : 1,
-      friction: 8,
-      tension: 80,
+      friction: 10,
+      tension: 60,
       useNativeDriver: true,
     }).start();
   }, [isSelected, scaleAnim]);
@@ -57,12 +65,12 @@ const TileComponent: React.FC<TileProps> = memo(({ tile, isSelected, onPress, on
       Animated.parallel([
         Animated.timing(opacityAnim, {
           toValue: 0,
-          duration: 350,
+          duration: 500,
           useNativeDriver: true,
         }),
         Animated.timing(scaleAnim, {
           toValue: 0.5,
-          duration: 350,
+          duration: 500,
           useNativeDriver: true,
         }),
       ]).start();
