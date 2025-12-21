@@ -455,25 +455,42 @@ export const useGameStore = create<GameStore>((set, get) => ({
             playSfx('match_4');
         }
 
-        // Remove matched tiles
-        let newGrid = removeMatchedTiles(grid, matches);
+        // PHASE 1: Mark matched tiles (triggers fade-out animation)
+        const markedGrid = cloneGrid(grid);
+        matches.forEach((match) => {
+            match.tiles.forEach((tile) => {
+                const gridTile = markedGrid[tile.position.row][tile.position.col];
+                if (gridTile) {
+                    gridTile.isMatched = true;
+                }
+            });
+        });
 
-        // Apply gravity
-        newGrid = applyGravity(newGrid);
-
-        // Fill empty spaces
-        newGrid = fillEmptySpaces(newGrid, theme);
-
+        // Update grid with marked tiles and score
         set({
-            grid: newGrid,
+            grid: markedGrid,
             score: newScore,
             combo: newCombo,
         });
 
-        // Continue processing for cascades
+        // PHASE 2: Wait for fade-out animation (500ms), then remove, apply gravity, and fill
         setTimeout(() => {
-            get().processMatches();
-        }, 300);
+            // Remove matched tiles
+            let newGrid = removeMatchedTiles(markedGrid, matches);
+
+            // Apply gravity
+            newGrid = applyGravity(newGrid);
+
+            // Fill empty spaces
+            newGrid = fillEmptySpaces(newGrid, theme);
+
+            set({ grid: newGrid });
+
+            // PHASE 3: Continue processing for cascades after a short delay
+            setTimeout(() => {
+                get().processMatches();
+            }, 200);
+        }, 500);
     },
 
     resetCombo: () => set({ combo: 0 }),
