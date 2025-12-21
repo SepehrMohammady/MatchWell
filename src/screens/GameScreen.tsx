@@ -17,6 +17,7 @@ import { useGameStore } from '../context/GameStore';
 import GameBoard from '../components/Game/GameBoard';
 import HUD from '../components/UI/HUD';
 import PowerProgress from '../components/UI/PowerProgress';
+import Tutorial from '../components/UI/Tutorial';
 import { THEME_CONFIGS, getLevelById, getLevelsByTheme, LEVELS, TRASH_FACTS, POLLUTION_FACTS, WATER_FACTS, ENERGY_FACTS, FOREST_FACTS } from '../themes';
 import { THEME_ACHIEVEMENTS, STAR_ACHIEVEMENTS, ENDLESS_ACHIEVEMENTS, checkThemeAchievement, checkStarAchievement, checkEndlessAchievement, Achievement } from '../config/achievements';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -71,6 +72,9 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [loadingProgress, setLoadingProgress] = useState(0);
     const loadingDuration = 7000; // 7 seconds
+
+    // Tutorial state - show for Level 1
+    const [showTutorial, setShowTutorial] = useState(levelId === 1);
 
     // Endless mode rotating facts
     const [endlessFactIndex, setEndlessFactIndex] = useState(0);
@@ -490,6 +494,9 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
                     </View>
                 </Animated.View>
             </Modal>
+
+            {/* Level 1 Tutorial - shows after loading for level 1 */}
+            <Tutorial visible={showTutorial && !isLoading} onClose={() => setShowTutorial(false)} />
 
             <HUD onPause={handlePause} />
 

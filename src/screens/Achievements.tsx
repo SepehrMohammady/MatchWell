@@ -18,7 +18,7 @@ import { getLevelsByTheme, LEVELS, getLevelById } from '../themes';
 import { playSfx, playBgm } from '../utils/SoundManager';
 import { COLORS, TYPOGRAPHY, SPACING, RADIUS, SHADOWS } from '../config/theme';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { LockIcon, BackIcon } from '../components/UI/Icons';
+import { LockIcon, BackIcon, MedalIcon, StarFilledIcon } from '../components/UI/Icons';
 import {
     THEME_ACHIEVEMENTS,
     STAR_ACHIEVEMENTS,
@@ -170,20 +170,29 @@ const Achievements: React.FC<Props> = ({ navigation }) => {
             {/* Summary */}
             <View style={styles.summaryBox}>
                 <View style={styles.summaryItem}>
-                    <Text style={styles.summaryValue}>{unlockedCount}/{totalCount}</Text>
+                    <View style={styles.summaryIconRow}>
+                        <MedalIcon size={20} color={COLORS.organicWaste} />
+                        <Text style={styles.summaryValue}>{unlockedCount}/{totalCount}</Text>
+                    </View>
                     <Text style={styles.summaryLabel}>Medals</Text>
                 </View>
                 <View style={styles.summaryDivider} />
                 <View style={styles.summaryItem}>
-                    <Text style={styles.summaryValue}>⭐ {totalStars}/150</Text>
+                    <View style={styles.summaryIconRow}>
+                        <StarFilledIcon size={20} color={COLORS.starFilled} />
+                        <Text style={styles.summaryValue}>{totalStars}/150</Text>
+                    </View>
                     <Text style={styles.summaryLabel}>Stars</Text>
                 </View>
             </View>
 
             <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent}>
-                {/* Theme Completion Section */}
+                {/* Story Mode Section */}
                 <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>🎯 Theme Completion</Text>
+                    <View style={styles.sectionHeader}>
+                        <MaterialCommunityIcons name="book-open-variant" size={20} color={COLORS.textMuted} />
+                        <Text style={styles.sectionTitle}>Story Mode</Text>
+                    </View>
                     <View style={styles.medalGrid}>
                         {THEME_ACHIEVEMENTS.map(renderAchievement)}
                     </View>
@@ -191,7 +200,10 @@ const Achievements: React.FC<Props> = ({ navigation }) => {
 
                 {/* Star Milestones Section */}
                 <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>⭐ Star Milestones</Text>
+                    <View style={styles.sectionHeader}>
+                        <MaterialCommunityIcons name="star" size={20} color={COLORS.textMuted} />
+                        <Text style={styles.sectionTitle}>Star Milestones</Text>
+                    </View>
                     <View style={styles.medalGrid}>
                         {STAR_ACHIEVEMENTS.map(renderAchievement)}
                     </View>
@@ -199,7 +211,10 @@ const Achievements: React.FC<Props> = ({ navigation }) => {
 
                 {/* Endless Score Section */}
                 <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>♾️ Endless Mode</Text>
+                    <View style={styles.sectionHeader}>
+                        <MaterialCommunityIcons name="infinity" size={20} color={COLORS.textMuted} />
+                        <Text style={styles.sectionTitle}>Endless Mode</Text>
+                    </View>
                     {Object.entries(endlessByTheme).map(([theme, achievements]) => (
                         <View key={theme} style={styles.endlessThemeGroup}>
                             <Text style={styles.endlessThemeName}>
@@ -307,6 +322,11 @@ const styles = StyleSheet.create({
         color: COLORS.textSecondary,
         marginTop: 2,
     },
+    summaryIconRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: SPACING.xs,
+    },
     summaryDivider: {
         width: 1,
         height: 30,
@@ -322,12 +342,17 @@ const styles = StyleSheet.create({
     section: {
         marginTop: SPACING.lg,
     },
+    sectionHeader: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: SPACING.sm,
+        marginBottom: SPACING.md,
+    },
     sectionTitle: {
         fontSize: TYPOGRAPHY.h4,
         fontFamily: TYPOGRAPHY.fontFamilySemiBold,
         fontWeight: TYPOGRAPHY.semibold,
         color: COLORS.textPrimary,
-        marginBottom: SPACING.md,
     },
     medalGrid: {
         gap: SPACING.sm,
