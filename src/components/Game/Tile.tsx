@@ -35,9 +35,10 @@ interface TileProps {
   isSelected: boolean;
   onPress: (position: Position) => void;
   onSwipe: (position: Position, direction: SwipeDirection) => void;
+  isPowerUpTarget?: boolean;
 }
 
-const TileComponent: React.FC<TileProps> = memo(({ tile, isSelected, onPress, onSwipe }) => {
+const TileComponent: React.FC<TileProps> = memo(({ tile, isSelected, onPress, onSwipe, isPowerUpTarget = false }) => {
   const tileInfo = TILE_INFO[tile.type];
 
   // Animation values
@@ -187,6 +188,7 @@ const TileComponent: React.FC<TileProps> = memo(({ tile, isSelected, onPress, on
         styles.tile,
         { backgroundColor: tileInfo.color },
         isSelected && styles.selectedTile,
+        isPowerUpTarget && styles.powerUpTarget,
         {
           opacity: opacityAnim,
           transform: [
@@ -222,6 +224,15 @@ const styles = StyleSheet.create({
   selectedTile: {
     borderColor: COLORS.accentHighlight,
     borderWidth: 2,
+  },
+  powerUpTarget: {
+    borderColor: '#4CAF50',
+    borderWidth: 3,
+    shadowColor: '#4CAF50',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.8,
+    shadowRadius: 6,
+    elevation: 8,
   },
 });
 

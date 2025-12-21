@@ -12,15 +12,36 @@ const GameBoard: React.FC = () => {
     const selectedTile = useGameStore((state) => state.selectedTile);
     const selectTile = useGameStore((state) => state.selectTile);
     const swapWithDirection = useGameStore((state) => state.swapWithDirection);
+    const isPowerUpActive = useGameStore((state) => state.isPowerUpActive);
+    const usePowerUpOnBlock = useGameStore((state) => state.usePowerUpOnBlock);
+    const cancelPowerUp = useGameStore((state) => state.cancelPowerUp);
+
+    const gridSize = grid.length;
+
+    // Check if a position is a border block
+    const isBorderBlock = useCallback((row: number, col: number): boolean => {
+        return row === 0 || row === gridSize - 1 || col === 0 || col === gridSize - 1;
+    }, [gridSize]);
 
     const handleTilePress = useCallback((position: Position) => {
-        selectTile(position);
-    }, [selectTile]);
+        if (isPowerUpActive) {
+            // In power-up mode, only border blocks are valid targets
+            if (isBorderBlock(position.row, position.col)) {
+                usePowerUpOnBlock(position);
+            } else {
+                // Clicked non-border block, cancel power-up
+                cancelPowerUp();
+            }
+        } else {
+            selectTile(position);
+        }
+    }, [selectTile, isPowerUpActive, isBorderBlock, usePowerUpOnBlock, cancelPowerUp]);
 
     const handleTileSwipe = useCallback((position: Position, direction: SwipeDirection) => {
+        if (isPowerUpActive) return; // Disable swipe in power-up mode
         if (!direction) return;
         swapWithDirection(position, direction);
-    }, [swapWithDirection]);
+    }, [swapWithDirection, isPowerUpActive]);
 
     const isSelected = useCallback((row: number, col: number): boolean => {
         return selectedTile?.row === row && selectedTile?.col === col;
@@ -32,7 +53,7 @@ const GameBoard: React.FC = () => {
 
     return (
         <View style={styles.container}>
-            <View style={styles.board}>
+            <View style={[styles.board, isPowerUpActive && styles.boardPowerUpMode]}>
                 {grid.map((row, rowIndex) => (
                     <View key={`row-${rowIndex}`} style={styles.row}>
                         {row.map((tile, colIndex) => {
@@ -45,6 +66,8 @@ const GameBoard: React.FC = () => {
                                 );
                             }
 
+                            const isBorder = isBorderBlock(rowIndex, colIndex);
+
                             return (
                                 <TileComponent
                                     key={tile.id}
@@ -52,6 +75,7 @@ const GameBoard: React.FC = () => {
                                     isSelected={isSelected(rowIndex, colIndex)}
                                     onPress={handleTilePress}
                                     onSwipe={handleTileSwipe}
+                                    isPowerUpTarget={isPowerUpActive && isBorder}
                                 />
                             );
                         })}
@@ -83,6 +107,10 @@ const styles = StyleSheet.create({
         width: TILE_SIZE,
         height: TILE_SIZE,
         margin: TILE_MARGIN,
+    },
+    boardPowerUpMode: {
+        borderColor: '#4CAF50',
+        borderWidth: 4,
     },
 });
 

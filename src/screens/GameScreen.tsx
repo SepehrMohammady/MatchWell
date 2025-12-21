@@ -16,6 +16,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { useGameStore } from '../context/GameStore';
 import GameBoard from '../components/Game/GameBoard';
 import HUD from '../components/UI/HUD';
+import PowerProgress from '../components/UI/PowerProgress';
 import { THEME_CONFIGS, getLevelById, getLevelsByTheme, LEVELS, TRASH_FACTS, POLLUTION_FACTS, WATER_FACTS, ENERGY_FACTS, FOREST_FACTS } from '../themes';
 import { THEME_ACHIEVEMENTS, STAR_ACHIEVEMENTS, ENDLESS_ACHIEVEMENTS, checkThemeAchievement, checkStarAchievement, checkEndlessAchievement, Achievement } from '../config/achievements';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -53,6 +54,7 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
     const highScores = useGameStore((state) => state.highScores);
     const levelMovesRemaining = useGameStore((state) => state.levelMovesRemaining);
     const addUnseenAchievement = useGameStore((state) => state.addUnseenAchievement);
+    const activatePowerUp = useGameStore((state) => state.activatePowerUp);
 
     const levelConfig = getLevelById(levelId);
     const themeConfig = THEME_CONFIGS[theme];
@@ -485,6 +487,12 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
                     <Text style={styles.factText}>{getCurrentFact()}</Text>
                 </View>
             )}
+
+            {/* Power-up Progress Bar - between Fact and Board */}
+            <PowerProgress
+                theme={theme}
+                onActivate={() => activatePowerUp()}
+            />
 
             <View style={styles.boardContainer}>
                 <GameBoard />

@@ -59,6 +59,13 @@ interface GameStore extends GameState {
     clearEndlessState: (theme?: ThemeType) => Promise<void>;
     hasEndlessState: (theme: ThemeType) => Promise<boolean>;
 
+    // Power-up state
+    powerProgress: number; // 0-15 power points
+    isPowerUpActive: boolean; // User clicked power-up, waiting for block selection
+    activatePowerUp: () => void;
+    cancelPowerUp: () => void;
+    usePowerUpOnBlock: (position: Position) => void;
+
     // UI State
     selectedTile: Position | null;
     isPaused: boolean;
@@ -102,6 +109,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
     endlessMoves: {},
     levelMovesRemaining: {},
     unseenAchievements: [],
+
+    // Power-up state
+    powerProgress: 0,
+    isPowerUpActive: false,
 
     // Load progress from AsyncStorage
     loadProgress: async () => {
@@ -298,6 +309,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
             isPaused: false,
             isProcessing: false,
             isEndlessMode: isEndless,
+            powerProgress: 0,
+            isPowerUpActive: false,
         });
     },
 
@@ -455,6 +468,19 @@ export const useGameStore = create<GameStore>((set, get) => ({
             playSfx('match_4');
         }
 
+        // Calculate power progress for 4+ matches
+        // 4-match = 2 points, 5+ match = 5 points
+        const { powerProgress } = get();
+        let powerGain = 0;
+        matches.forEach((match) => {
+            if (match.length >= 5) {
+                powerGain += 5;
+            } else if (match.length >= 4) {
+                powerGain += 2;
+            }
+        });
+        const newPowerProgress = Math.min(powerProgress + powerGain, 15); // Cap at 15
+
         // PHASE 1: Mark matched tiles (triggers fade-out animation)
         const markedGrid = cloneGrid(grid);
         matches.forEach((match) => {
@@ -471,6 +497,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
             grid: markedGrid,
             score: newScore,
             combo: newCombo,
+            powerProgress: newPowerProgress,
         });
 
         // PHASE 2: Wait for fade-out animation (500ms), then remove, apply gravity, and fill
@@ -570,5 +597,103 @@ export const useGameStore = create<GameStore>((set, get) => ({
             get().saveProgress();
             console.log(`✅ Endless high score saved for ${theme}: ${score} in ${moves} moves`);
         }
+    },
+
+    // Power-up methods
+    activatePowerUp: () => {
+        const { powerProgress } = get();
+        if (powerProgress >= 10) {
+            set({ isPowerUpActive: true, selectedTile: null });
+            playSfx('combo');
+        }
+    },
+
+    cancelPowerUp: () => {
+        set({ isPowerUpActive: false });
+    },
+
+    usePowerUpOnBlock: (position: Position) => {
+        const { grid, theme, powerProgress, isPowerUpActive } = get();
+        if (!isPowerUpActive || powerProgress < 10) return;
+
+        const { row, col } = position;
+        const gridSize = grid.length;
+        const isTopRow = row === 0;
+        const isBottomRow = row === gridSize - 1;
+        const isLeftCol = col === 0;
+        const isRightCol = col === gridSize - 1;
+
+        // Validate it's a border block
+        if (!isTopRow && !isBottomRow && !isLeftCol && !isRightCol) {
+            set({ isPowerUpActive: false });
+            return;
+        }
+
+        playSfx('match_5');
+
+        // Determine if double removal (15+ points or corner)
+        const isCorner = (isTopRow || isBottomRow) && (isLeftCol || isRightCol);
+        const isDoublePower = powerProgress >= 15;
+
+        // PHASE 1: Mark tiles for removal
+        const markedGrid = cloneGrid(grid);
+
+        if (isDoublePower || isCorner) {
+            // Remove both row and column
+            for (let c = 0; c < gridSize; c++) {
+                const tile = markedGrid[row][c];
+                if (tile) tile.isMatched = true;
+            }
+            for (let r = 0; r < gridSize; r++) {
+                const tile = markedGrid[r][col];
+                if (tile) tile.isMatched = true;
+            }
+        } else if (isLeftCol || isRightCol) {
+            // Side edge: remove row
+            for (let c = 0; c < gridSize; c++) {
+                const tile = markedGrid[row][c];
+                if (tile) tile.isMatched = true;
+            }
+        } else {
+            // Top/bottom edge: remove column
+            for (let r = 0; r < gridSize; r++) {
+                const tile = markedGrid[r][col];
+                if (tile) tile.isMatched = true;
+            }
+        }
+
+        // Update grid with marked tiles and reset power-up state
+        set({
+            grid: markedGrid,
+            isPowerUpActive: false,
+            powerProgress: 0,
+        });
+
+        // PHASE 2: Wait for animation, then remove and fill
+        setTimeout(() => {
+            let newGrid = cloneGrid(markedGrid);
+
+            // Remove marked tiles
+            for (let r = 0; r < gridSize; r++) {
+                for (let c = 0; c < gridSize; c++) {
+                    if (newGrid[r][c]?.isMatched) {
+                        newGrid[r][c] = null;
+                    }
+                }
+            }
+
+            // Apply gravity
+            newGrid = applyGravity(newGrid);
+
+            // Fill empty spaces
+            newGrid = fillEmptySpaces(newGrid, theme);
+
+            set({ grid: newGrid });
+
+            // Check for new matches after power-up
+            setTimeout(() => {
+                get().processMatches();
+            }, 200);
+        }, 500);
     },
 }));
