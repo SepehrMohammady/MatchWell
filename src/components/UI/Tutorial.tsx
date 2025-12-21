@@ -54,19 +54,27 @@ const Tutorial: React.FC<TutorialProps> = ({ visible, onClose }) => {
             visual: (
                 <View style={styles.visualContainer}>
                     <View style={styles.tileRow}>
-                        {['🌿', '🌱', '🌿'].map((e, i) => (
-                            <View key={i} style={[styles.demoTile, i === 1 && styles.demoTileHighlight]}>
-                                <Text style={styles.demoEmoji}>{e}</Text>
-                            </View>
-                        ))}
+                        <View style={styles.demoTile}>
+                            <MaterialCommunityIcons name="recycle" size={28} color="#27AE60" />
+                        </View>
+                        <View style={[styles.demoTile, styles.demoTileHighlight]}>
+                            <MaterialCommunityIcons name="bottle-soda" size={28} color="#3498DB" />
+                        </View>
+                        <View style={styles.demoTile}>
+                            <MaterialCommunityIcons name="recycle" size={28} color="#27AE60" />
+                        </View>
                     </View>
                     <MaterialCommunityIcons name="arrow-down" size={24} color={COLORS.textMuted} style={{ marginVertical: 8 }} />
                     <View style={styles.tileRow}>
-                        {['🌿', '🌿', '🌿'].map((e, i) => (
-                            <View key={i} style={[styles.demoTile, styles.demoTileMatched]}>
-                                <Text style={styles.demoEmoji}>{e}</Text>
-                            </View>
-                        ))}
+                        <View style={[styles.demoTile, styles.demoTileMatched]}>
+                            <MaterialCommunityIcons name="recycle" size={28} color="#27AE60" />
+                        </View>
+                        <View style={[styles.demoTile, styles.demoTileMatched]}>
+                            <MaterialCommunityIcons name="recycle" size={28} color="#27AE60" />
+                        </View>
+                        <View style={[styles.demoTile, styles.demoTileMatched]}>
+                            <MaterialCommunityIcons name="recycle" size={28} color="#27AE60" />
+                        </View>
                     </View>
                 </View>
             ),
@@ -92,9 +100,10 @@ const Tutorial: React.FC<TutorialProps> = ({ visible, onClose }) => {
                     <View style={styles.progressDemo}>
                         <View style={[styles.progressFill, { width: '84%' }]} />
                     </View>
-                    <Text style={styles.movesText}>
-                        <MaterialCommunityIcons name="shoe-print" size={16} color={COLORS.textMuted} /> 8 moves left
-                    </Text>
+                    <View style={styles.movesInfo}>
+                        <MaterialCommunityIcons name="shoe-print" size={18} color={COLORS.textSecondary} />
+                        <Text style={styles.movesText}>8 moves left</Text>
+                    </View>
                 </View>
             ),
         },
@@ -111,7 +120,7 @@ const Tutorial: React.FC<TutorialProps> = ({ visible, onClose }) => {
                             <Text style={styles.powerPoints}>+2 power</Text>
                         </View>
                         <View style={styles.matchRow}>
-                            <Text style={styles.matchLabel}>5+ match</Text>
+                            <Text style={styles.matchLabel}>5-match</Text>
                             <Text style={styles.powerPoints}>+5 power</Text>
                         </View>
                     </View>
@@ -338,9 +347,15 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.organicWaste,
         borderRadius: 4,
     },
+    movesInfo: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: SPACING.xs,
+    },
     movesText: {
-        fontSize: TYPOGRAPHY.caption,
-        color: COLORS.textMuted,
+        fontSize: TYPOGRAPHY.body,
+        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
+        color: COLORS.textSecondary,
     },
     powerUpDemo: {
         marginBottom: SPACING.md,
