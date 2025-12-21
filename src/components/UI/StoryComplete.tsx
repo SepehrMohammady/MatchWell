@@ -251,6 +251,8 @@ const styles = StyleSheet.create({
     slideContent: {
         alignItems: 'center',
         paddingVertical: SPACING.md,
+        minHeight: 180,
+        justifyContent: 'center',
     },
     heroText: {
         fontSize: 64,

@@ -625,10 +625,13 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
                         <Text style={styles.movesLeftText}>{movesRemaining} moves remaining</Text>
 
                         <View style={styles.modalButtonsContainer}>
-                            <TouchableOpacity style={styles.modalButton} onPress={handleNextLevel}>
-                                <ArrowRightIcon size={20} color="#fff" />
-                                <Text style={styles.modalButtonText}>Next Level</Text>
-                            </TouchableOpacity>
+                            {/* Only show Next Level if there's a next level */}
+                            {getLevelById(levelId + 1) && (
+                                <TouchableOpacity style={styles.modalButton} onPress={handleNextLevel}>
+                                    <ArrowRightIcon size={20} color="#fff" />
+                                    <Text style={styles.modalButtonText}>Next Level</Text>
+                                </TouchableOpacity>
+                            )}
                             <TouchableOpacity style={[styles.modalButton, styles.secondaryButton]} onPress={handleRestart}>
                                 <RestartIcon size={20} color={COLORS.textSecondary} />
                                 <Text style={styles.secondaryButtonText}>Play Again</Text>
@@ -712,12 +715,18 @@ const styles = StyleSheet.create({
         width: '85%',
         alignItems: 'center',
     },
+    modalTitleRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: SPACING.sm,
+        marginBottom: SPACING.lg,
+    },
     modalTitle: {
         fontSize: TYPOGRAPHY.h2,
         fontFamily: TYPOGRAPHY.fontFamilySemiBold,
         fontWeight: TYPOGRAPHY.semibold,
         color: COLORS.textPrimary,
-        marginBottom: SPACING.lg,
         textAlign: 'center',
     },
     scoreText: {
@@ -782,12 +791,6 @@ const styles = StyleSheet.create({
         fontFamily: TYPOGRAPHY.fontFamilyMedium,
         fontWeight: TYPOGRAPHY.medium,
         textAlign: 'center',
-    },
-    modalTitleRow: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: SPACING.sm,
-        marginBottom: SPACING.lg,
     },
     soundControlsContainer: {
         backgroundColor: COLORS.backgroundSecondary,
