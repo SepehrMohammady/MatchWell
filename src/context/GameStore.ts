@@ -602,8 +602,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // Power-up methods
     activatePowerUp: () => {
         const { powerProgress } = get();
+        console.log('🔋 activatePowerUp called, powerProgress:', powerProgress);
         if (powerProgress >= 10) {
             set({ isPowerUpActive: true, selectedTile: null });
+            console.log('✅ Power-up activated!');
             playSfx('combo');
         }
     },
@@ -614,32 +616,45 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     usePowerUpOnBlock: (position: Position) => {
         const { grid, theme, powerProgress, isPowerUpActive } = get();
-        if (!isPowerUpActive || powerProgress < 10) return;
+        console.log('⚡ usePowerUpOnBlock called:', { position, isPowerUpActive, powerProgress });
+        if (!isPowerUpActive || powerProgress < 10) {
+            console.log('❌ Power-up not active or not enough power');
+            return;
+        }
 
         const { row, col } = position;
         const gridSize = grid.length;
+        console.log('📍 Position:', { row, col, gridSize });
         const isTopRow = row === 0;
         const isBottomRow = row === gridSize - 1;
         const isLeftCol = col === 0;
         const isRightCol = col === gridSize - 1;
+        const isCorner = (isTopRow || isBottomRow) && (isLeftCol || isRightCol);
+        const isDoublePower = powerProgress >= 15;
+        console.log('🧱 Border checks:', { isTopRow, isBottomRow, isLeftCol, isRightCol, isCorner, isDoublePower });
 
         // Validate it's a border block
         if (!isTopRow && !isBottomRow && !isLeftCol && !isRightCol) {
+            console.log('❌ Not a border block, canceling');
             set({ isPowerUpActive: false });
             return;
         }
 
-        playSfx('match_5');
+        // Corners are only allowed at 15+ points
+        if (isCorner && !isDoublePower) {
+            console.log('❌ Corner requires 15+ power points, canceling');
+            set({ isPowerUpActive: false });
+            return;
+        }
 
-        // Determine if double removal (15+ points or corner)
-        const isCorner = (isTopRow || isBottomRow) && (isLeftCol || isRightCol);
-        const isDoublePower = powerProgress >= 15;
+        console.log('✅ Valid border block, executing power-up!');
+        playSfx('match_5');
 
         // PHASE 1: Mark tiles for removal
         const markedGrid = cloneGrid(grid);
 
-        if (isDoublePower || isCorner) {
-            // Remove both row and column
+        if (isDoublePower) {
+            // At 15+ points: Remove both row and column on ANY border block
             for (let c = 0; c < gridSize; c++) {
                 const tile = markedGrid[row][c];
                 if (tile) tile.isMatched = true;
@@ -649,24 +664,39 @@ export const useGameStore = create<GameStore>((set, get) => ({
                 if (tile) tile.isMatched = true;
             }
         } else if (isLeftCol || isRightCol) {
-            // Side edge: remove row
+            // Side edge at 10-14 pts: remove row only
             for (let c = 0; c < gridSize; c++) {
                 const tile = markedGrid[row][c];
                 if (tile) tile.isMatched = true;
             }
         } else {
-            // Top/bottom edge: remove column
+            // Top/bottom edge at 10-14 pts: remove column only
             for (let r = 0; r < gridSize; r++) {
                 const tile = markedGrid[r][col];
                 if (tile) tile.isMatched = true;
             }
         }
 
-        // Update grid with marked tiles and reset power-up state
+        // Count removed tiles for score bonus
+        let tilesRemoved = 0;
+        for (let r = 0; r < gridSize; r++) {
+            for (let c = 0; c < gridSize; c++) {
+                if (markedGrid[r][c]?.isMatched) {
+                    tilesRemoved++;
+                }
+            }
+        }
+        // Score bonus: 50 points per tile removed by power-up
+        const { score } = get();
+        const powerUpBonus = tilesRemoved * 50;
+        console.log(`🎯 Power-up removed ${tilesRemoved} tiles, bonus: ${powerUpBonus}`);
+
+        // Update grid with marked tiles, reset power-up state, and add score
         set({
             grid: markedGrid,
             isPowerUpActive: false,
             powerProgress: 0,
+            score: score + powerUpBonus,
         });
 
         // PHASE 2: Wait for animation, then remove and fill

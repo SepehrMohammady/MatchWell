@@ -226,9 +226,9 @@ const styles = StyleSheet.create({
     borderWidth: 2,
   },
   powerUpTarget: {
-    borderColor: '#4CAF50',
+    borderColor: '#FF1744',
     borderWidth: 3,
-    shadowColor: '#4CAF50',
+    shadowColor: '#FF1744',
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.8,
     shadowRadius: 6,

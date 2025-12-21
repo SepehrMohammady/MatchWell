@@ -8,14 +8,8 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
-// Theme-specific power-up icons
-const POWER_ICONS: Record<ThemeType, { name: string; color: string }> = {
-    'trash-sorting': { name: 'delete', color: '#4CAF50' },
-    'pollution': { name: 'air-filter', color: '#607D8B' },
-    'water-conservation': { name: 'water', color: '#2196F3' },
-    'energy-efficiency': { name: 'lightning-bolt', color: '#FFC107' },
-    'deforestation': { name: 'tree', color: '#8BC34A' },
-};
+// Use Earth icon for all story mode power-ups
+const POWER_ICON = { name: 'earth', color: '#FF5722' }; // Orange-red Earth
 
 interface PowerProgressProps {
     theme: ThemeType;
@@ -30,7 +24,6 @@ const PowerProgress: React.FC<PowerProgressProps> = ({ theme, onActivate }) => {
     const glowAnim = useRef(new Animated.Value(0)).current;
     const flashAnim = useRef(new Animated.Value(1)).current;
 
-    const powerIcon = POWER_ICONS[theme] || POWER_ICONS['trash-sorting'];
     const isReady = powerProgress >= 10;
     const isMaxPower = powerProgress >= 15;
 
@@ -114,7 +107,7 @@ const PowerProgress: React.FC<PowerProgressProps> = ({ theme, onActivate }) => {
                             styles.progressFill,
                             {
                                 width: progressWidth,
-                                backgroundColor: isMaxPower ? '#FFD700' : (isReady ? '#4CAF50' : '#888'),
+                                backgroundColor: isMaxPower ? '#FF1744' : (isReady ? '#FF5722' : '#666'),
                             }
                         ]}
                     />
@@ -144,9 +137,9 @@ const PowerProgress: React.FC<PowerProgressProps> = ({ theme, onActivate }) => {
             >
                 <Animated.View style={{ opacity: isMaxPower ? flashAnim : 1 }}>
                     <MaterialCommunityIcons
-                        name={powerIcon.name}
+                        name={POWER_ICON.name}
                         size={20}
-                        color={isReady ? powerIcon.color : '#666'}
+                        color={isReady ? POWER_ICON.color : '#666'}
                     />
                 </Animated.View>
             </TouchableOpacity>
@@ -190,7 +183,7 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         bottom: -4,
-        backgroundColor: '#4CAF50',
+        backgroundColor: '#FF5722',
         borderRadius: 8,
     },
     iconButton: {
@@ -204,12 +197,12 @@ const styles = StyleSheet.create({
         borderColor: 'transparent',
     },
     iconButtonReady: {
-        backgroundColor: 'rgba(76, 175, 80, 0.2)',
-        borderColor: '#4CAF50',
+        backgroundColor: 'rgba(255, 87, 34, 0.2)',
+        borderColor: '#FF5722',
     },
     iconButtonActive: {
-        backgroundColor: '#4CAF50',
-        borderColor: '#388E3C',
+        backgroundColor: '#FF5722',
+        borderColor: '#E64A19',
     },
 });
 

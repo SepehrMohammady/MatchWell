@@ -24,9 +24,14 @@ const GameBoard: React.FC = () => {
     }, [gridSize]);
 
     const handleTilePress = useCallback((position: Position) => {
-        if (isPowerUpActive) {
+        // Get fresh state to avoid stale closure issues
+        const currentIsPowerUpActive = useGameStore.getState().isPowerUpActive;
+        console.log('🖱️ Tile pressed:', { position, currentIsPowerUpActive, gridSize });
+        if (currentIsPowerUpActive) {
             // In power-up mode, only border blocks are valid targets
-            if (isBorderBlock(position.row, position.col)) {
+            const isBorder = isBorderBlock(position.row, position.col);
+            console.log('🎯 Is border block?', isBorder);
+            if (isBorder) {
                 usePowerUpOnBlock(position);
             } else {
                 // Clicked non-border block, cancel power-up
@@ -35,13 +40,15 @@ const GameBoard: React.FC = () => {
         } else {
             selectTile(position);
         }
-    }, [selectTile, isPowerUpActive, isBorderBlock, usePowerUpOnBlock, cancelPowerUp]);
+    }, [selectTile, isBorderBlock, usePowerUpOnBlock, cancelPowerUp, gridSize]);
 
     const handleTileSwipe = useCallback((position: Position, direction: SwipeDirection) => {
-        if (isPowerUpActive) return; // Disable swipe in power-up mode
+        // Get fresh state to avoid stale closure issues  
+        const currentIsPowerUpActive = useGameStore.getState().isPowerUpActive;
+        if (currentIsPowerUpActive) return; // Disable swipe in power-up mode
         if (!direction) return;
         swapWithDirection(position, direction);
-    }, [swapWithDirection, isPowerUpActive]);
+    }, [swapWithDirection]);
 
     const isSelected = useCallback((row: number, col: number): boolean => {
         return selectedTile?.row === row && selectedTile?.col === col;
@@ -67,6 +74,11 @@ const GameBoard: React.FC = () => {
                             }
 
                             const isBorder = isBorderBlock(rowIndex, colIndex);
+                            const isCorner = (rowIndex === 0 || rowIndex === gridSize - 1) &&
+                                (colIndex === 0 || colIndex === gridSize - 1);
+                            const powerProgress = useGameStore.getState().powerProgress;
+                            // Only highlight corners if at 15+ power
+                            const canTarget = isBorder && (!isCorner || powerProgress >= 15);
 
                             return (
                                 <TileComponent
@@ -75,7 +87,7 @@ const GameBoard: React.FC = () => {
                                     isSelected={isSelected(rowIndex, colIndex)}
                                     onPress={handleTilePress}
                                     onSwipe={handleTileSwipe}
-                                    isPowerUpTarget={isPowerUpActive && isBorder}
+                                    isPowerUpTarget={isPowerUpActive && canTarget}
                                 />
                             );
                         })}
@@ -109,7 +121,7 @@ const styles = StyleSheet.create({
         margin: TILE_MARGIN,
     },
     boardPowerUpMode: {
-        borderColor: '#4CAF50',
+        borderColor: '#FF1744',
         borderWidth: 4,
     },
 });
