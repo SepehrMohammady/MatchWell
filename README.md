@@ -30,10 +30,13 @@ Match 3 or more items in a row or column to clear them from the board. Complete 
 | ♾️ **Endless Mode** | Unlimited play, no move limits, high score tracking |
 | 🏆 **35 Achievements** | Theme completion, star milestones, endless score tiers |
 | 🔥 **Combo System** | Chain reactions multiply your score |
+| 🌎 **Power-Up System** | Match 4+ to charge Earth power, clear rows/columns |
+| 📖 **Tutorial** | Visual how-to-play guide for new players |
 | 📚 **Eco Facts** | Learn real environmental facts as you play |
 | 🎵 **Themed Music** | Unique background music for each theme |
 | 🌐 **Global Leaderboard** | Compete worldwide, track score per move |
 | 🌎 **Earth Progression** | Watch Earth heal as you complete more levels |
+| 🎯 **Dynamic App Icon** | App icon changes when you complete all 50 levels |
 
 ---
 
@@ -139,6 +142,7 @@ Open `icon-preview.html` in a browser to see:
 | Zustand | State management |
 | React Navigation | Screen navigation |
 | react-native-sound | Audio playback |
+| react-native-change-icon | Dynamic app icon |
 | AsyncStorage | Progress persistence |
 
 ---

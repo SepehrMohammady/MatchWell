@@ -85,3 +85,6 @@ yarn-error.log
 
 # Server config with real credentials (keep template only)
 # Note: server/leaderboard/config.php has placeholder values for safety
+
+# Local documentation (not for GitHub)
+game-reference.html
