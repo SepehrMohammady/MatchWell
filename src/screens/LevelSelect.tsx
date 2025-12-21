@@ -243,9 +243,6 @@ const LevelSelect: React.FC<Props> = ({ navigation }) => {
                 {/* Coming Soon section */}
                 <View style={styles.comingSoon}>
                     <Text style={styles.comingSoonTitle}>More coming soon</Text>
-                    <Text style={styles.comingSoonText}>
-                        Ocean cleanup, wildlife protection, sustainable cities, and more themes!
-                    </Text>
                 </View>
             </ScrollView>
         </View>

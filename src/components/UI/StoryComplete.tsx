@@ -173,9 +173,6 @@ const StoryComplete: React.FC<StoryCompleteProps> = ({ visible, onClose, totalSt
                     >
                         {slides.map((slide, index) => (
                             <View key={index} style={styles.slide}>
-                                <View style={[styles.iconCircle, { backgroundColor: slide.iconColor + '20' }]}>
-                                    <MaterialCommunityIcons name={slide.icon} size={32} color={slide.iconColor} />
-                                </View>
                                 <Text style={styles.slideTitle}>{slide.title}</Text>
                                 {slide.content}
                             </View>

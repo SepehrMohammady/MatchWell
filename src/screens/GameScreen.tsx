@@ -74,8 +74,8 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
     const [loadingProgress, setLoadingProgress] = useState(0);
     const loadingDuration = 7000; // 7 seconds
 
-    // Tutorial state - show for Level 1
-    const [showTutorial, setShowTutorial] = useState(levelId === 1);
+    // Tutorial state - show for Level 1 story mode only (not endless)
+    const [showTutorial, setShowTutorial] = useState(levelId === 1 && !route.params?.isEndless);
 
     // Story complete modal - show when Level 50 is completed
     const [showStoryComplete, setShowStoryComplete] = useState(false);
