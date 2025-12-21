@@ -24,6 +24,7 @@ import { RootStackParamList } from '../types';
 import { playBgm, playThemeBgm, pauseBgm, resumeBgm, stopBgm, playSfx, getSoundSettings, toggleSfx, toggleMusic } from '../utils/SoundManager';
 import { COLORS, TYPOGRAPHY, SPACING, RADIUS } from '../config/theme';
 import { PauseIcon, PlayIcon, RestartIcon, MusicIcon, MusicOffIcon, VolumeIcon, VolumeOffIcon, HomeIcon, PaletteIcon, ListIcon, StarFilledIcon, StarEmptyIcon, TrophyIcon, EmoticonSadIcon, ArrowRightIcon } from '../components/UI/Icons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Game'>;
 
@@ -470,7 +471,15 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
             {/* Achievement Toast Notification - uses Modal to appear above level complete */}
             <Modal visible={!!toastAchievement} transparent animationType="none">
                 <Animated.View style={[styles.toastContainer, { opacity: toastOpacity }]}>
-                    <Text style={styles.toastEmoji}>{toastAchievement?.emoji}</Text>
+                    <View style={[styles.toastIconContainer, { backgroundColor: (toastAchievement?.iconColor || COLORS.organicWaste) + '20' }]}>
+                        {toastAchievement?.icon && (
+                            <MaterialCommunityIcons
+                                name={toastAchievement.icon}
+                                size={32}
+                                color={toastAchievement.iconColor || COLORS.organicWaste}
+                            />
+                        )}
+                    </View>
                     <View style={styles.toastTextContainer}>
                         <Text style={styles.toastTitle}>🎉 Achievement Unlocked!</Text>
                         <Text style={styles.toastName}>{toastAchievement?.name}</Text>
@@ -874,8 +883,12 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.3,
         shadowRadius: 8,
     },
-    toastEmoji: {
-        fontSize: 36,
+    toastIconContainer: {
+        width: 48,
+        height: 48,
+        borderRadius: 24,
+        justifyContent: 'center',
+        alignItems: 'center',
         marginRight: SPACING.md,
     },
     toastTextContainer: {

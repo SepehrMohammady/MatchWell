@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
         margin: TILE_MARGIN,
     },
     boardPowerUpMode: {
-        borderColor: '#FF1744',
+        borderColor: '#FFA726',
         borderWidth: 4,
     },
 });

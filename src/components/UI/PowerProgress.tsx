@@ -9,7 +9,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 // Use Earth icon for all story mode power-ups
-const POWER_ICON = { name: 'earth', color: '#FF5722' }; // Orange-red Earth
+const POWER_ICON = { name: 'earth', color: '#FFA726' }; // Amber Earth
 
 interface PowerProgressProps {
     theme: ThemeType;
@@ -107,7 +107,7 @@ const PowerProgress: React.FC<PowerProgressProps> = ({ theme, onActivate }) => {
                             styles.progressFill,
                             {
                                 width: progressWidth,
-                                backgroundColor: isMaxPower ? '#FF1744' : (isReady ? '#FF5722' : '#666'),
+                                backgroundColor: isMaxPower ? '#FFD700' : (isReady ? '#FFA726' : '#888'),
                             }
                         ]}
                     />
@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         bottom: -4,
-        backgroundColor: '#FF5722',
+        backgroundColor: '#FFA726',
         borderRadius: 8,
     },
     iconButton: {
@@ -197,12 +197,12 @@ const styles = StyleSheet.create({
         borderColor: 'transparent',
     },
     iconButtonReady: {
-        backgroundColor: 'rgba(255, 87, 34, 0.2)',
-        borderColor: '#FF5722',
+        backgroundColor: 'rgba(255, 167, 38, 0.2)',
+        borderColor: '#FFA726',
     },
     iconButtonActive: {
-        backgroundColor: '#FF5722',
-        borderColor: '#E64A19',
+        backgroundColor: '#FFA726',
+        borderColor: '#FF8F00',
     },
 });
 
