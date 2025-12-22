@@ -19,7 +19,9 @@
         "settings": "Ajustes",
         "new": "Nuevo",
         "continue": "Continuar",
-        "bestScore": "Mejor puntuación"
+        "bestScore": "Mejor puntuación",
+        "best": "Mejor",
+        "tapToSkip": "Toca para saltar"
     },
     "menu": {
         "storyMode": "Modo Historia",
@@ -116,7 +118,14 @@
         "score": "Puntuación",
         "noData": "Sin datos de clasificación aún",
         "yourRank": "Tu Rango",
-        "notRanked": "Sin Clasificar"
+        "notRanked": "Sin Clasificar",
+        "joinLeaderboard": "Unirse al Ranking",
+        "publishMyScore": "Publicar Mi Puntuación",
+        "playersWorldwide": "{{count}} jugadores en todo el mundo",
+        "chooseUsername": "Elige tu Nombre de Usuario",
+        "usernameShown": "Esto se mostrará en el ranking",
+        "enterUsername": "Introduce nombre de usuario",
+        "join": "Unirse"
     },
     "themes": {
         "trashSorting": "Clasificación de Basura",
@@ -166,5 +175,67 @@
     },
     "climate": {
         "timeLeft": "Tiempo restante para limitar el calentamiento a 1.5°C"
+    },
+    "facts": {
+        "trash": [
+            "¡Reciclar una lata de aluminio ahorra suficiente energía para hacer funcionar un televisor durante 3 horas!",
+            "¡El papel puede reciclarse 5-7 veces antes de que las fibras sean demasiado cortas!",
+            "¡El vidrio es 100% reciclable y puede reciclarse infinitamente sin pérdida de calidad!",
+            "¡Los residuos orgánicos en vertederos producen metano, un potente gas de efecto invernadero!",
+            "¡La clasificación correcta de residuos puede reducir los desechos domésticos hasta un 80%!",
+            "¡El mundo produce más de 350 millones de toneladas de residuos plásticos cada año!",
+            "¡Una botella de plástico tarda 500 años en descomponerse en un vertedero!",
+            "¡El compostaje de restos de comida reduce significativamente las emisiones de metano!",
+            "¡Los residuos electrónicos son el flujo de residuos de más rápido crecimiento en el mundo!",
+            "¡A nivel mundial, solo el 9% de todo el plástico producido ha sido reciclado!"
+        ],
+        "pollution": [
+            "¡El transporte representa aproximadamente el 16% de las emisiones globales de gases de efecto invernadero!",
+            "¡Los vehículos eléctricos no producen emisiones directas!",
+            "¡Ir en bicicleta en lugar de conducir puede reducir significativamente tu huella de carbono!",
+            "¡El transporte público usa un 50% menos de combustible por pasajero-km que los coches privados!",
+            "¡Plantar árboles puede ayudar a absorber CO2 y limpiar el aire que respiramos!",
+            "¡La contaminación del aire causa 7 millones de muertes prematuras al año en todo el mundo!",
+            "¡Caminar en lugar de conducir ahorra aproximadamente 0.2 kg de CO2 por kilómetro!",
+            "¡Compartir coche con otra persona reduce tus emisiones a la mitad!",
+            "¡El trabajo remoto puede reducir tu huella de carbono hasta un 54%!",
+            "¡Los espacios verdes en las ciudades pueden reducir las temperaturas urbanas hasta 5°C!"
+        ],
+        "water": [
+            "¡Solo el 3% del agua de la Tierra es agua dulce, y la mayoría está congelada!",
+            "¡Cerrar el grifo mientras te cepillas los dientes ahorra 30 litros de agua al día!",
+            "¡Un grifo que gotea puede desperdiciar más de 11,000 litros de agua al año!",
+            "¡Las duchas más cortas pueden ahorrar hasta 550 litros de agua al mes!",
+            "¡La recolección de agua de lluvia puede reducir el uso doméstico de agua en un 50%!",
+            "¡La agricultura usa el 70% del suministro mundial de agua dulce!",
+            "¡Un grifo goteando puede desperdiciar suficiente agua para llenar una bañera en una semana!",
+            "¡Los cabezales de ducha de bajo flujo pueden ahorrar 10,000 litros de agua al año!",
+            "¡Dos mil millones de personas en todo el mundo carecen de acceso a agua potable segura!",
+            "¡El agua es la esencia de la vida - la conservación asegura nuestro futuro!"
+        ],
+        "energy": [
+            "¡Las bombillas LED usan un 75% menos de energía que la iluminación incandescente tradicional!",
+            "¡Los paneles solares pueden reducir las facturas de electricidad del 50% al 100%!",
+            "¡La energía eólica podría alimentar al mundo 18 veces!",
+            "¡Desenchufar dispositivos cuando no se usan puede ahorrar un 10% en electricidad!",
+            "¡Los electrodomésticos eficientes pueden reducir las facturas de servicios en un 30%!",
+            "¡La energía renovable crea 3 veces más empleos que los combustibles fósiles!",
+            "¡Una sola turbina eólica puede alimentar hasta 500 hogares!",
+            "¡Los termostatos inteligentes pueden ahorrar un 10-15% en costos de calefacción y refrigeración!",
+            "¡La energía solar es la fuente de energía de más rápido crecimiento en el mundo!",
+            "¡Las baterías son clave para almacenar energía limpia cuando el sol no brilla!"
+        ],
+        "forest": [
+            "¡Los bosques albergan el 80% de la biodiversidad terrestre del planeta!",
+            "¡Un árbol puede absorber unos 22 kg de CO2 al año!",
+            "¡Perdemos 10 millones de hectáreas de bosque cada año a nivel mundial!",
+            "¡Plantar árboles es una de las formas más efectivas de combatir el cambio climático!",
+            "¡Los bosques proporcionan oxígeno, agua limpia y hogares para la vida silvestre!",
+            "¡El bambú puede crecer hasta 1 metro en 24 horas - el recurso renovable más rápido de la naturaleza!",
+            "¡La restauración forestal puede recuperar la biodiversidad perdida en décadas!",
+            "¡Los bosques antiguos almacenan más carbono que los bosques jóvenes!",
+            "¡El papel hecho de fibras recicladas ahorra 17 árboles por tonelada!",
+            "¡Proteger los bosques protege nuestro futuro - cada árbol cuenta!"
+        ]
     }
 }

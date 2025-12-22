@@ -19,7 +19,9 @@
         "settings": "Einstellungen",
         "new": "Neu",
         "continue": "Fortsetzen",
-        "bestScore": "Bestpunktzahl"
+        "bestScore": "Bestpunktzahl",
+        "best": "Beste",
+        "tapToSkip": "Tippen zum Überspringen"
     },
     "menu": {
         "storyMode": "Story-Modus",
@@ -116,7 +118,14 @@
         "score": "Punkte",
         "noData": "Noch keine Bestenlisten-Daten",
         "yourRank": "Dein Rang",
-        "notRanked": "Nicht Gerankt"
+        "notRanked": "Nicht Gerankt",
+        "joinLeaderboard": "Bestenliste beitreten",
+        "publishMyScore": "Meine Punkte veröffentlichen",
+        "playersWorldwide": "{{count}} Spieler weltweit",
+        "chooseUsername": "Benutzernamen wählen",
+        "usernameShown": "Dieser wird in der Bestenliste angezeigt",
+        "enterUsername": "Benutzernamen eingeben",
+        "join": "Beitreten"
     },
     "themes": {
         "trashSorting": "Mülltrennung",
@@ -166,5 +175,67 @@
     },
     "climate": {
         "timeLeft": "Verbleibende Zeit zur Begrenzung der Erwärmung auf 1,5°C"
+    },
+    "facts": {
+        "trash": [
+            "Das Recycling einer Aluminiumdose spart genug Energie, um einen Fernseher 3 Stunden lang zu betreiben!",
+            "Papier kann 5-7 mal recycelt werden, bevor die Fasern zu kurz werden!",
+            "Glas ist zu 100% recycelbar und kann unendlich oft ohne Qualitätsverlust recycelt werden!",
+            "Organische Abfälle auf Deponien produzieren Methan, ein starkes Treibhausgas!",
+            "Richtige Mülltrennung kann den Haushaltsabfall um bis zu 80% reduzieren!",
+            "Die Welt produziert jährlich über 350 Millionen Tonnen Plastikmüll!",
+            "Eine Plastikflasche braucht 500 Jahre, um sich auf einer Deponie zu zersetzen!",
+            "Kompostieren von Speiseresten reduziert Methanemissionen erheblich!",
+            "Elektroschrott ist der am schnellsten wachsende Abfallstrom der Welt!",
+            "Weltweit wurden nur 9% des jemals produzierten Plastiks recycelt!"
+        ],
+        "pollution": [
+            "Der Verkehr macht etwa 16% der globalen Treibhausgasemissionen aus!",
+            "Elektrofahrzeuge produzieren keine direkten Emissionen!",
+            "Radfahren statt Autofahren kann Ihren CO2-Fußabdruck erheblich reduzieren!",
+            "Öffentliche Verkehrsmittel verbrauchen 50% weniger Kraftstoff pro Passagier-km als Autos!",
+            "Bäume pflanzen kann helfen, CO2 zu absorbieren und die Luft zu reinigen!",
+            "Luftverschmutzung verursacht weltweit 7 Millionen vorzeitige Todesfälle pro Jahr!",
+            "Gehen statt Fahren spart etwa 0,2 kg CO2 pro Kilometer!",
+            "Fahrgemeinschaften mit einer anderen Person halbieren Ihre Emissionen!",
+            "Homeoffice kann Ihren CO2-Fußabdruck um bis zu 54% reduzieren!",
+            "Grünflächen in Städten können die Stadttemperatur um bis zu 5°C senken!"
+        ],
+        "water": [
+            "Nur 3% des Wassers der Erde ist Süßwasser, und das meiste davon ist gefroren!",
+            "Den Wasserhahn beim Zähneputzen abzudrehen spart täglich 30 Liter Wasser!",
+            "Ein tropfender Wasserhahn kann über 11.000 Liter Wasser pro Jahr verschwenden!",
+            "Kürzeres Duschen kann monatlich bis zu 550 Liter Wasser sparen!",
+            "Regenwassersammlung kann den häuslichen Wasserverbrauch um 50% reduzieren!",
+            "Die Landwirtschaft nutzt 70% der weltweiten Süßwasservorräte!",
+            "Ein tropfender Wasserhahn kann in einer Woche genug Wasser verschwenden, um eine Badewanne zu füllen!",
+            "Wassersparende Duschköpfe können jährlich 10.000 Liter Wasser sparen!",
+            "Zwei Milliarden Menschen weltweit haben keinen Zugang zu sauberem Trinkwasser!",
+            "Wasser ist die Essenz des Lebens - Wassersparen sichert unsere Zukunft!"
+        ],
+        "energy": [
+            "LED-Lampen verbrauchen 75% weniger Energie als herkömmliche Glühbirnen!",
+            "Solarmodule können die Stromrechnung um 50 bis 100% reduzieren!",
+            "Windenergie könnte die Welt 18-mal mit Strom versorgen!",
+            "Geräte auszustecken, wenn sie nicht benutzt werden, kann 10% Strom sparen!",
+            "Energieeffiziente Geräte können die Nebenkosten um 30% reduzieren!",
+            "Erneuerbare Energien schaffen 3-mal mehr Arbeitsplätze als fossile Brennstoffe!",
+            "Eine einzelne Windturbine kann bis zu 500 Haushalte mit Strom versorgen!",
+            "Intelligente Thermostate können 10-15% bei Heiz- und Kühlkosten sparen!",
+            "Solarenergie ist die am schnellsten wachsende Energiequelle weltweit!",
+            "Batterien sind der Schlüssel zur Speicherung sauberer Energie, wenn die Sonne nicht scheint!"
+        ],
+        "forest": [
+            "Wälder beherbergen 80% der terrestrischen Artenvielfalt der Erde!",
+            "Ein Baum kann etwa 22 kg CO2 pro Jahr absorbieren!",
+            "Wir verlieren weltweit jährlich 10 Millionen Hektar Wald!",
+            "Bäume pflanzen ist eine der effektivsten Methoden im Kampf gegen den Klimawandel!",
+            "Wälder liefern Sauerstoff, sauberes Wasser und Lebensraum für Wildtiere!",
+            "Bambus kann in 24 Stunden bis zu 1 Meter wachsen - der schnellste erneuerbare Rohstoff der Natur!",
+            "Waldwiederherstellung kann verlorene Artenvielfalt in Jahrzehnten zurückbringen!",
+            "Alte Wälder speichern mehr Kohlenstoff als junge Wälder!",
+            "Papier aus recycelten Fasern spart 17 Bäume pro Tonne!",
+            "Wälder schützen heißt unsere Zukunft schützen - jeder Baum zählt!"
+        ]
     }
 }

@@ -19,7 +19,9 @@
         "settings": "Paramètres",
         "new": "Nouveau",
         "continue": "Continuer",
-        "bestScore": "Meilleur score"
+        "bestScore": "Meilleur score",
+        "best": "Meilleur",
+        "tapToSkip": "Appuyez pour passer"
     },
     "menu": {
         "storyMode": "Mode Histoire",
@@ -116,7 +118,14 @@
         "score": "Score",
         "noData": "Pas encore de données de classement",
         "yourRank": "Votre Rang",
-        "notRanked": "Non Classé"
+        "notRanked": "Non Classé",
+        "joinLeaderboard": "Rejoindre le Classement",
+        "publishMyScore": "Publier Mon Score",
+        "playersWorldwide": "{{count}} joueurs dans le monde",
+        "chooseUsername": "Choisissez Votre Nom",
+        "usernameShown": "Ceci sera affiché sur le classement",
+        "enterUsername": "Entrez nom d'utilisateur",
+        "join": "Rejoindre"
     },
     "themes": {
         "trashSorting": "Tri des Déchets",
@@ -166,5 +175,67 @@
     },
     "climate": {
         "timeLeft": "Temps restant pour limiter le réchauffement à 1.5°C"
+    },
+    "facts": {
+        "trash": [
+            "Recycler une canette d'aluminium économise assez d'énergie pour faire fonctionner une TV pendant 3 heures !",
+            "Le papier peut être recyclé 5 à 7 fois avant que les fibres ne deviennent trop courtes !",
+            "Le verre est recyclable à 100% et peut être recyclé indéfiniment sans perte de qualité !",
+            "Les déchets organiques dans les décharges produisent du méthane, un puissant gaz à effet de serre !",
+            "Un tri correct des déchets peut réduire les ordures ménagères jusqu'à 80% !",
+            "Le monde produit plus de 350 millions de tonnes de déchets plastiques chaque année !",
+            "Une bouteille plastique met 500 ans à se décomposer dans une décharge !",
+            "Le compostage des restes alimentaires réduit significativement les émissions de méthane !",
+            "Les déchets électroniques sont le flux de déchets à la croissance la plus rapide au monde !",
+            "Globalement, seulement 9% de tout le plastique produit a été recyclé !"
+        ],
+        "pollution": [
+            "Les transports représentent environ 16% des émissions mondiales de gaz à effet de serre !",
+            "Les véhicules électriques ne produisent aucune émission directe !",
+            "Pédaler au lieu de conduire peut réduire significativement votre empreinte carbone !",
+            "Les transports en commun utilisent 50% moins de carburant par passager-km que les voitures !",
+            "Planter des arbres peut aider à absorber le CO2 et purifier l'air que nous respirons !",
+            "La pollution de l'air cause 7 millions de décès prématurés chaque année dans le monde !",
+            "Marcher au lieu de conduire économise environ 0,2 kg de CO2 par kilomètre !",
+            "Le covoiturage avec une autre personne réduit vos émissions de moitié !",
+            "Le télétravail peut réduire votre empreinte carbone jusqu'à 54% !",
+            "Les espaces verts urbains peuvent réduire les températures des villes jusqu'à 5°C !"
+        ],
+        "water": [
+            "Seulement 3% de l'eau de la Terre est douce, et la plupart est gelée !",
+            "Fermer le robinet pendant le brossage des dents économise 30 litres d'eau par jour !",
+            "Un robinet qui fuit peut gaspiller plus de 11 000 litres d'eau par an !",
+            "Des douches plus courtes peuvent économiser jusqu'à 550 litres d'eau par mois !",
+            "La récupération d'eau de pluie peut réduire la consommation domestique de 50% !",
+            "L'agriculture utilise 70% des réserves mondiales d'eau douce !",
+            "Un robinet qui goutte peut gaspiller assez d'eau pour remplir une baignoire en une semaine !",
+            "Les pommeaux de douche à faible débit peuvent économiser 10 000 litres d'eau par an !",
+            "Deux milliards de personnes dans le monde n'ont pas accès à l'eau potable !",
+            "L'eau est l'essence de la vie - la préserver assure notre avenir !"
+        ],
+        "energy": [
+            "Les ampoules LED utilisent 75% moins d'énergie que l'éclairage incandescent traditionnel !",
+            "Les panneaux solaires peuvent réduire les factures d'électricité de 50 à 100% !",
+            "L'énergie éolienne pourrait alimenter le monde 18 fois !",
+            "Débrancher les appareils inutilisés peut économiser 10% d'électricité !",
+            "Les appareils économes en énergie peuvent réduire les factures de 30% !",
+            "Les énergies renouvelables créent 3 fois plus d'emplois que les combustibles fossiles !",
+            "Une seule éolienne peut alimenter jusqu'à 500 foyers !",
+            "Les thermostats intelligents peuvent économiser 10-15% sur les coûts de chauffage et climatisation !",
+            "L'énergie solaire est la source d'énergie à la croissance la plus rapide au monde !",
+            "Les batteries sont essentielles pour stocker l'énergie propre quand le soleil ne brille pas !"
+        ],
+        "forest": [
+            "Les forêts abritent 80% de la biodiversité terrestre de la planète !",
+            "Un arbre peut absorber environ 22 kg de CO2 par an !",
+            "Nous perdons 10 millions d'hectares de forêts chaque année dans le monde !",
+            "Planter des arbres est l'un des moyens les plus efficaces de lutter contre le changement climatique !",
+            "Les forêts fournissent de l'oxygène, de l'eau propre et des habitats pour la faune !",
+            "Le bambou peut pousser jusqu'à 1 mètre en 24 heures - la ressource renouvelable la plus rapide !",
+            "La restauration forestière peut ramener la biodiversité perdue en quelques décennies !",
+            "Les forêts anciennes stockent plus de carbone que les jeunes forêts !",
+            "Le papier fabriqué à partir de fibres recyclées économise 17 arbres par tonne !",
+            "Protéger les forêts protège notre avenir - chaque arbre compte !"
+        ]
     }
 }
