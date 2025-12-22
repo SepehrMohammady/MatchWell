@@ -10,6 +10,8 @@ import {
     Alert,
     Linking,
     ScrollView,
+    Modal,
+    I18nManager,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -26,13 +28,20 @@ import VERSION from '../config/version';
 import { useGameStore } from '../context/GameStore';
 import { COLORS, TYPOGRAPHY, SPACING, RADIUS, SHADOWS } from '../config/theme';
 import { BackIcon } from '../components/UI/Icons';
+import { useTranslation } from 'react-i18next';
+import { LANGUAGES, LanguageCode, changeLanguage, getCurrentLanguage, formatNumber } from '../config/i18n';
+import RNRestart from 'react-native-restart';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Settings'>;
 
 const Settings: React.FC<Props> = ({ navigation }) => {
     const insets = useSafeAreaInsets();
+    const { t, i18n } = useTranslation();
     const [sfxEnabled, setSfxEnabled] = useState(true);
     const [musicEnabled, setMusicEnabled] = useState(true);
+    const [currentLang, setCurrentLang] = useState<LanguageCode>(getCurrentLanguage());
+    const [showLanguageModal, setShowLanguageModal] = useState(false);
+    const [needsRestart, setNeedsRestart] = useState(false);
 
     useEffect(() => {
         const settings = getSoundSettings();
@@ -73,20 +82,36 @@ const Settings: React.FC<Props> = ({ navigation }) => {
 
     const handleResetData = () => {
         Alert.alert(
-            'Reset Progress',
-            'Are you sure you want to reset all your progress? This cannot be undone.',
+            t('settings.resetProgress'),
+            t('settings.resetWarning'),
             [
-                { text: 'Cancel', style: 'cancel' },
+                { text: t('common.cancel'), style: 'cancel' },
                 {
-                    text: 'Reset',
+                    text: t('common.yes'),
                     style: 'destructive',
                     onPress: async () => {
                         await resetProgress();
-                        Alert.alert('Done', 'All progress has been reset.');
+                        Alert.alert(t('common.ok'), t('settings.resetProgress'));
                     },
                 },
             ]
         );
+    };
+
+    const handleLanguageSelect = async (lang: LanguageCode) => {
+        setShowLanguageModal(false);
+        if (lang === currentLang) return;
+
+        const needsAppRestart = await changeLanguage(lang);
+        setCurrentLang(lang);
+
+        if (needsAppRestart) {
+            setNeedsRestart(true);
+        }
+    };
+
+    const handleRestart = () => {
+        RNRestart.restart();
     };
 
     return (
@@ -135,9 +160,25 @@ const Settings: React.FC<Props> = ({ navigation }) => {
                     </View>
                 </View>
 
+                {/* Language Section */}
+                <View style={styles.section}>
+                    <Text style={styles.sectionTitle}>{t('settings.language')}</Text>
+
+                    <TouchableOpacity
+                        style={[styles.settingRow, styles.lastRow]}
+                        onPress={() => setShowLanguageModal(true)}
+                    >
+                        <View style={styles.settingInfo}>
+                            <Text style={styles.settingLabel}>{t('settings.selectLanguage')}</Text>
+                            <Text style={styles.settingDescription}>{LANGUAGES[currentLang].nativeName}</Text>
+                        </View>
+                        <Text style={styles.linkIcon}>›</Text>
+                    </TouchableOpacity>
+                </View>
+
                 {/* Data Section */}
                 <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>Data</Text>
+                    <Text style={styles.sectionTitle}>{t('settings.resetProgress')}</Text>
 
                     <TouchableOpacity
                         style={styles.dangerButton}
@@ -215,6 +256,86 @@ const Settings: React.FC<Props> = ({ navigation }) => {
                     <Text style={styles.copyright}>© 2025 Sepehr Mohammady. Open source under MIT License.</Text>
                 </View>
             </ScrollView>
+
+            {/* Language Selection Modal */}
+            <Modal
+                visible={showLanguageModal}
+                transparent={true}
+                animationType="fade"
+                onRequestClose={() => setShowLanguageModal(false)}
+            >
+                <TouchableOpacity
+                    style={styles.modalOverlay}
+                    activeOpacity={1}
+                    onPress={() => setShowLanguageModal(false)}
+                >
+                    <View style={styles.languageModal}>
+                        <Text style={styles.modalTitle}>{t('settings.selectLanguage')}</Text>
+                        <ScrollView style={styles.languageList}>
+                            {(Object.keys(LANGUAGES) as LanguageCode[]).map((langCode) => (
+                                <TouchableOpacity
+                                    key={langCode}
+                                    style={[
+                                        styles.languageItem,
+                                        currentLang === langCode && styles.languageItemSelected
+                                    ]}
+                                    onPress={() => handleLanguageSelect(langCode)}
+                                >
+                                    <Text style={[
+                                        styles.languageNativeName,
+                                        currentLang === langCode && styles.languageTextSelected
+                                    ]}>
+                                        {LANGUAGES[langCode].nativeName}
+                                    </Text>
+                                    <Text style={[
+                                        styles.languageEnglishName,
+                                        currentLang === langCode && styles.languageTextSelected
+                                    ]}>
+                                        {LANGUAGES[langCode].name}
+                                    </Text>
+                                    {currentLang === langCode && (
+                                        <Text style={styles.checkmark}>✓</Text>
+                                    )}
+                                </TouchableOpacity>
+                            ))}
+                        </ScrollView>
+                        <TouchableOpacity
+                            style={styles.modalCloseButton}
+                            onPress={() => setShowLanguageModal(false)}
+                        >
+                            <Text style={styles.modalCloseText}>{t('common.close')}</Text>
+                        </TouchableOpacity>
+                    </View>
+                </TouchableOpacity>
+            </Modal>
+
+            {/* Restart Required Modal */}
+            <Modal
+                visible={needsRestart}
+                transparent={true}
+                animationType="fade"
+                onRequestClose={() => setNeedsRestart(false)}
+            >
+                <View style={styles.modalOverlay}>
+                    <View style={styles.restartModal}>
+                        <Text style={styles.modalTitle}>{t('settings.restartRequired')}</Text>
+                        <View style={styles.restartButtonRow}>
+                            <TouchableOpacity
+                                style={styles.restartLaterButton}
+                                onPress={() => setNeedsRestart(false)}
+                            >
+                                <Text style={styles.restartLaterText}>{t('settings.restartLater')}</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={styles.restartNowButton}
+                                onPress={handleRestart}
+                            >
+                                <Text style={styles.restartNowText}>{t('settings.restartNow')}</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
         </View>
     );
 };
@@ -409,6 +530,116 @@ const styles = StyleSheet.create({
         fontSize: TYPOGRAPHY.bodySmall,
         fontFamily: TYPOGRAPHY.fontFamily,
         color: COLORS.textSecondary,
+    },
+    // Modal styles
+    modalOverlay: {
+        flex: 1,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: SPACING.lg,
+    },
+    languageModal: {
+        backgroundColor: COLORS.cardBackground,
+        borderRadius: RADIUS.lg,
+        padding: SPACING.lg,
+        width: '100%',
+        maxHeight: '80%',
+    },
+    modalTitle: {
+        fontSize: TYPOGRAPHY.h3,
+        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
+        fontWeight: TYPOGRAPHY.semibold,
+        color: COLORS.textPrimary,
+        textAlign: 'center',
+        marginBottom: SPACING.md,
+    },
+    languageList: {
+        maxHeight: 400,
+    },
+    languageItem: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingVertical: SPACING.md,
+        paddingHorizontal: SPACING.sm,
+        borderBottomWidth: 1,
+        borderBottomColor: COLORS.cardBorder,
+    },
+    languageItemSelected: {
+        backgroundColor: COLORS.organicWaste + '20',
+        borderRadius: RADIUS.md,
+    },
+    languageNativeName: {
+        flex: 1,
+        fontSize: TYPOGRAPHY.body,
+        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
+        fontWeight: TYPOGRAPHY.semibold,
+        color: COLORS.textPrimary,
+    },
+    languageEnglishName: {
+        fontSize: TYPOGRAPHY.caption,
+        fontFamily: TYPOGRAPHY.fontFamily,
+        color: COLORS.textSecondary,
+        marginEnd: SPACING.md,
+    },
+    languageTextSelected: {
+        color: COLORS.organicWaste,
+    },
+    checkmark: {
+        fontSize: TYPOGRAPHY.h3,
+        color: COLORS.organicWaste,
+        fontWeight: TYPOGRAPHY.bold,
+    },
+    modalCloseButton: {
+        marginTop: SPACING.md,
+        paddingVertical: SPACING.md,
+        backgroundColor: COLORS.cardBorder,
+        borderRadius: RADIUS.md,
+        alignItems: 'center',
+    },
+    modalCloseText: {
+        fontSize: TYPOGRAPHY.body,
+        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
+        fontWeight: TYPOGRAPHY.semibold,
+        color: COLORS.textPrimary,
+    },
+    restartModal: {
+        backgroundColor: COLORS.cardBackground,
+        borderRadius: RADIUS.lg,
+        padding: SPACING.xl,
+        width: '100%',
+    },
+    restartButtonRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: SPACING.lg,
+        gap: SPACING.md,
+    },
+    restartLaterButton: {
+        flex: 1,
+        paddingVertical: SPACING.md,
+        backgroundColor: COLORS.cardBorder,
+        borderRadius: RADIUS.md,
+        alignItems: 'center',
+    },
+    restartLaterText: {
+        fontSize: TYPOGRAPHY.body,
+        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
+        fontWeight: TYPOGRAPHY.semibold,
+        color: COLORS.textPrimary,
+    },
+    restartNowButton: {
+        flex: 1,
+        paddingVertical: SPACING.md,
+        backgroundColor: COLORS.organicWaste,
+        borderRadius: RADIUS.md,
+        alignItems: 'center',
+    },
+    restartNowText: {
+        fontSize: TYPOGRAPHY.body,
+        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
+        fontWeight: TYPOGRAPHY.semibold,
+        color: COLORS.textLight,
     },
 });
 

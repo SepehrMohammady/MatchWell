@@ -24,6 +24,9 @@ import Leaderboard from './src/screens/Leaderboard';
 // Types
 import { RootStackParamList } from './src/types';
 
+// Initialize i18n
+import './src/config/i18n';
+
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function App(): React.JSX.Element {
