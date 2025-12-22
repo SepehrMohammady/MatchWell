@@ -16,7 +16,10 @@
         "ok": "확인",
         "cancel": "취소",
         "save": "저장",
-        "settings": "설정"
+        "settings": "설정",
+        "new": "새로 시작",
+        "continue": "이어하기",
+        "bestScore": "최고 점수"
     },
     "menu": {
         "storyMode": "스토리 모드",
@@ -25,7 +28,8 @@
         "leaderboard": "리더보드",
         "settings": "설정",
         "selectLevel": "레벨 선택",
-        "selectTheme": "테마 선택"
+        "selectTheme": "테마 선택",
+        "tagline": "한 번의 매치로 지구를 구하세요"
     },
     "game": {
         "paused": "일시정지",
@@ -81,17 +85,26 @@
         "title": "설정",
         "sound": "소리",
         "music": "음악",
+        "backgroundMusic": "배경 음악",
         "sfx": "효과음",
+        "tileSounds": "타일 소리 및 피드백",
         "language": "언어",
         "selectLanguage": "언어 선택",
         "restartRequired": "레이아웃 변경을 위해 앱 재시작 필요",
         "restartNow": "지금 재시작",
         "restartLater": "나중에",
+        "resetProgress": "진행 초기화",
+        "resetAllProgress": "모든 진행 초기화",
+        "resetWarning": "모든 진행이 삭제됩니다. 확실합니까?",
+        "testers": "테스터",
+        "testersThanks": "소중한 피드백 감사합니다!",
         "about": "정보",
         "version": "버전",
+        "developer": "개발자",
+        "sourceCode": "소스 코드",
+        "privacy": "개인정보",
+        "privacyDesc": "데이터를 수집하거나 공유하지 않음",
         "credits": "크레딧",
-        "resetProgress": "진행 초기화",
-        "resetWarning": "모든 진행이 삭제됩니다. 확실합니까?",
         "privacyPolicy": "개인정보 처리방침"
     },
     "leaderboard": {
@@ -107,24 +120,42 @@
     },
     "themes": {
         "trashSorting": "쓰레기 분류",
-        "pollution": "대기 오염",
+        "trashSortingDesc": "재활용을 배우세요! 쓰레기를 매치해서 지구를 깨끗하게.",
+        "pollution": "공기 정화",
+        "pollutionDesc": "오염 차량을 제거해서 도시를 깨끗하게!",
         "waterConservation": "물 절약",
+        "waterConservationDesc": "물을 아끼세요! 한 방울 한 방울이 미래를 위합니다.",
         "energyEfficiency": "에너지 효율",
-        "deforestation": "산림 보호"
+        "energyEfficiencyDesc": "깨끗한 에너지를 사용하세요! 지속 가능한 세상을 위해.",
+        "deforestation": "숲 보호",
+        "deforestationDesc": "나무를 심으세요! 미래 세대를 위해 숲을 보호합니다."
+    },
+    "endless": {
+        "noMoveLimit": "이동 제한 없음 — 계속 매치하고 최고 점수를 깨세요!"
     },
     "themeAchievements": {
         "recycler": "재활용가",
-        "cleanAirChampion": "맑은 공기 챔피언",
+        "recyclerDesc": "쓰레기 분류의 모든 레벨 완료",
+        "cleanAirChampion": "공기 정화사",
+        "cleanAirChampionDesc": "대기 오염의 모든 레벨 완료",
         "waterGuardian": "물 수호자",
+        "waterGuardianDesc": "물 절약의 모든 레벨 완료",
         "energySaver": "에너지 절약가",
-        "forestProtector": "숲 보호자"
+        "energySaverDesc": "에너지 효율의 모든 레벨 완료",
+        "forestProtector": "숲 보호자",
+        "forestProtectorDesc": "산림 보호의 모든 레벨 완료"
     },
     "starAchievements": {
         "bronzeCollector": "브론즈 수집가",
+        "bronzeCollectorDesc": "총 30개의 별 획득",
         "silverCollector": "실버 수집가",
+        "silverCollectorDesc": "총 60개의 별 획득",
         "goldCollector": "골드 수집가",
+        "goldCollectorDesc": "총 90개의 별 획득",
         "diamondCollector": "다이아몬드 수집가",
-        "starMaster": "스타 마스터"
+        "diamondCollectorDesc": "총 120개의 별 획득",
+        "starMaster": "스타 마스터",
+        "starMasterDesc": "150개의 별 모두 획득"
     },
     "endlessTiers": {
         "bronze": "브론즈",
@@ -132,5 +163,8 @@
         "gold": "골드",
         "diamond": "다이아몬드",
         "earthSaver": "지구 수호자"
+    },
+    "climate": {
+        "timeLeft": "1.5°C 상승 제한까지 남은 시간"
     }
 }

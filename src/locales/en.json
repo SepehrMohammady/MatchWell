@@ -16,7 +16,10 @@
         "ok": "OK",
         "cancel": "Cancel",
         "save": "Save",
-        "settings": "Settings"
+        "settings": "Settings",
+        "new": "New",
+        "continue": "Continue",
+        "bestScore": "Best score"
     },
     "menu": {
         "storyMode": "Story Mode",
@@ -25,7 +28,8 @@
         "leaderboard": "Leaderboard",
         "settings": "Settings",
         "selectLevel": "Select Level",
-        "selectTheme": "Select Theme"
+        "selectTheme": "Select Theme",
+        "tagline": "Save the planet, one match at a time"
     },
     "game": {
         "paused": "Paused",
@@ -81,17 +85,26 @@
         "title": "Settings",
         "sound": "Sound",
         "music": "Music",
+        "backgroundMusic": "Background music",
         "sfx": "Sound Effects",
+        "tileSounds": "Tile sounds & feedback",
         "language": "Language",
         "selectLanguage": "Select Language",
         "restartRequired": "App restart required for layout changes",
         "restartNow": "Restart Now",
         "restartLater": "Later",
+        "resetProgress": "Reset Progress",
+        "resetAllProgress": "Reset All Progress",
+        "resetWarning": "This will delete all your progress. Are you sure?",
+        "testers": "Testers",
+        "testersThanks": "Thank you for your valuable feedback!",
         "about": "About",
         "version": "Version",
+        "developer": "Developer",
+        "sourceCode": "Source Code",
+        "privacy": "Privacy",
+        "privacyDesc": "No data is collected or shared",
         "credits": "Credits",
-        "resetProgress": "Reset Progress",
-        "resetWarning": "This will delete all your progress. Are you sure?",
         "privacyPolicy": "Privacy Policy"
     },
     "leaderboard": {
@@ -107,24 +120,42 @@
     },
     "themes": {
         "trashSorting": "Trash Sorting",
-        "pollution": "Pollution",
+        "trashSortingDesc": "Learn to sort recyclables! Match trash to keep our planet clean.",
+        "pollution": "Clear the Air",
+        "pollutionDesc": "Remove polluting vehicles to clean up our cities!",
         "waterConservation": "Water Conservation",
+        "waterConservationDesc": "Save water! Every drop counts for our future.",
         "energyEfficiency": "Energy Efficiency",
-        "deforestation": "Deforestation"
+        "energyEfficiencyDesc": "Use clean energy! Power the world sustainably.",
+        "deforestation": "Save the Forests",
+        "deforestationDesc": "Plant trees! Protect our forests for future generations."
+    },
+    "endless": {
+        "noMoveLimit": "No move limit — just keep matching and beat your high score!"
     },
     "themeAchievements": {
         "recycler": "Recycler",
-        "cleanAirChampion": "Clean Air Champion",
+        "recyclerDesc": "Complete all Trash Sorting levels",
+        "cleanAirChampion": "Air Cleaner",
+        "cleanAirChampionDesc": "Complete all Pollution levels",
         "waterGuardian": "Water Guardian",
+        "waterGuardianDesc": "Complete all Water Conservation levels",
         "energySaver": "Energy Saver",
-        "forestProtector": "Forest Protector"
+        "energySaverDesc": "Complete all Energy Efficiency levels",
+        "forestProtector": "Forest Protector",
+        "forestProtectorDesc": "Complete all Deforestation levels"
     },
     "starAchievements": {
         "bronzeCollector": "Bronze Collector",
+        "bronzeCollectorDesc": "Earn 30 total stars",
         "silverCollector": "Silver Collector",
+        "silverCollectorDesc": "Earn 60 total stars",
         "goldCollector": "Gold Collector",
+        "goldCollectorDesc": "Earn 90 total stars",
         "diamondCollector": "Diamond Collector",
-        "starMaster": "Star Master"
+        "diamondCollectorDesc": "Earn 120 total stars",
+        "starMaster": "Star Master",
+        "starMasterDesc": "Earn all 150 stars"
     },
     "endlessTiers": {
         "bronze": "Bronze",
@@ -132,5 +163,8 @@
         "gold": "Gold",
         "diamond": "Diamond",
         "earthSaver": "Earth Saver"
+    },
+    "climate": {
+        "timeLeft": "Time left to limit warming to 1.5°C"
     }
 }

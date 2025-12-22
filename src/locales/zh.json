@@ -16,7 +16,10 @@
         "ok": "确定",
         "cancel": "取消",
         "save": "保存",
-        "settings": "设置"
+        "settings": "设置",
+        "new": "新游戏",
+        "continue": "继续",
+        "bestScore": "最高分"
     },
     "menu": {
         "storyMode": "故事模式",
@@ -25,7 +28,8 @@
         "leaderboard": "排行榜",
         "settings": "设置",
         "selectLevel": "选择关卡",
-        "selectTheme": "选择主题"
+        "selectTheme": "选择主题",
+        "tagline": "一次消除，拯救地球"
     },
     "game": {
         "paused": "已暂停",
@@ -81,17 +85,26 @@
         "title": "设置",
         "sound": "声音",
         "music": "音乐",
+        "backgroundMusic": "背景音乐",
         "sfx": "音效",
+        "tileSounds": "方块音效和反馈",
         "language": "语言",
         "selectLanguage": "选择语言",
         "restartRequired": "布局更改需要重启应用",
         "restartNow": "立即重启",
         "restartLater": "稍后",
+        "resetProgress": "重置进度",
+        "resetAllProgress": "重置所有进度",
+        "resetWarning": "这将删除所有进度。确定吗？",
+        "testers": "测试人员",
+        "testersThanks": "感谢您的宝贵反馈！",
         "about": "关于",
         "version": "版本",
+        "developer": "开发者",
+        "sourceCode": "源代码",
+        "privacy": "隐私",
+        "privacyDesc": "不收集或分享任何数据",
         "credits": "制作人员",
-        "resetProgress": "重置进度",
-        "resetWarning": "这将删除所有进度。确定吗？",
         "privacyPolicy": "隐私政策"
     },
     "leaderboard": {
@@ -107,24 +120,42 @@
     },
     "themes": {
         "trashSorting": "垃圾分类",
-        "pollution": "污染治理",
+        "trashSortingDesc": "学习垃圾分类！消除垃圾，保护地球。",
+        "pollution": "净化空气",
+        "pollutionDesc": "清除污染车辆，让城市更清洁！",
         "waterConservation": "节约用水",
+        "waterConservationDesc": "节约用水！每一滴水都关乎未来。",
         "energyEfficiency": "节能环保",
-        "deforestation": "保护森林"
+        "energyEfficiencyDesc": "使用清洁能源！可持续发展世界。",
+        "deforestation": "保护森林",
+        "deforestationDesc": "种植树木！为子孙后代保护森林。"
+    },
+    "endless": {
+        "noMoveLimit": "无步数限制——持续消除，打破最高分！"
     },
     "themeAchievements": {
         "recycler": "回收达人",
-        "cleanAirChampion": "清新空气卫士",
+        "recyclerDesc": "完成所有垃圾分类关卡",
+        "cleanAirChampion": "空气净化者",
+        "cleanAirChampionDesc": "完成所有污染治理关卡",
         "waterGuardian": "水资源守护者",
+        "waterGuardianDesc": "完成所有节水关卡",
         "energySaver": "节能先锋",
-        "forestProtector": "森林保护者"
+        "energySaverDesc": "完成所有节能关卡",
+        "forestProtector": "森林保护者",
+        "forestProtectorDesc": "完成所有森林保护关卡"
     },
     "starAchievements": {
         "bronzeCollector": "铜牌收集者",
+        "bronzeCollectorDesc": "获得30颗星星",
         "silverCollector": "银牌收集者",
+        "silverCollectorDesc": "获得60颗星星",
         "goldCollector": "金牌收集者",
+        "goldCollectorDesc": "获得90颗星星",
         "diamondCollector": "钻石收集者",
-        "starMaster": "星星大师"
+        "diamondCollectorDesc": "获得120颗星星",
+        "starMaster": "星星大师",
+        "starMasterDesc": "获得全部150颗星星"
     },
     "endlessTiers": {
         "bronze": "铜牌",
@@ -132,5 +163,8 @@
         "gold": "金牌",
         "diamond": "钻石",
         "earthSaver": "地球守护者"
+    },
+    "climate": {
+        "timeLeft": "距离升温1.5°C的剩余时间"
     }
 }

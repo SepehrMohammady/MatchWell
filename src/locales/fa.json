@@ -16,7 +16,10 @@
         "ok": "تأیید",
         "cancel": "لغو",
         "save": "ذخیره",
-        "settings": "تنظیمات"
+        "settings": "تنظیمات",
+        "new": "جدید",
+        "continue": "ادامه",
+        "bestScore": "بهترین امتیاز"
     },
     "menu": {
         "storyMode": "حالت داستانی",
@@ -25,11 +28,12 @@
         "leaderboard": "جدول امتیازات",
         "settings": "تنظیمات",
         "selectLevel": "انتخاب مرحله",
-        "selectTheme": "انتخاب موضوع"
+        "selectTheme": "انتخاب موضوع",
+        "tagline": "با هر بازی، سیاره را نجات بده"
     },
     "game": {
         "paused": "متوقف شده",
-        "levelComplete": "!مرحله تمام شد",
+        "levelComplete": "مرحله تمام شد!",
         "gameOver": "بازی تمام شد",
         "nextLevel": "مرحله بعدی",
         "playAgain": "بازی دوباره",
@@ -38,20 +42,20 @@
         "levels": "مراحل",
         "movesRemaining": "{{count}} حرکت باقی‌مانده",
         "targetScore": "هدف: {{score}}",
-        "newHighScore": "!رکورد جدید",
-        "storyComplete": "!داستان تمام شد",
-        "congratulations": "!تبریک می‌گوییم",
-        "completedAllLevels": "!را به پایان رساندید MatchWell شما تمام {{count}} مرحله",
-        "thankYouPlaying": ".سپاس از بازی کردن و یادگیری درباره سیاره ما",
+        "newHighScore": "رکورد جدید!",
+        "storyComplete": "داستان تمام شد!",
+        "congratulations": "تبریک می‌گوییم!",
+        "completedAllLevels": "شما تمام {{count}} مرحله MatchWell را به پایان رساندید!",
+        "thankYouPlaying": "سپاس از بازی کردن و یادگیری درباره سیاره ما.",
         "collectMoreStars": "ستاره‌های بیشتری جمع کنید",
-        "replayForStars": "!مراحل را دوباره بازی کنید تا ستاره‌های بیشتری کسب کنید! هر مرحله را با حرکات بیشتر تمام کنید تا ستاره‌هایتان حداکثر شود",
+        "replayForStars": "مراحل را دوباره بازی کنید تا ستاره‌های بیشتری کسب کنید! هر مرحله را با حرکات بیشتر تمام کنید تا ستاره‌هایتان حداکثر شود!",
         "earnMedals": "مدال کسب کنید",
-        "achievementsPage": "!از صفحه دستاوردها دیدن کنید تا مدال‌های پیشرفت، نقاط عطف ستاره‌ها و امتیازات حالت بی‌پایان را جمع کنید",
+        "achievementsPage": "از صفحه دستاوردها دیدن کنید تا مدال‌های پیشرفت، نقاط عطف ستاره‌ها و امتیازات حالت بی‌پایان را جمع کنید!",
         "tryEndlessMode": "حالت بی‌پایان را امتحان کنید",
-        "endlessChallenge": "!در حالت بی‌پایان خود را به چالش بکشید! هر موضوع چالش بی‌پایان خودش را دارد. ببینید تا کجا می‌توانید بروید",
+        "endlessChallenge": "در حالت بی‌پایان خود را به چالش بکشید! هر موضوع چالش بی‌پایان خودش را دارد. ببینید تا کجا می‌توانید بروید!",
         "climbLeaderboard": "در جدول امتیازات بالا بروید",
-        "competeWorldwide": "!با بازیکنان سراسر جهان رقابت کنید! امتیازات حالت بی‌پایان شما در جدول جهانی رتبه‌بندی می‌شود",
-        "letsGo": "!بزن بریم",
+        "competeWorldwide": "با بازیکنان سراسر جهان رقابت کنید! امتیازات حالت بی‌پایان شما در جدول جهانی رتبه‌بندی می‌شود!",
+        "letsGo": "بزن بریم!",
         "comingSoon": "به زودی"
     },
     "tutorial": {
@@ -64,7 +68,7 @@
         "slide3Desc": "۴ کاشی یا بیشتر را تطبیق دهید تا قدرت شارژ شود. با ۱۰ امتیاز یا بیشتر، آیکون زمین را لمس کنید تا یک ردیف یا ستون پاک شود!",
         "slide4Title": "ستاره بگیر",
         "slide4Desc": "مراحل را با حرکات باقی‌مانده تمام کنید تا ۳ ستاره بگیرید!",
-        "letsPlay": "!بزن بریم"
+        "letsPlay": "بزن بریم!"
     },
     "achievements": {
         "title": "دستاوردها",
@@ -81,17 +85,26 @@
         "title": "تنظیمات",
         "sound": "صدا",
         "music": "موسیقی",
+        "backgroundMusic": "موسیقی پس‌زمینه",
         "sfx": "جلوه‌های صوتی",
+        "tileSounds": "صداهای کاشی و بازخورد",
         "language": "زبان",
         "selectLanguage": "انتخاب زبان",
         "restartRequired": "برای تغییرات چیدمان نیاز به راه‌اندازی مجدد برنامه است",
         "restartNow": "اکنون راه‌اندازی مجدد",
         "restartLater": "بعداً",
+        "resetProgress": "بازنشانی پیشرفت",
+        "resetAllProgress": "بازنشانی همه پیشرفت",
+        "resetWarning": "این کار تمام پیشرفت شما را حذف می‌کند. مطمئن هستید؟",
+        "testers": "آزمایش‌کنندگان",
+        "testersThanks": "از بازخورد ارزشمند شما متشکریم!",
         "about": "درباره",
         "version": "نسخه",
+        "developer": "توسعه‌دهنده",
+        "sourceCode": "کد منبع",
+        "privacy": "حریم خصوصی",
+        "privacyDesc": "هیچ داده‌ای جمع‌آوری یا به اشتراک گذاشته نمی‌شود",
         "credits": "سازندگان",
-        "resetProgress": "بازنشانی پیشرفت",
-        "resetWarning": "این کار تمام پیشرفت شما را حذف می‌کند. مطمئن هستید؟",
         "privacyPolicy": "سیاست حفظ حریم خصوصی"
     },
     "leaderboard": {
@@ -107,24 +120,42 @@
     },
     "themes": {
         "trashSorting": "تفکیک زباله",
-        "pollution": "آلودگی",
+        "trashSortingDesc": "بازیافت را یاد بگیرید! زباله‌ها را تطبیق دهید تا سیاره تمیز بماند.",
+        "pollution": "پاکسازی هوا",
+        "pollutionDesc": "وسایل نقلیه آلاینده را حذف کنید تا شهرهایمان تمیز شود!",
         "waterConservation": "حفظ آب",
+        "waterConservationDesc": "آب را صرفه‌جویی کنید! هر قطره برای آینده مهم است.",
         "energyEfficiency": "بهره‌وری انرژی",
-        "deforestation": "حفاظت از جنگل"
+        "energyEfficiencyDesc": "از انرژی پاک استفاده کنید! جهان را به صورت پایدار تغذیه کنید.",
+        "deforestation": "نجات جنگل‌ها",
+        "deforestationDesc": "درخت بکارید! جنگل‌ها را برای نسل‌های آینده محافظت کنید."
+    },
+    "endless": {
+        "noMoveLimit": "بدون محدودیت حرکت — به تطبیق ادامه دهید و بهترین امتیاز خود را بشکنید!"
     },
     "themeAchievements": {
         "recycler": "بازیافت‌کننده",
-        "cleanAirChampion": "قهرمان هوای پاک",
+        "recyclerDesc": "تمام مراحل تفکیک زباله را کامل کنید",
+        "cleanAirChampion": "پاک‌کننده هوا",
+        "cleanAirChampionDesc": "تمام مراحل آلودگی را کامل کنید",
         "waterGuardian": "نگهبان آب",
+        "waterGuardianDesc": "تمام مراحل حفظ آب را کامل کنید",
         "energySaver": "صرفه‌جوی انرژی",
-        "forestProtector": "محافظ جنگل"
+        "energySaverDesc": "تمام مراحل بهره‌وری انرژی را کامل کنید",
+        "forestProtector": "محافظ جنگل",
+        "forestProtectorDesc": "تمام مراحل حفاظت از جنگل را کامل کنید"
     },
     "starAchievements": {
         "bronzeCollector": "جمع‌آوری‌کننده برنز",
+        "bronzeCollectorDesc": "۳۰ ستاره کسب کنید",
         "silverCollector": "جمع‌آوری‌کننده نقره",
+        "silverCollectorDesc": "۶۰ ستاره کسب کنید",
         "goldCollector": "جمع‌آوری‌کننده طلا",
+        "goldCollectorDesc": "۹۰ ستاره کسب کنید",
         "diamondCollector": "جمع‌آوری‌کننده الماس",
-        "starMaster": "استاد ستاره‌ها"
+        "diamondCollectorDesc": "۱۲۰ ستاره کسب کنید",
+        "starMaster": "استاد ستاره‌ها",
+        "starMasterDesc": "تمام ۱۵۰ ستاره را کسب کنید"
     },
     "endlessTiers": {
         "bronze": "برنزی",
@@ -132,5 +163,8 @@
         "gold": "طلایی",
         "diamond": "الماسی",
         "earthSaver": "نجات‌دهنده زمین"
+    },
+    "climate": {
+        "timeLeft": "زمان باقی‌مانده برای محدود کردن گرمایش به ۱.۵ درجه سانتیگراد"
     }
 }

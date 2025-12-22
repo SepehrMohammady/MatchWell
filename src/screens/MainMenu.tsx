@@ -148,7 +148,7 @@ const MainMenu: React.FC<Props> = ({ navigation }) => {
                 {/* Title section */}
                 <View style={styles.titleSection}>
                     <Text style={styles.title}>MatchWell</Text>
-                    <Text style={styles.subtitle}>Save the planet, one match at a time</Text>
+                    <Text style={styles.subtitle}>{t('menu.tagline')}</Text>
                 </View>
 
                 {/* Primary buttons: Story Mode and Endless Mode */}

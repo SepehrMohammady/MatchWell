@@ -16,6 +16,7 @@ import { RootStackParamList } from '../types';
 import { ThemeType } from '../types';
 import { useGameStore } from '../context/GameStore';
 import { THEME_CONFIGS, getLevelsByTheme } from '../themes';
+import { formatNumber } from '../config/i18n';
 import { playSfx, playBgm } from '../utils/SoundManager';
 import { COLORS, TYPOGRAPHY, SPACING, RADIUS, SHADOWS } from '../config/theme';
 import { getThemeIcon, LockIcon, BackIcon } from '../components/UI/Icons';
@@ -148,7 +149,7 @@ const EndlessSelect: React.FC<Props> = ({ navigation }) => {
             {/* Description */}
             <View style={styles.descriptionBox}>
                 <Text style={styles.descriptionText}>
-                    No move limit — just keep matching and beat your high score!
+                    {t('endless.noMoveLimit')}
                 </Text>
             </View>
 
@@ -183,10 +184,10 @@ const EndlessSelect: React.FC<Props> = ({ navigation }) => {
                                         styles.themeName,
                                         !unlocked && styles.lockedText
                                     ]}>
-                                        {theme.name}
+                                        {t(`themes.${themeId === 'trash-sorting' ? 'trashSorting' : themeId === 'water-conservation' ? 'waterConservation' : themeId === 'energy-efficiency' ? 'energyEfficiency' : themeId}`)}
                                     </Text>
                                     <Text style={styles.themeDescription}>
-                                        {unlocked ? theme.description : 'To unlock, complete all story levels of this theme'}
+                                        {unlocked ? t(`themes.${themeId === 'trash-sorting' ? 'trashSorting' : themeId === 'water-conservation' ? 'waterConservation' : themeId === 'energy-efficiency' ? 'energyEfficiency' : themeId}Desc`) : t('achievements.locked')}
                                     </Text>
                                 </View>
                             </View>
@@ -194,9 +195,9 @@ const EndlessSelect: React.FC<Props> = ({ navigation }) => {
                             {unlocked && (
                                 <View style={styles.statsRow}>
                                     <View style={styles.highScoreBox}>
-                                        <Text style={styles.highScoreLabel}>Best score</Text>
+                                        <Text style={styles.highScoreLabel}>{t('common.bestScore')}</Text>
                                         <Text style={styles.highScoreValue}>
-                                            {highScore > 0 ? highScore.toLocaleString() : '—'}
+                                            {highScore > 0 ? formatNumber(highScore) : '—'}
                                         </Text>
                                     </View>
                                     {savedThemes.has(themeId) ? (
@@ -205,18 +206,18 @@ const EndlessSelect: React.FC<Props> = ({ navigation }) => {
                                                 style={styles.continueButton}
                                                 onPress={() => handleContinue(themeId)}
                                             >
-                                                <Text style={styles.continueButtonText}>Continue</Text>
+                                                <Text style={styles.continueButtonText}>{t('common.continue')}</Text>
                                             </TouchableOpacity>
                                             <TouchableOpacity
                                                 style={styles.newGameButton}
                                                 onPress={() => handleNewGame(themeId)}
                                             >
-                                                <Text style={styles.newGameButtonText}>New</Text>
+                                                <Text style={styles.newGameButtonText}>{t('common.new')}</Text>
                                             </TouchableOpacity>
                                         </View>
                                     ) : (
                                         <View style={styles.playButton}>
-                                            <Text style={styles.playButtonText}>Play</Text>
+                                            <Text style={styles.playButtonText}>{t('game.playAgain')}</Text>
                                         </View>
                                     )}
                                 </View>

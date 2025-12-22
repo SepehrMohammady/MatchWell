@@ -114,6 +114,54 @@ const Achievements: React.FC<Props> = ({ navigation }) => {
         [levelMovesRemaining, allLevelIds]
     );
 
+    // Helper function to get translated achievement name based on id
+    const getAchievementName = (achievement: Achievement) => {
+        if (achievement.category === 'theme') {
+            const keyMap: Record<string, string> = {
+                'theme-trash-sorting': 'themeAchievements.recycler',
+                'theme-pollution': 'themeAchievements.cleanAirChampion',
+                'theme-water-conservation': 'themeAchievements.waterGuardian',
+                'theme-energy-efficiency': 'themeAchievements.energySaver',
+                'theme-deforestation': 'themeAchievements.forestProtector',
+            };
+            return t(keyMap[achievement.id] || achievement.name);
+        } else if (achievement.category === 'stars') {
+            const keyMap: Record<string, string> = {
+                'stars-30': 'starAchievements.bronzeCollector',
+                'stars-60': 'starAchievements.silverCollector',
+                'stars-90': 'starAchievements.goldCollector',
+                'stars-120': 'starAchievements.diamondCollector',
+                'stars-150': 'starAchievements.starMaster',
+            };
+            return t(keyMap[achievement.id] || achievement.name);
+        }
+        return achievement.name;
+    };
+
+    // Helper function to get translated achievement description based on id
+    const getAchievementDesc = (achievement: Achievement) => {
+        if (achievement.category === 'theme') {
+            const keyMap: Record<string, string> = {
+                'theme-trash-sorting': 'themeAchievements.recyclerDesc',
+                'theme-pollution': 'themeAchievements.cleanAirChampionDesc',
+                'theme-water-conservation': 'themeAchievements.waterGuardianDesc',
+                'theme-energy-efficiency': 'themeAchievements.energySaverDesc',
+                'theme-deforestation': 'themeAchievements.forestProtectorDesc',
+            };
+            return t(keyMap[achievement.id] || achievement.description);
+        } else if (achievement.category === 'stars') {
+            const keyMap: Record<string, string> = {
+                'stars-30': 'starAchievements.bronzeCollectorDesc',
+                'stars-60': 'starAchievements.silverCollectorDesc',
+                'stars-90': 'starAchievements.goldCollectorDesc',
+                'stars-120': 'starAchievements.diamondCollectorDesc',
+                'stars-150': 'starAchievements.starMasterDesc',
+            };
+            return t(keyMap[achievement.id] || achievement.description);
+        }
+        return achievement.description;
+    };
+
     // Render a single achievement medal
     const renderAchievement = (achievement: Achievement) => {
         const unlocked = isUnlocked(achievement);
@@ -135,10 +183,10 @@ const Achievements: React.FC<Props> = ({ navigation }) => {
                 </View>
                 <View style={styles.medalInfo}>
                     <Text style={[styles.medalName, !unlocked && styles.medalTextLocked]}>
-                        {achievement.name}
+                        {getAchievementName(achievement)}
                     </Text>
                     <Text style={[styles.medalDescription, !unlocked && styles.medalTextLocked]}>
-                        {achievement.description}
+                        {getAchievementDesc(achievement)}
                     </Text>
                 </View>
             </View>
@@ -217,46 +265,46 @@ const Achievements: React.FC<Props> = ({ navigation }) => {
                         <MaterialCommunityIcons name="infinity" size={20} color={COLORS.textMuted} />
                         <Text style={styles.sectionTitle}>{t('achievements.endlessMode')}</Text>
                     </View>
-                    {Object.entries(endlessByTheme).map(([theme, achievements]) => (
-                        <View key={theme} style={styles.endlessThemeGroup}>
-                            <Text style={styles.endlessThemeName}>
-                                {achievements[0].name.split(' ').slice(1).join(' ')}
-                            </Text>
-                            <View style={styles.endlessTierRow}>
-                                {achievements.map((a) => {
-                                    const unlocked = isUnlocked(a);
-                                    return (
-                                        <View
-                                            key={a.id}
-                                            style={[
-                                                styles.endlessMedal,
-                                                !unlocked && styles.endlessMedalLocked,
-                                            ]}
-                                        >
-                                            <View style={[styles.endlessMedalIconContainer, unlocked && a.iconColor && { backgroundColor: a.iconColor + '20' }]}>
-                                                {unlocked && a.icon ? (
-                                                    <MaterialCommunityIcons
-                                                        name={a.icon}
-                                                        size={20}
-                                                        color={a.iconColor || COLORS.organicWaste}
-                                                    />
-                                                ) : (
-                                                    <LockIcon size={16} color={COLORS.textMuted} />
-                                                )}
+                    {Object.entries(endlessByTheme).map(([theme, achievements]) => {
+                        // Get translated theme name for endless mode
+                        const themeKey = theme === 'trash-sorting' ? 'trashSorting' : theme === 'water-conservation' ? 'waterConservation' : theme === 'energy-efficiency' ? 'energyEfficiency' : theme;
+                        return (
+                            <View key={theme} style={styles.endlessThemeGroup}>
+                                <Text style={styles.endlessThemeName}>
+                                    {t(`themes.${themeKey}`)}
+                                </Text>
+                                <View style={styles.endlessTierRow}>
+                                    {achievements.map((a) => {
+                                        const unlocked = isUnlocked(a);
+                                        return (
+                                            <View
+                                                key={a.id}
+                                                style={[
+                                                    styles.endlessMedal,
+                                                    !unlocked && styles.endlessMedalLocked,
+                                                ]}
+                                            >
+                                                <View style={[styles.endlessMedalIconContainer, unlocked && a.iconColor && { backgroundColor: a.iconColor + '20' }]}>
+                                                    {unlocked && a.icon ? (
+                                                        <MaterialCommunityIcons
+                                                            name={a.icon}
+                                                            size={20}
+                                                            color={a.iconColor || COLORS.organicWaste}
+                                                        />
+                                                    ) : (
+                                                        <LockIcon size={16} color={COLORS.textMuted} />
+                                                    )}
+                                                </View>
+                                                <Text style={styles.endlessMedalTier}>
+                                                    {t(`endlessTiers.${a.tier === 'earth-saver' ? 'earthSaver' : a.tier}`)}
+                                                </Text>
                                             </View>
-                                            <Text style={styles.endlessMedalTier}>
-                                                {a.tier === 'bronze' ? 'Bronze' :
-                                                    a.tier === 'silver' ? 'Silver' :
-                                                        a.tier === 'gold' ? 'Gold' :
-                                                            a.tier === 'diamond' ? 'Diamond' :
-                                                                a.tier === 'earth-saver' ? 'Earth Saver' : ''}
-                                            </Text>
-                                        </View>
-                                    );
-                                })}
+                                        );
+                                    })}
+                                </View>
                             </View>
-                        </View>
-                    ))}
+                        );
+                    })}
                 </View>
             </ScrollView>
         </View>

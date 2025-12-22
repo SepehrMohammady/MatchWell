@@ -16,7 +16,10 @@
         "ok": "OK",
         "cancel": "キャンセル",
         "save": "保存",
-        "settings": "設定"
+        "settings": "設定",
+        "new": "新規",
+        "continue": "続ける",
+        "bestScore": "ベストスコア"
     },
     "menu": {
         "storyMode": "ストーリーモード",
@@ -25,7 +28,8 @@
         "leaderboard": "リーダーボード",
         "settings": "設定",
         "selectLevel": "レベルを選択",
-        "selectTheme": "テーマを選択"
+        "selectTheme": "テーマを選択",
+        "tagline": "一つのマッチで地球を救おう"
     },
     "game": {
         "paused": "一時停止",
@@ -81,17 +85,26 @@
         "title": "設定",
         "sound": "サウンド",
         "music": "音楽",
+        "backgroundMusic": "BGM",
         "sfx": "効果音",
+        "tileSounds": "タイル音とフィードバック",
         "language": "言語",
         "selectLanguage": "言語を選択",
         "restartRequired": "レイアウト変更にはアプリの再起動が必要です",
         "restartNow": "今すぐ再起動",
         "restartLater": "後で",
+        "resetProgress": "進捗をリセット",
+        "resetAllProgress": "すべての進捗をリセット",
+        "resetWarning": "すべての進捗が削除されます。よろしいですか？",
+        "testers": "テスター",
+        "testersThanks": "貴重なフィードバックをありがとうございます！",
         "about": "このアプリについて",
         "version": "バージョン",
+        "developer": "開発者",
+        "sourceCode": "ソースコード",
+        "privacy": "プライバシー",
+        "privacyDesc": "データの収集・共有なし",
         "credits": "クレジット",
-        "resetProgress": "進捗をリセット",
-        "resetWarning": "すべての進捗が削除されます。よろしいですか？",
         "privacyPolicy": "プライバシーポリシー"
     },
     "leaderboard": {
@@ -107,24 +120,42 @@
     },
     "themes": {
         "trashSorting": "ゴミ分別",
-        "pollution": "大気汚染",
+        "trashSortingDesc": "リサイクルを学ぼう！ゴミをマッチして地球をきれいに。",
+        "pollution": "空気をきれいに",
+        "pollutionDesc": "汚染車両を撤去して街をきれいに！",
         "waterConservation": "節水",
+        "waterConservationDesc": "水を大切に！一滴一滴が未来につながる。",
         "energyEfficiency": "省エネ",
-        "deforestation": "森林保護"
+        "energyEfficiencyDesc": "クリーンエネルギーを使おう！持続可能な世界へ。",
+        "deforestation": "森林を守ろう",
+        "deforestationDesc": "木を植えよう！未来の世代のために森林を守ろう。"
+    },
+    "endless": {
+        "noMoveLimit": "手数制限なし — マッチを続けてハイスコアを目指そう！"
     },
     "themeAchievements": {
         "recycler": "リサイクラー",
-        "cleanAirChampion": "クリーンエアチャンピオン",
+        "recyclerDesc": "ゴミ分別のすべてのレベルをクリア",
+        "cleanAirChampion": "空気清浄チャンピオン",
+        "cleanAirChampionDesc": "大気汚染のすべてのレベルをクリア",
         "waterGuardian": "ウォーターガーディアン",
+        "waterGuardianDesc": "節水のすべてのレベルをクリア",
         "energySaver": "エナジーセーバー",
-        "forestProtector": "フォレストプロテクター"
+        "energySaverDesc": "省エネのすべてのレベルをクリア",
+        "forestProtector": "フォレストプロテクター",
+        "forestProtectorDesc": "森林保護のすべてのレベルをクリア"
     },
     "starAchievements": {
         "bronzeCollector": "ブロンズコレクター",
+        "bronzeCollectorDesc": "合計30個の星を獲得",
         "silverCollector": "シルバーコレクター",
+        "silverCollectorDesc": "合計60個の星を獲得",
         "goldCollector": "ゴールドコレクター",
+        "goldCollectorDesc": "合計90個の星を獲得",
         "diamondCollector": "ダイヤモンドコレクター",
-        "starMaster": "スターマスター"
+        "diamondCollectorDesc": "合計120個の星を獲得",
+        "starMaster": "スターマスター",
+        "starMasterDesc": "150個の星をすべて獲得"
     },
     "endlessTiers": {
         "bronze": "ブロンズ",
@@ -132,5 +163,8 @@
         "gold": "ゴールド",
         "diamond": "ダイヤモンド",
         "earthSaver": "アースセーバー"
+    },
+    "climate": {
+        "timeLeft": "1.5°C上昇までの残り時間"
     }
 }

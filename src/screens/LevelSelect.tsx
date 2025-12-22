@@ -188,7 +188,7 @@ const LevelSelect: React.FC<Props> = ({ navigation }) => {
                                 </View>
                                 <View style={styles.themeTextContainer}>
                                     <View style={styles.themeNameRow}>
-                                        <Text style={styles.themeName}>{theme.name}</Text>
+                                        <Text style={styles.themeName}>{t(`themes.${themeId === 'trash-sorting' ? 'trashSorting' : themeId === 'water-conservation' ? 'waterConservation' : themeId === 'energy-efficiency' ? 'energyEfficiency' : themeId}`)}</Text>
                                         <View style={styles.themeStarsContainer}>
                                             <StarFilledIcon size={14} />
                                             <Text style={styles.themeStarsText}>
@@ -196,7 +196,7 @@ const LevelSelect: React.FC<Props> = ({ navigation }) => {
                                             </Text>
                                         </View>
                                     </View>
-                                    <Text style={styles.themeDescription}>{theme.description}</Text>
+                                    <Text style={styles.themeDescription}>{t(`themes.${themeId === 'trash-sorting' ? 'trashSorting' : themeId === 'water-conservation' ? 'waterConservation' : themeId === 'energy-efficiency' ? 'energyEfficiency' : themeId}Desc`)}</Text>
                                 </View>
                             </View>
 
@@ -244,7 +244,7 @@ const LevelSelect: React.FC<Props> = ({ navigation }) => {
 
                 {/* Coming Soon section */}
                 <View style={styles.comingSoon}>
-                    <Text style={styles.comingSoonTitle}>More coming soon</Text>
+                    <Text style={styles.comingSoonTitle}>{t('game.comingSoon')}</Text>
                 </View>
             </ScrollView>
         </View>

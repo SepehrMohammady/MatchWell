@@ -131,12 +131,12 @@ const Settings: React.FC<Props> = ({ navigation }) => {
             <ScrollView style={styles.content} contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
                 {/* Sound Settings Section */}
                 <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>Sound</Text>
+                    <Text style={styles.sectionTitle}>{t('settings.sound')}</Text>
 
                     <View style={styles.settingRow}>
                         <View style={styles.settingInfo}>
-                            <Text style={styles.settingLabel}>Music</Text>
-                            <Text style={styles.settingDescription}>Background music</Text>
+                            <Text style={styles.settingLabel}>{t('settings.music')}</Text>
+                            <Text style={styles.settingDescription}>{t('settings.backgroundMusic')}</Text>
                         </View>
                         <Switch
                             value={musicEnabled}
@@ -148,8 +148,8 @@ const Settings: React.FC<Props> = ({ navigation }) => {
 
                     <View style={[styles.settingRow, styles.lastRow]}>
                         <View style={styles.settingInfo}>
-                            <Text style={styles.settingLabel}>Sound effects</Text>
-                            <Text style={styles.settingDescription}>Tile sounds & feedback</Text>
+                            <Text style={styles.settingLabel}>{t('settings.sfx')}</Text>
+                            <Text style={styles.settingDescription}>{t('settings.tileSounds')}</Text>
                         </View>
                         <Switch
                             value={sfxEnabled}
@@ -184,17 +184,17 @@ const Settings: React.FC<Props> = ({ navigation }) => {
                         style={styles.dangerButton}
                         onPress={handleResetData}
                     >
-                        <Text style={styles.dangerButtonText}>Reset All Progress</Text>
+                        <Text style={styles.dangerButtonText}>{t('settings.resetAllProgress')}</Text>
                     </TouchableOpacity>
                 </View>
 
                 {/* Testers Section */}
                 <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>Testers</Text>
+                    <Text style={styles.sectionTitle}>{t('settings.testers')}</Text>
 
                     <View style={styles.aboutCard}>
                         <View style={styles.aboutCardRow}>
-                            <Text style={styles.testersThankYou}>Thank you for your valuable feedback!</Text>
+                            <Text style={styles.testersThankYou}>{t('settings.testersThanks')}</Text>
                         </View>
                         <View style={[styles.aboutCardRow, styles.aboutCardLastRow]}>
                             <Text style={styles.testerName}>Majid Mohammadi</Text>
@@ -204,7 +204,7 @@ const Settings: React.FC<Props> = ({ navigation }) => {
 
                 {/* About Section - FeedWell Style */}
                 <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>About</Text>
+                    <Text style={styles.sectionTitle}>{t('settings.about')}</Text>
 
                     <View style={styles.aboutCard}>
                         {/* App Name */}
@@ -214,7 +214,7 @@ const Settings: React.FC<Props> = ({ navigation }) => {
 
                         {/* Version */}
                         <View style={styles.aboutCardRow}>
-                            <Text style={styles.aboutCardLabel}>Version</Text>
+                            <Text style={styles.aboutCardLabel}>{t('settings.version')}</Text>
                             <Text style={styles.aboutCardValue}>{VERSION.string}</Text>
                         </View>
 
@@ -224,7 +224,7 @@ const Settings: React.FC<Props> = ({ navigation }) => {
                             onPress={() => Linking.openURL('https://sepehrmohammady.ir/')}
                         >
                             <View>
-                                <Text style={styles.aboutCardLabel}>Developer</Text>
+                                <Text style={styles.aboutCardLabel}>{t('settings.developer')}</Text>
                                 <Text style={styles.aboutCardValue}>Sepehr Mohammady</Text>
                             </View>
                             <Text style={styles.linkIcon}>↗</Text>
@@ -236,7 +236,7 @@ const Settings: React.FC<Props> = ({ navigation }) => {
                             onPress={() => Linking.openURL('https://github.com/SepehrMohammady/MatchWell')}
                         >
                             <View>
-                                <Text style={styles.aboutCardLabel}>Source Code</Text>
+                                <Text style={styles.aboutCardLabel}>{t('settings.sourceCode')}</Text>
                                 <Text style={styles.aboutCardValue}>github.com/SepehrMohammady/MatchWell</Text>
                             </View>
                             <Text style={styles.linkIcon}>⎋</Text>
@@ -244,15 +244,15 @@ const Settings: React.FC<Props> = ({ navigation }) => {
 
                         {/* Privacy */}
                         <View style={[styles.aboutCardRow, styles.aboutCardLastRow]}>
-                            <Text style={styles.aboutCardLabel}>Privacy</Text>
-                            <Text style={styles.aboutCardValue}>No data is collected or shared</Text>
+                            <Text style={styles.aboutCardLabel}>{t('settings.privacy')}</Text>
+                            <Text style={styles.aboutCardValue}>{t('settings.privacyDesc')}</Text>
                         </View>
                     </View>
                 </View>
 
                 {/* Tagline */}
                 <View style={styles.taglineContainer}>
-                    <Text style={styles.tagline}>🌱 Save the planet, one match at a time</Text>
+                    <Text style={styles.tagline}>🌱 {t('menu.tagline')}</Text>
                     <Text style={styles.copyright}>© 2025 Sepehr Mohammady. Open source under MIT License.</Text>
                 </View>
             </ScrollView>

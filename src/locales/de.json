@@ -16,7 +16,10 @@
         "ok": "OK",
         "cancel": "Abbrechen",
         "save": "Speichern",
-        "settings": "Einstellungen"
+        "settings": "Einstellungen",
+        "new": "Neu",
+        "continue": "Fortsetzen",
+        "bestScore": "Bestpunktzahl"
     },
     "menu": {
         "storyMode": "Story-Modus",
@@ -25,7 +28,8 @@
         "leaderboard": "Bestenliste",
         "settings": "Einstellungen",
         "selectLevel": "Level Wählen",
-        "selectTheme": "Thema Wählen"
+        "selectTheme": "Thema Wählen",
+        "tagline": "Rette den Planeten, ein Match nach dem anderen"
     },
     "game": {
         "paused": "Pausiert",
@@ -81,17 +85,26 @@
         "title": "Einstellungen",
         "sound": "Ton",
         "music": "Musik",
+        "backgroundMusic": "Hintergrundmusik",
         "sfx": "Soundeffekte",
+        "tileSounds": "Spielstein-Sounds und Feedback",
         "language": "Sprache",
         "selectLanguage": "Sprache Wählen",
         "restartRequired": "Neustart erforderlich für Layout-Änderungen",
         "restartNow": "Jetzt Neu Starten",
         "restartLater": "Später",
+        "resetProgress": "Fortschritt Zurücksetzen",
+        "resetAllProgress": "Gesamten Fortschritt Zurücksetzen",
+        "resetWarning": "Dies löscht deinen gesamten Fortschritt. Bist du sicher?",
+        "testers": "Tester",
+        "testersThanks": "Danke für euer wertvolles Feedback!",
         "about": "Über",
         "version": "Version",
+        "developer": "Entwickler",
+        "sourceCode": "Quellcode",
+        "privacy": "Datenschutz",
+        "privacyDesc": "Es werden keine Daten gesammelt oder geteilt",
         "credits": "Mitwirkende",
-        "resetProgress": "Fortschritt Zurücksetzen",
-        "resetWarning": "Dies löscht deinen gesamten Fortschritt. Bist du sicher?",
         "privacyPolicy": "Datenschutzrichtlinie"
     },
     "leaderboard": {
@@ -107,24 +120,42 @@
     },
     "themes": {
         "trashSorting": "Mülltrennung",
-        "pollution": "Umweltverschmutzung",
+        "trashSortingDesc": "Lerne zu recyceln! Kombiniere Müll, um unseren Planeten sauber zu halten.",
+        "pollution": "Luft Reinigen",
+        "pollutionDesc": "Entferne umweltverschmutzende Fahrzeuge, um unsere Städte zu säubern!",
         "waterConservation": "Wassersparen",
+        "waterConservationDesc": "Spare Wasser! Jeder Tropfen zählt für unsere Zukunft.",
         "energyEfficiency": "Energieeffizienz",
-        "deforestation": "Entwaldung"
+        "energyEfficiencyDesc": "Nutze saubere Energie! Versorge die Welt nachhaltig.",
+        "deforestation": "Wälder Retten",
+        "deforestationDesc": "Pflanze Bäume! Schütze unsere Wälder für zukünftige Generationen."
+    },
+    "endless": {
+        "noMoveLimit": "Kein Zuglimit — kombiniere weiter und übertreffe deinen Highscore!"
     },
     "themeAchievements": {
         "recycler": "Recycler",
-        "cleanAirChampion": "Saubere-Luft-Champion",
+        "recyclerDesc": "Schließe alle Mülltrennung-Level ab",
+        "cleanAirChampion": "Luftreiniger",
+        "cleanAirChampionDesc": "Schließe alle Verschmutzung-Level ab",
         "waterGuardian": "Wasserwächter",
+        "waterGuardianDesc": "Schließe alle Wasserspar-Level ab",
         "energySaver": "Energiesparer",
-        "forestProtector": "Waldbeschützer"
+        "energySaverDesc": "Schließe alle Energieeffizienz-Level ab",
+        "forestProtector": "Waldbeschützer",
+        "forestProtectorDesc": "Schließe alle Entwaldung-Level ab"
     },
     "starAchievements": {
         "bronzeCollector": "Bronze-Sammler",
+        "bronzeCollectorDesc": "Verdiene 30 Sterne insgesamt",
         "silverCollector": "Silber-Sammler",
+        "silverCollectorDesc": "Verdiene 60 Sterne insgesamt",
         "goldCollector": "Gold-Sammler",
+        "goldCollectorDesc": "Verdiene 90 Sterne insgesamt",
         "diamondCollector": "Diamant-Sammler",
-        "starMaster": "Sterne-Meister"
+        "diamondCollectorDesc": "Verdiene 120 Sterne insgesamt",
+        "starMaster": "Sterne-Meister",
+        "starMasterDesc": "Verdiene alle 150 Sterne"
     },
     "endlessTiers": {
         "bronze": "Bronze",
@@ -132,5 +163,8 @@
         "gold": "Gold",
         "diamond": "Diamant",
         "earthSaver": "Erdenretter"
+    },
+    "climate": {
+        "timeLeft": "Verbleibende Zeit zur Begrenzung der Erwärmung auf 1,5°C"
     }
 }

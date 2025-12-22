@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import { COLORS, TYPOGRAPHY, SPACING, RADIUS } from '../../config/theme';
+import { useTranslation } from 'react-i18next';
 
 interface ClockData {
     years: number;
@@ -17,6 +18,7 @@ const CLIMATE_CLOCK_API = 'https://api.climateclock.world/v2/clock.json';
 const FALLBACK_DEADLINE = '2029-07-22T16:00:00+00:00';
 
 const ClimateClock: React.FC = () => {
+    const { t } = useTranslation();
     const [clockData, setClockData] = useState<ClockData | null>(null);
     const [deadline, setDeadline] = useState<Date>(new Date(FALLBACK_DEADLINE));
     const [isLoading, setIsLoading] = useState(true);
@@ -94,7 +96,7 @@ const ClimateClock: React.FC = () => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.label}>🌍 Time left to limit warming to 1.5°C</Text>
+            <Text style={styles.label}>🌍 {t('climate.timeLeft')}</Text>
             <View style={styles.clockRow}>
                 <View style={styles.timeUnit}>
                     <Text style={styles.timeValue}>{clockData.years}</Text>

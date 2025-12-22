@@ -16,7 +16,10 @@
         "ok": "موافق",
         "cancel": "إلغاء",
         "save": "حفظ",
-        "settings": "الإعدادات"
+        "settings": "الإعدادات",
+        "new": "جديد",
+        "continue": "استمرار",
+        "bestScore": "أفضل نتيجة"
     },
     "menu": {
         "storyMode": "وضع القصة",
@@ -25,11 +28,12 @@
         "leaderboard": "لوحة المتصدرين",
         "settings": "الإعدادات",
         "selectLevel": "اختر المستوى",
-        "selectTheme": "اختر الموضوع"
+        "selectTheme": "اختر الموضوع",
+        "tagline": "أنقذ الكوكب، مباراة تلو الأخرى"
     },
     "game": {
         "paused": "متوقف مؤقتاً",
-        "levelComplete": "!اكتمل المستوى",
+        "levelComplete": "اكتمل المستوى!",
         "gameOver": "انتهت اللعبة",
         "nextLevel": "المستوى التالي",
         "playAgain": "العب مرة أخرى",
@@ -38,20 +42,20 @@
         "levels": "المستويات",
         "movesRemaining": "{{count}} حركات متبقية",
         "targetScore": "الهدف: {{score}}",
-        "newHighScore": "!رقم قياسي جديد",
-        "storyComplete": "!اكتملت القصة",
-        "congratulations": "!تهانينا",
-        "completedAllLevels": "!MatchWell لقد أكملت جميع مستويات {{count}} في",
-        "thankYouPlaying": ".شكراً لك على اللعب والتعلم عن كوكبنا",
+        "newHighScore": "رقم قياسي جديد!",
+        "storyComplete": "اكتملت القصة!",
+        "congratulations": "تهانينا!",
+        "completedAllLevels": "لقد أكملت جميع مستويات {{count}} في MatchWell!",
+        "thankYouPlaying": "شكراً لك على اللعب والتعلم عن كوكبنا.",
         "collectMoreStars": "اجمع المزيد من النجوم",
-        "replayForStars": "!أعد لعب المستويات لكسب المزيد من النجوم! أكمل كل مستوى بحركات أكثر متبقية لتحقيق أقصى عدد من النجوم",
+        "replayForStars": "أعد لعب المستويات لكسب المزيد من النجوم! أكمل كل مستوى بحركات أكثر متبقية لتحقيق أقصى عدد من النجوم!",
         "earnMedals": "احصل على الميداليات",
-        "achievementsPage": "!قم بزيارة صفحة الإنجازات لجمع الميداليات لتقدمك ومراحل النجوم ونتائج الوضع اللانهائي",
+        "achievementsPage": "قم بزيارة صفحة الإنجازات لجمع الميداليات لتقدمك ومراحل النجوم ونتائج الوضع اللانهائي!",
         "tryEndlessMode": "جرب الوضع اللانهائي",
-        "endlessChallenge": "!تحدى نفسك في الوضع اللانهائي! لكل موضوع تحديه اللانهائي الخاص. انظر إلى أي مدى يمكنك الوصول",
+        "endlessChallenge": "تحدى نفسك في الوضع اللانهائي! لكل موضوع تحديه اللانهائي الخاص. انظر إلى أي مدى يمكنك الوصول!",
         "climbLeaderboard": "تسلق لوحة المتصدرين",
-        "competeWorldwide": "!تنافس مع لاعبين من جميع أنحاء العالم! نتائجك في الوضع اللانهائي مصنفة على لوحة المتصدرين العالمية",
-        "letsGo": "!هيا بنا",
+        "competeWorldwide": "تنافس مع لاعبين من جميع أنحاء العالم! نتائجك في الوضع اللانهائي مصنفة على لوحة المتصدرين العالمية!",
+        "letsGo": "هيا بنا!",
         "comingSoon": "قريباً"
     },
     "tutorial": {
@@ -64,7 +68,7 @@
         "slide3Desc": "طابق ٤ بلاطات أو أكثر لشحن القوة. عند ١٠ نقاط أو أكثر، المس أيقونة الأرض لمسح صف أو عمود!",
         "slide4Title": "اربح النجوم",
         "slide4Desc": "أكمل المستويات مع حركات متبقية للحصول على ٣ نجوم!",
-        "letsPlay": "!هيا نلعب"
+        "letsPlay": "هيا نلعب!"
     },
     "achievements": {
         "title": "الإنجازات",
@@ -81,17 +85,26 @@
         "title": "الإعدادات",
         "sound": "الصوت",
         "music": "الموسيقى",
+        "backgroundMusic": "موسيقى الخلفية",
         "sfx": "المؤثرات الصوتية",
+        "tileSounds": "أصوات البلاط والتأثيرات",
         "language": "اللغة",
         "selectLanguage": "اختر اللغة",
         "restartRequired": "يتطلب إعادة تشغيل التطبيق لتغييرات التخطيط",
         "restartNow": "إعادة التشغيل الآن",
         "restartLater": "لاحقاً",
+        "resetProgress": "إعادة تعيين التقدم",
+        "resetAllProgress": "إعادة تعيين كل التقدم",
+        "resetWarning": "سيؤدي هذا إلى حذف كل تقدمك. هل أنت متأكد؟",
+        "testers": "المختبرون",
+        "testersThanks": "شكراً لملاحظاتكم القيمة!",
         "about": "حول",
         "version": "الإصدار",
+        "developer": "المطور",
+        "sourceCode": "الكود المصدري",
+        "privacy": "الخصوصية",
+        "privacyDesc": "لا يتم جمع أو مشاركة أي بيانات",
         "credits": "الاعتمادات",
-        "resetProgress": "إعادة تعيين التقدم",
-        "resetWarning": "سيؤدي هذا إلى حذف كل تقدمك. هل أنت متأكد؟",
         "privacyPolicy": "سياسة الخصوصية"
     },
     "leaderboard": {
@@ -107,24 +120,42 @@
     },
     "themes": {
         "trashSorting": "فرز النفايات",
-        "pollution": "التلوث",
+        "trashSortingDesc": "تعلم فرز المواد! طابق النفايات للحفاظ على كوكبنا نظيفاً.",
+        "pollution": "تنظيف الهواء",
+        "pollutionDesc": "أزل المركبات الملوثة لتنظيف مدننا!",
         "waterConservation": "الحفاظ على المياه",
+        "waterConservationDesc": "وفر المياه! كل قطرة مهمة لمستقبلنا.",
         "energyEfficiency": "كفاءة الطاقة",
-        "deforestation": "إزالة الغابات"
+        "energyEfficiencyDesc": "استخدم الطاقة النظيفة! شغّل العالم بشكل مستدام.",
+        "deforestation": "إنقاذ الغابات",
+        "deforestationDesc": "ازرع الأشجار! احمِ غاباتنا للأجيال القادمة."
+    },
+    "endless": {
+        "noMoveLimit": "بدون حد للحركات — استمر في المطابقة وتغلب على أفضل نتيجة لك!"
     },
     "themeAchievements": {
         "recycler": "المُعيد للتدوير",
-        "cleanAirChampion": "بطل الهواء النظيف",
+        "recyclerDesc": "أكمل جميع مستويات فرز النفايات",
+        "cleanAirChampion": "منظف الهواء",
+        "cleanAirChampionDesc": "أكمل جميع مستويات التلوث",
         "waterGuardian": "حارس المياه",
+        "waterGuardianDesc": "أكمل جميع مستويات الحفاظ على المياه",
         "energySaver": "موفر الطاقة",
-        "forestProtector": "حامي الغابات"
+        "energySaverDesc": "أكمل جميع مستويات كفاءة الطاقة",
+        "forestProtector": "حامي الغابات",
+        "forestProtectorDesc": "أكمل جميع مستويات إزالة الغابات"
     },
     "starAchievements": {
         "bronzeCollector": "جامع البرونز",
+        "bronzeCollectorDesc": "احصل على ٣٠ نجمة",
         "silverCollector": "جامع الفضة",
+        "silverCollectorDesc": "احصل على ٦٠ نجمة",
         "goldCollector": "جامع الذهب",
+        "goldCollectorDesc": "احصل على ٩٠ نجمة",
         "diamondCollector": "جامع الماس",
-        "starMaster": "سيد النجوم"
+        "diamondCollectorDesc": "احصل على ١٢٠ نجمة",
+        "starMaster": "سيد النجوم",
+        "starMasterDesc": "احصل على جميع ١٥٠ نجمة"
     },
     "endlessTiers": {
         "bronze": "برونزي",
@@ -132,5 +163,8 @@
         "gold": "ذهبي",
         "diamond": "ماسي",
         "earthSaver": "منقذ الأرض"
+    },
+    "climate": {
+        "timeLeft": "الوقت المتبقي لتحديد الاحترار عند ١.٥ درجة مئوية"
     }
 }

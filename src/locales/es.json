@@ -16,7 +16,10 @@
         "ok": "Aceptar",
         "cancel": "Cancelar",
         "save": "Guardar",
-        "settings": "Ajustes"
+        "settings": "Ajustes",
+        "new": "Nuevo",
+        "continue": "Continuar",
+        "bestScore": "Mejor puntuación"
     },
     "menu": {
         "storyMode": "Modo Historia",
@@ -25,7 +28,8 @@
         "leaderboard": "Clasificación",
         "settings": "Ajustes",
         "selectLevel": "Seleccionar Nivel",
-        "selectTheme": "Seleccionar Tema"
+        "selectTheme": "Seleccionar Tema",
+        "tagline": "Salva el planeta, una partida a la vez"
     },
     "game": {
         "paused": "Pausado",
@@ -81,17 +85,26 @@
         "title": "Ajustes",
         "sound": "Sonido",
         "music": "Música",
+        "backgroundMusic": "Música de fondo",
         "sfx": "Efectos de Sonido",
+        "tileSounds": "Sonidos de fichas y retroalimentación",
         "language": "Idioma",
         "selectLanguage": "Seleccionar Idioma",
         "restartRequired": "Se requiere reiniciar para cambios de diseño",
         "restartNow": "Reiniciar Ahora",
         "restartLater": "Más Tarde",
+        "resetProgress": "Reiniciar Progreso",
+        "resetAllProgress": "Reiniciar Todo el Progreso",
+        "resetWarning": "Esto eliminará todo tu progreso. ¿Estás seguro?",
+        "testers": "Probadores",
+        "testersThanks": "¡Gracias por tus valiosos comentarios!",
         "about": "Acerca de",
         "version": "Versión",
+        "developer": "Desarrollador",
+        "sourceCode": "Código Fuente",
+        "privacy": "Privacidad",
+        "privacyDesc": "No se recopilan ni comparten datos",
         "credits": "Créditos",
-        "resetProgress": "Reiniciar Progreso",
-        "resetWarning": "Esto eliminará todo tu progreso. ¿Estás seguro?",
         "privacyPolicy": "Política de Privacidad"
     },
     "leaderboard": {
@@ -107,24 +120,42 @@
     },
     "themes": {
         "trashSorting": "Clasificación de Basura",
-        "pollution": "Contaminación",
+        "trashSortingDesc": "¡Aprende a reciclar! Combina basura para mantener nuestro planeta limpio.",
+        "pollution": "Limpiar el Aire",
+        "pollutionDesc": "¡Elimina vehículos contaminantes para limpiar nuestras ciudades!",
         "waterConservation": "Conservación del Agua",
+        "waterConservationDesc": "¡Ahorra agua! Cada gota cuenta para nuestro futuro.",
         "energyEfficiency": "Eficiencia Energética",
-        "deforestation": "Deforestación"
+        "energyEfficiencyDesc": "¡Usa energía limpia! Alimenta el mundo de forma sostenible.",
+        "deforestation": "Salva los Bosques",
+        "deforestationDesc": "¡Planta árboles! Protege nuestros bosques para las generaciones futuras."
+    },
+    "endless": {
+        "noMoveLimit": "Sin límite de movimientos — ¡sigue combinando y supera tu mejor puntuación!"
     },
     "themeAchievements": {
         "recycler": "Reciclador",
-        "cleanAirChampion": "Campeón del Aire Limpio",
+        "recyclerDesc": "Completa todos los niveles de Clasificación de Basura",
+        "cleanAirChampion": "Limpiador del Aire",
+        "cleanAirChampionDesc": "Completa todos los niveles de Contaminación",
         "waterGuardian": "Guardián del Agua",
+        "waterGuardianDesc": "Completa todos los niveles de Conservación del Agua",
         "energySaver": "Ahorrador de Energía",
-        "forestProtector": "Protector del Bosque"
+        "energySaverDesc": "Completa todos los niveles de Eficiencia Energética",
+        "forestProtector": "Protector del Bosque",
+        "forestProtectorDesc": "Completa todos los niveles de Deforestación"
     },
     "starAchievements": {
         "bronzeCollector": "Coleccionista de Bronce",
+        "bronzeCollectorDesc": "Gana 30 estrellas en total",
         "silverCollector": "Coleccionista de Plata",
+        "silverCollectorDesc": "Gana 60 estrellas en total",
         "goldCollector": "Coleccionista de Oro",
+        "goldCollectorDesc": "Gana 90 estrellas en total",
         "diamondCollector": "Coleccionista de Diamante",
-        "starMaster": "Maestro de Estrellas"
+        "diamondCollectorDesc": "Gana 120 estrellas en total",
+        "starMaster": "Maestro de Estrellas",
+        "starMasterDesc": "Gana las 150 estrellas"
     },
     "endlessTiers": {
         "bronze": "Bronce",
@@ -132,5 +163,8 @@
         "gold": "Oro",
         "diamond": "Diamante",
         "earthSaver": "Salvador de la Tierra"
+    },
+    "climate": {
+        "timeLeft": "Tiempo restante para limitar el calentamiento a 1.5°C"
     }
 }
