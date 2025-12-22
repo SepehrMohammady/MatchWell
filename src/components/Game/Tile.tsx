@@ -152,8 +152,11 @@ const TileComponent: React.FC<TileProps> = memo(({ tile, isSelected, onPress, on
 
         const direction = getSwipeDirection(dx, dy);
 
+        console.log('🔄 Tile gesture:', { position: tile.position, dx, dy, direction, isSwipe: isSwipe.current });
+
         if (direction && isSwipe.current) {
           // It's a swipe
+          console.log('➡️ Executing swipe:', { position: tile.position, direction });
           onSwipe(tile.position, direction);
         } else {
           // It's a tap

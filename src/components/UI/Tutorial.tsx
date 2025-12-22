@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { COLORS, TYPOGRAPHY, SPACING, RADIUS } from '../../config/theme';
+import { useTranslation } from 'react-i18next';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const CONTAINER_WIDTH = SCREEN_WIDTH - SPACING.xl * 2;
@@ -30,6 +31,7 @@ interface TutorialSlide {
 }
 
 const Tutorial: React.FC<TutorialProps> = ({ visible, onClose }) => {
+    const { t } = useTranslation();
     const [currentSlide, setCurrentSlide] = useState(0);
     const scrollViewRef = useRef<ScrollView>(null);
     const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -50,8 +52,8 @@ const Tutorial: React.FC<TutorialProps> = ({ visible, onClose }) => {
         {
             icon: 'swap-horizontal',
             iconColor: '#4A90E2',
-            title: 'Match 3 or More',
-            description: 'Swap tiles to create matches of 3 or more identical items in a row or column.',
+            title: t('tutorial.slide1Title'),
+            description: t('tutorial.slide1Desc'),
             visual: (
                 <View style={styles.visualContainer}>
                     <View style={styles.tileRow}>
@@ -83,8 +85,8 @@ const Tutorial: React.FC<TutorialProps> = ({ visible, onClose }) => {
         {
             icon: 'target',
             iconColor: '#27AE60',
-            title: 'Reach the Target',
-            description: 'Score enough points before running out of moves to complete the level.',
+            title: t('tutorial.slide2Title'),
+            description: t('tutorial.slide2Desc'),
             visual: (
                 <View style={styles.visualContainer}>
                     <View style={styles.statBox}>
@@ -111,8 +113,8 @@ const Tutorial: React.FC<TutorialProps> = ({ visible, onClose }) => {
         {
             icon: 'lightning-bolt',
             iconColor: '#FFA726',
-            title: 'Power-Ups',
-            description: 'Match 4+ tiles to charge power. At 10+ points, tap the Earth icon to clear a row or column!',
+            title: t('tutorial.slide3Title'),
+            description: t('tutorial.slide3Desc'),
             visual: (
                 <View style={styles.visualContainer}>
                     <View style={styles.powerUpDemo}>
@@ -140,8 +142,8 @@ const Tutorial: React.FC<TutorialProps> = ({ visible, onClose }) => {
         {
             icon: 'trophy',
             iconColor: '#FFD700',
-            title: 'Win & Earn Stars',
-            description: 'Complete levels with moves remaining to earn up to 3 stars!',
+            title: t('tutorial.slide4Title'),
+            description: t('tutorial.slide4Desc'),
             visual: (
                 <View style={styles.visualContainer}>
                     <View style={styles.starsRow}>
@@ -181,7 +183,7 @@ const Tutorial: React.FC<TutorialProps> = ({ visible, onClose }) => {
         <Modal visible={visible} transparent animationType="none">
             <Animated.View style={[styles.overlay, { opacity: fadeAnim }]}>
                 <View style={styles.container}>
-                    <Text style={styles.headerTitle}>How to Play</Text>
+                    <Text style={styles.headerTitle}>{t('tutorial.howToPlay')}</Text>
 
                     <ScrollView
                         ref={scrollViewRef}
@@ -219,7 +221,7 @@ const Tutorial: React.FC<TutorialProps> = ({ visible, onClose }) => {
                     {/* Action button */}
                     <TouchableOpacity style={styles.button} onPress={handleNext} activeOpacity={0.8}>
                         <Text style={styles.buttonText}>
-                            {currentSlide === slides.length - 1 ? "Let's Play!" : 'Next'}
+                            {currentSlide === slides.length - 1 ? t('tutorial.letsPlay') : t('common.next')}
                         </Text>
                         {currentSlide < slides.length - 1 && (
                             <MaterialCommunityIcons name="arrow-right" size={20} color="#fff" />

@@ -55,16 +55,16 @@
         "comingSoon": "More coming soon"
     },
     "tutorial": {
-        "matchToClear": "Match to clear!",
-        "matchDescription": "Match 3 or more items in a row or column",
-        "scoreAndMoves": "Score & Moves",
-        "reachTarget": "Reach the target score before running out of moves",
-        "biggerBetter": "Bigger = Better",
-        "matchBonus": "4-match: 2× points\n5-match: 3× points!",
-        "powerUpCharges": "Power-up charges with large matches!",
-        "earnStars": "Earn Stars",
-        "saveMovesStars": "Save more moves for more stars!",
-        "howToPlay": "How to Play"
+        "howToPlay": "How to Play",
+        "slide1Title": "Match 3 or More",
+        "slide1Desc": "Swap tiles to create matches of 3 or more identical items in a row or column.",
+        "slide2Title": "Reach the Target",
+        "slide2Desc": "Score enough points before running out of moves to complete the level.",
+        "slide3Title": "Power-Ups",
+        "slide3Desc": "Match 4+ tiles to charge power. At 10+ points, tap the Earth icon to clear a row or column!",
+        "slide4Title": "Win & Earn Stars",
+        "slide4Desc": "Complete levels with moves remaining to earn up to 3 stars!",
+        "letsPlay": "Let's Play!"
     },
     "achievements": {
         "title": "Achievements",
