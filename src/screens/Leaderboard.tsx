@@ -440,27 +440,27 @@ const Leaderboard: React.FC<Props> = ({ navigation }) => {
                         <ActivityIndicator size="small" color="#fff" />
                     ) : (
                         <Text style={styles.publishButtonText}>
-                            {isRegistered ? 'Publish My Score' : 'Join Leaderboard'}
+                            {isRegistered ? t('leaderboard.publishMyScore') : t('leaderboard.joinLeaderboard')}
                         </Text>
                     )}
                 </TouchableOpacity>
-                <Text style={styles.totalPlayers}>{totalPlayers} players worldwide</Text>
+                <Text style={styles.totalPlayers}>{t('leaderboard.playersWorldwide', { count: totalPlayers })}</Text>
             </View>
 
             {/* Username Modal */}
             <Modal visible={showUsernameModal} transparent animationType="fade">
                 <View style={styles.modalOverlay}>
                     <View style={styles.modalContent}>
-                        <Text style={styles.modalTitle}>Choose Your Username</Text>
+                        <Text style={styles.modalTitle}>{t('leaderboard.chooseUsername')}</Text>
                         <Text style={styles.modalSubtitle}>
-                            This will be shown on the leaderboard
+                            {t('leaderboard.usernameShown')}
                         </Text>
 
                         <TextInput
                             style={styles.usernameInput}
                             value={username}
                             onChangeText={setUsername}
-                            placeholder="Enter username"
+                            placeholder={t('leaderboard.enterUsername')}
                             placeholderTextColor={COLORS.textMuted}
                             maxLength={20}
                             autoCapitalize="none"
@@ -476,13 +476,13 @@ const Leaderboard: React.FC<Props> = ({ navigation }) => {
                                 style={styles.modalButtonSecondary}
                                 onPress={() => setShowUsernameModal(false)}
                             >
-                                <Text style={styles.modalButtonSecondaryText}>Cancel</Text>
+                                <Text style={styles.modalButtonSecondaryText}>{t('common.cancel')}</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
                                 style={styles.modalButtonPrimary}
                                 onPress={handleRegister}
                             >
-                                <Text style={styles.modalButtonPrimaryText}>Join</Text>
+                                <Text style={styles.modalButtonPrimaryText}>{t('leaderboard.join')}</Text>
                             </TouchableOpacity>
                         </View>
                     </View>

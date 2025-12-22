@@ -451,19 +451,37 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
         return levelConfig?.environmentalFact || '';
     };
 
+    // Helper to get the translated theme name
+    const getThemeName = () => {
+        const themeKey = theme === 'trash-sorting' ? 'trashSorting' : theme === 'water-conservation' ? 'waterConservation' : theme === 'energy-efficiency' ? 'energyEfficiency' : theme;
+        return t(`themes.${themeKey}`);
+    };
+
+    // Helper to get translated fact based on theme and level index
+    const getTranslatedFact = () => {
+        const themeKey = theme === 'trash-sorting' ? 'trash' : theme === 'water-conservation' ? 'water' : theme === 'energy-efficiency' ? 'energy' : theme === 'deforestation' ? 'forest' : theme;
+        const facts = t(`facts.${themeKey}`, { returnObjects: true }) as string[];
+        if (isEndlessMode) {
+            return facts?.[endlessFactIndex % (facts?.length || 1)] || '';
+        }
+        // For levels, use level index to get fact
+        const levelIndex = levelConfig ? (levelConfig.id - 1) % 10 : 0;
+        return facts?.[levelIndex] || '';
+    };
+
     // Loading screen for both story and endless modes
     if (isLoading) {
-        const displayFact = levelConfig?.environmentalFact || getCurrentFact();
+        const displayFact = getTranslatedFact();
         return (
             <View style={[styles.loadingContainer, { paddingTop: insets.top }]}>
                 <StatusBar barStyle="light-content" />
                 <View style={styles.loadingContent}>
                     {isEndlessMode ? (
-                        <Text style={styles.loadingLevel}>Endless Mode</Text>
+                        <Text style={styles.loadingLevel}>{t('menu.endlessMode')}</Text>
                     ) : (
-                        <Text style={styles.loadingLevel}>Level {levelId}</Text>
+                        <Text style={styles.loadingLevel}>{t('common.level')} {formatNumber(levelId, getCurrentLanguage())}</Text>
                     )}
-                    <Text style={styles.loadingTheme}>{themeConfig?.name}</Text>
+                    <Text style={styles.loadingTheme}>{getThemeName()}</Text>
 
                     {displayFact && (
                         <View style={styles.loadingFactContainer}>
@@ -477,7 +495,7 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
                         <View style={styles.loadingProgressTrack}>
                             <View style={[styles.loadingProgressFill, { width: `${loadingProgress}%` }]} />
                         </View>
-                        <Text style={styles.loadingProgressText}>Loading...</Text>
+                        <Text style={styles.loadingProgressText}>{t('common.loading')}</Text>
                     </View>
 
                     {/* Skip button - only show if theme story is completed or endless mode */}
@@ -490,7 +508,7 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
                                 style={styles.loadingSkipButton}
                                 onPress={() => setIsLoading(false)}
                             >
-                                <Text style={styles.loadingSkipText}>Tap to skip</Text>
+                                <Text style={styles.loadingSkipText}>{t('common.tapToSkip')}</Text>
                             </TouchableOpacity>
                         ) : null;
                     })()}

@@ -46,7 +46,7 @@ const HUD: React.FC<HUDProps> = ({ onPause }) => {
                     <Text style={styles.scoreValue}>{score.toLocaleString()}</Text>
                     {isEndlessMode ? (
                         <Text style={styles.targetText}>
-                            Best: {displayBestScore > 0 ? formatNumber(displayBestScore, getCurrentLanguage()) : '—'}
+                            {t('common.best')}: {displayBestScore > 0 ? formatNumber(displayBestScore, getCurrentLanguage()) : '—'}
                         </Text>
                     ) : (
                         <Text style={styles.targetText}>{t('game.targetScore', { score: formatNumber(targetScore, getCurrentLanguage()) })}</Text>
