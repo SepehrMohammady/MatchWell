@@ -22,6 +22,7 @@ import { COLORS, TYPOGRAPHY, SPACING, RADIUS } from '../config/theme';
 import { SeedlingIcon, TrophyIcon, MedalIcon, SettingsIcon } from '../components/UI/Icons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import ClimateClock from '../components/UI/ClimateClock';
+import { useTranslation } from 'react-i18next';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'MainMenu'>;
 
@@ -47,6 +48,7 @@ const getEarthStage = (completedLevels: number[]): number => {
 
 const MainMenu: React.FC<Props> = ({ navigation }) => {
     const insets = useSafeAreaInsets();
+    const { t } = useTranslation();
     const loadProgress = useGameStore((state) => state.loadProgress);
     const completedLevels = useGameStore((state) => state.completedLevels);
     const unseenAchievements = useGameStore((state) => state.unseenAchievements);
@@ -153,12 +155,12 @@ const MainMenu: React.FC<Props> = ({ navigation }) => {
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity style={styles.primaryButton} onPress={handlePlay} activeOpacity={0.8}>
                         <MaterialCommunityIcons name="book-open-variant" size={20} color="#ffffff" style={{ marginRight: SPACING.sm }} />
-                        <Text style={styles.primaryButtonText}>Story Mode</Text>
+                        <Text style={styles.primaryButtonText}>{t('menu.storyMode')}</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.primaryButton} onPress={handleEndless} activeOpacity={0.8}>
                         <MaterialCommunityIcons name="infinity" size={20} color="#ffffff" style={{ marginRight: SPACING.sm }} />
-                        <Text style={styles.primaryButtonText}>Endless Mode</Text>
+                        <Text style={styles.primaryButtonText}>{t('menu.endlessMode')}</Text>
                     </TouchableOpacity>
                 </View>
 
@@ -167,7 +169,7 @@ const MainMenu: React.FC<Props> = ({ navigation }) => {
                     <TouchableOpacity style={styles.tertiaryButton} onPress={handleAchievements} activeOpacity={0.7}>
                         <View style={styles.tertiaryButtonContent}>
                             <MedalIcon size={16} color="rgba(255,255,255,0.7)" />
-                            <Text style={styles.tertiaryButtonText}>Achievements</Text>
+                            <Text style={styles.tertiaryButtonText}>{t('menu.achievements')}</Text>
                             {unseenAchievements.length > 0 && (
                                 <View style={styles.redDot} />
                             )}
@@ -177,14 +179,14 @@ const MainMenu: React.FC<Props> = ({ navigation }) => {
                     <TouchableOpacity style={styles.tertiaryButton} onPress={handleLeaderboard} activeOpacity={0.7}>
                         <View style={styles.tertiaryButtonContent}>
                             <TrophyIcon size={16} color="#FFD700" />
-                            <Text style={styles.tertiaryButtonText}>Leaderboard</Text>
+                            <Text style={styles.tertiaryButtonText}>{t('leaderboard.title')}</Text>
                         </View>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.tertiaryButton} onPress={handleSettings} activeOpacity={0.7}>
                         <View style={styles.tertiaryButtonContent}>
                             <SettingsIcon size={16} color="rgba(255,255,255,0.7)" />
-                            <Text style={styles.tertiaryButtonText}>Settings</Text>
+                            <Text style={styles.tertiaryButtonText}>{t('menu.settings')}</Text>
                         </View>
                     </TouchableOpacity>
                 </View>

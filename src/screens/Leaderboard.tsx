@@ -42,6 +42,7 @@ import {
     Achievement
 } from '../config/achievements';
 import { LEVELS, getLevelsByTheme, getLevelById } from '../themes';
+import { useTranslation } from 'react-i18next';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Leaderboard'>;
 
@@ -56,6 +57,7 @@ const TABS = [
 
 const Leaderboard: React.FC<Props> = ({ navigation }) => {
     const insets = useSafeAreaInsets();
+    const { t } = useTranslation();
 
     // Game store data
     const completedLevels = useGameStore(state => state.completedLevels);
@@ -382,7 +384,7 @@ const Leaderboard: React.FC<Props> = ({ navigation }) => {
                 </TouchableOpacity>
                 <View style={styles.headerTitle}>
                     <TrophyIcon size={24} color={COLORS.accentHighlight} />
-                    <Text style={styles.headerText}>Leaderboard</Text>
+                    <Text style={styles.headerText}>{t('leaderboard.title')}</Text>
                 </View>
                 <View style={styles.headerRight} />
             </View>

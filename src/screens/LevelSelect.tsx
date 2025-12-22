@@ -19,11 +19,13 @@ import { ThemeType } from '../types';
 import { playSfx, playBgm } from '../utils/SoundManager';
 import { COLORS, TYPOGRAPHY, SPACING, RADIUS, SHADOWS } from '../config/theme';
 import { LockIcon, StarFilledIcon, BackIcon, getThemeIcon } from '../components/UI/Icons';
+import { useTranslation } from 'react-i18next';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'LevelSelect'>;
 
 const LevelSelect: React.FC<Props> = ({ navigation }) => {
     const insets = useSafeAreaInsets();
+    const { t } = useTranslation();
     const completedLevels = useGameStore((state) => state.completedLevels);
     const highScores = useGameStore((state) => state.highScores);
 
@@ -162,7 +164,7 @@ const LevelSelect: React.FC<Props> = ({ navigation }) => {
                 <TouchableOpacity style={styles.backButton} onPress={handleBack}>
                     <BackIcon size={24} color={COLORS.textPrimary} />
                 </TouchableOpacity>
-                <Text style={styles.title}>Select Level</Text>
+                <Text style={styles.title}>{t('menu.selectLevel')}</Text>
                 <View style={styles.placeholder} />
             </View>
 

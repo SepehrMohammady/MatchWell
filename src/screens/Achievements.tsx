@@ -29,11 +29,13 @@ import {
     getTotalStars,
     Achievement,
 } from '../config/achievements';
+import { useTranslation } from 'react-i18next';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Achievements'>;
 
 const Achievements: React.FC<Props> = ({ navigation }) => {
     const insets = useSafeAreaInsets();
+    const { t } = useTranslation();
     const completedLevels = useGameStore((state) => state.completedLevels);
     const highScores = useGameStore((state) => state.highScores);
     const levelMovesRemaining = useGameStore((state) => state.levelMovesRemaining);
@@ -163,7 +165,7 @@ const Achievements: React.FC<Props> = ({ navigation }) => {
                 <TouchableOpacity style={styles.backButton} onPress={handleBack}>
                     <BackIcon size={24} color={COLORS.textPrimary} />
                 </TouchableOpacity>
-                <Text style={styles.title}>Achievements</Text>
+                <Text style={styles.title}>{t('achievements.title')}</Text>
                 <View style={styles.placeholder} />
             </View>
 
@@ -174,7 +176,7 @@ const Achievements: React.FC<Props> = ({ navigation }) => {
                         <MedalIcon size={20} color={COLORS.organicWaste} />
                         <Text style={styles.summaryValue}>{unlockedCount}/{totalCount}</Text>
                     </View>
-                    <Text style={styles.summaryLabel}>Medals</Text>
+                    <Text style={styles.summaryLabel}>{t('achievements.medals')}</Text>
                 </View>
                 <View style={styles.summaryDivider} />
                 <View style={styles.summaryItem}>
@@ -182,7 +184,7 @@ const Achievements: React.FC<Props> = ({ navigation }) => {
                         <StarFilledIcon size={20} color={COLORS.starFilled} />
                         <Text style={styles.summaryValue}>{totalStars}/150</Text>
                     </View>
-                    <Text style={styles.summaryLabel}>Stars</Text>
+                    <Text style={styles.summaryLabel}>{t('common.stars')}</Text>
                 </View>
             </View>
 
@@ -191,7 +193,7 @@ const Achievements: React.FC<Props> = ({ navigation }) => {
                 <View style={styles.section}>
                     <View style={styles.sectionHeader}>
                         <MaterialCommunityIcons name="book-open-variant" size={20} color={COLORS.textMuted} />
-                        <Text style={styles.sectionTitle}>Story Mode</Text>
+                        <Text style={styles.sectionTitle}>{t('achievements.storyMode')}</Text>
                     </View>
                     <View style={styles.medalGrid}>
                         {THEME_ACHIEVEMENTS.map(renderAchievement)}
@@ -202,7 +204,7 @@ const Achievements: React.FC<Props> = ({ navigation }) => {
                 <View style={styles.section}>
                     <View style={styles.sectionHeader}>
                         <MaterialCommunityIcons name="star" size={20} color={COLORS.textMuted} />
-                        <Text style={styles.sectionTitle}>Star Milestones</Text>
+                        <Text style={styles.sectionTitle}>{t('achievements.starMilestones')}</Text>
                     </View>
                     <View style={styles.medalGrid}>
                         {STAR_ACHIEVEMENTS.map(renderAchievement)}
@@ -213,7 +215,7 @@ const Achievements: React.FC<Props> = ({ navigation }) => {
                 <View style={styles.section}>
                     <View style={styles.sectionHeader}>
                         <MaterialCommunityIcons name="infinity" size={20} color={COLORS.textMuted} />
-                        <Text style={styles.sectionTitle}>Endless Mode</Text>
+                        <Text style={styles.sectionTitle}>{t('achievements.endlessMode')}</Text>
                     </View>
                     {Object.entries(endlessByTheme).map(([theme, achievements]) => (
                         <View key={theme} style={styles.endlessThemeGroup}>

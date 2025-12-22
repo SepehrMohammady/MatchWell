@@ -19,6 +19,7 @@ import { THEME_CONFIGS, getLevelsByTheme } from '../themes';
 import { playSfx, playBgm } from '../utils/SoundManager';
 import { COLORS, TYPOGRAPHY, SPACING, RADIUS, SHADOWS } from '../config/theme';
 import { getThemeIcon, LockIcon, BackIcon } from '../components/UI/Icons';
+import { useTranslation } from 'react-i18next';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'EndlessSelect'>;
 
@@ -33,6 +34,7 @@ const THEME_ORDER: ThemeType[] = [
 
 const EndlessSelect: React.FC<Props> = ({ navigation }) => {
     const insets = useSafeAreaInsets();
+    const { t } = useTranslation();
     const completedLevels = useGameStore((state) => state.completedLevels);
     const highScores = useGameStore((state) => state.highScores);
     const hasEndlessState = useGameStore((state) => state.hasEndlessState);
@@ -139,7 +141,7 @@ const EndlessSelect: React.FC<Props> = ({ navigation }) => {
                 <TouchableOpacity style={styles.backButton} onPress={handleBack}>
                     <BackIcon size={24} color={COLORS.textPrimary} />
                 </TouchableOpacity>
-                <Text style={styles.title}>Endless Mode</Text>
+                <Text style={styles.title}>{t('menu.endlessMode')}</Text>
                 <View style={styles.placeholder} />
             </View>
 
