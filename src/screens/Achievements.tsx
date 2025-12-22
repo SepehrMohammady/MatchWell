@@ -30,6 +30,7 @@ import {
     Achievement,
 } from '../config/achievements';
 import { useTranslation } from 'react-i18next';
+import { formatNumber, getCurrentLanguage } from '../config/i18n';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Achievements'>;
 
@@ -222,7 +223,7 @@ const Achievements: React.FC<Props> = ({ navigation }) => {
                 <View style={styles.summaryItem}>
                     <View style={styles.summaryIconRow}>
                         <MedalIcon size={20} color={COLORS.organicWaste} />
-                        <Text style={styles.summaryValue}>{unlockedCount}/{totalCount}</Text>
+                        <Text style={styles.summaryValue}>{formatNumber(unlockedCount, getCurrentLanguage())}/{formatNumber(totalCount, getCurrentLanguage())}</Text>
                     </View>
                     <Text style={styles.summaryLabel}>{t('achievements.medals')}</Text>
                 </View>
@@ -230,7 +231,7 @@ const Achievements: React.FC<Props> = ({ navigation }) => {
                 <View style={styles.summaryItem}>
                     <View style={styles.summaryIconRow}>
                         <StarFilledIcon size={20} color={COLORS.starFilled} />
-                        <Text style={styles.summaryValue}>{totalStars}/150</Text>
+                        <Text style={styles.summaryValue}>{formatNumber(totalStars, getCurrentLanguage())}/{formatNumber(150, getCurrentLanguage())}</Text>
                     </View>
                     <Text style={styles.summaryLabel}>{t('common.stars')}</Text>
                 </View>

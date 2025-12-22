@@ -75,17 +75,17 @@ const HUD: React.FC<HUDProps> = ({ onPause }) => {
                         styles.statValue,
                         !isEndlessMode && movesRemaining <= 5 && styles.lowMoves,
                     ]}>
-                        {isEndlessMode ? moves : movesRemaining}
+                        {formatNumber(isEndlessMode ? moves : movesRemaining, getCurrentLanguage())}
                     </Text>
                 </View>
                 {combo > 1 && (
                     <View style={styles.comboBadge}>
-                        <Text style={styles.comboText}>×{combo}</Text>
+                        <Text style={styles.comboText}>×{formatNumber(combo, getCurrentLanguage())}</Text>
                     </View>
                 )}
                 <View style={[styles.levelBadge, isEndlessMode && styles.endlessBadge]}>
                     <Text style={styles.levelText}>
-                        {isEndlessMode ? themeConfig.name : `${t('common.level')} ${formatNumber(level, getCurrentLanguage())}`}
+                        {isEndlessMode ? t(`themes.${theme === 'trash-sorting' ? 'trashSorting' : theme === 'water-conservation' ? 'waterConservation' : theme === 'energy-efficiency' ? 'energyEfficiency' : theme}`) : `${t('common.level')} ${formatNumber(level, getCurrentLanguage())}`}
                     </Text>
                 </View>
             </View>

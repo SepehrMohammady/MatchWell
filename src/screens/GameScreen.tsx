@@ -560,7 +560,7 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
             {(levelConfig?.environmentalFact || isEndlessMode) && (
                 <View style={styles.factContainer}>
                     <Text style={styles.factIcon}>💡</Text>
-                    <Text style={styles.factText}>{getCurrentFact()}</Text>
+                    <Text style={styles.factText}>{getTranslatedFact()}</Text>
                 </View>
             )}
 

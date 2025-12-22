@@ -20,6 +20,7 @@ import { playSfx, playBgm } from '../utils/SoundManager';
 import { COLORS, TYPOGRAPHY, SPACING, RADIUS, SHADOWS } from '../config/theme';
 import { LockIcon, StarFilledIcon, BackIcon, getThemeIcon } from '../components/UI/Icons';
 import { useTranslation } from 'react-i18next';
+import { formatNumber, getCurrentLanguage } from '../config/i18n';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'LevelSelect'>;
 
@@ -192,7 +193,7 @@ const LevelSelect: React.FC<Props> = ({ navigation }) => {
                                         <View style={styles.themeStarsContainer}>
                                             <StarFilledIcon size={14} />
                                             <Text style={styles.themeStarsText}>
-                                                {themeStars.earned}/{themeStars.total}
+                                                {formatNumber(themeStars.earned, getCurrentLanguage())}/{formatNumber(themeStars.total, getCurrentLanguage())}
                                             </Text>
                                         </View>
                                     </View>
@@ -219,7 +220,7 @@ const LevelSelect: React.FC<Props> = ({ navigation }) => {
                                         >
                                             {unlocked ? (
                                                 <>
-                                                    <Text style={styles.levelNumber}>{level.id}</Text>
+                                                    <Text style={styles.levelNumber}>{formatNumber(level.id, getCurrentLanguage())}</Text>
                                                     <View style={styles.starsRow}>
                                                         {[1, 2, 3].map((s) => (
                                                             <Text key={s} style={[
