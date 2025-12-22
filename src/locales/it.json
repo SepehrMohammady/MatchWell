@@ -55,16 +55,16 @@
         "comingSoon": "Prossimamente"
     },
     "tutorial": {
-        "matchToClear": "Abbina per eliminare!",
-        "matchDescription": "Abbina 3 o più elementi in riga o colonna",
-        "scoreAndMoves": "Punteggio e Mosse",
-        "reachTarget": "Raggiungi il punteggio obiettivo prima di esaurire le mosse",
-        "biggerBetter": "Più grande = Meglio!",
-        "matchBonus": "4 in fila: 2× punti\n5 in fila: 3× punti!",
-        "powerUpCharges": "Le combo grandi caricano il power-up!",
-        "earnStars": "Guadagna Stelle",
-        "saveMovesStars": "Risparmia mosse per più stelle!",
-        "howToPlay": "Come Giocare"
+        "howToPlay": "Come Giocare",
+        "slide1Title": "Abbina 3 o Più",
+        "slide1Desc": "Scambia le tessere per creare abbinamenti di 3 o più elementi identici in riga o colonna.",
+        "slide2Title": "Raggiungi l'Obiettivo",
+        "slide2Desc": "Ottieni abbastanza punti prima di esaurire le mosse per completare il livello.",
+        "slide3Title": "Potenziamenti",
+        "slide3Desc": "Abbina 4+ tessere per caricare potenza. Con 10+ punti, tocca l'icona Terra per eliminare una riga o colonna!",
+        "slide4Title": "Guadagna Stelle",
+        "slide4Desc": "Completa i livelli con mosse rimanenti per guadagnare fino a 3 stelle!",
+        "letsPlay": "Giochiamo!"
     },
     "achievements": {
         "title": "Obiettivi",

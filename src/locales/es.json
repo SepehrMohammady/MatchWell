@@ -55,16 +55,16 @@
         "comingSoon": "Próximamente"
     },
     "tutorial": {
-        "matchToClear": "¡Combina para limpiar!",
-        "matchDescription": "Combina 3 o más elementos en fila o columna",
-        "scoreAndMoves": "Puntuación y Movimientos",
-        "reachTarget": "Alcanza la puntuación objetivo antes de quedarte sin movimientos",
-        "biggerBetter": "¡Más grande = Mejor!",
-        "matchBonus": "4 en línea: 2× puntos\n5 en línea: ¡3× puntos!",
-        "powerUpCharges": "¡Los combos grandes cargan el poder!",
-        "earnStars": "Gana Estrellas",
-        "saveMovesStars": "¡Ahorra movimientos para más estrellas!",
-        "howToPlay": "Cómo Jugar"
+        "howToPlay": "Cómo Jugar",
+        "slide1Title": "Combina 3 o Más",
+        "slide1Desc": "Intercambia fichas para crear combinaciones de 3 o más elementos idénticos en fila o columna.",
+        "slide2Title": "Alcanza el Objetivo",
+        "slide2Desc": "Consigue suficientes puntos antes de quedarte sin movimientos para completar el nivel.",
+        "slide3Title": "Poderes",
+        "slide3Desc": "¡Combina 4+ fichas para cargar poder. Con 10+ puntos, toca el icono de la Tierra para limpiar una fila o columna!",
+        "slide4Title": "Gana Estrellas",
+        "slide4Desc": "¡Completa niveles con movimientos restantes para ganar hasta 3 estrellas!",
+        "letsPlay": "¡A Jugar!"
     },
     "achievements": {
         "title": "Logros",

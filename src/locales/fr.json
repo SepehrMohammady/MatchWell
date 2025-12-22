@@ -55,16 +55,16 @@
         "comingSoon": "Bientôt disponible"
     },
     "tutorial": {
-        "matchToClear": "Associez pour nettoyer !",
-        "matchDescription": "Associez 3 éléments ou plus en ligne ou en colonne",
-        "scoreAndMoves": "Score et Coups",
-        "reachTarget": "Atteignez le score cible avant d'épuiser vos coups",
-        "biggerBetter": "Plus c'est grand, mieux c'est !",
-        "matchBonus": "4 en ligne : 2× points\n5 en ligne : 3× points !",
-        "powerUpCharges": "Les gros combos chargent le pouvoir !",
-        "earnStars": "Gagnez des Étoiles",
-        "saveMovesStars": "Économisez des coups pour plus d'étoiles !",
-        "howToPlay": "Comment Jouer"
+        "howToPlay": "Comment Jouer",
+        "slide1Title": "Associez 3 ou Plus",
+        "slide1Desc": "Échangez les tuiles pour créer des associations de 3 éléments identiques ou plus en ligne ou en colonne.",
+        "slide2Title": "Atteignez l'Objectif",
+        "slide2Desc": "Marquez suffisamment de points avant d'épuiser vos coups pour terminer le niveau.",
+        "slide3Title": "Pouvoirs",
+        "slide3Desc": "Associez 4+ tuiles pour charger le pouvoir. À 10+ points, touchez l'icône Terre pour nettoyer une ligne ou colonne !",
+        "slide4Title": "Gagnez des Étoiles",
+        "slide4Desc": "Terminez les niveaux avec des coups restants pour gagner jusqu'à 3 étoiles !",
+        "letsPlay": "C'est Parti !"
     },
     "achievements": {
         "title": "Succès",

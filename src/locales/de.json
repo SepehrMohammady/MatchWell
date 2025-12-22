@@ -55,16 +55,16 @@
         "comingSoon": "Demnächst"
     },
     "tutorial": {
-        "matchToClear": "Kombiniere zum Entfernen!",
-        "matchDescription": "Kombiniere 3 oder mehr Elemente in einer Reihe oder Spalte",
-        "scoreAndMoves": "Punkte und Züge",
-        "reachTarget": "Erreiche die Zielpunktzahl bevor die Züge ausgehen",
-        "biggerBetter": "Größer = Besser!",
-        "matchBonus": "4er-Kombo: 2× Punkte\n5er-Kombo: 3× Punkte!",
-        "powerUpCharges": "Große Kombos laden die Power-Ups!",
-        "earnStars": "Verdiene Sterne",
-        "saveMovesStars": "Spare Züge für mehr Sterne!",
-        "howToPlay": "Spielanleitung"
+        "howToPlay": "Spielanleitung",
+        "slide1Title": "Kombiniere 3 oder Mehr",
+        "slide1Desc": "Tausche Steine, um 3 oder mehr identische Elemente in einer Reihe oder Spalte zu kombinieren.",
+        "slide2Title": "Erreiche das Ziel",
+        "slide2Desc": "Erziele genug Punkte, bevor dir die Züge ausgehen, um das Level abzuschließen.",
+        "slide3Title": "Power-Ups",
+        "slide3Desc": "Kombiniere 4+ Steine, um Power aufzuladen. Bei 10+ Punkten, tippe auf das Erd-Symbol, um eine Reihe oder Spalte zu räumen!",
+        "slide4Title": "Verdiene Sterne",
+        "slide4Desc": "Schließe Level mit übrigen Zügen ab, um bis zu 3 Sterne zu verdienen!",
+        "letsPlay": "Los Geht's!"
     },
     "achievements": {
         "title": "Erfolge",

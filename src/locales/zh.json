@@ -55,16 +55,16 @@
         "comingSoon": "即将推出"
     },
     "tutorial": {
-        "matchToClear": "匹配消除！",
-        "matchDescription": "将3个或更多相同物品排成一行或一列",
-        "scoreAndMoves": "分数与步数",
-        "reachTarget": "在步数用完之前达到目标分数",
-        "biggerBetter": "越大越好",
-        "matchBonus": "4连消：2倍分数\n5连消：3倍分数！",
-        "powerUpCharges": "大连消可以充能技能！",
-        "earnStars": "获得星星",
-        "saveMovesStars": "节省步数获得更多星星！",
-        "howToPlay": "游戏说明"
+        "howToPlay": "游戏说明",
+        "slide1Title": "消除3个或更多",
+        "slide1Desc": "交换方块，将3个或更多相同物品排成一行或一列。",
+        "slide2Title": "达到目标",
+        "slide2Desc": "在步数用完之前获得足够的分数来完成关卡。",
+        "slide3Title": "能量技能",
+        "slide3Desc": "消除4个以上方块可以充能。达到10点后，点击地球图标清除一行或一列！",
+        "slide4Title": "赢得星星",
+        "slide4Desc": "剩余步数越多，获得的星星越多，最多3颗！",
+        "letsPlay": "开始游戏！"
     },
     "achievements": {
         "title": "成就",
