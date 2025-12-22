@@ -28,12 +28,15 @@ import { COLORS, TYPOGRAPHY, SPACING, RADIUS } from '../config/theme';
 import { PauseIcon, PlayIcon, RestartIcon, MusicIcon, MusicOffIcon, VolumeIcon, VolumeOffIcon, HomeIcon, PaletteIcon, ListIcon, StarFilledIcon, StarEmptyIcon, TrophyIcon, EmoticonSadIcon, ArrowRightIcon } from '../components/UI/Icons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { changeIcon } from 'react-native-change-icon';
+import { useTranslation } from 'react-i18next';
+import { formatNumber, getCurrentLanguage } from '../config/i18n';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Game'>;
 
 const GameScreen: React.FC<Props> = ({ navigation, route }) => {
     const { levelId } = route.params;
     const insets = useSafeAreaInsets();
+    const { t } = useTranslation();
 
     const initializeGame = useGameStore((state) => state.initializeGame);
     const isGameOver = useGameStore((state) => state.isGameOver);
@@ -559,15 +562,15 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
                     <View style={styles.modalContent}>
                         <View style={styles.modalTitleRow}>
                             <PauseIcon size={24} color={COLORS.textPrimary} />
-                            <Text style={styles.modalTitle}>Paused</Text>
+                            <Text style={styles.modalTitle}>{t('game.paused')}</Text>
                         </View>
                         <TouchableOpacity style={styles.modalButton} onPress={handleResume}>
                             <PlayIcon size={20} color="#fff" />
-                            <Text style={styles.modalButtonText}>Resume</Text>
+                            <Text style={styles.modalButtonText}>{t('common.resume')}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.modalButton} onPress={handleRestart}>
                             <RestartIcon size={20} color="#fff" />
-                            <Text style={styles.modalButtonText}>Restart</Text>
+                            <Text style={styles.modalButtonText}>{t('common.restart')}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={[styles.modalButton, styles.secondaryButton]} onPress={handleBackToLevels}>
                             {isEndlessMode ? (
@@ -576,12 +579,12 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
                                 <ListIcon size={20} color={COLORS.textSecondary} />
                             )}
                             <Text style={styles.secondaryButtonText}>
-                                {isEndlessMode ? 'Themes' : 'Levels'}
+                                {isEndlessMode ? t('menu.selectTheme') : t('game.levels')}
                             </Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={[styles.modalButton, styles.secondaryButton]} onPress={handleBackToMenu}>
                             <HomeIcon size={20} color={COLORS.textSecondary} />
-                            <Text style={styles.secondaryButtonText}>Main Menu</Text>
+                            <Text style={styles.secondaryButtonText}>{t('game.mainMenu')}</Text>
                         </TouchableOpacity>
 
                         {/* Sound Toggle Footer */}
@@ -618,9 +621,9 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
                         <View style={styles.modalIconContainer}>
                             <TrophyIcon size={48} color={COLORS.organicWaste} />
                         </View>
-                        <Text style={styles.modalTitle}>Level Complete!</Text>
-                        <Text style={styles.scoreText}>{score.toLocaleString()}</Text>
-                        <Text style={styles.scoreLabel}>Score</Text>
+                        <Text style={styles.modalTitle}>{t('game.levelComplete')}</Text>
+                        <Text style={styles.scoreText}>{formatNumber(score, getCurrentLanguage())}</Text>
+                        <Text style={styles.scoreLabel}>{t('common.score')}</Text>
 
                         {/* Star Rating - based on moves remaining percentage */}
                         <View style={styles.starsContainer}>
@@ -633,22 +636,22 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
                                 : <StarEmptyIcon size={32} />}
                         </View>
 
-                        <Text style={styles.movesLeftText}>{movesRemaining} moves remaining</Text>
+                        <Text style={styles.movesLeftText}>{t('game.movesRemaining', { count: movesRemaining })}</Text>
 
                         <View style={styles.modalButtonsContainer}>
                             {/* Only show Next Level if there's a next level */}
                             {getLevelById(levelId + 1) && (
                                 <TouchableOpacity style={styles.modalButton} onPress={handleNextLevel}>
                                     <ArrowRightIcon size={20} color="#fff" />
-                                    <Text style={styles.modalButtonText}>Next Level</Text>
+                                    <Text style={styles.modalButtonText}>{t('game.nextLevel')}</Text>
                                 </TouchableOpacity>
                             )}
                             <TouchableOpacity style={[styles.modalButton, styles.secondaryButton]} onPress={handleRestart}>
                                 <RestartIcon size={20} color={COLORS.textSecondary} />
-                                <Text style={styles.secondaryButtonText}>Play Again</Text>
+                                <Text style={styles.secondaryButtonText}>{t('game.playAgain')}</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={styles.textButton} onPress={handleBackToLevels}>
-                                <Text style={styles.textButtonLabel}>Back to Levels</Text>
+                                <Text style={styles.textButtonLabel}>{t('game.backToLevels')}</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -662,18 +665,18 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
                         <View style={styles.modalIconContainer}>
                             <EmoticonSadIcon size={48} color={COLORS.accentDanger} />
                         </View>
-                        <Text style={styles.modalTitle}>Out of Moves</Text>
-                        <Text style={styles.scoreText}>{score.toLocaleString()}</Text>
-                        <Text style={styles.scoreLabel}>Your Score</Text>
-                        <Text style={styles.targetText}>Target: {targetScore.toLocaleString()}</Text>
+                        <Text style={styles.modalTitle}>{t('game.gameOver')}</Text>
+                        <Text style={styles.scoreText}>{formatNumber(score, getCurrentLanguage())}</Text>
+                        <Text style={styles.scoreLabel}>{t('common.score')}</Text>
+                        <Text style={styles.targetText}>{t('game.targetScore', { score: formatNumber(targetScore, getCurrentLanguage()) })}</Text>
 
                         <View style={styles.modalButtonsContainer}>
                             <TouchableOpacity style={styles.modalButton} onPress={handleRestart}>
                                 <RestartIcon size={20} color="#fff" />
-                                <Text style={styles.modalButtonText}>Try Again</Text>
+                                <Text style={styles.modalButtonText}>{t('game.playAgain')}</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={styles.textButton} onPress={handleBackToLevels}>
-                                <Text style={styles.textButtonLabel}>Back to Levels</Text>
+                                <Text style={styles.textButtonLabel}>{t('game.backToLevels')}</Text>
                             </TouchableOpacity>
                         </View>
                     </View>

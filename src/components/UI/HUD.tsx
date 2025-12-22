@@ -6,6 +6,8 @@ import { THEME_CONFIGS } from '../../themes';
 import { COLORS, TYPOGRAPHY, SPACING, RADIUS } from '../../config/theme';
 import { PauseIcon } from './Icons';
 import ThemeProgress from './ThemeProgress';
+import { useTranslation } from 'react-i18next';
+import { formatNumber, getCurrentLanguage } from '../../config/i18n';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -14,6 +16,7 @@ interface HUDProps {
 }
 
 const HUD: React.FC<HUDProps> = ({ onPause }) => {
+    const { t } = useTranslation();
     const score = useGameStore((state) => state.score);
     const targetScore = useGameStore((state) => state.targetScore);
     const movesRemaining = useGameStore((state) => state.movesRemaining);
@@ -43,10 +46,10 @@ const HUD: React.FC<HUDProps> = ({ onPause }) => {
                     <Text style={styles.scoreValue}>{score.toLocaleString()}</Text>
                     {isEndlessMode ? (
                         <Text style={styles.targetText}>
-                            Best: {displayBestScore > 0 ? displayBestScore.toLocaleString() : '—'}
+                            Best: {displayBestScore > 0 ? formatNumber(displayBestScore, getCurrentLanguage()) : '—'}
                         </Text>
                     ) : (
-                        <Text style={styles.targetText}>Target: {targetScore.toLocaleString()}</Text>
+                        <Text style={styles.targetText}>{t('game.targetScore', { score: formatNumber(targetScore, getCurrentLanguage()) })}</Text>
                     )}
                 </View>
                 <TouchableOpacity style={styles.pauseButton} onPress={onPause} activeOpacity={0.7}>
@@ -67,7 +70,7 @@ const HUD: React.FC<HUDProps> = ({ onPause }) => {
             {/* Bottom row: Moves on left, Combo in middle, Level on right */}
             <View style={styles.bottomRow}>
                 <View style={styles.stat}>
-                    <Text style={styles.statLabel}>{isEndlessMode ? 'Moves' : 'Moves left'}</Text>
+                    <Text style={styles.statLabel}>{isEndlessMode ? t('common.moves') : t('game.movesRemaining', { count: movesRemaining })}</Text>
                     <Text style={[
                         styles.statValue,
                         !isEndlessMode && movesRemaining <= 5 && styles.lowMoves,
@@ -82,7 +85,7 @@ const HUD: React.FC<HUDProps> = ({ onPause }) => {
                 )}
                 <View style={[styles.levelBadge, isEndlessMode && styles.endlessBadge]}>
                     <Text style={styles.levelText}>
-                        {isEndlessMode ? themeConfig.name : `Level ${level}`}
+                        {isEndlessMode ? themeConfig.name : `${t('common.level')} ${formatNumber(level, getCurrentLanguage())}`}
                     </Text>
                 </View>
             </View>
