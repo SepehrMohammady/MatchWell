@@ -70,7 +70,16 @@
         "slide3Desc": "¡Combina 4+ fichas para cargar poder. Con 10+ puntos, toca el icono de la Tierra para limpiar una fila o columna!",
         "slide4Title": "Gana Estrellas",
         "slide4Desc": "¡Completa niveles con movimientos restantes para ganar hasta 3 estrellas!",
-        "letsPlay": "¡A Jugar!"
+        "letsPlay": "¡A Jugar!",
+        "score": "Puntos",
+        "target": "Objetivo",
+        "movesLeft": "{{count}} movimientos",
+        "match4": "4 seguidos",
+        "match5": "5 seguidos",
+        "power2": "+2 poder",
+        "power5": "+5 poder",
+        "powerHint": "10+ = Una línea • 15 = Patrón cruz",
+        "starHint": "Más movimientos = Más estrellas"
     },
     "achievements": {
         "title": "Logros",

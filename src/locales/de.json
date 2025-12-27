@@ -70,7 +70,16 @@
         "slide3Desc": "Kombiniere 4+ Steine, um Power aufzuladen. Bei 10+ Punkten, tippe auf das Erd-Symbol, um eine Reihe oder Spalte zu räumen!",
         "slide4Title": "Verdiene Sterne",
         "slide4Desc": "Schließe Level mit übrigen Zügen ab, um bis zu 3 Sterne zu verdienen!",
-        "letsPlay": "Los Geht's!"
+        "letsPlay": "Los Geht's!",
+        "score": "Punkte",
+        "target": "Ziel",
+        "movesLeft": "{{count}} Züge übrig",
+        "match4": "4er-Kombo",
+        "match5": "5er-Kombo",
+        "power2": "+2 Power",
+        "power5": "+5 Power",
+        "powerHint": "10+ = Eine Linie • 15 = Kreuz",
+        "starHint": "Mehr Züge = Mehr Sterne"
     },
     "achievements": {
         "title": "Erfolge",

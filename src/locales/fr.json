@@ -70,7 +70,16 @@
         "slide3Desc": "Associez 4+ tuiles pour charger le pouvoir. À 10+ points, touchez l'icône Terre pour nettoyer une ligne ou colonne !",
         "slide4Title": "Gagnez des Étoiles",
         "slide4Desc": "Terminez les niveaux avec des coups restants pour gagner jusqu'à 3 étoiles !",
-        "letsPlay": "C'est Parti !"
+        "letsPlay": "C'est Parti !",
+        "score": "Score",
+        "target": "Objectif",
+        "movesLeft": "{{count}} coups restants",
+        "match4": "4 d'affilée",
+        "match5": "5 d'affilée",
+        "power2": "+2 pouvoir",
+        "power5": "+5 pouvoir",
+        "powerHint": "10+ = Une ligne • 15 = Croix",
+        "starHint": "Plus de coups = Plus d'étoiles"
     },
     "achievements": {
         "title": "Succès",

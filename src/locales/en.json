@@ -70,7 +70,16 @@
         "slide3Desc": "Match 4+ tiles to charge power. At 10+ points, tap the Earth icon to clear a row or column!",
         "slide4Title": "Win & Earn Stars",
         "slide4Desc": "Complete levels with moves remaining to earn up to 3 stars!",
-        "letsPlay": "Let's Play!"
+        "letsPlay": "Let's Play!",
+        "score": "Score",
+        "target": "Target",
+        "movesLeft": "{{count}} moves left",
+        "match4": "4-match",
+        "match5": "5-match",
+        "power2": "+2 power",
+        "power5": "+5 power",
+        "powerHint": "10+ = Single line • 15 = Cross pattern",
+        "starHint": "More moves = More stars"
     },
     "achievements": {
         "title": "Achievements",

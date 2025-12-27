@@ -91,12 +91,12 @@ const Tutorial: React.FC<TutorialProps> = ({ visible, onClose }) => {
                 <View style={styles.visualContainer}>
                     <View style={styles.statBox}>
                         <View style={styles.statItem}>
-                            <Text style={styles.statLabel}>Score</Text>
+                            <Text style={styles.statLabel}>{t('tutorial.score')}</Text>
                             <Text style={styles.statValue}>4,200</Text>
                         </View>
                         <View style={styles.statDivider} />
                         <View style={styles.statItem}>
-                            <Text style={styles.statLabel}>Target</Text>
+                            <Text style={styles.statLabel}>{t('tutorial.target')}</Text>
                             <Text style={[styles.statValue, { color: COLORS.organicWaste }]}>5,000</Text>
                         </View>
                     </View>
@@ -105,7 +105,7 @@ const Tutorial: React.FC<TutorialProps> = ({ visible, onClose }) => {
                     </View>
                     <View style={styles.movesInfo}>
                         <MaterialCommunityIcons name="shoe-print" size={18} color={COLORS.textSecondary} />
-                        <Text style={styles.movesText}>8 moves left</Text>
+                        <Text style={styles.movesText}>{t('tutorial.movesLeft', { count: 8 })}</Text>
                     </View>
                 </View>
             ),
@@ -119,12 +119,12 @@ const Tutorial: React.FC<TutorialProps> = ({ visible, onClose }) => {
                 <View style={styles.visualContainer}>
                     <View style={styles.powerUpDemo}>
                         <View style={styles.matchRow}>
-                            <Text style={styles.matchLabel}>4-match</Text>
-                            <Text style={styles.powerPoints}>+2 power</Text>
+                            <Text style={styles.matchLabel}>{t('tutorial.match4')}</Text>
+                            <Text style={styles.powerPoints}>{t('tutorial.power2')}</Text>
                         </View>
                         <View style={styles.matchRow}>
-                            <Text style={styles.matchLabel}>5-match</Text>
-                            <Text style={styles.powerPoints}>+5 power</Text>
+                            <Text style={styles.matchLabel}>{t('tutorial.match5')}</Text>
+                            <Text style={styles.powerPoints}>{t('tutorial.power5')}</Text>
                         </View>
                     </View>
                     <View style={styles.powerBarDemo}>
@@ -135,7 +135,7 @@ const Tutorial: React.FC<TutorialProps> = ({ visible, onClose }) => {
                             <MaterialCommunityIcons name="earth" size={24} color="#FFA726" />
                         </View>
                     </View>
-                    <Text style={styles.powerHint}>10+ = Single line • 15 = Cross pattern</Text>
+                    <Text style={styles.powerHint}>{t('tutorial.powerHint')}</Text>
                 </View>
             ),
         },
@@ -156,7 +156,7 @@ const Tutorial: React.FC<TutorialProps> = ({ visible, onClose }) => {
                             />
                         ))}
                     </View>
-                    <Text style={styles.starHint}>More moves = More stars</Text>
+                    <Text style={styles.starHint}>{t('tutorial.starHint')}</Text>
                 </View>
             ),
         },

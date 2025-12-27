@@ -5,7 +5,7 @@
 export const VERSION = {
     major: 0,
     minor: 6,
-    patch: 6,
+    patch: 7,
 
     // Computed version string
     get string() {

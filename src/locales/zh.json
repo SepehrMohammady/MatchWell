@@ -70,7 +70,16 @@
         "slide3Desc": "消除4个以上方块可以充能。达到10点后，点击地球图标清除一行或一列！",
         "slide4Title": "赢得星星",
         "slide4Desc": "剩余步数越多，获得的星星越多，最多3颗！",
-        "letsPlay": "开始游戏！"
+        "letsPlay": "开始游戏！",
+        "score": "分数",
+        "target": "目标",
+        "movesLeft": "剩余{{count}}步",
+        "match4": "4消",
+        "match5": "5消",
+        "power2": "+2能量",
+        "power5": "+5能量",
+        "powerHint": "10+ = 单行 • 15 = 十字",
+        "starHint": "步数越多 = 星星越多"
     },
     "achievements": {
         "title": "成就",

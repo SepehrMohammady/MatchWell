@@ -150,6 +150,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
+        direction: 'ltr',
     },
     timeUnit: {
         alignItems: 'center',

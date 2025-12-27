@@ -70,7 +70,16 @@
         "slide3Desc": "4개 이상 매치하여 파워를 충전하세요. 10점 이상에서 지구 아이콘을 터치하면 한 줄을 제거합니다!",
         "slide4Title": "별 획득",
         "slide4Desc": "이동을 남기고 레벨을 완료하면 최대 3개의 별을 획득할 수 있습니다!",
-        "letsPlay": "시작하기!"
+        "letsPlay": "시작하기!",
+        "score": "점수",
+        "target": "목표",
+        "movesLeft": "{{count}}수 남음",
+        "match4": "4개 매치",
+        "match5": "5개 매치",
+        "power2": "+2 파워",
+        "power5": "+5 파워",
+        "powerHint": "10+ = 한 줄 • 15 = 십자",
+        "starHint": "더 많은 수 = 더 많은 별"
     },
     "achievements": {
         "title": "업적",

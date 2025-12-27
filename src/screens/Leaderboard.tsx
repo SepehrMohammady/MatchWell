@@ -334,24 +334,24 @@ const Leaderboard: React.FC<Props> = ({ navigation }) => {
                     </Text>
                     {activeTab === 'global' ? (
                         <View style={styles.rankStatsRow}>
-                            <Text style={styles.rankScoreMain}>{item.total_endless?.toLocaleString() || 0}</Text>
+                            <Text style={styles.rankScoreMain}>{formatNumber(item.total_endless || 0, getCurrentLanguage())}</Text>
                             <Text style={styles.rankStatLabel}> {t('leaderboard.pts')}</Text>
                             {(item.score_per_move || 0) > 0 && (
                                 <>
                                     <Text style={styles.rankStatDivider}>•</Text>
-                                    <Text style={styles.rankStatValue}>{item.score_per_move}</Text>
+                                    <Text style={styles.rankStatValue}>{formatNumber(item.score_per_move || 0, getCurrentLanguage())}</Text>
                                     <Text style={styles.rankStatLabel}>{t('leaderboard.perMove')}</Text>
                                 </>
                             )}
                         </View>
                     ) : (
                         <View style={styles.rankStatsRow}>
-                            <Text style={styles.rankScoreMain}>{item.score?.toLocaleString() || 0}</Text>
+                            <Text style={styles.rankScoreMain}>{formatNumber(item.score || 0, getCurrentLanguage())}</Text>
                             <Text style={styles.rankStatLabel}> {t('leaderboard.pts')}</Text>
                             {(item.score_per_move || 0) > 0 && (
                                 <>
                                     <Text style={styles.rankStatDivider}>•</Text>
-                                    <Text style={styles.rankStatValue}>{item.score_per_move}</Text>
+                                    <Text style={styles.rankStatValue}>{formatNumber(item.score_per_move || 0, getCurrentLanguage())}</Text>
                                     <Text style={styles.rankStatLabel}>{t('leaderboard.perMove')}</Text>
                                 </>
                             )}

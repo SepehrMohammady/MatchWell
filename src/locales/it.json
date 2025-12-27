@@ -70,7 +70,16 @@
         "slide3Desc": "Abbina 4+ tessere per caricare potenza. Con 10+ punti, tocca l'icona Terra per eliminare una riga o colonna!",
         "slide4Title": "Guadagna Stelle",
         "slide4Desc": "Completa i livelli con mosse rimanenti per guadagnare fino a 3 stelle!",
-        "letsPlay": "Giochiamo!"
+        "letsPlay": "Giochiamo!",
+        "score": "Punti",
+        "target": "Obiettivo",
+        "movesLeft": "{{count}} mosse rimaste",
+        "match4": "4 di fila",
+        "match5": "5 di fila",
+        "power2": "+2 potenza",
+        "power5": "+5 potenza",
+        "powerHint": "10+ = Una linea • 15 = Croce",
+        "starHint": "Più mosse = Più stelle"
     },
     "achievements": {
         "title": "Obiettivi",
