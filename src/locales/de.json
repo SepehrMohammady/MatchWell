@@ -43,6 +43,7 @@
         "mainMenu": "Hauptmenü",
         "levels": "Levels",
         "movesRemaining": "{{count}} Züge übrig",
+        "remainingMoves": "Verbleibende Züge",
         "targetScore": "Ziel: {{score}}",
         "newHighScore": "Neuer Rekord!",
         "storyComplete": "Story Abgeschlossen!",

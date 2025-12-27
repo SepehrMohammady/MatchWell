@@ -43,6 +43,7 @@
         "mainMenu": "منوی اصلی",
         "levels": "مراحل",
         "movesRemaining": "{{count}} حرکت باقی‌مانده",
+        "remainingMoves": "حرکات باقی‌مانده",
         "targetScore": "هدف: {{score}}",
         "newHighScore": "رکورد جدید!",
         "storyComplete": "داستان تمام شد!",
@@ -147,8 +148,8 @@
         "usernameNotAvailable": "نام کاربری در دسترس نیست",
         "registrationFailed": "ثبت‌نام ناموفق بود",
         "you": "(شما)",
-        "pts": "امتیاز",
-        "perMove": "/حرکت"
+        "pts": " امتیاز",
+        "perMove": "حرکت/"
     },
     "themes": {
         "trashSorting": "تفکیک زباله",

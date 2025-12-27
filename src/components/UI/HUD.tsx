@@ -70,7 +70,7 @@ const HUD: React.FC<HUDProps> = ({ onPause }) => {
             {/* Bottom row: Moves on left, Combo in middle, Level on right */}
             <View style={styles.bottomRow}>
                 <View style={styles.stat}>
-                    <Text style={styles.statLabel}>{t('common.moves')}</Text>
+                    <Text style={styles.statLabel}>{isEndlessMode ? t('common.moves') : t('game.remainingMoves')}</Text>
                     <Text style={[
                         styles.statValue,
                         !isEndlessMode && movesRemaining <= 5 && styles.lowMoves,

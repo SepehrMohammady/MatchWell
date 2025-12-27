@@ -43,6 +43,7 @@
         "mainMenu": "Menú Principal",
         "levels": "Niveles",
         "movesRemaining": "{{count}} movimientos restantes",
+        "remainingMoves": "Movimientos restantes",
         "targetScore": "Objetivo: {{score}}",
         "newHighScore": "¡Nueva Puntuación Alta!",
         "storyComplete": "¡Historia Completada!",

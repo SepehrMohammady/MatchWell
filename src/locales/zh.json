@@ -43,6 +43,7 @@
         "mainMenu": "主菜单",
         "levels": "关卡",
         "movesRemaining": "剩余 {{count}} 步",
+        "remainingMoves": "剩余步数",
         "targetScore": "目标：{{score}}",
         "newHighScore": "新高分！",
         "storyComplete": "故事完成！",

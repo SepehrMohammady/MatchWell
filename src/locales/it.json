@@ -43,6 +43,7 @@
         "mainMenu": "Menu Principale",
         "levels": "Livelli",
         "movesRemaining": "{{count}} mosse rimanenti",
+        "remainingMoves": "Mosse rimanenti",
         "targetScore": "Obiettivo: {{score}}",
         "newHighScore": "Nuovo Record!",
         "storyComplete": "Storia Completata!",

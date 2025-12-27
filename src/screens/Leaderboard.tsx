@@ -362,11 +362,11 @@ const Leaderboard: React.FC<Props> = ({ navigation }) => {
                     <View style={styles.rankExtraStats}>
                         <View style={styles.rankExtraStat}>
                             <StarFilledIcon size={12} color={COLORS.starFilled} />
-                            <Text style={styles.rankExtraValue}>{item.total_stars}</Text>
+                            <Text style={styles.rankExtraValue}>{String(item.total_stars || 0).padStart(3, ' ')}</Text>
                         </View>
                         <View style={styles.rankExtraStat}>
                             <MedalIcon size={12} color="#CD7F32" />
-                            <Text style={styles.rankExtraValue}>{item.total_medals}</Text>
+                            <Text style={styles.rankExtraValue}>{String(item.total_medals || 0).padStart(2, ' ')}</Text>
                         </View>
                     </View>
                 )}

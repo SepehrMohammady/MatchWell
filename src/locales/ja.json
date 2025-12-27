@@ -43,6 +43,7 @@
         "mainMenu": "メインメニュー",
         "levels": "レベル",
         "movesRemaining": "残り{{count}}手",
+        "remainingMoves": "残り手数",
         "targetScore": "目標：{{score}}",
         "newHighScore": "新記録！",
         "storyComplete": "ストーリークリア！",

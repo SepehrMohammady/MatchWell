@@ -43,6 +43,7 @@
         "mainMenu": "Menu Principal",
         "levels": "Niveaux",
         "movesRemaining": "{{count}} coups restants",
+        "remainingMoves": "Coups restants",
         "targetScore": "Objectif : {{score}}",
         "newHighScore": "Nouveau Record !",
         "storyComplete": "Histoire Terminée !",

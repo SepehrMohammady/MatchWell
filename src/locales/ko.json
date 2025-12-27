@@ -43,6 +43,7 @@
         "mainMenu": "메인 메뉴",
         "levels": "레벨",
         "movesRemaining": "{{count}}회 남음",
+        "remainingMoves": "남은 이동",
         "targetScore": "목표: {{score}}",
         "newHighScore": "신기록!",
         "storyComplete": "스토리 완료!",

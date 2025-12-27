@@ -43,6 +43,7 @@
         "mainMenu": "Main Menu",
         "levels": "Levels",
         "movesRemaining": "{{count}} moves remaining",
+        "remainingMoves": "Remaining Moves",
         "targetScore": "Target: {{score}}",
         "newHighScore": "New High Score!",
         "storyComplete": "Story Complete!",
