@@ -93,6 +93,12 @@ export const formatNumber = (num: number | string, lang?: LanguageCode): string 
     return String(num);
 };
 
+// Format number with zero-padding, then convert to RTL numerals
+export const formatPaddedNumber = (num: number, padLength: number, lang?: LanguageCode): string => {
+    const paddedNum = String(num).padStart(padLength, '0');
+    return formatNumber(paddedNum, lang);
+};
+
 // Load saved language
 export const loadSavedLanguage = async (): Promise<LanguageCode> => {
     try {

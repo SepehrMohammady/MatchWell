@@ -43,7 +43,7 @@ import {
 } from '../config/achievements';
 import { LEVELS, getLevelsByTheme, getLevelById } from '../themes';
 import { useTranslation } from 'react-i18next';
-import { formatNumber, getCurrentLanguage } from '../config/i18n';
+import { formatNumber, formatPaddedNumber, getCurrentLanguage } from '../config/i18n';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Leaderboard'>;
 
@@ -361,11 +361,11 @@ const Leaderboard: React.FC<Props> = ({ navigation }) => {
                 {activeTab === 'global' && (
                     <View style={styles.rankExtraStats}>
                         <View style={styles.rankExtraStat}>
-                            <Text style={styles.rankExtraValue}>{formatNumber(item.total_stars || 0, getCurrentLanguage())}</Text>
+                            <Text style={styles.rankExtraValue}>{formatPaddedNumber(item.total_stars || 0, 3, getCurrentLanguage())}</Text>
                             <StarFilledIcon size={12} color={COLORS.starFilled} />
                         </View>
                         <View style={styles.rankExtraStat}>
-                            <Text style={styles.rankExtraValue}>{formatNumber(item.total_medals || 0, getCurrentLanguage())}</Text>
+                            <Text style={styles.rankExtraValue}>{formatPaddedNumber(item.total_medals || 0, 2, getCurrentLanguage())}</Text>
                             <MedalIcon size={12} color="#CD7F32" />
                         </View>
                     </View>
