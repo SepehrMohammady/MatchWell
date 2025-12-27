@@ -336,7 +336,7 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
     useEffect(() => {
         const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
             if (isLoading) {
-                setIsLoading(false);
+                // Block back button during loading - don't skip the loading screen
                 return true;
             }
             if (!isPaused && !isLevelComplete && !isGameOver) {
