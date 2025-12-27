@@ -126,7 +126,20 @@
         "chooseUsername": "사용자 이름 선택",
         "usernameShown": "리더보드에 표시됩니다",
         "enterUsername": "사용자 이름 입력",
-        "join": "참가"
+        "join": "참가",
+        "noScoresTitle": "게시할 점수 없음",
+        "noScoresMessage": "먼저 무한 모드를 플레이하여 점수를 얻으세요! 리더보드는 무한 모드 최고 점수로 순위가 매겨집니다.",
+        "successTitle": "성공!",
+        "successMessage": "점수가 리더보드에 게시되었습니다!",
+        "errorTitle": "오류",
+        "publishFailed": "점수 게시 실패",
+        "pleaseEnterUsername": "사용자 이름을 입력하세요",
+        "usernameTooShort": "사용자 이름은 3자 이상이어야 합니다",
+        "usernameNotAvailable": "사용자 이름을 사용할 수 없습니다",
+        "registrationFailed": "등록 실패",
+        "you": "(나)",
+        "pts": "점",
+        "perMove": "/수"
     },
     "themes": {
         "trashSorting": "쓰레기 분류",

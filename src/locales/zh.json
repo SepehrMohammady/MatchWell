@@ -126,7 +126,20 @@
         "chooseUsername": "选择用户名",
         "usernameShown": "这将显示在排行榜上",
         "enterUsername": "输入用户名",
-        "join": "加入"
+        "join": "加入",
+        "noScoresTitle": "没有分数可发布",
+        "noScoresMessage": "请先玩无尽模式获取分数！排行榜根据无尽模式高分排名。",
+        "successTitle": "成功！",
+        "successMessage": "您的分数已发布到排行榜！",
+        "errorTitle": "错误",
+        "publishFailed": "发布分数失败",
+        "pleaseEnterUsername": "请输入用户名",
+        "usernameTooShort": "用户名至少需要3个字符",
+        "usernameNotAvailable": "用户名不可用",
+        "registrationFailed": "注册失败",
+        "you": "(你)",
+        "pts": "分",
+        "perMove": "/步"
     },
     "themes": {
         "trashSorting": "垃圾分类",

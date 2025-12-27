@@ -226,9 +226,9 @@ const Leaderboard: React.FC<Props> = ({ navigation }) => {
 
         if (totalEndlessScore === 0) {
             Alert.alert(
-                'No Scores to Publish',
-                'Play Endless Mode first to get scores for the leaderboard! The leaderboard ranks players by their Endless Mode high scores.',
-                [{ text: 'OK' }]
+                t('leaderboard.noScoresTitle'),
+                t('leaderboard.noScoresMessage'),
+                [{ text: t('common.ok') }]
             );
             return;
         }
@@ -279,20 +279,20 @@ const Leaderboard: React.FC<Props> = ({ navigation }) => {
                 setPlayerInfo(result.player);
             }
             loadRankings();
-            Alert.alert('Success!', 'Your score has been published to the leaderboard!');
+            Alert.alert(t('leaderboard.successTitle'), t('leaderboard.successMessage'));
         } else {
-            Alert.alert('Error', result.error || 'Failed to publish score');
+            Alert.alert(t('leaderboard.errorTitle'), result.error || t('leaderboard.publishFailed'));
         }
     };
 
     const handleRegister = async () => {
         if (!username.trim()) {
-            setUsernameError('Please enter a username');
+            setUsernameError(t('leaderboard.pleaseEnterUsername'));
             return;
         }
 
         if (username.length < 3) {
-            setUsernameError('Username must be at least 3 characters');
+            setUsernameError(t('leaderboard.usernameTooShort'));
             return;
         }
 
@@ -301,7 +301,7 @@ const Leaderboard: React.FC<Props> = ({ navigation }) => {
         // Check availability
         const availability = await checkUsername(username);
         if (!availability.available) {
-            setUsernameError(availability.error || 'Username is not available');
+            setUsernameError(availability.error || t('leaderboard.usernameNotAvailable'));
             return;
         }
 
@@ -313,7 +313,7 @@ const Leaderboard: React.FC<Props> = ({ navigation }) => {
             // Directly publish - the publish function will show success/error message
             handlePublish(true);
         } else {
-            setUsernameError(result.error || 'Registration failed');
+            setUsernameError(result.error || t('leaderboard.registrationFailed'));
         }
     };
 
@@ -330,29 +330,29 @@ const Leaderboard: React.FC<Props> = ({ navigation }) => {
                 <View style={styles.rankInfo}>
                     <Text style={[styles.rankUsername, isPlayer && styles.playerUsernameHighlight]}>
                         {item.username}
-                        {isPlayer && ' (You)'}
+                        {isPlayer && ` ${t('leaderboard.you')}`}
                     </Text>
                     {activeTab === 'global' ? (
                         <View style={styles.rankStatsRow}>
                             <Text style={styles.rankScoreMain}>{item.total_endless?.toLocaleString() || 0}</Text>
-                            <Text style={styles.rankStatLabel}> pts</Text>
+                            <Text style={styles.rankStatLabel}> {t('leaderboard.pts')}</Text>
                             {(item.score_per_move || 0) > 0 && (
                                 <>
                                     <Text style={styles.rankStatDivider}>•</Text>
                                     <Text style={styles.rankStatValue}>{item.score_per_move}</Text>
-                                    <Text style={styles.rankStatLabel}>/move</Text>
+                                    <Text style={styles.rankStatLabel}>{t('leaderboard.perMove')}</Text>
                                 </>
                             )}
                         </View>
                     ) : (
                         <View style={styles.rankStatsRow}>
                             <Text style={styles.rankScoreMain}>{item.score?.toLocaleString() || 0}</Text>
-                            <Text style={styles.rankStatLabel}> pts</Text>
+                            <Text style={styles.rankStatLabel}> {t('leaderboard.pts')}</Text>
                             {(item.score_per_move || 0) > 0 && (
                                 <>
                                     <Text style={styles.rankStatDivider}>•</Text>
                                     <Text style={styles.rankStatValue}>{item.score_per_move}</Text>
-                                    <Text style={styles.rankStatLabel}>/move</Text>
+                                    <Text style={styles.rankStatLabel}>{t('leaderboard.perMove')}</Text>
                                 </>
                             )}
                         </View>

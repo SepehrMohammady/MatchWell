@@ -126,7 +126,20 @@
         "chooseUsername": "Scegli il Tuo Nome Utente",
         "usernameShown": "Questo verrà mostrato nella classifica",
         "enterUsername": "Inserisci nome utente",
-        "join": "Unisciti"
+        "join": "Unisciti",
+        "noScoresTitle": "Nessun punteggio da pubblicare",
+        "noScoresMessage": "Gioca prima alla Modalità Infinita per ottenere punteggi! La classifica si basa sui punteggi della Modalità Infinita.",
+        "successTitle": "Successo!",
+        "successMessage": "Il tuo punteggio è stato pubblicato nella classifica!",
+        "errorTitle": "Errore",
+        "publishFailed": "Pubblicazione del punteggio fallita",
+        "pleaseEnterUsername": "Inserisci un nome utente",
+        "usernameTooShort": "Il nome utente deve avere almeno 3 caratteri",
+        "usernameNotAvailable": "Il nome utente non è disponibile",
+        "registrationFailed": "Registrazione fallita",
+        "you": "(Tu)",
+        "pts": "pt",
+        "perMove": "/mossa"
     },
     "themes": {
         "trashSorting": "Raccolta Differenziata",

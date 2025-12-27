@@ -126,7 +126,20 @@
         "chooseUsername": "ユーザー名を選択",
         "usernameShown": "これはリーダーボードに表示されます",
         "enterUsername": "ユーザー名を入力",
-        "join": "参加"
+        "join": "参加",
+        "noScoresTitle": "公開するスコアがありません",
+        "noScoresMessage": "まずエンドレスモードをプレイしてスコアを獲得してください！ランキングはエンドレスモードのハイスコアで決まります。",
+        "successTitle": "成功！",
+        "successMessage": "スコアがリーダーボードに公開されました！",
+        "errorTitle": "エラー",
+        "publishFailed": "スコアの公開に失敗しました",
+        "pleaseEnterUsername": "ユーザー名を入力してください",
+        "usernameTooShort": "ユーザー名は3文字以上必要です",
+        "usernameNotAvailable": "このユーザー名は使用できません",
+        "registrationFailed": "登録に失敗しました",
+        "you": "(あなた)",
+        "pts": "点",
+        "perMove": "/手"
     },
     "themes": {
         "trashSorting": "ゴミ分別",

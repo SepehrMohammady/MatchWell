@@ -126,7 +126,20 @@
         "chooseUsername": "اختر اسم المستخدم",
         "usernameShown": "سيظهر هذا على لوحة المتصدرين",
         "enterUsername": "أدخل اسم المستخدم",
-        "join": "انضم"
+        "join": "انضم",
+        "noScoresTitle": "لا توجد نتائج للنشر",
+        "noScoresMessage": "العب وضع اللانهائي أولاً للحصول على نتائج! يتم تصنيف اللاعبين حسب نتائج الوضع اللانهائي.",
+        "successTitle": "نجاح!",
+        "successMessage": "تم نشر نتيجتك على لوحة المتصدرين!",
+        "errorTitle": "خطأ",
+        "publishFailed": "فشل نشر النتيجة",
+        "pleaseEnterUsername": "الرجاء إدخال اسم المستخدم",
+        "usernameTooShort": "يجب أن يكون اسم المستخدم ٣ أحرف على الأقل",
+        "usernameNotAvailable": "اسم المستخدم غير متاح",
+        "registrationFailed": "فشل التسجيل",
+        "you": "(أنت)",
+        "pts": "نقطة",
+        "perMove": "/حركة"
     },
     "themes": {
         "trashSorting": "فرز النفايات",

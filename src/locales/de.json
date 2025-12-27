@@ -126,7 +126,20 @@
         "chooseUsername": "Benutzernamen wählen",
         "usernameShown": "Dieser wird in der Bestenliste angezeigt",
         "enterUsername": "Benutzernamen eingeben",
-        "join": "Beitreten"
+        "join": "Beitreten",
+        "noScoresTitle": "Keine Punkte zum Veröffentlichen",
+        "noScoresMessage": "Spiele zuerst den Endlos-Modus! Die Bestenliste basiert auf Endlos-Modus-Punkten.",
+        "successTitle": "Erfolg!",
+        "successMessage": "Dein Punktestand wurde in der Bestenliste veröffentlicht!",
+        "errorTitle": "Fehler",
+        "publishFailed": "Veröffentlichung fehlgeschlagen",
+        "pleaseEnterUsername": "Bitte gib einen Benutzernamen ein",
+        "usernameTooShort": "Der Benutzername muss mindestens 3 Zeichen haben",
+        "usernameNotAvailable": "Der Benutzername ist nicht verfügbar",
+        "registrationFailed": "Registrierung fehlgeschlagen",
+        "you": "(Du)",
+        "pts": "Pkt",
+        "perMove": "/Zug"
     },
     "themes": {
         "trashSorting": "Mülltrennung",

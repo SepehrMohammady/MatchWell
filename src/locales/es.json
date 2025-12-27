@@ -126,7 +126,20 @@
         "chooseUsername": "Elige tu Nombre de Usuario",
         "usernameShown": "Esto se mostrará en el ranking",
         "enterUsername": "Introduce nombre de usuario",
-        "join": "Unirse"
+        "join": "Unirse",
+        "noScoresTitle": "Sin puntuaciones para publicar",
+        "noScoresMessage": "¡Juega primero el Modo Infinito para obtener puntuaciones! El ranking clasifica por puntuaciones del Modo Infinito.",
+        "successTitle": "¡Éxito!",
+        "successMessage": "¡Tu puntuación ha sido publicada en el ranking!",
+        "errorTitle": "Error",
+        "publishFailed": "Error al publicar la puntuación",
+        "pleaseEnterUsername": "Por favor introduce un nombre de usuario",
+        "usernameTooShort": "El nombre debe tener al menos 3 caracteres",
+        "usernameNotAvailable": "El nombre de usuario no está disponible",
+        "registrationFailed": "Error en el registro",
+        "you": "(Tú)",
+        "pts": "pts",
+        "perMove": "/mov"
     },
     "themes": {
         "trashSorting": "Clasificación de Basura",

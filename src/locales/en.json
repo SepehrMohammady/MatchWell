@@ -126,7 +126,20 @@
         "chooseUsername": "Choose Your Username",
         "usernameShown": "This will be shown on the leaderboard",
         "enterUsername": "Enter username",
-        "join": "Join"
+        "join": "Join",
+        "noScoresTitle": "No Scores to Publish",
+        "noScoresMessage": "Play Endless Mode first to get scores for the leaderboard! The leaderboard ranks players by their Endless Mode high scores.",
+        "successTitle": "Success!",
+        "successMessage": "Your score has been published to the leaderboard!",
+        "errorTitle": "Error",
+        "publishFailed": "Failed to publish score",
+        "pleaseEnterUsername": "Please enter a username",
+        "usernameTooShort": "Username must be at least 3 characters",
+        "usernameNotAvailable": "Username is not available",
+        "registrationFailed": "Registration failed",
+        "you": "(You)",
+        "pts": "pts",
+        "perMove": "/move"
     },
     "themes": {
         "trashSorting": "Trash Sorting",

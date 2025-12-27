@@ -126,7 +126,20 @@
         "chooseUsername": "Choisissez Votre Nom",
         "usernameShown": "Ceci sera affiché sur le classement",
         "enterUsername": "Entrez nom d'utilisateur",
-        "join": "Rejoindre"
+        "join": "Rejoindre",
+        "noScoresTitle": "Aucun score à publier",
+        "noScoresMessage": "Jouez d'abord au Mode Infini pour obtenir des scores ! Le classement est basé sur les scores du Mode Infini.",
+        "successTitle": "Succès !",
+        "successMessage": "Votre score a été publié sur le classement !",
+        "errorTitle": "Erreur",
+        "publishFailed": "Échec de la publication du score",
+        "pleaseEnterUsername": "Veuillez entrer un nom d'utilisateur",
+        "usernameTooShort": "Le nom doit contenir au moins 3 caractères",
+        "usernameNotAvailable": "Le nom d'utilisateur n'est pas disponible",
+        "registrationFailed": "L'inscription a échoué",
+        "you": "(Vous)",
+        "pts": "pts",
+        "perMove": "/coup"
     },
     "themes": {
         "trashSorting": "Tri des Déchets",
