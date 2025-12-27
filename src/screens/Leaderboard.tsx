@@ -325,7 +325,7 @@ const Leaderboard: React.FC<Props> = ({ navigation }) => {
         return (
             <View style={[styles.rankItem, isPlayer && styles.rankItemHighlight]}>
                 <View style={[styles.rankBadge, { backgroundColor: rankColor }]}>
-                    <Text style={styles.rankNumber}>{item.rank}</Text>
+                    <Text style={styles.rankNumber}>{formatNumber(item.rank, getCurrentLanguage())}</Text>
                 </View>
                 <View style={styles.rankInfo}>
                     <Text style={[styles.rankUsername, isPlayer && styles.playerUsernameHighlight]}>
@@ -361,12 +361,12 @@ const Leaderboard: React.FC<Props> = ({ navigation }) => {
                 {activeTab === 'global' && (
                     <View style={styles.rankExtraStats}>
                         <View style={styles.rankExtraStat}>
-                            <StarFilledIcon size={12} color={COLORS.starFilled} />
                             <Text style={styles.rankExtraValue}>{formatNumber(item.total_stars || 0, getCurrentLanguage())}</Text>
+                            <StarFilledIcon size={12} color={COLORS.starFilled} />
                         </View>
                         <View style={styles.rankExtraStat}>
-                            <MedalIcon size={12} color="#CD7F32" />
                             <Text style={styles.rankExtraValue}>{formatNumber(item.total_medals || 0, getCurrentLanguage())}</Text>
+                            <MedalIcon size={12} color="#CD7F32" />
                         </View>
                     </View>
                 )}
