@@ -122,6 +122,7 @@
         "joinLeaderboard": "リーダーボードに参加",
         "publishMyScore": "スコアを公開",
         "playersWorldwide": "世界中の{{count}}人のプレイヤー",
+        "playersWorldwideLabel": "人のプレイヤーが世界中に",
         "chooseUsername": "ユーザー名を選択",
         "usernameShown": "これはリーダーボードに表示されます",
         "enterUsername": "ユーザー名を入力",

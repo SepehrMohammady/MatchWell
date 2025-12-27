@@ -122,6 +122,7 @@
         "joinLeaderboard": "Rejoindre le Classement",
         "publishMyScore": "Publier Mon Score",
         "playersWorldwide": "{{count}} joueurs dans le monde",
+        "playersWorldwideLabel": "joueurs dans le monde",
         "chooseUsername": "Choisissez Votre Nom",
         "usernameShown": "Ceci sera affiché sur le classement",
         "enterUsername": "Entrez nom d'utilisateur",

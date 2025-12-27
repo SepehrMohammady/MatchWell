@@ -37,6 +37,7 @@ interface SavedEndlessState {
     score: number;
     moves: number;
     combo: number;
+    powerProgress: number;
     timestamp: number;
 }
 
@@ -179,7 +180,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // Save current endless mode state for resume
     saveEndlessState: async () => {
         try {
-            const { grid, score, moves, combo, theme, isEndlessMode } = get();
+            const { grid, score, moves, combo, theme, isEndlessMode, powerProgress } = get();
             if (!isEndlessMode) return;
 
             const endlessState: SavedEndlessState = {
@@ -188,6 +189,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
                 score,
                 moves,
                 combo,
+                powerProgress,
                 timestamp: Date.now(),
             };
             await AsyncStorage.setItem(getEndlessStateKey(theme), JSON.stringify(endlessState));
@@ -227,6 +229,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
                 selectedTile: null,
                 isProcessing: false,
                 isEndlessMode: true,
+                powerProgress: state.powerProgress || 0,
             });
             console.log('✅ Endless state loaded:', theme, state.score);
             return true;

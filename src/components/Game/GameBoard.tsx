@@ -111,6 +111,7 @@ const styles = StyleSheet.create({
         // Add border for game board frame
         borderWidth: 4,
         borderColor: '#4a4a4a',
+        direction: 'ltr',
     },
     row: {
         flexDirection: 'row',

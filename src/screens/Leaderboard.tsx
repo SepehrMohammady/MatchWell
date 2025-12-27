@@ -43,6 +43,7 @@ import {
 } from '../config/achievements';
 import { LEVELS, getLevelsByTheme, getLevelById } from '../themes';
 import { useTranslation } from 'react-i18next';
+import { formatNumber, getCurrentLanguage } from '../config/i18n';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Leaderboard'>;
 
@@ -444,7 +445,7 @@ const Leaderboard: React.FC<Props> = ({ navigation }) => {
                         </Text>
                     )}
                 </TouchableOpacity>
-                <Text style={styles.totalPlayers}>{t('leaderboard.playersWorldwide', { count: totalPlayers })}</Text>
+                <Text style={styles.totalPlayers}>{`${formatNumber(totalPlayers, getCurrentLanguage())} ${t('leaderboard.playersWorldwideLabel')}`}</Text>
             </View>
 
             {/* Username Modal */}
@@ -496,6 +497,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: COLORS.backgroundDark,
+        direction: 'ltr',
     },
     header: {
         flexDirection: 'row',

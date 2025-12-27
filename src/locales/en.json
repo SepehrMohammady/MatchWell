@@ -122,6 +122,7 @@
         "joinLeaderboard": "Join Leaderboard",
         "publishMyScore": "Publish My Score",
         "playersWorldwide": "{{count}} players worldwide",
+        "playersWorldwideLabel": "players worldwide",
         "chooseUsername": "Choose Your Username",
         "usernameShown": "This will be shown on the leaderboard",
         "enterUsername": "Enter username",

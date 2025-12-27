@@ -347,6 +347,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap',
         gap: SPACING.md,
+        direction: 'ltr',
     },
     levelButton: {
         width: 64,

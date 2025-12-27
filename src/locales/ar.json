@@ -122,6 +122,7 @@
         "joinLeaderboard": "انضم إلى لوحة المتصدرين",
         "publishMyScore": "نشر نتيجتي",
         "playersWorldwide": "{{count}} لاعب حول العالم",
+        "playersWorldwideLabel": "لاعب حول العالم",
         "chooseUsername": "اختر اسم المستخدم",
         "usernameShown": "سيظهر هذا على لوحة المتصدرين",
         "enterUsername": "أدخل اسم المستخدم",

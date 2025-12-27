@@ -43,7 +43,7 @@ const HUD: React.FC<HUDProps> = ({ onPause }) => {
             {/* Top row: Score on left, Pause on right */}
             <View style={styles.topRow}>
                 <View style={styles.scoreSection}>
-                    <Text style={styles.scoreValue}>{score.toLocaleString()}</Text>
+                    <Text style={styles.scoreValue}>{formatNumber(score, getCurrentLanguage())}</Text>
                     {isEndlessMode ? (
                         <Text style={styles.targetText}>
                             {t('common.best')}: {displayBestScore > 0 ? formatNumber(displayBestScore, getCurrentLanguage()) : '—'}
@@ -70,7 +70,7 @@ const HUD: React.FC<HUDProps> = ({ onPause }) => {
             {/* Bottom row: Moves on left, Combo in middle, Level on right */}
             <View style={styles.bottomRow}>
                 <View style={styles.stat}>
-                    <Text style={styles.statLabel}>{isEndlessMode ? t('common.moves') : t('game.movesRemaining', { count: movesRemaining })}</Text>
+                    <Text style={styles.statLabel}>{t('common.moves')}</Text>
                     <Text style={[
                         styles.statValue,
                         !isEndlessMode && movesRemaining <= 5 && styles.lowMoves,

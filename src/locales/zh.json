@@ -122,6 +122,7 @@
         "joinLeaderboard": "加入排行榜",
         "publishMyScore": "发布我的分数",
         "playersWorldwide": "{{count}} 名全球玩家",
+        "playersWorldwideLabel": "名全球玩家",
         "chooseUsername": "选择用户名",
         "usernameShown": "这将显示在排行榜上",
         "enterUsername": "输入用户名",

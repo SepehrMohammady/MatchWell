@@ -192,6 +192,7 @@ const Tutorial: React.FC<TutorialProps> = ({ visible, onClose }) => {
                         showsHorizontalScrollIndicator={false}
                         onMomentumScrollEnd={handleScroll}
                         scrollEventThrottle={16}
+                        style={{ direction: 'ltr' }}
                     >
                         {slides.map((slide, index) => (
                             <View key={index} style={styles.slide}>
