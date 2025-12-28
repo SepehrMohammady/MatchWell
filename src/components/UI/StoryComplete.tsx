@@ -221,6 +221,7 @@ const styles = StyleSheet.create({
         borderRadius: RADIUS.xl,
         paddingVertical: SPACING.xl,
         maxHeight: '85%',
+        direction: 'ltr',
     },
     headerTitle: {
         fontSize: TYPOGRAPHY.h2,
