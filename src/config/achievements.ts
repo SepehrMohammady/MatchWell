@@ -136,10 +136,10 @@ export const STAR_ACHIEVEMENTS: Achievement[] = [
 // Endless Score Tiers Configuration
 const ENDLESS_TIERS: { tier: EndlessTier; name: string; emoji: string; icon: string; iconColor: string; score: number }[] = [
     { tier: 'bronze', name: 'Bronze', emoji: '🥉', icon: 'medal', iconColor: '#CD7F32', score: 50000 },
-    { tier: 'silver', name: 'Silver', emoji: '🥈', icon: 'medal', iconColor: '#C0C0C0', score: 500000 },
-    { tier: 'gold', name: 'Gold', emoji: '🥇', icon: 'medal', iconColor: '#FFD700', score: 5000000 },
-    { tier: 'diamond', name: 'Diamond', emoji: '💎', icon: 'diamond-stone', iconColor: '#7CB9E8', score: 50000000 },
-    { tier: 'earth-saver', name: 'Earth Saver', emoji: '🌍', icon: 'earth', iconColor: '#4CAF50', score: 500000000 },
+    { tier: 'silver', name: 'Silver', emoji: '🥈', icon: 'medal', iconColor: '#C0C0C0', score: 250000 },
+    { tier: 'gold', name: 'Gold', emoji: '🥇', icon: 'medal', iconColor: '#FFD700', score: 1000000 },
+    { tier: 'diamond', name: 'Diamond', emoji: '💎', icon: 'diamond-stone', iconColor: '#7CB9E8', score: 5000000 },
+    { tier: 'earth-saver', name: 'Earth Saver', emoji: '🌍', icon: 'earth', iconColor: '#4CAF50', score: 10000000 },
 ];
 
 // Theme names for display

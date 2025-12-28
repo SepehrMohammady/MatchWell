@@ -11,7 +11,9 @@ import {
     ScrollView,
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useTranslation } from 'react-i18next';
 import { COLORS, TYPOGRAPHY, SPACING, RADIUS } from '../../config/theme';
+import { formatNumber, getCurrentLanguage } from '../../config/i18n';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const CONTAINER_WIDTH = SCREEN_WIDTH - SPACING.xl * 2;
@@ -31,6 +33,7 @@ interface SlideData {
 }
 
 const StoryComplete: React.FC<StoryCompleteProps> = ({ visible, onClose, totalStars, completedLevels }) => {
+    const { t } = useTranslation();
     const [currentSlide, setCurrentSlide] = useState(0);
     const scrollViewRef = useRef<ScrollView>(null);
     const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -59,15 +62,15 @@ const StoryComplete: React.FC<StoryCompleteProps> = ({ visible, onClose, totalSt
         {
             icon: 'party-popper',
             iconColor: '#FFD700',
-            title: 'Congratulations!',
+            title: t('game.congratulations'),
             content: (
                 <View style={styles.slideContent}>
                     <Text style={styles.heroText}>🎉</Text>
                     <Text style={styles.bodyText}>
-                        You've completed all {completedLevels} levels of MatchWell!
+                        {t('game.completedAllLevels', { count: completedLevels })}
                     </Text>
                     <Text style={styles.bodyText}>
-                        Thank you for playing and learning about our planet.
+                        {t('game.thankYouPlaying')}
                     </Text>
                 </View>
             ),
@@ -75,15 +78,15 @@ const StoryComplete: React.FC<StoryCompleteProps> = ({ visible, onClose, totalSt
         {
             icon: 'star',
             iconColor: COLORS.starFilled,
-            title: 'Collect More Stars',
+            title: t('game.collectMoreStars'),
             content: (
                 <View style={styles.slideContent}>
                     <View style={styles.starsRow}>
                         <MaterialCommunityIcons name="star" size={40} color={COLORS.starFilled} />
-                        <Text style={styles.starCount}>{totalStars}/150</Text>
+                        <Text style={styles.starCount}>{formatNumber(totalStars, getCurrentLanguage())}/150</Text>
                     </View>
                     <Text style={styles.bodyText}>
-                        Replay levels to earn more stars! Complete each level with more moves left to maximize your stars.
+                        {t('game.replayForStars')}
                     </Text>
                 </View>
             ),
@@ -91,7 +94,7 @@ const StoryComplete: React.FC<StoryCompleteProps> = ({ visible, onClose, totalSt
         {
             icon: 'medal',
             iconColor: '#CD7F32',
-            title: 'Earn Medals',
+            title: t('game.earnMedals'),
             content: (
                 <View style={styles.slideContent}>
                     <View style={styles.medalsRow}>
@@ -100,7 +103,7 @@ const StoryComplete: React.FC<StoryCompleteProps> = ({ visible, onClose, totalSt
                         <MaterialCommunityIcons name="medal" size={36} color="#FFD700" />
                     </View>
                     <Text style={styles.bodyText}>
-                        Visit the Achievements page to collect medals for your progress, star milestones, and endless mode scores!
+                        {t('game.achievementsPage')}
                     </Text>
                 </View>
             ),
@@ -108,14 +111,14 @@ const StoryComplete: React.FC<StoryCompleteProps> = ({ visible, onClose, totalSt
         {
             icon: 'infinity',
             iconColor: '#4A90E2',
-            title: 'Try Endless Mode',
+            title: t('game.tryEndlessMode'),
             content: (
                 <View style={styles.slideContent}>
                     <View style={styles.iconShowcase}>
                         <MaterialCommunityIcons name="infinity" size={48} color="#4A90E2" />
                     </View>
                     <Text style={styles.bodyText}>
-                        Challenge yourself in Endless Mode! Each theme has its own endless challenge. See how far you can go!
+                        {t('game.endlessChallenge')}
                     </Text>
                 </View>
             ),
@@ -123,17 +126,17 @@ const StoryComplete: React.FC<StoryCompleteProps> = ({ visible, onClose, totalSt
         {
             icon: 'trophy',
             iconColor: '#FFD700',
-            title: 'Climb the Leaderboard',
+            title: t('game.climbLeaderboard'),
             content: (
                 <View style={styles.slideContent}>
                     <View style={styles.iconShowcase}>
                         <MaterialCommunityIcons name="trophy" size={48} color="#FFD700" />
                     </View>
                     <Text style={styles.bodyText}>
-                        Compete with players worldwide! Your endless mode scores are ranked on the global leaderboard.
+                        {t('game.competeWorldwide')}
                     </Text>
                     <TouchableOpacity style={styles.actionButton} onPress={onClose}>
-                        <Text style={styles.actionButtonText}>Let's Go!</Text>
+                        <Text style={styles.actionButtonText}>{t('game.letsGo')}</Text>
                     </TouchableOpacity>
                 </View>
             ),
@@ -161,7 +164,7 @@ const StoryComplete: React.FC<StoryCompleteProps> = ({ visible, onClose, totalSt
         <Modal visible={visible} transparent animationType="none">
             <Animated.View style={[styles.overlay, { opacity: fadeAnim }]}>
                 <Animated.View style={[styles.container, { transform: [{ scale: scaleAnim }] }]}>
-                    <Text style={styles.headerTitle}>Story Complete!</Text>
+                    <Text style={styles.headerTitle}>{t('game.storyComplete')}</Text>
 
                     <ScrollView
                         ref={scrollViewRef}
@@ -195,7 +198,7 @@ const StoryComplete: React.FC<StoryCompleteProps> = ({ visible, onClose, totalSt
                     {/* Action button - show only if not on last slide */}
                     {currentSlide < slides.length - 1 && (
                         <TouchableOpacity style={styles.button} onPress={handleNext} activeOpacity={0.8}>
-                            <Text style={styles.buttonText}>Next</Text>
+                            <Text style={styles.buttonText}>{t('common.next')}</Text>
                             <MaterialCommunityIcons name="arrow-right" size={20} color="#fff" />
                         </TouchableOpacity>
                     )}

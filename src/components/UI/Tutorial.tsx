@@ -13,6 +13,7 @@ import {
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { COLORS, TYPOGRAPHY, SPACING, RADIUS } from '../../config/theme';
 import { useTranslation } from 'react-i18next';
+import { formatNumber, getCurrentLanguage } from '../../config/i18n';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const CONTAINER_WIDTH = SCREEN_WIDTH - SPACING.xl * 2;
@@ -92,12 +93,12 @@ const Tutorial: React.FC<TutorialProps> = ({ visible, onClose }) => {
                     <View style={styles.statBox}>
                         <View style={styles.statItem}>
                             <Text style={styles.statLabel}>{t('tutorial.score')}</Text>
-                            <Text style={styles.statValue}>4,200</Text>
+                            <Text style={styles.statValue}>{formatNumber(4200, getCurrentLanguage())}</Text>
                         </View>
                         <View style={styles.statDivider} />
                         <View style={styles.statItem}>
                             <Text style={styles.statLabel}>{t('tutorial.target')}</Text>
-                            <Text style={[styles.statValue, { color: COLORS.organicWaste }]}>5,000</Text>
+                            <Text style={[styles.statValue, { color: COLORS.organicWaste }]}>{formatNumber(5000, getCurrentLanguage())}</Text>
                         </View>
                     </View>
                     <View style={styles.progressDemo}>
