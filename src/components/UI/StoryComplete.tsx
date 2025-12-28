@@ -67,7 +67,7 @@ const StoryComplete: React.FC<StoryCompleteProps> = ({ visible, onClose, totalSt
                 <View style={styles.slideContent}>
                     <Text style={styles.heroText}>🎉</Text>
                     <Text style={styles.bodyText}>
-                        {t('game.completedAllLevels', { count: completedLevels })}
+                        {t('game.completedAllLevels', { count: completedLevels }).replace(String(completedLevels), formatNumber(completedLevels, getCurrentLanguage()))}
                     </Text>
                     <Text style={styles.bodyText}>
                         {t('game.thankYouPlaying')}
@@ -83,7 +83,7 @@ const StoryComplete: React.FC<StoryCompleteProps> = ({ visible, onClose, totalSt
                 <View style={styles.slideContent}>
                     <View style={styles.starsRow}>
                         <MaterialCommunityIcons name="star" size={40} color={COLORS.starFilled} />
-                        <Text style={styles.starCount}>{formatNumber(totalStars, getCurrentLanguage())}/150</Text>
+                        <Text style={styles.starCount}>{formatNumber(totalStars, getCurrentLanguage())}/{formatNumber(150, getCurrentLanguage())}</Text>
                     </View>
                     <Text style={styles.bodyText}>
                         {t('game.replayForStars')}
@@ -318,6 +318,7 @@ const styles = StyleSheet.create({
     },
     button: {
         flexDirection: 'row',
+        direction: 'ltr',
         alignItems: 'center',
         justifyContent: 'center',
         gap: SPACING.sm,

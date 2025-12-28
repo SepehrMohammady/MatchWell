@@ -106,7 +106,7 @@ const Tutorial: React.FC<TutorialProps> = ({ visible, onClose }) => {
                     </View>
                     <View style={styles.movesInfo}>
                         <MaterialCommunityIcons name="shoe-print" size={18} color={COLORS.textSecondary} />
-                        <Text style={styles.movesText}>{t('tutorial.movesLeft', { count: 8 })}</Text>
+                        <Text style={styles.movesText}>{t('tutorial.movesLeft', { count: 8 }).replace('8', formatNumber(8, getCurrentLanguage()))}</Text>
                     </View>
                 </View>
             ),
