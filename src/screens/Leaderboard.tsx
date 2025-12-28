@@ -43,7 +43,7 @@ import {
 } from '../config/achievements';
 import { LEVELS, getLevelsByTheme, getLevelById } from '../themes';
 import { useTranslation } from 'react-i18next';
-import { formatNumber, formatPaddedNumber, getCurrentLanguage } from '../config/i18n';
+import { formatNumber, formatPaddedNumber, getCurrentLanguage, isRTLLanguage } from '../config/i18n';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Leaderboard'>;
 
@@ -361,12 +361,14 @@ const Leaderboard: React.FC<Props> = ({ navigation }) => {
                 {activeTab === 'global' && (
                     <View style={styles.rankExtraStats}>
                         <View style={styles.rankExtraStat}>
+                            {!isRTLLanguage(getCurrentLanguage()) && <StarFilledIcon size={12} color={COLORS.starFilled} />}
                             <Text style={styles.rankExtraValue}>{formatPaddedNumber(item.total_stars || 0, 3, getCurrentLanguage())}</Text>
-                            <StarFilledIcon size={12} color={COLORS.starFilled} />
+                            {isRTLLanguage(getCurrentLanguage()) && <StarFilledIcon size={12} color={COLORS.starFilled} />}
                         </View>
                         <View style={styles.rankExtraStat}>
+                            {!isRTLLanguage(getCurrentLanguage()) && <MedalIcon size={12} color="#CD7F32" />}
                             <Text style={styles.rankExtraValue}>{formatPaddedNumber(item.total_medals || 0, 2, getCurrentLanguage())}</Text>
-                            <MedalIcon size={12} color="#CD7F32" />
+                            {isRTLLanguage(getCurrentLanguage()) && <MedalIcon size={12} color="#CD7F32" />}
                         </View>
                     </View>
                 )}
