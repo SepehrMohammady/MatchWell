@@ -207,12 +207,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
             const state: SavedEndlessState = JSON.parse(saved);
 
-            // Check if state is not too old (24 hours)
-            const maxAge = 24 * 60 * 60 * 1000;
-            if (Date.now() - state.timestamp > maxAge) {
-                await AsyncStorage.removeItem(getEndlessStateKey(theme));
-                return false;
-            }
+            // Endless saves persist indefinitely (no expiration)
 
             set({
                 grid: state.grid,
@@ -257,14 +252,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
             const saved = await AsyncStorage.getItem(getEndlessStateKey(theme));
             if (!saved) return false;
 
-            const state: SavedEndlessState = JSON.parse(saved);
-
-            // Check if state is not too old (24 hours)
-            const maxAge = 24 * 60 * 60 * 1000;
-            if (Date.now() - state.timestamp > maxAge) {
-                await AsyncStorage.removeItem(getEndlessStateKey(theme));
-                return false;
-            }
+            // Endless saves persist indefinitely (no expiration)
+            // Just verify the saved state is valid JSON
+            JSON.parse(saved);
 
             return true;
         } catch (error) {
