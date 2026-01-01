@@ -189,7 +189,7 @@ const MainMenu: React.FC<Props> = ({ navigation }) => {
                         <Text style={styles.primaryButtonText}>{t('menu.endlessMode')}</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={[styles.primaryButton, { backgroundColor: '#4A90E2' }]} onPress={handleMultiplayer} activeOpacity={0.8}>
+                    <TouchableOpacity style={styles.primaryButton} onPress={handleMultiplayer} activeOpacity={0.8}>
                         <MaterialCommunityIcons name="account-group" size={20} color="#ffffff" style={{ marginRight: SPACING.sm }} />
                         <Text style={styles.primaryButtonText}>{t('menu.multiplayer')}</Text>
                     </TouchableOpacity>

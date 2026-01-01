@@ -196,6 +196,9 @@ const Settings: React.FC<Props> = ({ navigation }) => {
                         <View style={styles.aboutCardRow}>
                             <Text style={styles.testersThankYou}>{t('settings.testersThanks')}</Text>
                         </View>
+                        <View style={styles.aboutCardRow}>
+                            <Text style={styles.testerName}>Hoda Mostafanezhad</Text>
+                        </View>
                         <View style={[styles.aboutCardRow, styles.aboutCardLastRow]}>
                             <Text style={styles.testerName}>Majid Mohammadi</Text>
                         </View>
