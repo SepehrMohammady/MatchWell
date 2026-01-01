@@ -40,6 +40,15 @@ export const THEME_CONFIGS: Record<ThemeType, Theme> = {
     },
 };
 
+// Theme list for selectors (with colors and emojis)
+export const THEMES: { id: ThemeType; name: string; emoji: string; color: string }[] = [
+    { id: 'trash-sorting', name: 'Trash Sorting', emoji: '🗑️', color: '#6DBE45' },
+    { id: 'pollution', name: 'Clear the Air', emoji: '🌫️', color: '#708090' },
+    { id: 'water-conservation', name: 'Water Conservation', emoji: '💧', color: '#4A90E2' },
+    { id: 'energy-efficiency', name: 'Energy Efficiency', emoji: '⚡', color: '#F5A623' },
+    { id: 'deforestation', name: 'Save the Forests', emoji: '🌲', color: '#228B22' },
+];
+
 // Tile display information
 export const TILE_INFO: Record<TileType, { name: string; color: string; emoji: string }> = {
     // Trash Sorting Theme

@@ -96,6 +96,11 @@ const MainMenu: React.FC<Props> = ({ navigation }) => {
     const earthStage = getEarthStage(completedLevels);
     const earthImage = EARTH_STAGES[earthStage as keyof typeof EARTH_STAGES];
 
+    const handleMultiplayer = () => {
+        playSfx('tile_select');
+        navigation.navigate('MultiplayerMenu');
+    };
+
     const handlePlay = () => {
         playSfx('tile_select');
         navigation.navigate('LevelSelect');
@@ -172,7 +177,7 @@ const MainMenu: React.FC<Props> = ({ navigation }) => {
                     <Text style={styles.subtitle}>{t('menu.tagline')}</Text>
                 </View>
 
-                {/* Primary buttons: Story Mode and Endless Mode */}
+                {/* Primary buttons: Story Mode, Endless Mode, and Multiplayer */}
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity style={styles.primaryButton} onPress={handlePlay} activeOpacity={0.8}>
                         <MaterialCommunityIcons name="book-open-variant" size={20} color="#ffffff" style={{ marginRight: SPACING.sm }} />
@@ -182,6 +187,11 @@ const MainMenu: React.FC<Props> = ({ navigation }) => {
                     <TouchableOpacity style={styles.primaryButton} onPress={handleEndless} activeOpacity={0.8}>
                         <MaterialCommunityIcons name="infinity" size={20} color="#ffffff" style={{ marginRight: SPACING.sm }} />
                         <Text style={styles.primaryButtonText}>{t('menu.endlessMode')}</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={[styles.primaryButton, { backgroundColor: '#4A90E2' }]} onPress={handleMultiplayer} activeOpacity={0.8}>
+                        <MaterialCommunityIcons name="account-group" size={20} color="#ffffff" style={{ marginRight: SPACING.sm }} />
+                        <Text style={styles.primaryButtonText}>{t('menu.multiplayer')}</Text>
                     </TouchableOpacity>
                 </View>
 
