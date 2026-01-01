@@ -10,6 +10,8 @@ import {
     ImageBackground,
     Dimensions,
     ScrollView,
+    BackHandler,
+    Alert,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -70,6 +72,25 @@ const MainMenu: React.FC<Props> = ({ navigation }) => {
                 playBgm('bgm_menu');
             }
         }, [soundsReady])
+    );
+
+    // Handle back button - show exit confirmation
+    useFocusEffect(
+        useCallback(() => {
+            const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+                Alert.alert(
+                    t('common.exitApp'),
+                    t('common.exitConfirm'),
+                    [
+                        { text: t('common.no'), style: 'cancel', onPress: () => { } },
+                        { text: t('common.yes'), style: 'destructive', onPress: () => BackHandler.exitApp() },
+                    ],
+                    { cancelable: true }
+                );
+                return true; // Prevent default back action
+            });
+            return () => backHandler.remove();
+        }, [t])
     );
 
     const earthStage = getEarthStage(completedLevels);

@@ -21,7 +21,9 @@
         "continue": "続ける",
         "bestScore": "ベストスコア",
         "best": "ベスト",
-        "tapToSkip": "タップでスキップ"
+        "tapToSkip": "タップでスキップ",
+        "exitApp": "アプリを終了",
+        "exitConfirm": "終了してもよろしいですか？"
     },
     "menu": {
         "storyMode": "ストーリーモード",

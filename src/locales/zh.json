@@ -21,7 +21,9 @@
         "continue": "继续",
         "bestScore": "最高分",
         "best": "最高",
-        "tapToSkip": "点击跳过"
+        "tapToSkip": "点击跳过",
+        "exitApp": "退出应用",
+        "exitConfirm": "确定要退出吗？"
     },
     "menu": {
         "storyMode": "故事模式",

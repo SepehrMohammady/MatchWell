@@ -21,7 +21,9 @@
         "continue": "Continuer",
         "bestScore": "Meilleur score",
         "best": "Meilleur",
-        "tapToSkip": "Appuyez pour passer"
+        "tapToSkip": "Appuyez pour passer",
+        "exitApp": "Quitter l'App",
+        "exitConfirm": "Êtes-vous sûr de vouloir quitter ?"
     },
     "menu": {
         "storyMode": "Mode Histoire",

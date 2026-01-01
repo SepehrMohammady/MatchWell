@@ -21,7 +21,9 @@
         "continue": "Fortsetzen",
         "bestScore": "Bestpunktzahl",
         "best": "Beste",
-        "tapToSkip": "Tippen zum Überspringen"
+        "tapToSkip": "Tippen zum Überspringen",
+        "exitApp": "App beenden",
+        "exitConfirm": "Sind Sie sicher, dass Sie beenden möchten?"
     },
     "menu": {
         "storyMode": "Story-Modus",

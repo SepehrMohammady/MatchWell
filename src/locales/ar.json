@@ -21,7 +21,9 @@
         "continue": "استمرار",
         "bestScore": "أفضل نتيجة",
         "best": "الأفضل",
-        "tapToSkip": "انقر للتخطي"
+        "tapToSkip": "انقر للتخطي",
+        "exitApp": "خروج من التطبيق",
+        "exitConfirm": "هل أنت متأكد أنك تريد الخروج؟"
     },
     "menu": {
         "storyMode": "وضع القصة",

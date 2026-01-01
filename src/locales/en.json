@@ -21,7 +21,9 @@
         "continue": "Continue",
         "bestScore": "Best score",
         "best": "Best",
-        "tapToSkip": "Tap to skip"
+        "tapToSkip": "Tap to skip",
+        "exitApp": "Exit App",
+        "exitConfirm": "Are you sure you want to exit?"
     },
     "menu": {
         "storyMode": "Story Mode",

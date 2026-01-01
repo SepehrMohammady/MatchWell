@@ -21,7 +21,9 @@
         "continue": "이어하기",
         "bestScore": "최고 점수",
         "best": "최고",
-        "tapToSkip": "탭하여 건너뛰기"
+        "tapToSkip": "탭하여 건너뛰기",
+        "exitApp": "앱 종료",
+        "exitConfirm": "정말 종료하시겠습니까?"
     },
     "menu": {
         "storyMode": "스토리 모드",
