@@ -82,7 +82,13 @@
         "errorCreate": "Raum konnte nicht erstellt werden",
         "errorRoomCode": "Raumcode muss 6 Zeichen haben",
         "errorJoin": "Beitritt zum Raum fehlgeschlagen",
-        "errorStart": "Spiel konnte nicht gestartet werden"
+        "errorStart": "Spiel konnte nicht gestartet werden",
+        "days": "Tage",
+        "hours": "Stunden",
+        "minutes": "Minuten",
+        "noUnlockedThemes": "Schließe Story-Modus Level ab um Themen freizuschalten",
+        "yourName": "Dein Name",
+        "enterName": "Gib deinen Namen ein"
     },
     "game": {
         "paused": "Pausiert",

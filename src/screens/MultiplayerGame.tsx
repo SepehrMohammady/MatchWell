@@ -19,6 +19,7 @@ import { useTranslation } from 'react-i18next';
 import { playSfx, playBgm } from '../utils/SoundManager';
 import { useGameStore } from '../context/GameStore';
 import GameBoard from '../components/Game/GameBoard';
+import PowerProgress from '../components/UI/PowerProgress';
 import { formatNumber, getCurrentLanguage } from '../config/i18n';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'MultiplayerGame'>;
@@ -41,6 +42,7 @@ const MultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
     const moves = useGameStore((s) => s.moves);
     const initializeGame = useGameStore((s) => s.initializeGame);
     const isGameOver = useGameStore((s) => s.isGameOver);
+    const activatePowerUp = useGameStore((s) => s.activatePowerUp);
 
     // Initialize game
     useEffect(() => {
@@ -220,6 +222,12 @@ const MultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
                     ))}
                 </View>
             )}
+
+            {/* Power-up Progress Bar */}
+            <PowerProgress
+                theme={theme}
+                onActivate={() => activatePowerUp()}
+            />
 
             {/* Game Grid */}
             <View style={styles.gridContainer}>

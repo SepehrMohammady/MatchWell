@@ -82,7 +82,13 @@
         "errorCreate": "Error al crear sala",
         "errorRoomCode": "El código de sala debe tener 6 caracteres",
         "errorJoin": "Error al unirse a la sala",
-        "errorStart": "Error al iniciar el juego"
+        "errorStart": "Error al iniciar el juego",
+        "days": "Días",
+        "hours": "Horas",
+        "minutes": "Minutos",
+        "noUnlockedThemes": "Completa niveles del modo historia para desbloquear temas",
+        "yourName": "Tu Nombre",
+        "enterName": "Ingresa tu nombre"
     },
     "game": {
         "paused": "Pausado",

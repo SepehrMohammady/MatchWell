@@ -82,7 +82,13 @@
         "errorCreate": "방 생성 실패",
         "errorRoomCode": "방 코드는 6자여야 합니다",
         "errorJoin": "방 참여 실패",
-        "errorStart": "게임 시작 실패"
+        "errorStart": "게임 시작 실패",
+        "days": "일",
+        "hours": "시간",
+        "minutes": "분",
+        "noUnlockedThemes": "테마 잠금 해제를 위해 스토리 모드 레벨을 완료하세요",
+        "yourName": "당신의 이름",
+        "enterName": "이름을 입력하세요"
     },
     "game": {
         "paused": "일시정지",

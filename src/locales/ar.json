@@ -82,7 +82,13 @@
         "errorCreate": "فشل إنشاء الغرفة",
         "errorRoomCode": "رمز الغرفة يجب أن يكون 6 أحرف",
         "errorJoin": "فشل الانضمام إلى الغرفة",
-        "errorStart": "فشل بدء اللعبة"
+        "errorStart": "فشل بدء اللعبة",
+        "days": "أيام",
+        "hours": "ساعات",
+        "minutes": "دقائق",
+        "noUnlockedThemes": "أكمل مستويات وضع القصة لفتح المواضيع",
+        "yourName": "اسمك",
+        "enterName": "أدخل اسمك"
     },
     "game": {
         "paused": "متوقف مؤقتاً",

@@ -82,7 +82,13 @@
         "errorCreate": "ルームの作成に失敗しました",
         "errorRoomCode": "ルームコードは6文字である必要があります",
         "errorJoin": "ルームへの参加に失敗しました",
-        "errorStart": "ゲームの開始に失敗しました"
+        "errorStart": "ゲームの開始に失敗しました",
+        "days": "日",
+        "hours": "時間",
+        "minutes": "分",
+        "noUnlockedThemes": "ストーリーモードのレベルをクリアしてテーマを解除",
+        "yourName": "あなたの名前",
+        "enterName": "名前を入力してください"
     },
     "game": {
         "paused": "一時停止",

@@ -82,7 +82,13 @@
         "errorCreate": "Échec de création de la salle",
         "errorRoomCode": "Le code de salle doit contenir 6 caractères",
         "errorJoin": "Échec de connexion à la salle",
-        "errorStart": "Échec du démarrage de la partie"
+        "errorStart": "Échec du démarrage de la partie",
+        "days": "Jours",
+        "hours": "Heures",
+        "minutes": "Minutes",
+        "noUnlockedThemes": "Complétez les niveaux du mode histoire pour débloquer les thèmes",
+        "yourName": "Votre Nom",
+        "enterName": "Entrez votre nom"
     },
     "game": {
         "paused": "Pause",

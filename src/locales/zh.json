@@ -82,7 +82,13 @@
         "errorCreate": "创建房间失败",
         "errorRoomCode": "房间代码必须是6个字符",
         "errorJoin": "加入房间失败",
-        "errorStart": "开始游戏失败"
+        "errorStart": "开始游戏失败",
+        "days": "天",
+        "hours": "小时",
+        "minutes": "分钟",
+        "noUnlockedThemes": "完成故事模式关卡以解锁主题",
+        "yourName": "你的名字",
+        "enterName": "输入你的名字"
     },
     "game": {
         "paused": "已暂停",
