@@ -207,7 +207,7 @@ const RoomLobby: React.FC<Props> = ({ navigation, route }) => {
                                     onPress={() => handleVoteTheme(theme.id)}
                                     activeOpacity={0.8}
                                 >
-                                    <Text style={styles.themeEmoji}>{theme.emoji}</Text>
+                                    <MaterialCommunityIcons name={theme.icon} size={28} color={theme.color} />
                                     {voteCount > 0 && (
                                         <View style={styles.voteBadge}>
                                             <Text style={styles.voteCount}>{voteCount}</Text>

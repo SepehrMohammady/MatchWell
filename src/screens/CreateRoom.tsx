@@ -90,7 +90,7 @@ const CreateRoom: React.FC<Props> = ({ navigation }) => {
         setCreating(false);
 
         if (result.room_code) {
-            playSfx('level_win');
+            playSfx('tile_select');
             navigation.replace('RoomLobby', { roomCode: result.room_code });
         } else {
             setError(result.error || t('multiplayer.errorCreate'));
@@ -176,7 +176,7 @@ const CreateRoom: React.FC<Props> = ({ navigation }) => {
                             onPress={() => { setSelectedTheme(theme.id); playSfx('tile_select'); }}
                             activeOpacity={0.8}
                         >
-                            <Text style={styles.themeEmoji}>{theme.emoji}</Text>
+                            <MaterialCommunityIcons name={theme.icon} size={28} color={theme.color} />
                             <Text style={styles.themeName}>{t(`themes.${theme.id}`)}</Text>
                         </TouchableOpacity>
                     ))}
@@ -187,7 +187,7 @@ const CreateRoom: React.FC<Props> = ({ navigation }) => {
 
     return (
         <View style={[styles.container, { paddingTop: insets.top }]}>
-            <StatusBar barStyle="light-content" backgroundColor={COLORS.background} />
+            <StatusBar barStyle="light-content" backgroundColor={COLORS.backgroundPrimary} />
 
             {/* Header */}
             <View style={styles.header}>
@@ -282,7 +282,7 @@ const CreateRoom: React.FC<Props> = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: COLORS.background },
+    container: { flex: 1, backgroundColor: COLORS.backgroundPrimary },
     header: {
         flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
         paddingHorizontal: SPACING.md, paddingVertical: SPACING.md,
@@ -334,7 +334,7 @@ const styles = StyleSheet.create({
     themeCardActive: { backgroundColor: COLORS.cardBackground + '80' },
     themeEmoji: { fontSize: 28, marginBottom: SPACING.xs },
     themeName: { fontSize: TYPOGRAPHY.caption, fontFamily: TYPOGRAPHY.fontFamily, color: COLORS.textPrimary, textAlign: 'center' },
-    error: { color: COLORS.hazardousWaste, fontSize: TYPOGRAPHY.caption, fontFamily: TYPOGRAPHY.fontFamily, marginBottom: SPACING.md, textAlign: 'center' },
+    error: { color: COLORS.accentDanger, fontSize: TYPOGRAPHY.caption, fontFamily: TYPOGRAPHY.fontFamily, marginBottom: SPACING.md, textAlign: 'center' },
     createButton: {
         flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: SPACING.sm,
         backgroundColor: COLORS.organicWaste, paddingVertical: SPACING.lg, borderRadius: RADIUS.lg, marginTop: SPACING.md,

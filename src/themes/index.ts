@@ -40,13 +40,13 @@ export const THEME_CONFIGS: Record<ThemeType, Theme> = {
     },
 };
 
-// Theme list for selectors (with colors and emojis)
-export const THEMES: { id: ThemeType; name: string; emoji: string; color: string }[] = [
-    { id: 'trash-sorting', name: 'Trash Sorting', emoji: '🗑️', color: '#6DBE45' },
-    { id: 'pollution', name: 'Clear the Air', emoji: '🌫️', color: '#708090' },
-    { id: 'water-conservation', name: 'Water Conservation', emoji: '💧', color: '#4A90E2' },
-    { id: 'energy-efficiency', name: 'Energy Efficiency', emoji: '⚡', color: '#F5A623' },
-    { id: 'deforestation', name: 'Save the Forests', emoji: '🌲', color: '#228B22' },
+// Theme list for selectors (with colors and icons matching Story mode)
+export const THEMES: { id: ThemeType; name: string; emoji: string; icon: string; color: string }[] = [
+    { id: 'trash-sorting', name: 'Trash Sorting', emoji: '🗑️', icon: 'recycle', color: '#27AE60' },
+    { id: 'pollution', name: 'Clear the Air', emoji: '🌫️', icon: 'air-filter', color: '#708090' },
+    { id: 'water-conservation', name: 'Water Conservation', emoji: '💧', icon: 'water', color: '#3498DB' },
+    { id: 'energy-efficiency', name: 'Energy Efficiency', emoji: '⚡', icon: 'flash', color: '#F5A623' },
+    { id: 'deforestation', name: 'Save the Forests', emoji: '🌲', icon: 'pine-tree', color: '#228B22' },
 ];
 
 // Tile display information
