@@ -53,7 +53,7 @@ const JoinRoom: React.FC<Props> = ({ navigation }) => {
         setJoining(false);
 
         if (result.room) {
-            playSfx('level_win');
+            playSfx('tile_select');
             navigation.replace('RoomLobby', { roomCode: roomCode.toUpperCase() });
         } else {
             setError(result.error || t('multiplayer.errorJoin'));
@@ -62,7 +62,7 @@ const JoinRoom: React.FC<Props> = ({ navigation }) => {
 
     return (
         <View style={[styles.container, { paddingTop: insets.top }]}>
-            <StatusBar barStyle="light-content" backgroundColor={COLORS.background} />
+            <StatusBar barStyle="light-content" backgroundColor={COLORS.backgroundPrimary} />
 
             {/* Header */}
             <View style={styles.header}>
@@ -129,7 +129,7 @@ const JoinRoom: React.FC<Props> = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: COLORS.background },
+    container: { flex: 1, backgroundColor: COLORS.backgroundPrimary },
     header: {
         flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
         paddingHorizontal: SPACING.md, paddingVertical: SPACING.md,
@@ -159,12 +159,12 @@ const styles = StyleSheet.create({
         textAlign: 'center', letterSpacing: 4,
     },
     error: {
-        color: COLORS.hazardousWaste, fontSize: TYPOGRAPHY.body, fontFamily: TYPOGRAPHY.fontFamily,
+        color: COLORS.accentDanger, fontSize: TYPOGRAPHY.body, fontFamily: TYPOGRAPHY.fontFamily,
         marginBottom: SPACING.md, textAlign: 'center'
     },
     joinButton: {
         flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: SPACING.sm,
-        backgroundColor: COLORS.waterWaste, paddingVertical: SPACING.lg, borderRadius: RADIUS.lg, marginTop: SPACING.md,
+        backgroundColor: COLORS.plastic, paddingVertical: SPACING.lg, borderRadius: RADIUS.lg, marginTop: SPACING.md,
     },
     joinButtonDisabled: { opacity: 0.6 },
     joinButtonText: {

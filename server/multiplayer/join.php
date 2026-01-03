@@ -49,18 +49,30 @@ if ($currentCount >= $room['max_players']) {
     sendError('Room is full');
 }
 
-// Get username
-$stmt = $pdo->prepare("SELECT username FROM players WHERE device_id = ?");
-$stmt->execute([$input['device_id']]);
-$player = $stmt->fetch();
-$username = $player ? $player['username'] : 'Player' . ($currentCount + 1);
+// Get username (may fail if players table doesn't exist)
+$username = 'Player' . ($currentCount + 1);
+try {
+    $stmt = $pdo->prepare("SELECT username FROM players WHERE device_id = ?");
+    $stmt->execute([$input['device_id']]);
+    $player = $stmt->fetch();
+    if ($player && !empty($player['username'])) {
+        $username = $player['username'];
+    }
+} catch (Exception $e) {
+    // Use default username
+}
 
 // Join room
-$stmt = $pdo->prepare("
-    INSERT INTO multiplayer_participants (room_id, device_id, username)
-    VALUES (?, ?, ?)
-");
-$stmt->execute([$room['id'], $input['device_id'], $username]);
+try {
+    $stmt = $pdo->prepare("
+        INSERT INTO multiplayer_participants (room_id, device_id, username)
+        VALUES (?, ?, ?)
+    ");
+    $stmt->execute([$room['id'], $input['device_id'], $username]);
+} catch (PDOException $e) {
+    error_log('MatchWell Join Error: ' . $e->getMessage());
+    sendError('Failed to join room: ' . $e->getMessage());
+}
 
 sendSuccess([
     'joined' => true,
