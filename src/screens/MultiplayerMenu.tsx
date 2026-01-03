@@ -125,7 +125,7 @@ const MultiplayerMenu: React.FC<Props> = ({ navigation }) => {
 
     return (
         <View style={[styles.container, { paddingTop: insets.top }]}>
-            <StatusBar barStyle="light-content" backgroundColor={COLORS.background} />
+            <StatusBar barStyle="light-content" backgroundColor={COLORS.backgroundPrimary} />
 
             {/* Header */}
             <View style={styles.header}>
@@ -184,7 +184,7 @@ const MultiplayerMenu: React.FC<Props> = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: COLORS.background,
+        backgroundColor: COLORS.backgroundPrimary,
     },
     header: {
         flexDirection: 'row',
@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
         borderRadius: RADIUS.lg,
     },
     joinButton: {
-        backgroundColor: COLORS.waterWaste,
+        backgroundColor: COLORS.plastic,
     },
     actionText: {
         fontSize: TYPOGRAPHY.body,
