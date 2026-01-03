@@ -99,9 +99,11 @@ export interface CreateRoomParams {
 
 export const createRoom = async (params: CreateRoomParams): Promise<{ room_code?: string; error?: string }> => {
     const deviceId = await getDeviceId();
+    const username = await AsyncStorage.getItem('playerName') || 'Player';
 
     const response = await apiCall<{ created: boolean; room_code: string }>('create.php', 'POST', {
         device_id: deviceId,
+        username,
         ...params
     });
 
@@ -114,11 +116,13 @@ export const createRoom = async (params: CreateRoomParams): Promise<{ room_code?
 // Join a room
 export const joinRoom = async (roomCode: string, password: string): Promise<{ room?: Room; error?: string }> => {
     const deviceId = await getDeviceId();
+    const username = await AsyncStorage.getItem('playerName') || 'Player';
 
     const response = await apiCall<{ joined: boolean; room: Room }>('join.php', 'POST', {
         device_id: deviceId,
         room_code: roomCode,
-        password
+        password,
+        username
     });
 
     if (response.success && response.data?.joined) {
@@ -136,7 +140,7 @@ export const leaveRoom = async (roomCode: string): Promise<{ success: boolean; e
         room_code: roomCode
     });
 
-    return { success: response.success && response.data?.left, error: response.error };
+    return { success: response.success && (response.data?.left ?? false), error: response.error };
 };
 
 // Start game (host only)

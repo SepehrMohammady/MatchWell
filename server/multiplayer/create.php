@@ -68,18 +68,21 @@ while ($attempts < 10) {
 
 if (!$roomCode) sendError('Could not generate room code, please try again');
 
-// Get username from players table (may not exist if user hasn't set username yet)
+// Get username - prefer from request, fallback to players table, then default
 $hostUsername = 'Player';
-try {
-    $stmt = $pdo->prepare("SELECT username FROM players WHERE device_id = ?");
-    $stmt->execute([$input['device_id']]);
-    $player = $stmt->fetch();
-    if ($player && !empty($player['username'])) {
-        $hostUsername = $player['username'];
+if (!empty($input['username'])) {
+    $hostUsername = substr($input['username'], 0, 20); // Limit to 20 chars
+} else {
+    try {
+        $stmt = $pdo->prepare("SELECT username FROM players WHERE device_id = ?");
+        $stmt->execute([$input['device_id']]);
+        $player = $stmt->fetch();
+        if ($player && !empty($player['username'])) {
+            $hostUsername = $player['username'];
+        }
+    } catch (Exception $e) {
+        // Players table might not exist or query failed - use default username
     }
-} catch (Exception $e) {
-    // Players table might not exist or query failed - use default username
-    $hostUsername = 'Player';
 }
 
 // Create room

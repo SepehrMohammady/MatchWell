@@ -9,7 +9,9 @@ import {
     FlatList,
     RefreshControl,
     ActivityIndicator,
+    TextInput,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
@@ -30,6 +32,22 @@ const MultiplayerMenu: React.FC<Props> = ({ navigation }) => {
     const [activeRooms, setActiveRooms] = useState<RoomListItem[]>([]);
     const [waitingRooms, setWaitingRooms] = useState<RoomListItem[]>([]);
     const [completedRooms, setCompletedRooms] = useState<RoomListItem[]>([]);
+    const [playerName, setPlayerName] = useState('');
+
+    // Load player name from storage
+    useEffect(() => {
+        AsyncStorage.getItem('playerName').then(name => {
+            if (name) setPlayerName(name);
+        });
+    }, []);
+
+    // Save player name to storage
+    const handleNameChange = async (name: string) => {
+        setPlayerName(name);
+        try {
+            await AsyncStorage.setItem('playerName', name);
+        } catch (e) { /* ignore */ }
+    };
 
     const loadRooms = async () => {
         const result = await listMyRooms();
@@ -136,6 +154,19 @@ const MultiplayerMenu: React.FC<Props> = ({ navigation }) => {
                 <View style={styles.placeholder} />
             </View>
 
+            {/* Player Name Input */}
+            <View style={styles.nameSection}>
+                <Text style={styles.nameLabel}>{t('multiplayer.yourName')}</Text>
+                <TextInput
+                    style={styles.nameInput}
+                    value={playerName}
+                    onChangeText={handleNameChange}
+                    placeholder={t('multiplayer.enterName')}
+                    placeholderTextColor={COLORS.textSecondary}
+                    maxLength={20}
+                />
+            </View>
+
             {/* Action Buttons */}
             <View style={styles.actions}>
                 <TouchableOpacity style={styles.actionButton} onPress={handleCreateRoom} activeOpacity={0.8}>
@@ -204,6 +235,27 @@ const styles = StyleSheet.create({
     },
     placeholder: {
         width: 40,
+    },
+    nameSection: {
+        paddingHorizontal: SPACING.md,
+        marginBottom: SPACING.md,
+    },
+    nameLabel: {
+        fontSize: TYPOGRAPHY.caption,
+        fontFamily: TYPOGRAPHY.fontFamily,
+        color: COLORS.textSecondary,
+        marginBottom: SPACING.xs,
+    },
+    nameInput: {
+        backgroundColor: COLORS.cardBackground,
+        borderRadius: RADIUS.md,
+        borderWidth: 1,
+        borderColor: COLORS.cardBorder,
+        paddingHorizontal: SPACING.md,
+        paddingVertical: SPACING.sm,
+        fontSize: TYPOGRAPHY.body,
+        fontFamily: TYPOGRAPHY.fontFamily,
+        color: COLORS.textPrimary,
     },
     actions: {
         flexDirection: 'row',

@@ -49,17 +49,21 @@ if ($currentCount >= $room['max_players']) {
     sendError('Room is full');
 }
 
-// Get username (may fail if players table doesn't exist)
+// Get username - prefer from request, fallback to players table, then default
 $username = 'Player' . ($currentCount + 1);
-try {
-    $stmt = $pdo->prepare("SELECT username FROM players WHERE device_id = ?");
-    $stmt->execute([$input['device_id']]);
-    $player = $stmt->fetch();
-    if ($player && !empty($player['username'])) {
-        $username = $player['username'];
+if (!empty($input['username'])) {
+    $username = substr($input['username'], 0, 20); // Limit to 20 chars
+} else {
+    try {
+        $stmt = $pdo->prepare("SELECT username FROM players WHERE device_id = ?");
+        $stmt->execute([$input['device_id']]);
+        $player = $stmt->fetch();
+        if ($player && !empty($player['username'])) {
+            $username = $player['username'];
+        }
+    } catch (Exception $e) {
+        // Use default username
     }
-} catch (Exception $e) {
-    // Use default username
 }
 
 // Join room

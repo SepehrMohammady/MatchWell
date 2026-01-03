@@ -82,7 +82,13 @@
         "errorCreate": "Failed to create room",
         "errorRoomCode": "Room code must be 6 characters",
         "errorJoin": "Failed to join room",
-        "errorStart": "Failed to start game"
+        "errorStart": "Failed to start game",
+        "days": "Days",
+        "hours": "Hours",
+        "minutes": "Minutes",
+        "noUnlockedThemes": "Complete Story mode levels to unlock themes",
+        "yourName": "Your Name",
+        "enterName": "Enter your name"
     },
     "game": {
         "paused": "Paused",

@@ -19,7 +19,8 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { getRoomStatus, startGame, voteTheme, leaveRoom, Participant, ThemeVote, Room } from '../services/MultiplayerService';
 import { useTranslation } from 'react-i18next';
 import { playSfx } from '../utils/SoundManager';
-import { THEMES } from '../themes';
+import { THEMES, LEVELS } from '../themes';
+import { useGameStore } from '../context/GameStore';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'RoomLobby'>;
 
@@ -35,6 +36,15 @@ const RoomLobby: React.FC<Props> = ({ navigation, route }) => {
     const [themeVotes, setThemeVotes] = useState<ThemeVote[]>([]);
     const [myVote, setMyVote] = useState<string | null>(null);
     const [starting, setStarting] = useState(false);
+
+    // Get completed levels to filter themes
+    const completedLevels = useGameStore((state) => state.completedLevels);
+
+    // Get unlocked themes (at least one level completed in that theme)
+    const unlockedThemes = THEMES.filter(theme => {
+        const themeLevels = LEVELS.filter(l => l.theme === theme.id);
+        return themeLevels.some(level => completedLevels.includes(level.id));
+    });
 
     const loadRoomStatus = async () => {
         const result = await getRoomStatus(roomCode);
@@ -162,11 +172,14 @@ const RoomLobby: React.FC<Props> = ({ navigation, route }) => {
                 <TouchableOpacity onPress={handleBack} style={styles.backButton}>
                     <MaterialCommunityIcons name="arrow-left" size={28} color={COLORS.textPrimary} />
                 </TouchableOpacity>
-                <View style={styles.headerCenter}>
-                    <Text style={styles.title}>{room?.name}</Text>
-                    <Text style={styles.roomCode}>{roomCode}</Text>
-                </View>
+                <Text style={styles.title}>{room?.name}</Text>
                 <View style={styles.placeholder} />
+            </View>
+
+            {/* Room Code - Prominent Display */}
+            <View style={styles.roomCodeSection}>
+                <Text style={styles.roomCodeLabel}>{t('multiplayer.roomCode')}</Text>
+                <Text style={styles.roomCodeBig}>{roomCode}</Text>
             </View>
 
             {/* Room Info */}
@@ -194,7 +207,7 @@ const RoomLobby: React.FC<Props> = ({ navigation, route }) => {
                 <View style={styles.section}>
                     <Text style={styles.sectionTitle}>{t('multiplayer.voteTheme')}</Text>
                     <View style={styles.themeGrid}>
-                        {THEMES.map((theme) => {
+                        {unlockedThemes.map((theme) => {
                             const voteCount = themeVotes.find(v => v.theme_vote === theme.id)?.votes || 0;
                             return (
                                 <TouchableOpacity
@@ -207,7 +220,7 @@ const RoomLobby: React.FC<Props> = ({ navigation, route }) => {
                                     onPress={() => handleVoteTheme(theme.id)}
                                     activeOpacity={0.8}
                                 >
-                                    <MaterialCommunityIcons name={theme.icon} size={28} color={theme.color} />
+                                    <MaterialCommunityIcons name={theme.icon} size={32} color={theme.color} />
                                     {voteCount > 0 && (
                                         <View style={styles.voteBadge}>
                                             <Text style={styles.voteCount}>{voteCount}</Text>
@@ -270,10 +283,15 @@ const styles = StyleSheet.create({
         paddingHorizontal: SPACING.md, paddingVertical: SPACING.md,
     },
     backButton: { padding: SPACING.xs },
-    headerCenter: { alignItems: 'center' },
     title: { fontSize: TYPOGRAPHY.h3, fontFamily: TYPOGRAPHY.fontFamilySemiBold, fontWeight: TYPOGRAPHY.semibold, color: COLORS.textPrimary },
-    roomCode: { fontSize: TYPOGRAPHY.caption, fontFamily: TYPOGRAPHY.fontFamily, color: COLORS.organicWaste },
     placeholder: { width: 40 },
+    roomCodeSection: {
+        alignItems: 'center', paddingVertical: SPACING.md, marginBottom: SPACING.md,
+        backgroundColor: COLORS.cardBackground, marginHorizontal: SPACING.md, borderRadius: RADIUS.lg,
+        borderWidth: 1, borderColor: COLORS.organicWaste,
+    },
+    roomCodeLabel: { fontSize: TYPOGRAPHY.caption, fontFamily: TYPOGRAPHY.fontFamily, color: COLORS.textSecondary, marginBottom: SPACING.xs },
+    roomCodeBig: { fontSize: 36, fontFamily: TYPOGRAPHY.fontFamilySemiBold, fontWeight: TYPOGRAPHY.bold, color: COLORS.organicWaste, letterSpacing: 6 },
     roomInfo: { flexDirection: 'row', justifyContent: 'center', gap: SPACING.md, paddingHorizontal: SPACING.md, marginBottom: SPACING.lg },
     infoCard: {
         flexDirection: 'row', alignItems: 'center', gap: SPACING.xs,

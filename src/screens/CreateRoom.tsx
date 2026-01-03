@@ -18,7 +18,8 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { createRoom, GameMode } from '../services/MultiplayerService';
 import { useTranslation } from 'react-i18next';
 import { playSfx } from '../utils/SoundManager';
-import { THEMES } from '../themes';
+import { THEMES, LEVELS } from '../themes';
+import { useGameStore } from '../context/GameStore';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'CreateRoom'>;
 
@@ -28,12 +29,7 @@ const GAME_MODES: { mode: GameMode; icon: string; labelKey: string }[] = [
     { mode: 'moves', icon: 'shoe-print', labelKey: 'multiplayer.movesMode' },
 ];
 
-const DURATION_OPTIONS = [
-    { label: '1h', seconds: 3600 },
-    { label: '6h', seconds: 21600 },
-    { label: '1d', seconds: 86400 },
-    { label: '7d', seconds: 604800 },
-];
+
 
 const TARGET_SCORE_OPTIONS = [10000, 50000, 100000, 250000, 500000];
 const MOVES_OPTIONS = [50, 100, 150, 200];
@@ -46,13 +42,31 @@ const CreateRoom: React.FC<Props> = ({ navigation }) => {
     const [password, setPassword] = useState('');
     const [gameMode, setGameMode] = useState<GameMode>('race');
     const [targetScore, setTargetScore] = useState(50000);
-    const [duration, setDuration] = useState(86400);
+    const [durationDays, setDurationDays] = useState('1');
+    const [durationHours, setDurationHours] = useState('0');
+    const [durationMinutes, setDurationMinutes] = useState('0');
     const [movesLimit, setMovesLimit] = useState(100);
     const [selectedTheme, setSelectedTheme] = useState<ThemeType | null>(null);
     const [themeVoting, setThemeVoting] = useState(false);
     const [creating, setCreating] = useState(false);
     const [error, setError] = useState('');
 
+    // Get completed levels to filter themes
+    const completedLevels = useGameStore((state) => state.completedLevels);
+
+    // Get unlocked themes (at least one level completed in that theme)
+    const unlockedThemes = THEMES.filter(theme => {
+        const themeLevels = LEVELS.filter(l => l.theme === theme.id);
+        return themeLevels.some(level => completedLevels.includes(level.id));
+    });
+
+    // Calculate duration in seconds from inputs
+    const getDurationSeconds = () => {
+        const days = parseInt(durationDays) || 0;
+        const hours = parseInt(durationHours) || 0;
+        const minutes = parseInt(durationMinutes) || 0;
+        return (days * 86400) + (hours * 3600) + (minutes * 60);
+    };
     const handleBack = () => {
         playSfx('tile_select');
         navigation.goBack();
@@ -81,7 +95,7 @@ const CreateRoom: React.FC<Props> = ({ navigation }) => {
             password,
             game_mode: gameMode,
             target_score: gameMode === 'race' ? targetScore : undefined,
-            duration_seconds: duration,
+            duration_seconds: getDurationSeconds(),
             moves_limit: gameMode === 'moves' ? movesLimit : undefined,
             theme: themeVoting ? undefined : selectedTheme || undefined,
             theme_voting: themeVoting,
@@ -165,7 +179,7 @@ const CreateRoom: React.FC<Props> = ({ navigation }) => {
             </View>
             {!themeVoting && (
                 <View style={styles.themeGrid}>
-                    {THEMES.map((theme) => (
+                    {unlockedThemes.length > 0 ? unlockedThemes.map((theme) => (
                         <TouchableOpacity
                             key={theme.id}
                             style={[
@@ -176,10 +190,11 @@ const CreateRoom: React.FC<Props> = ({ navigation }) => {
                             onPress={() => { setSelectedTheme(theme.id); playSfx('tile_select'); }}
                             activeOpacity={0.8}
                         >
-                            <MaterialCommunityIcons name={theme.icon} size={28} color={theme.color} />
-                            <Text style={styles.themeName}>{t(`themes.${theme.id}`)}</Text>
+                            <MaterialCommunityIcons name={theme.icon} size={32} color={theme.color} />
                         </TouchableOpacity>
-                    ))}
+                    )) : (
+                        <Text style={styles.noThemesText}>{t('multiplayer.noUnlockedThemes')}</Text>
+                    )}
                 </View>
             )}
         </View>
@@ -238,13 +253,48 @@ const CreateRoom: React.FC<Props> = ({ navigation }) => {
                     setTargetScore
                 )}
 
-                {/* Duration */}
-                {renderOptionRow(
-                    t('multiplayer.duration'),
-                    DURATION_OPTIONS.map(({ label, seconds }) => ({ label, value: seconds })),
-                    duration,
-                    setDuration
-                )}
+                {/* Duration - Custom Input */}
+                <View style={styles.section}>
+                    <Text style={styles.sectionTitle}>{t('multiplayer.duration')}</Text>
+                    <View style={styles.durationRow}>
+                        <View style={styles.durationInput}>
+                            <TextInput
+                                style={styles.durationField}
+                                value={durationDays}
+                                onChangeText={setDurationDays}
+                                keyboardType="number-pad"
+                                maxLength={2}
+                                placeholder="0"
+                                placeholderTextColor={COLORS.textSecondary}
+                            />
+                            <Text style={styles.durationLabel}>{t('multiplayer.days')}</Text>
+                        </View>
+                        <View style={styles.durationInput}>
+                            <TextInput
+                                style={styles.durationField}
+                                value={durationHours}
+                                onChangeText={setDurationHours}
+                                keyboardType="number-pad"
+                                maxLength={2}
+                                placeholder="0"
+                                placeholderTextColor={COLORS.textSecondary}
+                            />
+                            <Text style={styles.durationLabel}>{t('multiplayer.hours')}</Text>
+                        </View>
+                        <View style={styles.durationInput}>
+                            <TextInput
+                                style={styles.durationField}
+                                value={durationMinutes}
+                                onChangeText={setDurationMinutes}
+                                keyboardType="number-pad"
+                                maxLength={2}
+                                placeholder="0"
+                                placeholderTextColor={COLORS.textSecondary}
+                            />
+                            <Text style={styles.durationLabel}>{t('multiplayer.minutes')}</Text>
+                        </View>
+                    </View>
+                </View>
 
                 {/* Moves Limit (Moves mode) */}
                 {gameMode === 'moves' && renderOptionRow(
@@ -326,14 +376,23 @@ const styles = StyleSheet.create({
     themeHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: SPACING.sm },
     votingToggle: { flexDirection: 'row', alignItems: 'center', gap: SPACING.xs },
     votingText: { fontSize: TYPOGRAPHY.caption, fontFamily: TYPOGRAPHY.fontFamily, color: COLORS.textSecondary },
-    themeGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: SPACING.sm },
+    themeGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: SPACING.md },
     themeCard: {
-        width: '30%', alignItems: 'center', paddingVertical: SPACING.md,
+        width: 56, height: 56, alignItems: 'center', justifyContent: 'center',
         backgroundColor: COLORS.cardBackground, borderRadius: RADIUS.lg, borderWidth: 2,
     },
-    themeCardActive: { backgroundColor: COLORS.cardBackground + '80' },
+    themeCardActive: { backgroundColor: COLORS.organicWaste + '30' },
     themeEmoji: { fontSize: 28, marginBottom: SPACING.xs },
     themeName: { fontSize: TYPOGRAPHY.caption, fontFamily: TYPOGRAPHY.fontFamily, color: COLORS.textPrimary, textAlign: 'center' },
+    noThemesText: { fontSize: TYPOGRAPHY.caption, fontFamily: TYPOGRAPHY.fontFamily, color: COLORS.textSecondary, fontStyle: 'italic' },
+    durationRow: { flexDirection: 'row', gap: SPACING.md },
+    durationInput: { flex: 1, alignItems: 'center' },
+    durationField: {
+        width: '100%', backgroundColor: COLORS.cardBackground, borderRadius: RADIUS.md,
+        borderWidth: 1, borderColor: COLORS.cardBorder, paddingVertical: SPACING.sm,
+        fontSize: TYPOGRAPHY.h3, fontFamily: TYPOGRAPHY.fontFamilySemiBold, color: COLORS.textPrimary, textAlign: 'center',
+    },
+    durationLabel: { fontSize: TYPOGRAPHY.caption, fontFamily: TYPOGRAPHY.fontFamily, color: COLORS.textSecondary, marginTop: SPACING.xs },
     error: { color: COLORS.accentDanger, fontSize: TYPOGRAPHY.caption, fontFamily: TYPOGRAPHY.fontFamily, marginBottom: SPACING.md, textAlign: 'center' },
     createButton: {
         flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: SPACING.sm,
