@@ -68,11 +68,19 @@ while ($attempts < 10) {
 
 if (!$roomCode) sendError('Could not generate room code, please try again');
 
-// Get username from players table
-$stmt = $pdo->prepare("SELECT username FROM players WHERE device_id = ?");
-$stmt->execute([$input['device_id']]);
-$player = $stmt->fetch();
-$hostUsername = $player ? $player['username'] : 'Host';
+// Get username from players table (may not exist if user hasn't set username yet)
+$hostUsername = 'Player';
+try {
+    $stmt = $pdo->prepare("SELECT username FROM players WHERE device_id = ?");
+    $stmt->execute([$input['device_id']]);
+    $player = $stmt->fetch();
+    if ($player && !empty($player['username'])) {
+        $hostUsername = $player['username'];
+    }
+} catch (Exception $e) {
+    // Players table might not exist or query failed - use default username
+    $hostUsername = 'Player';
+}
 
 // Create room
 $stmt = $pdo->prepare("
@@ -82,19 +90,24 @@ $stmt = $pdo->prepare("
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 ");
 
-$stmt->execute([
-    $roomCode,
-    $nameCheck['name'],
-    hashPassword($password),
-    $input['device_id'],
-    $gameMode,
-    $targetScore,
-    $durationSeconds,
-    $movesLimit,
-    $input['theme'] ?? null,
-    $input['theme_voting'] ?? false,
-    $input['max_players'] ?? 20
-]);
+try {
+    $stmt->execute([
+        $roomCode,
+        $nameCheck['name'],
+        hashPassword($password),
+        $input['device_id'],
+        $gameMode,
+        $targetScore,
+        $durationSeconds,
+        $movesLimit,
+        $input['theme'] ?? null,
+        isset($input['theme_voting']) && $input['theme_voting'] ? 1 : 0,
+        $input['max_players'] ?? 20
+    ]);
+} catch (PDOException $e) {
+    error_log('MatchWell Multiplayer Create Error: ' . $e->getMessage());
+    sendError('Failed to create room: ' . $e->getMessage());
+}
 
 $roomId = $pdo->lastInsertId();
 
