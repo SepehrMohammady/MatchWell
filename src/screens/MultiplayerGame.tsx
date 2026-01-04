@@ -99,6 +99,9 @@ const MultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
     // Poll for rankings and time
     useFocusEffect(
         useCallback(() => {
+            // Reset for new room
+            lastSyncScore.current = 0;
+
             const pollStatus = async () => {
                 const result = await getRoomStatus(roomCode);
                 if (result.room) {
@@ -111,6 +114,9 @@ const MultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
                     setRankings(result.participants);
                 }
             };
+
+            // Fetch immediately on mount
+            pollStatus();
 
             const interval = setInterval(pollStatus, 5000);
             return () => clearInterval(interval);
