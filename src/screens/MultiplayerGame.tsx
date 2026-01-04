@@ -161,15 +161,13 @@ const MultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
     const getMyRank = () => {
         // If no rankings yet, player is #1
         if (rankings.length === 0) return 1;
-        // Find player with matching score
-        const sortedRankings = [...rankings].sort((a, b) => b.current_score - a.current_score);
-        // Find where current score would rank
-        let rank = 1;
-        for (const r of sortedRankings) {
-            if (score > r.current_score) break;
-            rank++;
+        // Count how many players have a HIGHER score than me
+        // My rank = number of players with higher scores + 1
+        let higherCount = 0;
+        for (const r of rankings) {
+            if (r.current_score > score) higherCount++;
         }
-        return Math.min(rank, sortedRankings.length + 1);
+        return higherCount + 1;
     };
 
     // Get translated fact based on theme
@@ -198,7 +196,7 @@ const MultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
 
     return (
         <View style={[styles.container, { paddingTop: insets.top }]}>
-            <StatusBar barStyle="light-content" backgroundColor={COLORS.backgroundPrimary} />
+            <StatusBar barStyle="dark-content" backgroundColor={COLORS.backgroundPrimary} />
 
             {/* HUD Card */}
             <View style={styles.hudCard}>
@@ -223,12 +221,7 @@ const MultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
                         <Text style={styles.statLabel}>{t('common.moves')}</Text>
                         <Text style={styles.statValue}>{formatNumber(moves, getCurrentLanguage())}</Text>
                     </View>
-                    {timeRemaining !== null && (
-                        <View style={styles.timerBadge}>
-                            <MaterialCommunityIcons name="clock-outline" size={16} color="#fff" />
-                            <Text style={styles.timerBadgeText}>{formatTime(timeRemaining)}</Text>
-                        </View>
-                    )}
+                    {/* Rank badge first, then timer */}
                     <TouchableOpacity
                         style={[styles.rankBadge, { backgroundColor: COLORS.organicWaste }]}
                         onPress={() => setShowScoreboard(!showScoreboard)}
@@ -236,6 +229,12 @@ const MultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
                         <Text style={styles.rankBadgeText}>#{getMyRank()}</Text>
                         <MaterialCommunityIcons name="account-group" size={16} color="#fff" />
                     </TouchableOpacity>
+                    {timeRemaining !== null && (
+                        <View style={styles.timerBadge}>
+                            <MaterialCommunityIcons name="clock-outline" size={16} color="#fff" />
+                            <Text style={styles.timerBadgeText}>{formatTime(timeRemaining)}</Text>
+                        </View>
+                    )}
                 </View>
             </View>
 
