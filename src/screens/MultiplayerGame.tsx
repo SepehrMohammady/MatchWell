@@ -159,15 +159,36 @@ const MultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
     };
 
     const getMyRank = () => {
-        const myEntry = rankings.findIndex(r => r.current_score === score);
-        return myEntry >= 0 ? myEntry + 1 : rankings.length + 1;
+        // If no rankings yet, player is #1
+        if (rankings.length === 0) return 1;
+        // Find player with matching score
+        const sortedRankings = [...rankings].sort((a, b) => b.current_score - a.current_score);
+        // Find where current score would rank
+        let rank = 1;
+        for (const r of sortedRankings) {
+            if (score > r.current_score) break;
+            rank++;
+        }
+        return Math.min(rank, sortedRankings.length + 1);
     };
 
     // Get translated fact based on theme
     const getTranslatedFact = () => {
-        const themeKey = theme === 'trash-sorting' ? 'trash' : theme === 'water-conservation' ? 'water' : theme === 'energy-efficiency' ? 'energy' : theme === 'deforestation' ? 'forest' : theme;
+        // Map theme to translation key
+        const themeKeyMap: Record<string, string> = {
+            'trash-sorting': 'trash',
+            'water-conservation': 'water',
+            'energy-efficiency': 'energy',
+            'deforestation': 'forest',
+            'pollution': 'pollution'
+        };
+        const themeKey = themeKeyMap[theme] || 'trash';
         const facts = t(`facts.${themeKey}`, { returnObjects: true }) as string[];
-        return facts?.[endlessFactIndex % (facts?.length || 1)] || '';
+        // Handle case where translation returns the key itself (not an array)
+        if (!Array.isArray(facts) || facts.length === 0) {
+            return '';
+        }
+        return facts[endlessFactIndex % facts.length] || '';
     };
 
     const handleExit = () => {
@@ -295,8 +316,8 @@ const styles = StyleSheet.create({
     factContainer: { flexDirection: 'row', alignItems: 'center', backgroundColor: COLORS.cardBackground, marginHorizontal: SPACING.sm, paddingHorizontal: SPACING.md, paddingVertical: SPACING.sm, borderRadius: RADIUS.md, borderWidth: 1, borderColor: COLORS.cardBorder },
     factIcon: { fontSize: 20, marginRight: SPACING.sm },
     factText: { flex: 1, fontSize: TYPOGRAPHY.bodySmall, fontFamily: TYPOGRAPHY.fontFamily, color: COLORS.textSecondary },
-    // Power container - darker background
-    powerContainer: { backgroundColor: COLORS.cardBackground, marginHorizontal: SPACING.sm, marginTop: SPACING.xs, borderRadius: RADIUS.md, borderWidth: 1, borderColor: COLORS.cardBorder },
+    // Power container - much darker for visibility
+    powerContainer: { backgroundColor: '#1a1a2e', marginHorizontal: SPACING.sm, marginTop: SPACING.xs, padding: SPACING.xs, borderRadius: RADIUS.md },
     // Scoreboard
     scoreboardOverlay: { position: 'absolute', top: 150, right: SPACING.md, left: SPACING.md, backgroundColor: COLORS.cardBackground + 'F0', borderRadius: RADIUS.lg, padding: SPACING.md, zIndex: 100, borderWidth: 1, borderColor: COLORS.cardBorder },
     scoreboardTitle: { fontSize: TYPOGRAPHY.body, fontFamily: TYPOGRAPHY.fontFamilySemiBold, fontWeight: TYPOGRAPHY.semibold, color: COLORS.textPrimary, marginBottom: SPACING.sm, textAlign: 'center' },
