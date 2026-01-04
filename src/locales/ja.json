@@ -88,7 +88,9 @@
         "minutes": "分",
         "noUnlockedThemes": "ストーリーモードのレベルをクリアしてテーマを解除",
         "yourName": "あなたの名前",
-        "enterName": "名前を入力してください"
+        "enterName": "名前を入力してください",
+        "gameActive": "進行中",
+        "gameComplete": "完了"
     },
     "game": {
         "paused": "一時停止",

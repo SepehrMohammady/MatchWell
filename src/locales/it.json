@@ -88,7 +88,9 @@
         "minutes": "Minuti",
         "noUnlockedThemes": "Completa i livelli della modalità storia per sbloccare i temi",
         "yourName": "Il Tuo Nome",
-        "enterName": "Inserisci il tuo nome"
+        "enterName": "Inserisci il tuo nome",
+        "gameActive": "In Corso",
+        "gameComplete": "Completato"
     },
     "game": {
         "paused": "In Pausa",

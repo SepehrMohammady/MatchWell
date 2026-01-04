@@ -88,7 +88,9 @@
         "minutes": "Minutes",
         "noUnlockedThemes": "Complete Story mode levels to unlock themes",
         "yourName": "Your Name",
-        "enterName": "Enter your name"
+        "enterName": "Enter your name",
+        "gameActive": "In Progress",
+        "gameComplete": "Completed"
     },
     "game": {
         "paused": "Paused",

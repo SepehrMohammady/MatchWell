@@ -35,6 +35,7 @@ const MultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
     const [timeRemaining, setTimeRemaining] = useState<number | null>(null);
     const [showScoreboard, setShowScoreboard] = useState(false);
     const [finished, setFinished] = useState(false);
+    const [endlessFactIndex, setEndlessFactIndex] = useState(0);
     const lastSyncScore = useRef(0);
 
     // Game store state
@@ -51,6 +52,14 @@ const MultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
             playBgm('bgm_menu');
         }
     }, [theme, initializeGame]);
+
+    // Rotate facts every 60 seconds
+    useEffect(() => {
+        const factTimer = setInterval(() => {
+            setEndlessFactIndex(prev => prev + 1);
+        }, 60000);
+        return () => clearInterval(factTimer);
+    }, []);
 
     // Check game end conditions
     useEffect(() => {
@@ -154,54 +163,57 @@ const MultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
         return myEntry >= 0 ? myEntry + 1 : rankings.length + 1;
     };
 
+    // Get translated fact based on theme
+    const getTranslatedFact = () => {
+        const themeKey = theme === 'trash-sorting' ? 'trash' : theme === 'water-conservation' ? 'water' : theme === 'energy-efficiency' ? 'energy' : theme === 'deforestation' ? 'forest' : theme;
+        const facts = t(`facts.${themeKey}`, { returnObjects: true }) as string[];
+        return facts?.[endlessFactIndex % (facts?.length || 1)] || '';
+    };
+
+    const handleExit = () => {
+        playSfx('tile_select');
+        navigation.navigate('MainMenu');
+    };
+
     return (
         <View style={[styles.container, { paddingTop: insets.top }]}>
             <StatusBar barStyle="light-content" backgroundColor={COLORS.backgroundPrimary} />
 
-            {/* HUD */}
-            <View style={styles.hud}>
-                {/* Score & Rank */}
-                <View style={styles.hudLeft}>
-                    <Text style={styles.scoreLabel}>{t('common.score')}</Text>
-                    <Text style={styles.scoreValue}>{formatNumber(score, getCurrentLanguage())}</Text>
-                    <Text style={styles.rankText}>#{getMyRank()}</Text>
+            {/* HUD Card */}
+            <View style={styles.hudCard}>
+                {/* Top Row */}
+                <View style={styles.hudTopRow}>
+                    <View style={styles.hudLeft}>
+                        <Text style={styles.scoreValue}>{formatNumber(score, getCurrentLanguage())}</Text>
+                        {gameMode === 'race' && targetScore && (
+                            <Text style={styles.targetText}>{t('game.targetScore', { score: formatNumber(targetScore, getCurrentLanguage()) })}</Text>
+                        )}
+                    </View>
+                    <View style={styles.hudRight}>
+                        <TouchableOpacity style={styles.pauseButton} onPress={handleExit}>
+                            <MaterialCommunityIcons name="home" size={18} color={COLORS.textSecondary} />
+                        </TouchableOpacity>
+                    </View>
                 </View>
 
-                {/* Target/Moves */}
-                <View style={styles.hudCenter}>
-                    {gameMode === 'race' && targetScore && (
-                        <View style={styles.targetContainer}>
-                            <MaterialCommunityIcons name="target" size={20} color={COLORS.organicWaste} />
-                            <Text style={styles.targetText}>
-                                {formatNumber(score, getCurrentLanguage())}/{formatNumber(targetScore, getCurrentLanguage())}
-                            </Text>
-                        </View>
-                    )}
-                    {gameMode === 'moves' && movesLimit && (
-                        <View style={styles.targetContainer}>
-                            <MaterialCommunityIcons name="shoe-print" size={20} color={COLORS.accentHighlight} />
-                            <Text style={styles.targetText}>{moves}/{movesLimit}</Text>
-                        </View>
-                    )}
-                </View>
-
-                {/* Timer & Scoreboard Toggle */}
-                <View style={styles.hudRight}>
+                {/* Bottom Row */}
+                <View style={styles.hudBottomRow}>
+                    <View style={styles.stat}>
+                        <Text style={styles.statLabel}>{t('common.moves')}</Text>
+                        <Text style={styles.statValue}>{formatNumber(moves, getCurrentLanguage())}</Text>
+                    </View>
                     {timeRemaining !== null && (
-                        <View style={styles.timerContainer}>
-                            <MaterialCommunityIcons name="clock-outline" size={18} color={COLORS.textSecondary} />
-                            <Text style={styles.timerText}>{formatTime(timeRemaining)}</Text>
+                        <View style={styles.timerBadge}>
+                            <MaterialCommunityIcons name="clock-outline" size={16} color="#fff" />
+                            <Text style={styles.timerBadgeText}>{formatTime(timeRemaining)}</Text>
                         </View>
                     )}
                     <TouchableOpacity
-                        style={styles.scoreboardButton}
+                        style={[styles.rankBadge, { backgroundColor: COLORS.organicWaste }]}
                         onPress={() => setShowScoreboard(!showScoreboard)}
                     >
-                        <MaterialCommunityIcons
-                            name={showScoreboard ? 'close' : 'account-group'}
-                            size={24}
-                            color={COLORS.textPrimary}
-                        />
+                        <Text style={styles.rankBadgeText}>#{getMyRank()}</Text>
+                        <MaterialCommunityIcons name="account-group" size={16} color="#fff" />
                     </TouchableOpacity>
                 </View>
             </View>
@@ -225,11 +237,19 @@ const MultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
                 </View>
             )}
 
-            {/* Power-up Progress Bar */}
-            <PowerProgress
-                theme={theme}
-                onActivate={() => activatePowerUp()}
-            />
+            {/* Environmental Fact */}
+            <View style={styles.factContainer}>
+                <Text style={styles.factIcon}>💡</Text>
+                <Text style={styles.factText}>{getTranslatedFact()}</Text>
+            </View>
+
+            {/* Power-up Progress Bar with dark background */}
+            <View style={styles.powerContainer}>
+                <PowerProgress
+                    theme={theme}
+                    onActivate={() => activatePowerUp()}
+                />
+            </View>
 
             {/* Game Grid */}
             <View style={styles.gridContainer}>
@@ -252,36 +272,40 @@ const MultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
     container: { flex: 1, backgroundColor: COLORS.backgroundPrimary },
-    hud: {
-        flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start',
-        paddingHorizontal: SPACING.md, paddingVertical: SPACING.sm,
+    // HUD Card - matches Story mode
+    hudCard: {
+        padding: SPACING.md, backgroundColor: COLORS.cardBackground, borderRadius: RADIUS.lg,
+        margin: SPACING.sm, borderWidth: 1, borderColor: COLORS.cardBorder,
     },
-    hudLeft: { alignItems: 'flex-start' } as any,
-    scoreLabel: { fontSize: TYPOGRAPHY.caption, fontFamily: TYPOGRAPHY.fontFamily, color: COLORS.textSecondary },
-    scoreValue: { fontSize: TYPOGRAPHY.h2, fontFamily: TYPOGRAPHY.fontFamilySemiBold, fontWeight: TYPOGRAPHY.semibold, color: COLORS.textPrimary },
-    rankText: { fontSize: TYPOGRAPHY.caption, fontFamily: TYPOGRAPHY.fontFamilySemiBold, color: COLORS.organicWaste },
-    hudCenter: { alignItems: 'center', flex: 1 } as any,
-    targetContainer: { flexDirection: 'row', alignItems: 'center', gap: SPACING.xs } as any,
-    targetText: { fontSize: TYPOGRAPHY.body, fontFamily: TYPOGRAPHY.fontFamily, color: COLORS.textPrimary },
-    hudRight: { alignItems: 'flex-end', gap: SPACING.xs } as any,
-    timerContainer: { flexDirection: 'row', alignItems: 'center', gap: SPACING.xs } as any,
-    timerText: { fontSize: TYPOGRAPHY.caption, fontFamily: TYPOGRAPHY.fontFamily, color: COLORS.textSecondary },
-    scoreboardButton: { padding: SPACING.xs },
-    scoreboardOverlay: {
-        position: 'absolute', top: 80, right: SPACING.md, left: SPACING.md,
-        backgroundColor: COLORS.cardBackground + 'F0', borderRadius: RADIUS.lg,
-        padding: SPACING.md, zIndex: 100, borderWidth: 1, borderColor: COLORS.cardBorder,
-    } as any,
+    hudTopRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: SPACING.sm },
+    hudBottomRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+    hudLeft: { alignItems: 'flex-start' },
+    hudRight: { alignItems: 'flex-end' },
+    scoreValue: { fontSize: 32, fontFamily: TYPOGRAPHY.fontFamilyBold, fontWeight: TYPOGRAPHY.bold, color: COLORS.textPrimary, letterSpacing: -1, lineHeight: 36 },
+    targetText: { fontSize: TYPOGRAPHY.bodySmall, fontFamily: TYPOGRAPHY.fontFamily, color: COLORS.textMuted },
+    pauseButton: { width: 36, height: 36, borderRadius: 18, backgroundColor: COLORS.backgroundSecondary, justifyContent: 'center', alignItems: 'center' },
+    stat: { alignItems: 'flex-start' },
+    statLabel: { fontSize: TYPOGRAPHY.caption, fontFamily: TYPOGRAPHY.fontFamily, color: COLORS.textMuted },
+    statValue: { fontSize: TYPOGRAPHY.h2, fontFamily: TYPOGRAPHY.fontFamilySemiBold, fontWeight: TYPOGRAPHY.semibold, color: COLORS.textPrimary },
+    timerBadge: { flexDirection: 'row', alignItems: 'center', gap: SPACING.xs, backgroundColor: COLORS.accentHighlight, paddingHorizontal: SPACING.md, paddingVertical: SPACING.xs, borderRadius: RADIUS.round },
+    timerBadgeText: { fontSize: TYPOGRAPHY.bodySmall, fontFamily: TYPOGRAPHY.fontFamilySemiBold, color: '#fff' },
+    rankBadge: { flexDirection: 'row', alignItems: 'center', gap: SPACING.xs, paddingHorizontal: SPACING.md, paddingVertical: SPACING.xs, borderRadius: RADIUS.round },
+    rankBadgeText: { fontSize: TYPOGRAPHY.bodySmall, fontFamily: TYPOGRAPHY.fontFamilySemiBold, color: '#fff' },
+    // Fact container - dark background for visibility
+    factContainer: { flexDirection: 'row', alignItems: 'center', backgroundColor: COLORS.cardBackground, marginHorizontal: SPACING.sm, paddingHorizontal: SPACING.md, paddingVertical: SPACING.sm, borderRadius: RADIUS.md, borderWidth: 1, borderColor: COLORS.cardBorder },
+    factIcon: { fontSize: 20, marginRight: SPACING.sm },
+    factText: { flex: 1, fontSize: TYPOGRAPHY.bodySmall, fontFamily: TYPOGRAPHY.fontFamily, color: COLORS.textSecondary },
+    // Power container - darker background
+    powerContainer: { backgroundColor: COLORS.cardBackground, marginHorizontal: SPACING.sm, marginTop: SPACING.xs, borderRadius: RADIUS.md, borderWidth: 1, borderColor: COLORS.cardBorder },
+    // Scoreboard
+    scoreboardOverlay: { position: 'absolute', top: 150, right: SPACING.md, left: SPACING.md, backgroundColor: COLORS.cardBackground + 'F0', borderRadius: RADIUS.lg, padding: SPACING.md, zIndex: 100, borderWidth: 1, borderColor: COLORS.cardBorder },
     scoreboardTitle: { fontSize: TYPOGRAPHY.body, fontFamily: TYPOGRAPHY.fontFamilySemiBold, fontWeight: TYPOGRAPHY.semibold, color: COLORS.textPrimary, marginBottom: SPACING.sm, textAlign: 'center' },
-    rankRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: SPACING.xs, gap: SPACING.sm } as any,
+    rankRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: SPACING.xs, gap: SPACING.sm },
     rankNum: { fontSize: TYPOGRAPHY.caption, fontFamily: TYPOGRAPHY.fontFamilySemiBold, color: COLORS.organicWaste, width: 30 },
     rankName: { flex: 1, fontSize: TYPOGRAPHY.body, fontFamily: TYPOGRAPHY.fontFamily, color: COLORS.textPrimary },
     rankScore: { fontSize: TYPOGRAPHY.body, fontFamily: TYPOGRAPHY.fontFamilySemiBold, color: COLORS.textPrimary },
     gridContainer: { flex: 1 },
-    finishedOverlay: {
-        ...StyleSheet.absoluteFillObject, backgroundColor: COLORS.backgroundPrimary + 'E0',
-        justifyContent: 'center', alignItems: 'center', zIndex: 200,
-    } as any,
+    finishedOverlay: { ...StyleSheet.absoluteFillObject, backgroundColor: COLORS.backgroundPrimary + 'E0', justifyContent: 'center', alignItems: 'center', zIndex: 200 },
     finishedText: { fontSize: TYPOGRAPHY.h2, fontFamily: TYPOGRAPHY.fontFamilySemiBold, fontWeight: TYPOGRAPHY.semibold, color: COLORS.textPrimary, marginTop: SPACING.md },
     finishedScore: { fontSize: TYPOGRAPHY.h1, fontFamily: TYPOGRAPHY.fontFamilySemiBold, fontWeight: TYPOGRAPHY.semibold, color: COLORS.organicWaste, marginTop: SPACING.sm },
 });

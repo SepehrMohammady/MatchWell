@@ -88,7 +88,9 @@
         "minutes": "دقیقه",
         "noUnlockedThemes": "مراحل حالت داستان را کامل کنید تا موضوعات باز شوند",
         "yourName": "نام شما",
-        "enterName": "نام خود را وارد کنید"
+        "enterName": "نام خود را وارد کنید",
+        "gameActive": "در حال انجام",
+        "gameComplete": "تمام شده"
     },
     "game": {
         "paused": "متوقف شده",

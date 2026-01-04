@@ -88,7 +88,9 @@
         "minutes": "Minuten",
         "noUnlockedThemes": "Schließe Story-Modus Level ab um Themen freizuschalten",
         "yourName": "Dein Name",
-        "enterName": "Gib deinen Namen ein"
+        "enterName": "Gib deinen Namen ein",
+        "gameActive": "Läuft",
+        "gameComplete": "Abgeschlossen"
     },
     "game": {
         "paused": "Pausiert",

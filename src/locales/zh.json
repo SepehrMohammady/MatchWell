@@ -88,7 +88,9 @@
         "minutes": "分钟",
         "noUnlockedThemes": "完成故事模式关卡以解锁主题",
         "yourName": "你的名字",
-        "enterName": "输入你的名字"
+        "enterName": "输入你的名字",
+        "gameActive": "进行中",
+        "gameComplete": "已完成"
     },
     "game": {
         "paused": "已暂停",

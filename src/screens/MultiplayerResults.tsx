@@ -77,8 +77,11 @@ const MultiplayerResults: React.FC<Props> = ({ navigation, route }) => {
 
     const handleExit = () => {
         playSfx('tile_select');
-        navigation.navigate('MultiplayerMenu');
+        navigation.navigate('MainMenu');
     };
+
+    // Check if game is still active
+    const isGameActive = room?.status === 'active';
 
     const getRankStyle = (index: number) => {
         switch (index) {
@@ -154,6 +157,17 @@ const MultiplayerResults: React.FC<Props> = ({ navigation, route }) => {
             <View style={styles.header}>
                 <Text style={styles.title}>{t('multiplayer.results')}</Text>
                 <Text style={styles.roomName}>{room?.name}</Text>
+                {/* Game Status Badge */}
+                <View style={[styles.statusBadge, isGameActive ? styles.statusActive : styles.statusCompleted]}>
+                    <MaterialCommunityIcons
+                        name={isGameActive ? 'play-circle' : 'check-circle'}
+                        size={14}
+                        color="#fff"
+                    />
+                    <Text style={styles.statusText}>
+                        {isGameActive ? t('multiplayer.gameActive') : t('multiplayer.gameComplete')}
+                    </Text>
+                </View>
             </View>
 
             {/* Winner Celebration */}
@@ -233,6 +247,11 @@ const styles = StyleSheet.create({
         paddingVertical: SPACING.md, borderRadius: RADIUS.lg,
     },
     exitButtonText: { fontSize: TYPOGRAPHY.body, fontFamily: TYPOGRAPHY.fontFamilySemiBold, fontWeight: TYPOGRAPHY.semibold, color: '#fff' },
+    // Status badge styles
+    statusBadge: { flexDirection: 'row', alignItems: 'center', gap: SPACING.xs, paddingHorizontal: SPACING.md, paddingVertical: SPACING.xs, borderRadius: RADIUS.round, marginTop: SPACING.sm },
+    statusActive: { backgroundColor: COLORS.accentHighlight },
+    statusCompleted: { backgroundColor: COLORS.organicWaste },
+    statusText: { fontSize: TYPOGRAPHY.caption, fontFamily: TYPOGRAPHY.fontFamilySemiBold, color: '#fff' },
 });
 
 export default MultiplayerResults;

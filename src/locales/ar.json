@@ -88,7 +88,9 @@
         "minutes": "دقائق",
         "noUnlockedThemes": "أكمل مستويات وضع القصة لفتح المواضيع",
         "yourName": "اسمك",
-        "enterName": "أدخل اسمك"
+        "enterName": "أدخل اسمك",
+        "gameActive": "جاري اللعب",
+        "gameComplete": "مكتمل"
     },
     "game": {
         "paused": "متوقف مؤقتاً",

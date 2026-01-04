@@ -88,7 +88,9 @@
         "minutes": "Minutes",
         "noUnlockedThemes": "Complétez les niveaux du mode histoire pour débloquer les thèmes",
         "yourName": "Votre Nom",
-        "enterName": "Entrez votre nom"
+        "enterName": "Entrez votre nom",
+        "gameActive": "En Cours",
+        "gameComplete": "Terminé"
     },
     "game": {
         "paused": "Pause",
