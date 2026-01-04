@@ -44,11 +44,13 @@ const MultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
     const isGameOver = useGameStore((s) => s.isGameOver);
     const activatePowerUp = useGameStore((s) => s.activatePowerUp);
 
-    // Initialize game
+    // Initialize game once theme is available
     useEffect(() => {
-        initializeGame(0, true, theme);
-        playBgm('bgm_menu');
-    }, []);
+        if (theme) {
+            initializeGame(0, true, theme);
+            playBgm('bgm_menu');
+        }
+    }, [theme, initializeGame]);
 
     // Check game end conditions
     useEffect(() => {
