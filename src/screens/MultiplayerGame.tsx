@@ -36,6 +36,7 @@ const MultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
     const [showScoreboard, setShowScoreboard] = useState(false);
     const [finished, setFinished] = useState(false);
     const [endlessFactIndex, setEndlessFactIndex] = useState(0);
+    const [gameInitialized, setGameInitialized] = useState(false);
     const lastSyncScore = useRef(0);
 
     // Game store state
@@ -49,6 +50,7 @@ const MultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
     useEffect(() => {
         if (theme) {
             initializeGame(0, true, theme);
+            setGameInitialized(true);
             playBgm('bgm_menu');
         }
     }, [theme, initializeGame]);
@@ -61,9 +63,9 @@ const MultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
         return () => clearInterval(factTimer);
     }, []);
 
-    // Check game end conditions
+    // Check game end conditions (only after game is initialized)
     useEffect(() => {
-        if (finished) return;
+        if (!gameInitialized || finished) return;
 
         // Race mode: reached target
         if (gameMode === 'race' && targetScore && score >= targetScore) {
@@ -74,11 +76,11 @@ const MultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
         if (gameMode === 'moves' && movesLimit && moves >= movesLimit) {
             handleFinish();
         }
-    }, [score, moves, finished]);
+    }, [score, moves, finished, gameInitialized]);
 
-    // Sync score to server periodically
+    // Sync score to server periodically (only after game is initialized)
     useEffect(() => {
-        if (finished) return;
+        if (!gameInitialized || finished) return;
 
         const syncScore = async () => {
             if (score > lastSyncScore.current + 500) { // Sync every 500 points
@@ -94,7 +96,7 @@ const MultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
         };
 
         syncScore();
-    }, [score]);
+    }, [score, gameInitialized]);
 
     // Poll for rankings and time
     useFocusEffect(
