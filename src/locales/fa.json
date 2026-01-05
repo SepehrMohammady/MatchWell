@@ -90,7 +90,8 @@
         "yourName": "نام شما",
         "enterName": "نام خود را وارد کنید",
         "gameActive": "در حال انجام",
-        "gameComplete": "تمام شده"
+        "gameComplete": "تمام شده",
+        "you": "شما"
     },
     "game": {
         "paused": "متوقف شده",

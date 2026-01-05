@@ -90,7 +90,8 @@
         "yourName": "Dein Name",
         "enterName": "Gib deinen Namen ein",
         "gameActive": "Läuft",
-        "gameComplete": "Abgeschlossen"
+        "gameComplete": "Abgeschlossen",
+        "you": "Du"
     },
     "game": {
         "paused": "Pausiert",

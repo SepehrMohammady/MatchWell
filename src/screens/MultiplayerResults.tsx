@@ -56,23 +56,9 @@ const MultiplayerResults: React.FC<Props> = ({ navigation, route }) => {
             setRoom(result.room);
         }
         if (result.participants) {
-            // Sort by game mode criteria
-            let sorted = [...result.participants];
-            if (result.room?.game_mode === 'race') {
-                // Sort by completion time (fastest first), then by score
-                sorted.sort((a, b) => {
-                    if (a.has_finished && !b.has_finished) return -1;
-                    if (!a.has_finished && b.has_finished) return 1;
-                    if (a.has_finished && b.has_finished) {
-                        return (a.completion_time || 0) - (b.completion_time || 0);
-                    }
-                    return b.current_score - a.current_score;
-                });
-            } else {
-                // Sort by score (highest first)
-                sorted.sort((a, b) => b.current_score - a.current_score);
-            }
-            setRankings(sorted);
+            // Server already returns participants in correct rank order
+            // (completion_time > 0 first sorted by fastest, then others by score)
+            setRankings(result.participants);
 
             // Store my score for (You) identification
             if (result.my_score !== undefined) {
@@ -80,8 +66,8 @@ const MultiplayerResults: React.FC<Props> = ({ navigation, route }) => {
             }
 
             // Find my rank
-            const myIndex = sorted.findIndex(p => p.current_score === result.my_score);
-            setMyRank(myIndex >= 0 ? myIndex + 1 : sorted.length);
+            const myIndex = result.participants.findIndex((p: Participant) => p.current_score === result.my_score);
+            setMyRank(myIndex >= 0 ? myIndex + 1 : result.participants.length);
         }
         setLoading(false);
 
@@ -147,12 +133,12 @@ const MultiplayerResults: React.FC<Props> = ({ navigation, route }) => {
             {room?.game_mode === 'race' && (
                 <View style={styles.timeContainer}>
                     <MaterialCommunityIcons
-                        name={item.has_finished ? 'check-circle' : 'clock-outline'}
+                        name={item.completion_time && item.completion_time > 0 ? 'check-circle' : 'clock-outline'}
                         size={16}
-                        color={item.has_finished ? COLORS.organicWaste : COLORS.textSecondary}
+                        color={item.completion_time && item.completion_time > 0 ? COLORS.organicWaste : COLORS.textSecondary}
                     />
                     <Text style={styles.timeText}>
-                        {item.has_finished ? formatCompletionTime(item.completion_time) : t('multiplayer.dnf')}
+                        {item.completion_time && item.completion_time > 0 ? formatCompletionTime(item.completion_time) : t('multiplayer.dnf')}
                     </Text>
                 </View>
             )}

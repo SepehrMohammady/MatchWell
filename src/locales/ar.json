@@ -90,7 +90,8 @@
         "yourName": "اسمك",
         "enterName": "أدخل اسمك",
         "gameActive": "جاري اللعب",
-        "gameComplete": "مكتمل"
+        "gameComplete": "مكتمل",
+        "you": "أنت"
     },
     "game": {
         "paused": "متوقف مؤقتاً",
