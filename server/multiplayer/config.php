@@ -70,7 +70,7 @@ function getRoomParticipants($pdo, $roomId) {
         WHERE room_id = ? 
         ORDER BY 
             CASE WHEN has_finished = 1 THEN 0 ELSE 1 END,
-            CASE WHEN completion_time IS NULL THEN 1 ELSE 0 END,
+            CASE WHEN completion_time IS NULL OR completion_time <= 0 THEN 1 ELSE 0 END,
             completion_time ASC,
             current_score DESC
     ");
