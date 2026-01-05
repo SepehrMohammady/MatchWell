@@ -90,7 +90,8 @@
         "yourName": "당신의 이름",
         "enterName": "이름을 입력하세요",
         "gameActive": "진행 중",
-        "gameComplete": "완료됨"
+        "gameComplete": "완료됨",
+        "you": "당신"
     },
     "game": {
         "paused": "일시정지",

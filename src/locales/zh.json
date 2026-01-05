@@ -90,7 +90,8 @@
         "yourName": "你的名字",
         "enterName": "输入你的名字",
         "gameActive": "进行中",
-        "gameComplete": "已完成"
+        "gameComplete": "已完成",
+        "you": "你"
     },
     "game": {
         "paused": "已暂停",

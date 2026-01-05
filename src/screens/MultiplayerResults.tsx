@@ -1,5 +1,5 @@
 // Multiplayer Results Screen - Show final rankings
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
     View,
     Text,
@@ -16,6 +16,7 @@ import { COLORS, TYPOGRAPHY, SPACING, RADIUS } from '../config/theme';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { getRoomStatus, Participant, Room } from '../services/MultiplayerService';
 import { useTranslation } from 'react-i18next';
+import { useFocusEffect } from '@react-navigation/native';
 import { playSfx, playBgm } from '../utils/SoundManager';
 import { formatNumber, getCurrentLanguage } from '../config/i18n';
 
@@ -30,11 +31,24 @@ const MultiplayerResults: React.FC<Props> = ({ navigation, route }) => {
     const [room, setRoom] = useState<Room | null>(null);
     const [rankings, setRankings] = useState<Participant[]>([]);
     const [myRank, setMyRank] = useState(0);
+    const [myScore, setMyScore] = useState<number | null>(null);
 
     useEffect(() => {
-        loadResults();
         playBgm('bgm_menu');
     }, []);
+
+    // Poll for updates while game is active
+    useFocusEffect(
+        useCallback(() => {
+            loadResults();
+
+            const pollInterval = setInterval(() => {
+                loadResults();
+            }, 5000);
+
+            return () => clearInterval(pollInterval);
+        }, [roomCode])
+    );
 
     const loadResults = async () => {
         const result = await getRoomStatus(roomCode);
@@ -59,6 +73,11 @@ const MultiplayerResults: React.FC<Props> = ({ navigation, route }) => {
                 sorted.sort((a, b) => b.current_score - a.current_score);
             }
             setRankings(sorted);
+
+            // Store my score for (You) identification
+            if (result.my_score !== undefined) {
+                setMyScore(result.my_score);
+            }
 
             // Find my rank
             const myIndex = sorted.findIndex(p => p.current_score === result.my_score);
@@ -118,7 +137,9 @@ const MultiplayerResults: React.FC<Props> = ({ navigation, route }) => {
                 )}
             </View>
             <View style={styles.rankInfo}>
-                <Text style={styles.rankName}>{item.username}</Text>
+                <Text style={styles.rankName}>
+                    {item.username}{item.current_score === myScore ? ` (${t('multiplayer.you')})` : ''}
+                </Text>
                 <Text style={styles.rankScore}>
                     {formatNumber(item.current_score, getCurrentLanguage())}
                 </Text>
