@@ -52,6 +52,11 @@ if ($room['status'] === 'active' && $room['end_time']) {
     $timeRemaining = max(0, strtotime($room['end_time']) - time());
 }
 
+// Get host username
+$hostStmt = $pdo->prepare("SELECT username FROM multiplayer_participants WHERE room_id = ? AND device_id = ?");
+$hostStmt->execute([$room['id'], $room['host_device_id']]);
+$hostUsername = $hostStmt->fetchColumn() ?: 'Unknown';
+
 sendSuccess([
     'room' => [
         'id' => $room['id'],
@@ -70,6 +75,7 @@ sendSuccess([
         'time_remaining' => $timeRemaining
     ],
     'is_host' => ($room['host_device_id'] === $deviceId),
+    'host_username' => $hostUsername,
     'participants' => $participants,
     'participant_count' => count($participants),
     'theme_votes' => $themeVotes,

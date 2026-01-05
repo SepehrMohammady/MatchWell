@@ -42,7 +42,7 @@ const CreateRoom: React.FC<Props> = ({ navigation }) => {
     const [password, setPassword] = useState('');
     const [gameMode, setGameMode] = useState<GameMode>('race');
     const [targetScore, setTargetScore] = useState(50000);
-    const [durationDays, setDurationDays] = useState('1');
+    const [durationDays, setDurationDays] = useState('0');
     const [durationHours, setDurationHours] = useState('0');
     const [durationMinutes, setDurationMinutes] = useState('0');
     const [movesLimit, setMovesLimit] = useState(100);

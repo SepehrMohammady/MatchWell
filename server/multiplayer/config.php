@@ -63,14 +63,16 @@ function getParticipant($pdo, $roomId, $deviceId) {
 }
 
 // Get all participants in room
+// Ranking logic:
+// 1. Players who reached target (completion_time > 0) sorted by fastest time
+// 2. Everyone else sorted by highest score
 function getRoomParticipants($pdo, $roomId) {
     $stmt = $pdo->prepare("
         SELECT username, current_score, moves_used, completion_time, has_finished, theme_vote
         FROM multiplayer_participants 
         WHERE room_id = ? 
         ORDER BY 
-            CASE WHEN has_finished = 1 THEN 0 ELSE 1 END,
-            CASE WHEN completion_time IS NULL OR completion_time <= 0 THEN 1 ELSE 0 END,
+            CASE WHEN completion_time IS NOT NULL AND completion_time > 0 THEN 0 ELSE 1 END,
             completion_time ASC,
             current_score DESC
     ");

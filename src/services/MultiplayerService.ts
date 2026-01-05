@@ -228,6 +228,7 @@ export const getRoomStatus = async (roomCode: string): Promise<{
     theme_votes?: ThemeVote[];
     my_score?: number;
     my_finished?: boolean;
+    host_username?: string;
     error?: string;
 }> => {
     const deviceId = await getDeviceId();
@@ -235,6 +236,7 @@ export const getRoomStatus = async (roomCode: string): Promise<{
     const response = await apiCall<{
         room: Room;
         is_host: boolean;
+        host_username: string;
         participants: Participant[];
         theme_votes: ThemeVote[];
         my_score: number;

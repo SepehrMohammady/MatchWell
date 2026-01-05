@@ -32,6 +32,7 @@ const RoomLobby: React.FC<Props> = ({ navigation, route }) => {
     const [loading, setLoading] = useState(true);
     const [room, setRoom] = useState<Room | null>(null);
     const [isHost, setIsHost] = useState(false);
+    const [hostUsername, setHostUsername] = useState<string>('');
     const [participants, setParticipants] = useState<Participant[]>([]);
     const [themeVotes, setThemeVotes] = useState<ThemeVote[]>([]);
     const [myVote, setMyVote] = useState<string | null>(null);
@@ -57,6 +58,7 @@ const RoomLobby: React.FC<Props> = ({ navigation, route }) => {
 
         setRoom(result.room || null);
         setIsHost(result.is_host || false);
+        setHostUsername(result.host_username || '');
         setParticipants(result.participants || []);
         setThemeVotes(result.theme_votes || []);
         setLoading(false);
@@ -147,7 +149,7 @@ const RoomLobby: React.FC<Props> = ({ navigation, route }) => {
                 <MaterialCommunityIcons name="account" size={24} color={COLORS.textPrimary} />
                 <Text style={styles.participantName}>{item.username}</Text>
             </View>
-            {index === 0 && (
+            {item.username === hostUsername && (
                 <View style={styles.hostBadge}>
                     <Text style={styles.hostText}>{t('multiplayer.host')}</Text>
                 </View>
@@ -314,7 +316,7 @@ const styles = StyleSheet.create({
         borderRadius: 9, alignItems: 'center', justifyContent: 'center',
     },
     voteCount: { fontSize: 10, fontFamily: TYPOGRAPHY.fontFamilySemiBold, color: '#fff' },
-    participantList: { maxHeight: 200 },
+    participantList: { maxHeight: 300 },
     participantRow: {
         flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
         backgroundColor: COLORS.cardBackground, padding: SPACING.md, borderRadius: RADIUS.md,
