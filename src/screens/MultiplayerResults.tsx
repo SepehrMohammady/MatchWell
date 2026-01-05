@@ -201,7 +201,11 @@ const MultiplayerResults: React.FC<Props> = ({ navigation, route }) => {
             </View>
 
             {/* Exit Button */}
-            <TouchableOpacity style={styles.exitButton} onPress={handleExit} activeOpacity={0.8}>
+            <TouchableOpacity
+                style={[styles.exitButton, { marginBottom: Math.max(insets.bottom, SPACING.lg) }]}
+                onPress={handleExit}
+                activeOpacity={0.8}
+            >
                 <MaterialCommunityIcons name="exit-to-app" size={24} color="#fff" />
                 <Text style={styles.exitButtonText}>{t('multiplayer.backToMenu')}</Text>
             </TouchableOpacity>
