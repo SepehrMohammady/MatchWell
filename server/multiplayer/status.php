@@ -80,6 +80,7 @@ sendSuccess([
     'participant_count' => count($participants),
     'theme_votes' => $themeVotes,
     'my_score' => $participant['current_score'],
+    'my_username' => $participant['username'],
     'my_finished' => (bool)$participant['has_finished']
 ]);
 ?>

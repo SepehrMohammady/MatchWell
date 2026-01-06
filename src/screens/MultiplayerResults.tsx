@@ -31,7 +31,7 @@ const MultiplayerResults: React.FC<Props> = ({ navigation, route }) => {
     const [room, setRoom] = useState<Room | null>(null);
     const [rankings, setRankings] = useState<Participant[]>([]);
     const [myRank, setMyRank] = useState(0);
-    const [myScore, setMyScore] = useState<number | null>(null);
+    const [myUsername, setMyUsername] = useState<string | null>(null);
 
     useEffect(() => {
         playBgm('bgm_menu');
@@ -60,13 +60,13 @@ const MultiplayerResults: React.FC<Props> = ({ navigation, route }) => {
             // (completion_time > 0 first sorted by fastest, then others by score)
             setRankings(result.participants);
 
-            // Store my score for (You) identification
-            if (result.my_score !== undefined) {
-                setMyScore(result.my_score);
+            // Store my username for (You) identification (more reliable than score)
+            if (result.my_username) {
+                setMyUsername(result.my_username);
             }
 
-            // Find my rank
-            const myIndex = result.participants.findIndex((p: Participant) => p.current_score === result.my_score);
+            // Find my rank by username
+            const myIndex = result.participants.findIndex((p: Participant) => p.username === result.my_username);
             setMyRank(myIndex >= 0 ? myIndex + 1 : result.participants.length);
         }
         setLoading(false);
@@ -124,7 +124,7 @@ const MultiplayerResults: React.FC<Props> = ({ navigation, route }) => {
             </View>
             <View style={styles.rankInfo}>
                 <Text style={styles.rankName}>
-                    {item.username}{item.current_score === myScore ? ` (${t('multiplayer.you')})` : ''}
+                    {item.username}{item.username === myUsername ? ` (${t('multiplayer.you')})` : ''}
                 </Text>
                 <Text style={styles.rankScore}>
                     {formatNumber(item.current_score, getCurrentLanguage())}

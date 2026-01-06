@@ -227,6 +227,7 @@ export const getRoomStatus = async (roomCode: string): Promise<{
     participants?: Participant[];
     theme_votes?: ThemeVote[];
     my_score?: number;
+    my_username?: string;
     my_finished?: boolean;
     host_username?: string;
     error?: string;
@@ -240,6 +241,7 @@ export const getRoomStatus = async (roomCode: string): Promise<{
         participants: Participant[];
         theme_votes: ThemeVote[];
         my_score: number;
+        my_username: string;
         my_finished: boolean;
     }>(`status.php?room_code=${roomCode}&device_id=${deviceId}`);
 
