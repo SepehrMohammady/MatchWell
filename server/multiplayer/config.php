@@ -68,7 +68,7 @@ function getParticipant($pdo, $roomId, $deviceId) {
 // 2. Everyone else sorted by highest score
 function getRoomParticipants($pdo, $roomId) {
     $stmt = $pdo->prepare("
-        SELECT username, current_score, moves_used, completion_time, has_finished, theme_vote
+        SELECT device_id, username, current_score, moves_used, completion_time, has_finished, theme_vote
         FROM multiplayer_participants 
         WHERE room_id = ? 
         ORDER BY 

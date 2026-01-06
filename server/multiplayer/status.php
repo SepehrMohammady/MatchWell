@@ -81,6 +81,7 @@ sendSuccess([
     'theme_votes' => $themeVotes,
     'my_score' => $participant['current_score'],
     'my_username' => $participant['username'],
+    'my_device_id' => $deviceId,
     'my_finished' => (bool)$participant['has_finished']
 ]);
 ?>

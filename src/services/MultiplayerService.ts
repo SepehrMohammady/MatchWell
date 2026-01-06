@@ -29,6 +29,7 @@ export interface Room {
 }
 
 export interface Participant {
+    device_id?: string;
     username: string;
     current_score: number;
     moves_used: number;
@@ -228,6 +229,7 @@ export const getRoomStatus = async (roomCode: string): Promise<{
     theme_votes?: ThemeVote[];
     my_score?: number;
     my_username?: string;
+    my_device_id?: string;
     my_finished?: boolean;
     host_username?: string;
     error?: string;
@@ -242,6 +244,7 @@ export const getRoomStatus = async (roomCode: string): Promise<{
         theme_votes: ThemeVote[];
         my_score: number;
         my_username: string;
+        my_device_id: string;
         my_finished: boolean;
     }>(`status.php?room_code=${roomCode}&device_id=${deviceId}`);
 
