@@ -74,7 +74,7 @@ const MainMenu: React.FC<Props> = ({ navigation }) => {
         const animation = Animated.loop(
             Animated.timing(rotateAnim, {
                 toValue: 1,
-                duration: 60000, // 60 seconds for full rotation
+                duration: 600000, // 10 minutes for full rotation (very slow)
                 easing: Easing.linear,
                 useNativeDriver: true,
             })

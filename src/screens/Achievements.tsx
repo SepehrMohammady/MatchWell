@@ -299,6 +299,13 @@ const Achievements: React.FC<Props> = ({ navigation }) => {
                                                 <Text style={styles.endlessMedalTier}>
                                                     {t(`endlessTiers.${a.tier === 'earth-saver' ? 'earthSaver' : a.tier}`)}
                                                 </Text>
+                                                <Text style={styles.endlessMedalScore}>
+                                                    {a.requirement && a.requirement >= 1000000
+                                                        ? `${a.requirement / 1000000}M`
+                                                        : a.requirement && a.requirement >= 1000
+                                                            ? `${a.requirement / 1000}K`
+                                                            : a.requirement}
+                                                </Text>
                                             </View>
                                         );
                                     })}
@@ -490,6 +497,12 @@ const styles = StyleSheet.create({
         fontFamily: TYPOGRAPHY.fontFamilySemiBold,
         color: COLORS.textMuted,
         marginTop: 2,
+    },
+    endlessMedalScore: {
+        fontSize: 10,
+        fontFamily: TYPOGRAPHY.fontFamily,
+        color: COLORS.textSecondary,
+        marginTop: 1,
     },
 });
 
