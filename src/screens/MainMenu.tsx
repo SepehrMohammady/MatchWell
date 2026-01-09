@@ -1,5 +1,5 @@
 // Main Menu Screen - Earth Stages with Space Background
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useRef } from 'react';
 import {
     View,
     Text,
@@ -12,6 +12,8 @@ import {
     ScrollView,
     BackHandler,
     Alert,
+    Animated,
+    Easing,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -64,6 +66,27 @@ const MainMenu: React.FC<Props> = ({ navigation }) => {
             setSoundsReady(true);
         });
     }, [loadProgress]);
+
+    // Earth rotation animation
+    const rotateAnim = useRef(new Animated.Value(0)).current;
+
+    useEffect(() => {
+        const animation = Animated.loop(
+            Animated.timing(rotateAnim, {
+                toValue: 1,
+                duration: 60000, // 60 seconds for full rotation
+                easing: Easing.linear,
+                useNativeDriver: true,
+            })
+        );
+        animation.start();
+        return () => animation.stop();
+    }, [rotateAnim]);
+
+    const earthRotation = rotateAnim.interpolate({
+        inputRange: [0, 1],
+        outputRange: ['0deg', '360deg'],
+    });
 
     // Play menu music when screen is focused AND sounds are ready
     useFocusEffect(
@@ -162,11 +185,14 @@ const MainMenu: React.FC<Props> = ({ navigation }) => {
                 {/* Spacer */}
                 <View style={styles.spacer} />
 
-                {/* Earth image section */}
+                {/* Earth image section with slow rotation */}
                 <View style={styles.earthSection}>
-                    <Image
+                    <Animated.Image
                         source={earthImage}
-                        style={styles.earthImage}
+                        style={[
+                            styles.earthImage,
+                            { transform: [{ rotate: earthRotation }] }
+                        ]}
                         resizeMode="contain"
                     />
                 </View>

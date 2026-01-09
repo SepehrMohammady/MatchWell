@@ -592,10 +592,18 @@ export const useGameStore = create<GameStore>((set, get) => ({
         }
     },
 
-    // Power-up methods
+    // Power-up methods (toggle behavior - tap again to deactivate)
     activatePowerUp: () => {
-        const { powerProgress } = get();
-        console.log('🔋 activatePowerUp called, powerProgress:', powerProgress);
+        const { powerProgress, isPowerUpActive } = get();
+        console.log('🔋 activatePowerUp called, powerProgress:', powerProgress, 'isPowerUpActive:', isPowerUpActive);
+
+        // Toggle: if already active, deactivate
+        if (isPowerUpActive) {
+            set({ isPowerUpActive: false, selectedTile: null });
+            console.log('❌ Power-up deactivated (toggled off)');
+            return;
+        }
+
         if (powerProgress >= 10) {
             set({ isPowerUpActive: true, selectedTile: null });
             console.log('✅ Power-up activated!');

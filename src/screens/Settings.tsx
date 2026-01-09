@@ -256,7 +256,7 @@ const Settings: React.FC<Props> = ({ navigation }) => {
                 {/* Tagline */}
                 <View style={styles.taglineContainer}>
                     <Text style={styles.tagline}>🌱 {t('menu.tagline')}</Text>
-                    <Text style={styles.copyright}>© 2025 Sepehr Mohammady. Open source under MIT License.</Text>
+                    <Text style={styles.copyright}>© 2026 Sepehr Mohammady. Open source under MIT License.</Text>
                 </View>
             </ScrollView>
 
