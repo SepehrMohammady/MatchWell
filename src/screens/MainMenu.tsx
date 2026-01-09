@@ -157,10 +157,13 @@ const MainMenu: React.FC<Props> = ({ navigation }) => {
                 contentContainerStyle={styles.scrollContent}
                 showsVerticalScrollIndicator={false}
             >
-                {/* Space background with stars */}
-                <View style={styles.spaceBackground}>
+                {/* Animated space background with rotating stars */}
+                <Animated.View style={[
+                    styles.spaceBackground,
+                    { transform: [{ rotate: earthRotation }] }
+                ]}>
                     {/* Simple star pattern */}
-                    {Array.from({ length: 50 }).map((_, i) => (
+                    {Array.from({ length: 80 }).map((_, i) => (
                         <View
                             key={i}
                             style={[
@@ -175,7 +178,7 @@ const MainMenu: React.FC<Props> = ({ navigation }) => {
                             ]}
                         />
                     ))}
-                </View>
+                </Animated.View>
 
                 {/* Climate Clock at top */}
                 <View style={styles.climateClockSection}>
@@ -185,14 +188,11 @@ const MainMenu: React.FC<Props> = ({ navigation }) => {
                 {/* Spacer */}
                 <View style={styles.spacer} />
 
-                {/* Earth image section with slow rotation */}
+                {/* Earth image section (static - camera fixed to Earth) */}
                 <View style={styles.earthSection}>
-                    <Animated.Image
+                    <Image
                         source={earthImage}
-                        style={[
-                            styles.earthImage,
-                            { transform: [{ rotate: earthRotation }] }
-                        ]}
+                        style={styles.earthImage}
                         resizeMode="contain"
                     />
                 </View>
@@ -274,7 +274,11 @@ const styles = StyleSheet.create({
         paddingHorizontal: SPACING.xl,
     },
     spaceBackground: {
-        ...StyleSheet.absoluteFillObject,
+        position: 'absolute',
+        width: '150%',
+        height: '150%',
+        left: '-25%',
+        top: '-25%',
         backgroundColor: '#030303', // Space black with stars
     },
     star: {
