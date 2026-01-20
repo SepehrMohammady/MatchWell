@@ -115,6 +115,7 @@ const styles = StyleSheet.create({
     },
     row: {
         flexDirection: 'row',
+        direction: 'ltr', // Force LTR to prevent RTL hitbox misalignment
     },
     emptyTile: {
         width: TILE_SIZE,
