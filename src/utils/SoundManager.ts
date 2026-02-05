@@ -7,8 +7,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AppState, AppStateStatus } from 'react-native';
 import { ThemeType } from '../types';
 
-// Enable playback in silence mode (iOS)
-Sound.setCategory('Playback');
+// Enable playback that mixes with other audio (doesn't pause user's music)
+Sound.setCategory('Ambient', true);  // 'Ambient' allows mixing with other apps
 
 // Track app state for background/foreground music control
 let currentAppState: AppStateStatus = AppState.currentState;

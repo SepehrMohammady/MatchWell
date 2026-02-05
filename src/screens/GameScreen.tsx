@@ -333,22 +333,25 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
     }, [isEndlessMode, isLoading]);
 
     // Handle hardware back button to open pause menu
-    useEffect(() => {
-        const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
-            if (isLoading) {
-                // Block back button during loading - don't skip the loading screen
-                return true;
-            }
-            if (!isPaused && !isLevelComplete && !isGameOver) {
-                pauseBgm();
-                pauseGame();
-                return true; // Prevent default back behavior
-            }
-            return false;
-        });
+    // Use useFocusEffect so it only triggers when GameScreen is focused
+    useFocusEffect(
+        useCallback(() => {
+            const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+                if (isLoading) {
+                    // Block back button during loading - don't skip the loading screen
+                    return true;
+                }
+                if (!isPaused && !isLevelComplete && !isGameOver) {
+                    pauseBgm();
+                    pauseGame();
+                    return true; // Prevent default back behavior
+                }
+                return false;
+            });
 
-        return () => backHandler.remove();
-    }, [isPaused, isLevelComplete, isGameOver, pauseGame, isLoading]);
+            return () => backHandler.remove();
+        }, [isPaused, isLevelComplete, isGameOver, pauseGame, isLoading])
+    );
 
     const handlePause = useCallback(() => {
         // Don't pause BGM - theme music continues during pause
