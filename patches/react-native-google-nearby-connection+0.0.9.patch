@@ -37,115 +37,8 @@ index 2fd94d5..3a293b8 100644
 +    compileOnly "com.facebook.react:react-native:+"
 +    implementation 'com.google.android.gms:play-services-nearby:19.1.0'
  }
-diff --git a/node_modules/react-native-google-nearby-connection/android/build/generated/source/buildConfig/release/com/butchmarshall/reactnative/google/nearby/connection/BuildConfig.java b/node_modules/react-native-google-nearby-connection/android/build/generated/source/buildConfig/release/com/butchmarshall/reactnative/google/nearby/connection/BuildConfig.java
-new file mode 100644
-index 0000000..adb13be
---- /dev/null
-+++ b/node_modules/react-native-google-nearby-connection/android/build/generated/source/buildConfig/release/com/butchmarshall/reactnative/google/nearby/connection/BuildConfig.java
-@@ -0,0 +1,10 @@
-+/**
-+ * Automatically generated file. DO NOT MODIFY
-+ */
-+package com.butchmarshall.reactnative.google.nearby.connection;
-+
-+public final class BuildConfig {
-+  public static final boolean DEBUG = false;
-+  public static final String LIBRARY_PACKAGE_NAME = "com.butchmarshall.reactnative.google.nearby.connection";
-+  public static final String BUILD_TYPE = "release";
-+}
-diff --git a/node_modules/react-native-google-nearby-connection/android/build/intermediates/annotation_processor_list/release/javaPreCompileRelease/annotationProcessors.json b/node_modules/react-native-google-nearby-connection/android/build/intermediates/annotation_processor_list/release/javaPreCompileRelease/annotationProcessors.json
-new file mode 100644
-index 0000000..9e26dfe
---- /dev/null
-+++ b/node_modules/react-native-google-nearby-connection/android/build/intermediates/annotation_processor_list/release/javaPreCompileRelease/annotationProcessors.json
-@@ -0,0 +1 @@
-+{}
-\ No newline at end of file
-diff --git a/node_modules/react-native-google-nearby-connection/android/build/intermediates/compile_r_class_jar/release/generateReleaseRFile/R.jar b/node_modules/react-native-google-nearby-connection/android/build/intermediates/compile_r_class_jar/release/generateReleaseRFile/R.jar
-new file mode 100644
-index 0000000..218e492
-Binary files /dev/null and b/node_modules/react-native-google-nearby-connection/android/build/intermediates/compile_r_class_jar/release/generateReleaseRFile/R.jar differ
-diff --git a/node_modules/react-native-google-nearby-connection/android/build/intermediates/compile_symbol_list/release/generateReleaseRFile/R.txt b/node_modules/react-native-google-nearby-connection/android/build/intermediates/compile_symbol_list/release/generateReleaseRFile/R.txt
-new file mode 100644
-index 0000000..a9551e5
---- /dev/null
-+++ b/node_modules/react-native-google-nearby-connection/android/build/intermediates/compile_symbol_list/release/generateReleaseRFile/R.txt
-@@ -0,0 +1 @@
-+int string app_name 0x0
-diff --git a/node_modules/react-native-google-nearby-connection/android/build/intermediates/incremental/mergeReleaseJniLibFolders/merger.xml b/node_modules/react-native-google-nearby-connection/android/build/intermediates/incremental/mergeReleaseJniLibFolders/merger.xml
-new file mode 100644
-index 0000000..91813c2
---- /dev/null
-+++ b/node_modules/react-native-google-nearby-connection/android/build/intermediates/incremental/mergeReleaseJniLibFolders/merger.xml
-@@ -0,0 +1,2 @@
-+<?xml version="1.0" encoding="utf-8"?>
-+<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\ProjectWell\MatchWell\node_modules\react-native-google-nearby-connection\android\src\main\jniLibs"/></dataSet><dataSet config="release" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\ProjectWell\MatchWell\node_modules\react-native-google-nearby-connection\android\src\release\jniLibs"/></dataSet></merger>
-\ No newline at end of file
-diff --git a/node_modules/react-native-google-nearby-connection/android/build/intermediates/incremental/release/packageReleaseResources/compile-file-map.properties b/node_modules/react-native-google-nearby-connection/android/build/intermediates/incremental/release/packageReleaseResources/compile-file-map.properties
-new file mode 100644
-index 0000000..a0c694b
---- /dev/null
-+++ b/node_modules/react-native-google-nearby-connection/android/build/intermediates/incremental/release/packageReleaseResources/compile-file-map.properties
-@@ -0,0 +1 @@
-+#Sun Mar 08 01:13:23 CET 2026
-diff --git a/node_modules/react-native-google-nearby-connection/android/build/intermediates/incremental/release/packageReleaseResources/merged.dir/values/values.xml b/node_modules/react-native-google-nearby-connection/android/build/intermediates/incremental/release/packageReleaseResources/merged.dir/values/values.xml
-new file mode 100644
-index 0000000..884329f
---- /dev/null
-+++ b/node_modules/react-native-google-nearby-connection/android/build/intermediates/incremental/release/packageReleaseResources/merged.dir/values/values.xml
-@@ -0,0 +1,4 @@
-+<?xml version="1.0" encoding="utf-8"?>
-+<resources>
-+    <string name="app_name">react-native-google-nearby-connection</string>
-+</resources>
-\ No newline at end of file
-diff --git a/node_modules/react-native-google-nearby-connection/android/build/intermediates/incremental/release/packageReleaseResources/merger.xml b/node_modules/react-native-google-nearby-connection/android/build/intermediates/incremental/release/packageReleaseResources/merger.xml
-new file mode 100644
-index 0000000..3a16aea
---- /dev/null
-+++ b/node_modules/react-native-google-nearby-connection/android/build/intermediates/incremental/release/packageReleaseResources/merger.xml
-@@ -0,0 +1,2 @@
-+<?xml version="1.0" encoding="utf-8"?>
-+<merger version="3"><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="main$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\ProjectWell\MatchWell\node_modules\react-native-google-nearby-connection\android\src\main\res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="main" generated-set="main$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\ProjectWell\MatchWell\node_modules\react-native-google-nearby-connection\android\src\main\res"><file path="C:\ProjectWell\MatchWell\node_modules\react-native-google-nearby-connection\android\src\main\res\values\strings.xml" qualifiers=""><string name="app_name">react-native-google-nearby-connection</string></file></source></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="release$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\ProjectWell\MatchWell\node_modules\react-native-google-nearby-connection\android\src\release\res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="release" generated-set="release$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\ProjectWell\MatchWell\node_modules\react-native-google-nearby-connection\android\src\release\res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="generated$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\ProjectWell\MatchWell\node_modules\react-native-google-nearby-connection\android\build\generated\res\resValues\release"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="generated" generated-set="generated$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\ProjectWell\MatchWell\node_modules\react-native-google-nearby-connection\android\build\generated\res\resValues\release"/></dataSet><mergedItems/></merger>
-\ No newline at end of file
-diff --git a/node_modules/react-native-google-nearby-connection/android/build/intermediates/local_only_symbol_list/release/parseReleaseLocalResources/R-def.txt b/node_modules/react-native-google-nearby-connection/android/build/intermediates/local_only_symbol_list/release/parseReleaseLocalResources/R-def.txt
-new file mode 100644
-index 0000000..34ca0ec
---- /dev/null
-+++ b/node_modules/react-native-google-nearby-connection/android/build/intermediates/local_only_symbol_list/release/parseReleaseLocalResources/R-def.txt
-@@ -0,0 +1,3 @@
-+R_DEF: Internal format may change without notice
-+local
-+string app_name
-diff --git a/node_modules/react-native-google-nearby-connection/android/build/intermediates/nested_resources_validation_report/release/generateReleaseResources/nestedResourcesValidationReport.txt b/node_modules/react-native-google-nearby-connection/android/build/intermediates/nested_resources_validation_report/release/generateReleaseResources/nestedResourcesValidationReport.txt
-new file mode 100644
-index 0000000..08f4ebe
---- /dev/null
-+++ b/node_modules/react-native-google-nearby-connection/android/build/intermediates/nested_resources_validation_report/release/generateReleaseResources/nestedResourcesValidationReport.txt
-@@ -0,0 +1 @@
-+0 Warning/Error
-\ No newline at end of file
-diff --git a/node_modules/react-native-google-nearby-connection/android/build/intermediates/packaged_res/release/packageReleaseResources/values/values.xml b/node_modules/react-native-google-nearby-connection/android/build/intermediates/packaged_res/release/packageReleaseResources/values/values.xml
-new file mode 100644
-index 0000000..884329f
---- /dev/null
-+++ b/node_modules/react-native-google-nearby-connection/android/build/intermediates/packaged_res/release/packageReleaseResources/values/values.xml
-@@ -0,0 +1,4 @@
-+<?xml version="1.0" encoding="utf-8"?>
-+<resources>
-+    <string name="app_name">react-native-google-nearby-connection</string>
-+</resources>
-\ No newline at end of file
-diff --git a/node_modules/react-native-google-nearby-connection/android/build/intermediates/symbol_list_with_package_name/release/generateReleaseRFile/package-aware-r.txt b/node_modules/react-native-google-nearby-connection/android/build/intermediates/symbol_list_with_package_name/release/generateReleaseRFile/package-aware-r.txt
-new file mode 100644
-index 0000000..5f7f776
---- /dev/null
-+++ b/node_modules/react-native-google-nearby-connection/android/build/intermediates/symbol_list_with_package_name/release/generateReleaseRFile/package-aware-r.txt
-@@ -0,0 +1,2 @@
-+com.butchmarshall.reactnative.google.nearby.connection
-+string app_name
 diff --git a/node_modules/react-native-google-nearby-connection/android/src/main/java/com/butchmarshall/reactnative/google/nearby/connection/NearbyConnectionModule.java b/node_modules/react-native-google-nearby-connection/android/src/main/java/com/butchmarshall/reactnative/google/nearby/connection/NearbyConnectionModule.java
-index c4090f5..ce7b649 100644
+index c4090f5..58490be 100644
 --- a/node_modules/react-native-google-nearby-connection/android/src/main/java/com/butchmarshall/reactnative/google/nearby/connection/NearbyConnectionModule.java
 +++ b/node_modules/react-native-google-nearby-connection/android/src/main/java/com/butchmarshall/reactnative/google/nearby/connection/NearbyConnectionModule.java
 @@ -44,15 +44,15 @@ import android.os.Bundle;
@@ -173,3 +66,33 @@ index c4090f5..ce7b649 100644
  import android.util.Log;
  import android.widget.Toast;
  import com.google.android.gms.common.api.Status;
+@@ -492,7 +492,7 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
+ 
+ 		final Activity activity = getCurrentActivity();
+ 		final ConnectionsClient clientSingleton = getConnectionsClientSingleton(serviceId);
+-		final AdvertisingOptions advertisingOptions =  new AdvertisingOptions(finalStrategy);
++		final AdvertisingOptions advertisingOptions = new AdvertisingOptions.Builder().setStrategy(finalStrategy).build();
+ 
+         permissionsCheck(activity, Arrays.asList(getRequiredPermissions()), new Callable<Void>() {
+             @Override
+@@ -563,7 +563,7 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
+ 
+ 		final Activity activity = getCurrentActivity();
+ 		final ConnectionsClient clientSingleton = getConnectionsClientSingleton(serviceId);
+-		final DiscoveryOptions discoveryOptions = new DiscoveryOptions(finalStrategy);
++		final DiscoveryOptions discoveryOptions = new DiscoveryOptions.Builder().setStrategy(finalStrategy).build();
+ 
+         permissionsCheck(activity, Arrays.asList(getRequiredPermissions()), new Callable<Void>() {
+             @Override
+diff --git a/node_modules/react-native-google-nearby-connection/android/src/main/java/com/butchmarshall/reactnative/google/nearby/connection/NearbyConnectionPackage.java b/node_modules/react-native-google-nearby-connection/android/src/main/java/com/butchmarshall/reactnative/google/nearby/connection/NearbyConnectionPackage.java
+index d79b2c5..b750d56 100644
+--- a/node_modules/react-native-google-nearby-connection/android/src/main/java/com/butchmarshall/reactnative/google/nearby/connection/NearbyConnectionPackage.java
++++ b/node_modules/react-native-google-nearby-connection/android/src/main/java/com/butchmarshall/reactnative/google/nearby/connection/NearbyConnectionPackage.java
+@@ -1,7 +1,6 @@
+ package com.butchmarshall.reactnative.google.nearby.connection;
+ 
+ import com.facebook.react.ReactPackage;
+-import com.facebook.react.bridge.JavaScriptModule;
+ import com.facebook.react.bridge.NativeModule;
+ import com.facebook.react.bridge.ReactApplicationContext;
+ import com.facebook.react.uimanager.ViewManager;
