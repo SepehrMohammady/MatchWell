@@ -38,7 +38,7 @@ index 2fd94d5..3a293b8 100644
 +    implementation 'com.google.android.gms:play-services-nearby:19.1.0'
  }
 diff --git a/node_modules/react-native-google-nearby-connection/android/src/main/java/com/butchmarshall/reactnative/google/nearby/connection/NearbyConnectionModule.java b/node_modules/react-native-google-nearby-connection/android/src/main/java/com/butchmarshall/reactnative/google/nearby/connection/NearbyConnectionModule.java
-index c4090f5..cf5ee00 100644
+index c4090f5..faaca41 100644
 --- a/node_modules/react-native-google-nearby-connection/android/src/main/java/com/butchmarshall/reactnative/google/nearby/connection/NearbyConnectionModule.java
 +++ b/node_modules/react-native-google-nearby-connection/android/src/main/java/com/butchmarshall/reactnative/google/nearby/connection/NearbyConnectionModule.java
 @@ -44,15 +44,15 @@ import android.os.Bundle;
@@ -257,7 +257,7 @@ index c4090f5..cf5ee00 100644
  	}
  
  	/**
-@@ -1638,7 +1660,18 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
+@@ -1638,7 +1660,25 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
  	 * @return All permissions required for the app connectivity to properly function.
  	 */
  	protected String[] getRequiredPermissions() {
@@ -265,6 +265,10 @@ index c4090f5..cf5ee00 100644
 +		java.util.List<String> perms = new java.util.ArrayList<>(java.util.Arrays.asList(REQUIRED_PERMISSIONS));
 +		
 +		if (android.os.Build.VERSION.SDK_INT >= 31) {
++			// On Android 12+, legacy BLUETOOTH permissions are stripped by maxSdkVersion=30
++			// If we ask for them, the OS returns DENIED and silently halts the connection process.
++			perms.remove(Manifest.permission.BLUETOOTH);
++			perms.remove(Manifest.permission.BLUETOOTH_ADMIN);
 +			perms.add("android.permission.BLUETOOTH_SCAN");
 +			perms.add("android.permission.BLUETOOTH_CONNECT");
 +			perms.add("android.permission.BLUETOOTH_ADVERTISE");
@@ -272,6 +276,9 @@ index c4090f5..cf5ee00 100644
 +		if (android.os.Build.VERSION.SDK_INT >= 33) {
 +			perms.add("android.permission.NEARBY_WIFI_DEVICES");
 +		}
++		
++		// Some devices need Fine Location to advertise properly
++		perms.add(Manifest.permission.ACCESS_FINE_LOCATION);
 +		
 +		return perms.toArray(new String[0]);
  	}
