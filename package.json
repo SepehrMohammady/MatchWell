@@ -1,6 +1,7 @@
 {
   "name": "matchwell",
-  "version": "0.7.32",
+  "version": "0.7.33",
+  "description": "An environmental matching game",
   "private": true,
   "scripts": {
     "android": "react-native run-android",

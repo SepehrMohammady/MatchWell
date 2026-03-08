@@ -38,7 +38,7 @@ index 2fd94d5..3a293b8 100644
 +    implementation 'com.google.android.gms:play-services-nearby:19.1.0'
  }
 diff --git a/node_modules/react-native-google-nearby-connection/android/src/main/java/com/butchmarshall/reactnative/google/nearby/connection/NearbyConnectionModule.java b/node_modules/react-native-google-nearby-connection/android/src/main/java/com/butchmarshall/reactnative/google/nearby/connection/NearbyConnectionModule.java
-index c4090f5..686a978 100644
+index c4090f5..cf5ee00 100644
 --- a/node_modules/react-native-google-nearby-connection/android/src/main/java/com/butchmarshall/reactnative/google/nearby/connection/NearbyConnectionModule.java
 +++ b/node_modules/react-native-google-nearby-connection/android/src/main/java/com/butchmarshall/reactnative/google/nearby/connection/NearbyConnectionModule.java
 @@ -44,15 +44,15 @@ import android.os.Bundle;
@@ -95,6 +95,15 @@ index c4090f5..686a978 100644
      @Override
      public void onNewIntent(Intent intent) {
      }
+@@ -478,7 +500,7 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
+ 	}
+ 
+ 	@ReactMethod
+-	protected void startAdvertising(final String endpointName, final String serviceId, final int strategy) {
++	public void startAdvertising(final String endpointName, final String serviceId, final int strategy) {
+ 		mIsAdvertising = true;
+ 		onAdvertisingStarting(endpointName, serviceId);
+ 
 @@ -492,7 +514,7 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
  
  		final Activity activity = getCurrentActivity();

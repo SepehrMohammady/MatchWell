@@ -152,7 +152,7 @@ const LocalMultiplayerMenu: React.FC<Props> = ({ navigation }) => {
 
             {/* Description */}
             <View style={styles.descSection}>
-                <MaterialCommunityIcons name="bluetooth-connect" size={32} color={COLORS.organicWaste} />
+                <MaterialCommunityIcons name="access-point-network" size={32} color={COLORS.organicWaste} />
                 <Text style={styles.descText}>{t('localMultiplayer.description')}</Text>
             </View>
 
@@ -293,7 +293,7 @@ const styles = StyleSheet.create({
     stopText: {
         fontSize: TYPOGRAPHY.body,
         fontFamily: TYPOGRAPHY.fontFamilySemiBold,
-        color: COLORS.error,
+        color: COLORS.accentDanger,
     },
     hostList: {
         paddingTop: SPACING.sm,
