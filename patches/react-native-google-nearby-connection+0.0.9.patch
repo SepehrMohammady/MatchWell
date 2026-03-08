@@ -38,7 +38,7 @@ index 2fd94d5..3a293b8 100644
 +    implementation 'com.google.android.gms:play-services-nearby:19.1.0'
  }
 diff --git a/node_modules/react-native-google-nearby-connection/android/src/main/java/com/butchmarshall/reactnative/google/nearby/connection/NearbyConnectionModule.java b/node_modules/react-native-google-nearby-connection/android/src/main/java/com/butchmarshall/reactnative/google/nearby/connection/NearbyConnectionModule.java
-index c4090f5..675a948 100644
+index c4090f5..d94f2e2 100644
 --- a/node_modules/react-native-google-nearby-connection/android/src/main/java/com/butchmarshall/reactnative/google/nearby/connection/NearbyConnectionModule.java
 +++ b/node_modules/react-native-google-nearby-connection/android/src/main/java/com/butchmarshall/reactnative/google/nearby/connection/NearbyConnectionModule.java
 @@ -44,15 +44,15 @@ import android.os.Bundle;
@@ -282,6 +282,15 @@ index c4090f5..675a948 100644
  	}
  
  	/**
+@@ -1623,7 +1645,7 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
+ 	}
+ 
+ 	/** @return True if currently streaming from the microphone. */
+-	@ReactMethod
++	@ReactMethod(isBlockingSynchronousMethod = true)
+ 	private boolean isMicrophoneOpen() {
+ 		for (AudioRecorder recorder : mRecorders.values()) {
+ 			if (recorder != null && recorder.isRecording()) {
 @@ -1638,7 +1660,25 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
  	 * @return All permissions required for the app connectivity to properly function.
  	 */

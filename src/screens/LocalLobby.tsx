@@ -23,6 +23,7 @@ import { playSfx } from '../utils/SoundManager';
 import LocalMultiplayerService, { LocalPlayer, LocalGameConfig, LocalGameMode } from '../services/LocalMultiplayerService';
 import { THEMES as THEME_LIST, LEVELS } from '../themes';
 import { useGameStore } from '../context/GameStore';
+import CustomAlert from '../components/UI/CustomAlert';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'LocalLobby'>;
 
@@ -60,6 +61,11 @@ const LocalLobby: React.FC<Props> = ({ navigation, route }) => {
     const [isAdvertising, setIsAdvertising] = useState(false);
     const [gameConfig, setGameConfig] = useState<LocalGameConfig | null>(null);
     const [connectionStatus, setConnectionStatus] = useState<string>('');
+    const [alertConfig, setAlertConfig] = useState<{ visible: boolean; title: string; message: string; buttons?: any[] }>({
+        visible: false,
+        title: '',
+        message: ''
+    });
 
     // Get completed levels to filter themes
     const completedLevels = useGameStore((state) => state.completedLevels);
@@ -111,7 +117,11 @@ const LocalLobby: React.FC<Props> = ({ navigation, route }) => {
                     setConnectionStatus(status);
                 },
                 onError: (error) => {
-                    Alert.alert(t('common.error'), error);
+                    setAlertConfig({
+                        visible: true,
+                        title: t('common.error'),
+                        message: error
+                    });
                 },
             });
 
@@ -128,7 +138,11 @@ const LocalLobby: React.FC<Props> = ({ navigation, route }) => {
                     setIsAdvertising(true);
                 }
             } catch (err) {
-                Alert.alert('Fatal Init Error', String(err));
+                setAlertConfig({
+                    visible: true,
+                    title: 'Fatal Init Error',
+                    message: String(err)
+                });
             }
         };
 
@@ -172,7 +186,11 @@ const LocalLobby: React.FC<Props> = ({ navigation, route }) => {
 
     const handleStartGame = async () => {
         if (players.length < 1) {
-            Alert.alert(t('localMultiplayer.waitForPlayers'), t('localMultiplayer.needOnePlayer'));
+            setAlertConfig({
+                visible: true,
+                title: t('localMultiplayer.waitForPlayers'),
+                message: t('localMultiplayer.needOnePlayer')
+            });
             return;
         }
         playSfx('combo');
@@ -213,6 +231,13 @@ const LocalLobby: React.FC<Props> = ({ navigation, route }) => {
     return (
         <View style={[styles.container, { paddingTop: insets.top }]}>
             <StatusBar barStyle="light-content" backgroundColor={COLORS.backgroundPrimary} />
+            <CustomAlert
+                visible={alertConfig.visible}
+                title={alertConfig.title}
+                message={alertConfig.message}
+                buttons={alertConfig.buttons}
+                onDismiss={() => setAlertConfig(prev => ({ ...prev, visible: false }))}
+            />
 
             {/* Header */}
             <View style={styles.header}>

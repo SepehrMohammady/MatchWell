@@ -17,6 +17,7 @@ import { COLORS, TYPOGRAPHY, SPACING, RADIUS } from '../config/theme';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useTranslation } from 'react-i18next';
 import { playSfx } from '../utils/SoundManager';
+import CustomAlert from '../components/UI/CustomAlert';
 import LocalMultiplayerService, { LocalPlayer } from '../services/LocalMultiplayerService';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'LocalMultiplayerMenu'>;
@@ -32,6 +33,11 @@ const LocalMultiplayerMenu: React.FC<Props> = ({ navigation }) => {
     const [scanning, setScanning] = useState(false);
     const [discoveredHosts, setDiscoveredHosts] = useState<DiscoveredHost[]>([]);
     const [connecting, setConnecting] = useState(false);
+    const [alertConfig, setAlertConfig] = useState<{ visible: boolean; title: string; message: string; buttons?: any[] }>({
+        visible: false,
+        title: '',
+        message: ''
+    });
 
     useEffect(() => {
         return () => {
@@ -46,10 +52,11 @@ const LocalMultiplayerMenu: React.FC<Props> = ({ navigation }) => {
         playSfx('tile_select');
         const hasPerms = await LocalMultiplayerService.requestPermissions();
         if (!hasPerms) {
-            Alert.alert(
-                t('localMultiplayer.permissionRequired'),
-                t('localMultiplayer.permissionMessage'),
-            );
+            setAlertConfig({
+                visible: true,
+                title: t('localMultiplayer.permissionRequired'),
+                message: t('localMultiplayer.permissionMessage')
+            });
             return;
         }
         navigation.navigate('LocalLobby', { isHost: true });
@@ -59,10 +66,11 @@ const LocalMultiplayerMenu: React.FC<Props> = ({ navigation }) => {
         playSfx('tile_select');
         const hasPerms = await LocalMultiplayerService.requestPermissions();
         if (!hasPerms) {
-            Alert.alert(
-                t('localMultiplayer.permissionRequired'),
-                t('localMultiplayer.permissionMessage'),
-            );
+            setAlertConfig({
+                visible: true,
+                title: t('localMultiplayer.permissionRequired'),
+                message: t('localMultiplayer.permissionMessage')
+            });
             return;
         }
 
@@ -89,7 +97,11 @@ const LocalMultiplayerMenu: React.FC<Props> = ({ navigation }) => {
             onError: (error) => {
                 setScanning(false);
                 setConnecting(false);
-                Alert.alert(t('common.error'), error);
+                setAlertConfig({
+                    visible: true,
+                    title: t('common.error'),
+                    message: error
+                });
             },
         });
 
@@ -140,6 +152,13 @@ const LocalMultiplayerMenu: React.FC<Props> = ({ navigation }) => {
     return (
         <View style={[styles.container, { paddingTop: insets.top }]}>
             <StatusBar barStyle="light-content" backgroundColor={COLORS.backgroundPrimary} />
+            <CustomAlert
+                visible={alertConfig.visible}
+                title={alertConfig.title}
+                message={alertConfig.message}
+                buttons={alertConfig.buttons}
+                onDismiss={() => setAlertConfig(prev => ({ ...prev, visible: false }))}
+            />
 
             {/* Header */}
             <View style={styles.header}>

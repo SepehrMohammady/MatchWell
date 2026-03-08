@@ -26,6 +26,7 @@ import { COLORS, TYPOGRAPHY, SPACING, RADIUS } from '../config/theme';
 import { SeedlingIcon, TrophyIcon, MedalIcon, SettingsIcon } from '../components/UI/Icons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import ClimateClock from '../components/UI/ClimateClock';
+import CustomAlert from '../components/UI/CustomAlert';
 import { useTranslation } from 'react-i18next';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'MainMenu'>;
@@ -97,19 +98,25 @@ const MainMenu: React.FC<Props> = ({ navigation }) => {
         }, [soundsReady])
     );
 
+    const [alertConfig, setAlertConfig] = React.useState<{ visible: boolean; title: string; message: string; buttons?: any[] }>({
+        visible: false,
+        title: '',
+        message: ''
+    });
+
     // Handle back button - show exit confirmation
     useFocusEffect(
         useCallback(() => {
             const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
-                Alert.alert(
-                    t('common.exitApp'),
-                    t('common.exitConfirm'),
-                    [
-                        { text: t('common.no'), style: 'cancel', onPress: () => { } },
+                setAlertConfig({
+                    visible: true,
+                    title: t('common.exitApp'),
+                    message: t('common.exitConfirm'),
+                    buttons: [
+                        { text: t('common.no'), style: 'cancel', onPress: () => setAlertConfig(prev => ({ ...prev, visible: false })) },
                         { text: t('common.yes'), style: 'destructive', onPress: () => BackHandler.exitApp() },
-                    ],
-                    { cancelable: true }
-                );
+                    ]
+                });
                 return true; // Prevent default back action
             });
             return () => backHandler.remove();
@@ -152,6 +159,13 @@ const MainMenu: React.FC<Props> = ({ navigation }) => {
     return (
         <View style={[styles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
             <StatusBar barStyle="light-content" backgroundColor="#000000" />
+            <CustomAlert
+                visible={alertConfig.visible}
+                title={alertConfig.title}
+                message={alertConfig.message}
+                buttons={alertConfig.buttons}
+                onDismiss={() => setAlertConfig(prev => ({ ...prev, visible: false }))}
+            />
 
             <ScrollView
                 contentContainerStyle={styles.scrollContent}
