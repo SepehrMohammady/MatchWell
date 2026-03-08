@@ -2,7 +2,18 @@
 // Handles Bluetooth/WiFi Direct peer-to-peer multiplayer via Google Nearby Connections API
 // Uses transport abstraction for future iOS/Windows support
 
-import NearbyConnection, { Strategy, Payload } from 'react-native-google-nearby-connection';
+let NearbyConnection: any = null;
+let Strategy: any = { P2P_STAR: 2 };
+let Payload: any = { BYTES: 1 };
+
+try {
+    const NC = require('react-native-google-nearby-connection');
+    NearbyConnection = NC.default || NC;
+    Strategy = NC.Strategy || Strategy;
+    Payload = NC.Payload || Payload;
+} catch (e) {
+    console.warn('⚠️ react-native-google-nearby-connection not available:', e);
+}
 import { PermissionsAndroid, Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ThemeType } from '../types';
@@ -150,6 +161,10 @@ class LocalMultiplayerServiceImpl {
         this.setupEventListeners();
 
         try {
+            if (!NearbyConnection) {
+                this.callbacks.onError?.('Local multiplayer is not available on this device.');
+                return;
+            }
             await NearbyConnection.startAdvertising(
                 this.playerName,
                 SERVICE_ID,
@@ -178,6 +193,10 @@ class LocalMultiplayerServiceImpl {
         this.setupEventListeners();
 
         try {
+            if (!NearbyConnection) {
+                this.callbacks.onError?.('Local multiplayer is not available on this device.');
+                return;
+            }
             await NearbyConnection.startDiscovering(
                 SERVICE_ID,
                 Strategy.P2P_STAR
