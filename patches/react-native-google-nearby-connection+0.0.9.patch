@@ -38,7 +38,7 @@ index 2fd94d5..3a293b8 100644
 +    implementation 'com.google.android.gms:play-services-nearby:19.1.0'
  }
 diff --git a/node_modules/react-native-google-nearby-connection/android/src/main/java/com/butchmarshall/reactnative/google/nearby/connection/NearbyConnectionModule.java b/node_modules/react-native-google-nearby-connection/android/src/main/java/com/butchmarshall/reactnative/google/nearby/connection/NearbyConnectionModule.java
-index c4090f5..58490be 100644
+index c4090f5..3e5424a 100644
 --- a/node_modules/react-native-google-nearby-connection/android/src/main/java/com/butchmarshall/reactnative/google/nearby/connection/NearbyConnectionModule.java
 +++ b/node_modules/react-native-google-nearby-connection/android/src/main/java/com/butchmarshall/reactnative/google/nearby/connection/NearbyConnectionModule.java
 @@ -44,15 +44,15 @@ import android.os.Bundle;
@@ -66,7 +66,24 @@ index c4090f5..58490be 100644
  import android.util.Log;
  import android.widget.Toast;
  import com.google.android.gms.common.api.Status;
-@@ -492,7 +492,7 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
+@@ -399,6 +399,16 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
+         return "NearbyConnection";
+     }
+ 
++    @ReactMethod
++    public void addListener(String eventName) {
++        // Keep: Required for RN built in Event Emitter Calls.
++    }
++
++    @ReactMethod
++    public void removeListeners(Integer count) {
++        // Keep: Required for RN built in Event Emitter Calls.
++    }
++
+     @Override
+     public void onNewIntent(Intent intent) {
+     }
+@@ -492,7 +502,7 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
  
  		final Activity activity = getCurrentActivity();
  		final ConnectionsClient clientSingleton = getConnectionsClientSingleton(serviceId);
@@ -75,7 +92,7 @@ index c4090f5..58490be 100644
  
          permissionsCheck(activity, Arrays.asList(getRequiredPermissions()), new Callable<Void>() {
              @Override
-@@ -563,7 +563,7 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
+@@ -563,7 +573,7 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
  
  		final Activity activity = getCurrentActivity();
  		final ConnectionsClient clientSingleton = getConnectionsClientSingleton(serviceId);
@@ -97,23 +114,27 @@ index d79b2c5..b750d56 100644
  import com.facebook.react.bridge.ReactApplicationContext;
  import com.facebook.react.uimanager.ViewManager;
 diff --git a/node_modules/react-native-google-nearby-connection/index.js b/node_modules/react-native-google-nearby-connection/index.js
-index de8e3bb..84a7a1a 100644
+index de8e3bb..fd5f9d3 100644
 --- a/node_modules/react-native-google-nearby-connection/index.js
 +++ b/node_modules/react-native-google-nearby-connection/index.js
-@@ -26,7 +26,11 @@ import {
+@@ -26,7 +26,15 @@ import {
  	NativeModules,
  } from 'react-native';
  
 -const NearbyEventEmitter = new NativeEventEmitter(NativeModules.NearbyConnection);
 +const NearbyConnectionModule = NativeModules.NearbyConnection || {};
-+// Provide a safe dummy object if the native module isn't loaded to prevent JS crash
-+const NearbyEventEmitter = new NativeEventEmitter(
-+  NativeModules.NearbyConnection || { addListener: () => {}, removeListeners: () => {} }
-+);
++// Fake EventEmitter since the real NativeEventEmitter crashes on RN 0.83 if module is missing
++class MockEventEmitter {
++  addListener(eventName, listener) { return { remove: () => {} }; }
++  removeListeners(count) {}
++}
++const NearbyEventEmitter = NativeModules.NearbyConnection 
++  ? new NativeEventEmitter(NativeModules.NearbyConnection) 
++  : new MockEventEmitter();
  
  export const CommonStatusCodes = {
  	"API_NOT_CONNECTED": 17,
-@@ -91,12 +95,12 @@ export const Strategy = {
+@@ -91,12 +99,12 @@ export const Strategy = {
  class NearbyConnection {
  	// Get all the endpoints
  	static endpoints() {
@@ -128,7 +149,7 @@ index de8e3bb..84a7a1a 100644
  	}
  
  	// Save a file from a payload to a location
-@@ -141,40 +145,40 @@ class NearbyConnection {
+@@ -141,40 +149,40 @@ class NearbyConnection {
  
  	// Start/Stop Advertise
  	static startAdvertising(localEndpointName, serviceId, strategy = Strategy.P2P_CLUSTER) {
