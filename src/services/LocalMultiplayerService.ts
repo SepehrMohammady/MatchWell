@@ -5,13 +5,15 @@
 let NearbyConnection: any = null;
 let Strategy: any = { P2P_STAR: 2 };
 let Payload: any = { BYTES: 1 };
+let NearbyInitError: string | null = null;
 
 try {
     const NC = require('react-native-google-nearby-connection');
     NearbyConnection = NC.default || NC;
     Strategy = NC.Strategy || Strategy;
     Payload = NC.Payload || Payload;
-} catch (e) {
+} catch (e: any) {
+    NearbyInitError = String(e.message || e);
     console.warn('⚠️ react-native-google-nearby-connection not available:', e);
 }
 import { PermissionsAndroid, Platform } from 'react-native';
@@ -159,12 +161,13 @@ class LocalMultiplayerServiceImpl {
             this.connectedEndpoints.clear();
             await this.getPlayerName();
 
-            this.setupEventListeners();
-
             if (!NearbyConnection) {
-                this.callbacks.onError?.('Local multiplayer is not available on this device.');
+                this.callbacks.onError?.(`Local multiplayer init failed. Module crashed on load: ${NearbyInitError || 'Unknown Error'}`);
                 return;
             }
+
+            this.setupEventListeners();
+
             await NearbyConnection.startAdvertising(
                 this.playerName,
                 SERVICE_ID,
@@ -191,12 +194,12 @@ class LocalMultiplayerServiceImpl {
             this.hostEndpointId = null;
             await this.getPlayerName();
 
-            this.setupEventListeners();
-
             if (!NearbyConnection) {
-                this.callbacks.onError?.('Local multiplayer is not available on this device.');
+                this.callbacks.onError?.(`Local multiplayer init failed. Module crashed on load: ${NearbyInitError || 'Unknown Error'}`);
                 return;
             }
+
+            this.setupEventListeners();
             await NearbyConnection.startDiscovering(
                 SERVICE_ID,
                 Strategy.P2P_STAR
