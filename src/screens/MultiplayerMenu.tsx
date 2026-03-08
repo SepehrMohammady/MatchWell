@@ -197,7 +197,7 @@ const MultiplayerMenu: React.FC<Props> = ({ navigation }) => {
                     }}
                     activeOpacity={0.8}
                 >
-                    <MaterialCommunityIcons name="bluetooth-connect" size={28} color="#fff" />
+                    <MaterialCommunityIcons name="access-point-network" size={28} color="#fff" />
                     <Text style={styles.actionText}>{t('localMultiplayer.localPlay')}</Text>
                 </TouchableOpacity>
             </View>

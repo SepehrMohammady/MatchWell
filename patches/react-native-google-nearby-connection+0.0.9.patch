@@ -38,7 +38,7 @@ index 2fd94d5..3a293b8 100644
 +    implementation 'com.google.android.gms:play-services-nearby:19.1.0'
  }
 diff --git a/node_modules/react-native-google-nearby-connection/android/src/main/java/com/butchmarshall/reactnative/google/nearby/connection/NearbyConnectionModule.java b/node_modules/react-native-google-nearby-connection/android/src/main/java/com/butchmarshall/reactnative/google/nearby/connection/NearbyConnectionModule.java
-index c4090f5..faaca41 100644
+index c4090f5..675a948 100644
 --- a/node_modules/react-native-google-nearby-connection/android/src/main/java/com/butchmarshall/reactnative/google/nearby/connection/NearbyConnectionModule.java
 +++ b/node_modules/react-native-google-nearby-connection/android/src/main/java/com/butchmarshall/reactnative/google/nearby/connection/NearbyConnectionModule.java
 @@ -44,15 +44,15 @@ import android.os.Bundle;
@@ -113,6 +113,15 @@ index c4090f5..faaca41 100644
  
          permissionsCheck(activity, Arrays.asList(getRequiredPermissions()), new Callable<Void>() {
              @Override
+@@ -543,7 +565,7 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
+ 	}
+ 
+ 	/** Returns {@code true} if currently advertising. */
+-	@ReactMethod
++	@ReactMethod(isBlockingSynchronousMethod = true)
+ 	public boolean isAdvertising() {
+ 		return mIsAdvertising;
+ 	}
 @@ -563,7 +585,7 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
  
  		final Activity activity = getCurrentActivity();
@@ -122,6 +131,22 @@ index c4090f5..faaca41 100644
  
          permissionsCheck(activity, Arrays.asList(getRequiredPermissions()), new Callable<Void>() {
              @Override
+@@ -610,13 +632,13 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
+ 	}
+ 
+ 	/** Returns {@code true} if currently discovering. */
+-	@ReactMethod
++	@ReactMethod(isBlockingSynchronousMethod = true)
+ 	public boolean isDiscovering() {
+ 		return mIsDiscovering;
+ 	}
+ 
+ 	/** Returns {@code true} if currently connecting. */
+-	@ReactMethod
++	@ReactMethod(isBlockingSynchronousMethod = true)
+ 	public boolean isConnecting() {
+ 		return mIsConnecting;
+ 	}
 @@ -656,7 +678,7 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
  	}
  	private void registerAdvertisingStartingHandler() {
