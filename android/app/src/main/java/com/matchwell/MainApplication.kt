@@ -6,8 +6,6 @@ import com.facebook.react.ReactApplication
 import com.facebook.react.ReactHost
 import com.facebook.react.ReactNativeApplicationEntryPoint.loadReactNative
 import com.facebook.react.defaults.DefaultReactHost.getDefaultReactHost
-import com.butchmarshall.reactnative.google.nearby.connection.NearbyConnectionPackage
-
 class MainApplication : Application(), ReactApplication {
 
   override val reactHost: ReactHost by lazy {
@@ -16,7 +14,6 @@ class MainApplication : Application(), ReactApplication {
       packageList =
         PackageList(this).packages.apply {
           // Packages that cannot be autolinked yet can be added manually here:
-          add(NearbyConnectionPackage())
         },
     )
   }

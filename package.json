@@ -1,6 +1,6 @@
 {
   "name": "matchwell",
-  "version": "0.7.27",
+  "version": "0.7.28",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
