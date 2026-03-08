@@ -5,7 +5,7 @@
 export const VERSION = {
     major: 0,
     minor: 7,
-    patch: 34,
+    patch: 35,
     
     // Helper to get formatted version string
     get string() {

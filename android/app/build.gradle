@@ -83,8 +83,8 @@ android {
         applicationId "com.matchwell"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 134
-        versionName "0.7.34"
+        versionCode 135
+        versionName "0.7.35"
         resValue "string", "build_config_package", "com.matchwell"
     }
     signingConfigs {

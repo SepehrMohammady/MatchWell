@@ -115,16 +115,20 @@ const LocalLobby: React.FC<Props> = ({ navigation, route }) => {
                 },
             });
 
-            if (isHost) {
-                const config: LocalGameConfig = {
-                    gameMode: selectedMode,
-                    theme: selectedTheme || 'trash-sorting',
-                    targetScore: selectedMode === 'race' ? targetScore : undefined,
-                    movesLimit: selectedMode === 'moves' ? movesLimit : undefined,
-                    durationSeconds: selectedMode === 'timed' ? getDurationSeconds() : undefined,
-                };
-                await LocalMultiplayerService.startAdvertising(config);
-                setIsAdvertising(true);
+            try {
+                if (isHost) {
+                    const config: LocalGameConfig = {
+                        gameMode: selectedMode,
+                        theme: selectedTheme || 'trash-sorting',
+                        targetScore: selectedMode === 'race' ? targetScore : undefined,
+                        movesLimit: selectedMode === 'moves' ? movesLimit : undefined,
+                        durationSeconds: selectedMode === 'timed' ? getDurationSeconds() : undefined,
+                    };
+                    await LocalMultiplayerService.startAdvertising(config);
+                    setIsAdvertising(true);
+                }
+            } catch (err) {
+                Alert.alert('Fatal Init Error', String(err));
             }
         };
 

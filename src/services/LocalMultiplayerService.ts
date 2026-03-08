@@ -151,16 +151,16 @@ class LocalMultiplayerServiceImpl {
     // --------------------------------------------------------
 
     async startAdvertising(config: LocalGameConfig): Promise<void> {
-        this.isHost = true;
-        this.gameConfig = config;
-        this.gameStarted = false;
-        this.players.clear();
-        this.connectedEndpoints.clear();
-        await this.getPlayerName();
-
-        this.setupEventListeners();
-
         try {
+            this.isHost = true;
+            this.gameConfig = config;
+            this.gameStarted = false;
+            this.players.clear();
+            this.connectedEndpoints.clear();
+            await this.getPlayerName();
+
+            this.setupEventListeners();
+
             if (!NearbyConnection) {
                 this.callbacks.onError?.('Local multiplayer is not available on this device.');
                 return;
@@ -174,7 +174,7 @@ class LocalMultiplayerServiceImpl {
             this.callbacks.onConnectionStatusChanged?.('advertising');
         } catch (error) {
             console.error('Failed to start advertising:', error);
-            this.callbacks.onError?.('Failed to start hosting. Please check Bluetooth and WiFi settings.');
+            this.callbacks.onError?.(`Failed to start hosting. Error: ${String(error)}. Please check Bluetooth and WiFi settings.`);
         }
     }
 
@@ -183,16 +183,16 @@ class LocalMultiplayerServiceImpl {
     // --------------------------------------------------------
 
     async startDiscovering(): Promise<void> {
-        this.isHost = false;
-        this.gameStarted = false;
-        this.players.clear();
-        this.connectedEndpoints.clear();
-        this.hostEndpointId = null;
-        await this.getPlayerName();
-
-        this.setupEventListeners();
-
         try {
+            this.isHost = false;
+            this.gameStarted = false;
+            this.players.clear();
+            this.connectedEndpoints.clear();
+            this.hostEndpointId = null;
+            await this.getPlayerName();
+
+            this.setupEventListeners();
+
             if (!NearbyConnection) {
                 this.callbacks.onError?.('Local multiplayer is not available on this device.');
                 return;
@@ -205,7 +205,7 @@ class LocalMultiplayerServiceImpl {
             this.callbacks.onConnectionStatusChanged?.('discovering');
         } catch (error) {
             console.error('Failed to start discovering:', error);
-            this.callbacks.onError?.('Failed to search for games. Please check Bluetooth and WiFi settings.');
+            this.callbacks.onError?.(`Failed to search for games. Error: ${String(error)}. Please check Bluetooth and WiFi settings.`);
         }
     }
 
