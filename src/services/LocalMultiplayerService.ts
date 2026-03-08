@@ -90,6 +90,8 @@ class LocalMultiplayerServiceImpl {
     private gameStarted: boolean = false;
     private hostEndpointId: string | null = null;
 
+    private connectionTimeout: ReturnType<typeof setTimeout> | null = null;
+
     // --------------------------------------------------------
     // Setup / Teardown
     // --------------------------------------------------------
@@ -220,6 +222,15 @@ class LocalMultiplayerServiceImpl {
         try {
             await NearbyConnection.connectToEndpoint(SERVICE_ID, endpointId);
             console.log('🔗 Connecting to host:', endpointId);
+            
+            // Set a 15-second timeout in case Play Services hangs and doesn't fire an event
+            if (this.connectionTimeout) clearTimeout(this.connectionTimeout);
+            this.connectionTimeout = setTimeout(() => {
+                console.warn('⏱ Connection request timed out for', endpointId);
+                this.callbacks.onError?.('Connection timed out. The host may be out of range, or rejecting the connection (OS firewall).');
+                this.callbacks.onConnectionStatusChanged?.('disconnected');
+            }, 15000);
+            
         } catch (error) {
             console.error('Failed to connect to host:', error);
             this.callbacks.onError?.('Failed to connect to host.');
@@ -399,6 +410,11 @@ class LocalMultiplayerServiceImpl {
             NearbyConnection.onConnectedToEndpoint(({ endpointId, endpointName }: any) => {
                 console.log('✅ Connected to:', endpointName, endpointId);
                 this.connectedEndpoints.add(endpointId);
+                
+                if (this.connectionTimeout) {
+                    clearTimeout(this.connectionTimeout);
+                    this.connectionTimeout = null;
+                }
 
                 if (this.isHost) {
                     // Host: add player to list
@@ -432,6 +448,10 @@ class LocalMultiplayerServiceImpl {
             NearbyConnection.onDisconnectedFromEndpoint(({ endpointId }: any) => {
                 console.log('❌ Disconnected from:', endpointId);
                 this.connectedEndpoints.delete(endpointId);
+                
+                if (!this.isHost && this.hostEndpointId === endpointId) {
+                    this.callbacks.onError?.('Lost connection to host.');
+                }
 
                 if (this.isHost) {
                     const player = this.players.get(endpointId);
@@ -450,7 +470,17 @@ class LocalMultiplayerServiceImpl {
         this.eventSubscriptions.push(
             NearbyConnection.onEndpointConnectionFailed(({ endpointId, statusCode }: any) => {
                 console.error('❌ Connection failed:', endpointId, 'status:', statusCode);
-                this.callbacks.onError?.('Connection failed. Please try again.');
+                if (this.connectionTimeout) {
+                    clearTimeout(this.connectionTimeout);
+                    this.connectionTimeout = null;
+                }
+                
+                let errorMsg = `Connection failed (Status: ${statusCode}). Please try again.`;
+                if (statusCode === 8003) errorMsg = 'Connection rejected by host (8003).';
+                if (statusCode === 8011) errorMsg = 'Bluetooth/WiFi error (8011) during connection.';
+                if (statusCode === 8012) errorMsg = 'Host no longer discoverable (8012) - Endpoint unknown.';
+                
+                this.callbacks.onError?.(errorMsg);
             })
         );
 

@@ -38,7 +38,7 @@ index 2fd94d5..3a293b8 100644
 +    implementation 'com.google.android.gms:play-services-nearby:19.1.0'
  }
 diff --git a/node_modules/react-native-google-nearby-connection/android/src/main/java/com/butchmarshall/reactnative/google/nearby/connection/NearbyConnectionModule.java b/node_modules/react-native-google-nearby-connection/android/src/main/java/com/butchmarshall/reactnative/google/nearby/connection/NearbyConnectionModule.java
-index c4090f5..d94f2e2 100644
+index c4090f5..51ed18f 100644
 --- a/node_modules/react-native-google-nearby-connection/android/src/main/java/com/butchmarshall/reactnative/google/nearby/connection/NearbyConnectionModule.java
 +++ b/node_modules/react-native-google-nearby-connection/android/src/main/java/com/butchmarshall/reactnative/google/nearby/connection/NearbyConnectionModule.java
 @@ -44,15 +44,15 @@ import android.os.Bundle;
@@ -95,7 +95,13 @@ index c4090f5..d94f2e2 100644
      @Override
      public void onNewIntent(Intent intent) {
      }
-@@ -478,7 +500,7 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
+@@ -473,12 +495,13 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
+ 						ApiException apiException = (ApiException) e;
+ 
+ 						logW("acceptConnection(serviceId: "+serviceId+", endpointId:" + endpointId+") failed.", e);
++						endpointConnectionFailed(serviceId, endpointId, apiException.getStatusCode());
+ 					}
+ 				});
  	}
  
  	@ReactMethod
@@ -104,7 +110,7 @@ index c4090f5..d94f2e2 100644
  		mIsAdvertising = true;
  		onAdvertisingStarting(endpointName, serviceId);
  
-@@ -492,7 +514,7 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
+@@ -492,7 +515,7 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
  
  		final Activity activity = getCurrentActivity();
  		final ConnectionsClient clientSingleton = getConnectionsClientSingleton(serviceId);
@@ -113,7 +119,7 @@ index c4090f5..d94f2e2 100644
  
          permissionsCheck(activity, Arrays.asList(getRequiredPermissions()), new Callable<Void>() {
              @Override
-@@ -543,7 +565,7 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
+@@ -543,7 +566,7 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
  	}
  
  	/** Returns {@code true} if currently advertising. */
@@ -122,7 +128,7 @@ index c4090f5..d94f2e2 100644
  	public boolean isAdvertising() {
  		return mIsAdvertising;
  	}
-@@ -563,7 +585,7 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
+@@ -563,7 +586,7 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
  
  		final Activity activity = getCurrentActivity();
  		final ConnectionsClient clientSingleton = getConnectionsClientSingleton(serviceId);
@@ -131,7 +137,7 @@ index c4090f5..d94f2e2 100644
  
          permissionsCheck(activity, Arrays.asList(getRequiredPermissions()), new Callable<Void>() {
              @Override
-@@ -610,13 +632,13 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
+@@ -610,13 +633,13 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
  	}
  
  	/** Returns {@code true} if currently discovering. */
@@ -147,7 +153,7 @@ index c4090f5..d94f2e2 100644
  	public boolean isConnecting() {
  		return mIsConnecting;
  	}
-@@ -656,7 +678,7 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
+@@ -656,7 +679,7 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
  	}
  	private void registerAdvertisingStartingHandler() {
  		IntentFilter intentFilter = new IntentFilter("com.butchmarshall.reactnative.google.nearby.connection.AdvertisingStarting");
@@ -156,7 +162,7 @@ index c4090f5..d94f2e2 100644
  	}
  
  	/**
-@@ -694,7 +716,7 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
+@@ -694,7 +717,7 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
  	}
  	private void registerAdvertisingStartedHandler() {
  		IntentFilter intentFilter = new IntentFilter("com.butchmarshall.reactnative.google.nearby.connection.AdvertisingStarted");
@@ -165,7 +171,7 @@ index c4090f5..d94f2e2 100644
  	}
  
  	/**
-@@ -735,7 +757,7 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
+@@ -735,7 +758,7 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
  	}
  	private void registerAdvertisingStartFailedHandler() {
  		IntentFilter intentFilter = new IntentFilter("com.butchmarshall.reactnative.google.nearby.connection.AdvertisingStartFailed");
@@ -174,7 +180,7 @@ index c4090f5..d94f2e2 100644
  	}
  
  	/**
-@@ -770,7 +792,7 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
+@@ -770,7 +793,7 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
  	}
  	private void registerDiscoveryStartingHandler() {
  		IntentFilter intentFilter = new IntentFilter("com.butchmarshall.reactnative.google.nearby.connection.DiscoveryStarting");
@@ -183,7 +189,7 @@ index c4090f5..d94f2e2 100644
  	}
  
  	/**
-@@ -805,7 +827,7 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
+@@ -805,7 +828,7 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
  	}
  	private void registerDiscoveryStartedHandler() {
  		IntentFilter intentFilter = new IntentFilter("com.butchmarshall.reactnative.google.nearby.connection.DiscoveryStarted");
@@ -192,7 +198,7 @@ index c4090f5..d94f2e2 100644
  	}
  
  	/**
-@@ -842,7 +864,7 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
+@@ -842,7 +865,7 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
  	}
  	private void registerDiscoveryStartFailedHandler() {
  		IntentFilter intentFilter = new IntentFilter("com.butchmarshall.reactnative.google.nearby.connection.DiscoveryStartFailed");
@@ -201,7 +207,7 @@ index c4090f5..d94f2e2 100644
  	}
  
  	/**
-@@ -900,7 +922,7 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
+@@ -900,7 +923,7 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
  	}
  	private void registerOnReceivePayloadHandler() {
  		IntentFilter intentFilter = new IntentFilter("com.butchmarshall.reactnative.google.nearby.connection.ReceivePayload");
@@ -210,7 +216,7 @@ index c4090f5..d94f2e2 100644
  	}
  
  	/**
-@@ -959,7 +981,7 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
+@@ -959,7 +982,7 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
  	}
  	private void registerOnPayloadUpdateHandler() {
  		IntentFilter intentFilter = new IntentFilter("com.butchmarshall.reactnative.google.nearby.connection.PayloadUpdate");
@@ -219,7 +225,7 @@ index c4090f5..d94f2e2 100644
  	}
  
  	/**
-@@ -1010,7 +1032,7 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
+@@ -1010,7 +1033,7 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
  	}
  	private void registerSendPayloadFailedHandler() {
  		IntentFilter intentFilter = new IntentFilter("com.butchmarshall.reactnative.google.nearby.connection.SendPayloadFailed");
@@ -228,7 +234,7 @@ index c4090f5..d94f2e2 100644
  	}
  	
  	/**
-@@ -1058,7 +1080,7 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
+@@ -1058,7 +1081,7 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
  	}
  	private void registerEndpointConnectionFailedHandler() {
  		IntentFilter intentFilter = new IntentFilter("com.butchmarshall.reactnative.google.nearby.connection.EndpointConnectionFailed");
@@ -237,7 +243,7 @@ index c4090f5..d94f2e2 100644
  	}
  
  	/**
-@@ -1110,7 +1132,7 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
+@@ -1110,7 +1133,7 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
  	}
  	private void registerDisconnectedFromEndpointHandler() {
  		IntentFilter intentFilter = new IntentFilter("com.butchmarshall.reactnative.google.nearby.connection.DisconnectedFromEndpoint");
@@ -246,7 +252,7 @@ index c4090f5..d94f2e2 100644
  	}
  
  	/**
-@@ -1159,7 +1181,7 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
+@@ -1159,7 +1182,7 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
  	}
  	private void registerConnectedToEndpointHandler() {
  		IntentFilter intentFilter = new IntentFilter("com.butchmarshall.reactnative.google.nearby.connection.ConnectedToEndpoint");
@@ -255,7 +261,7 @@ index c4090f5..d94f2e2 100644
  	}
  
  	/**
-@@ -1212,7 +1234,7 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
+@@ -1212,7 +1235,7 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
  	}
  	private void registerConnectionInitiatedToEndpointHandler() {
  		IntentFilter intentFilter = new IntentFilter("com.butchmarshall.reactnative.google.nearby.connection.ConnectionInitiatedToEndpoint");
@@ -264,7 +270,7 @@ index c4090f5..d94f2e2 100644
  	}
  
  	/**
-@@ -1257,7 +1279,7 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
+@@ -1257,7 +1280,7 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
  	}
  	private void registerEndpointLostHandler() {
  		IntentFilter intentFilter = new IntentFilter("com.butchmarshall.reactnative.google.nearby.connection.EndPointLost");
@@ -273,7 +279,7 @@ index c4090f5..d94f2e2 100644
  	}
  
  	/**
-@@ -1305,7 +1327,7 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
+@@ -1305,7 +1328,7 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
  	}
  	private void registerEndpointDiscoveredHandler() {
  		IntentFilter intentFilter = new IntentFilter("com.butchmarshall.reactnative.google.nearby.connection.EndPointDiscovered");
@@ -282,7 +288,7 @@ index c4090f5..d94f2e2 100644
  	}
  
  	/**
-@@ -1623,7 +1645,7 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
+@@ -1623,7 +1646,7 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
  	}
  
  	/** @return True if currently streaming from the microphone. */
@@ -291,7 +297,7 @@ index c4090f5..d94f2e2 100644
  	private boolean isMicrophoneOpen() {
  		for (AudioRecorder recorder : mRecorders.values()) {
  			if (recorder != null && recorder.isRecording()) {
-@@ -1638,7 +1660,25 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
+@@ -1638,7 +1661,25 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
  	 * @return All permissions required for the app connectivity to properly function.
  	 */
  	protected String[] getRequiredPermissions() {
