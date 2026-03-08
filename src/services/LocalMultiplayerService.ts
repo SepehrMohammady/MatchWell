@@ -219,20 +219,29 @@ class LocalMultiplayerServiceImpl {
     // --------------------------------------------------------
 
     async connectToHost(endpointId: string): Promise<void> {
+        if (this.connectionTimeout) {
+            console.warn('⚠️ Connection already in progress, ignoring double tap.');
+            return;
+        }
+
         try {
+            console.log('🛑 Stopping discovery to prevent channel conflict & 8009 IO error');
+            await NearbyConnection.stopDiscovering(SERVICE_ID);
+            
             await NearbyConnection.connectToEndpoint(SERVICE_ID, endpointId);
             console.log('🔗 Connecting to host:', endpointId);
             
             // Set a 15-second timeout in case Play Services hangs and doesn't fire an event
-            if (this.connectionTimeout) clearTimeout(this.connectionTimeout);
             this.connectionTimeout = setTimeout(() => {
                 console.warn('⏱ Connection request timed out for', endpointId);
+                this.connectionTimeout = null;
                 this.callbacks.onError?.('Connection timed out. The host may be out of range, or rejecting the connection (OS firewall).');
                 this.callbacks.onConnectionStatusChanged?.('disconnected');
             }, 15000);
             
         } catch (error) {
             console.error('Failed to connect to host:', error);
+            this.connectionTimeout = null;
             this.callbacks.onError?.('Failed to connect to host.');
         }
     }
