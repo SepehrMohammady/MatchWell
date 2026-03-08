@@ -179,6 +179,29 @@ const MultiplayerMenu: React.FC<Props> = ({ navigation }) => {
                 </TouchableOpacity>
             </View>
 
+            {/* Local Multiplayer */}
+            <View style={{ paddingHorizontal: 16, marginBottom: 16 }}>
+                <TouchableOpacity
+                    style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: 10,
+                        backgroundColor: '#1E88E5',
+                        paddingVertical: 18,
+                        borderRadius: 16,
+                    }}
+                    onPress={() => {
+                        playSfx('tile_select');
+                        navigation.navigate('LocalMultiplayerMenu');
+                    }}
+                    activeOpacity={0.8}
+                >
+                    <MaterialCommunityIcons name="bluetooth-connect" size={28} color="#fff" />
+                    <Text style={styles.actionText}>{t('localMultiplayer.localPlay')}</Text>
+                </TouchableOpacity>
+            </View>
+
             {/* Room Lists */}
             {loading ? (
                 <View style={styles.loadingContainer}>

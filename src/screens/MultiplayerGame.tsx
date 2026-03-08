@@ -83,7 +83,7 @@ const MultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
         if (!gameInitialized || finished) return;
 
         const syncScore = async () => {
-            if (score > lastSyncScore.current + 500) { // Sync every 500 points
+            if (score > lastSyncScore.current + 150) { // Sync every 150 points
                 lastSyncScore.current = score;
                 const result = await updateScore(roomCode, score, moves, false);
                 if (result.rankings) {

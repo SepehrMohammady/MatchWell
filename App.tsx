@@ -20,13 +20,18 @@ import GameScreen from './src/screens/GameScreen';
 import Settings from './src/screens/Settings';
 import Achievements from './src/screens/Achievements';
 import Leaderboard from './src/screens/Leaderboard';
-// Multiplayer Screens
+// Multiplayer Screens (Online)
 import MultiplayerMenu from './src/screens/MultiplayerMenu';
 import CreateRoom from './src/screens/CreateRoom';
 import JoinRoom from './src/screens/JoinRoom';
 import RoomLobby from './src/screens/RoomLobby';
 import MultiplayerGame from './src/screens/MultiplayerGame';
 import MultiplayerResults from './src/screens/MultiplayerResults';
+// Local Multiplayer Screens (Bluetooth/WiFi Direct)
+import LocalMultiplayerMenu from './src/screens/LocalMultiplayerMenu';
+import LocalLobby from './src/screens/LocalLobby';
+import LocalMultiplayerGame from './src/screens/LocalMultiplayerGame';
+import LocalMultiplayerResults from './src/screens/LocalMultiplayerResults';
 
 // Types
 import { RootStackParamList } from './src/types';
@@ -63,13 +68,18 @@ function App(): React.JSX.Element {
             <Stack.Screen name="Settings" component={Settings} />
             <Stack.Screen name="Achievements" component={Achievements} />
             <Stack.Screen name="Leaderboard" component={Leaderboard} />
-            {/* Multiplayer Screens */}
+            {/* Online Multiplayer Screens */}
             <Stack.Screen name="MultiplayerMenu" component={MultiplayerMenu} />
             <Stack.Screen name="CreateRoom" component={CreateRoom} />
             <Stack.Screen name="JoinRoom" component={JoinRoom} />
             <Stack.Screen name="RoomLobby" component={RoomLobby} />
             <Stack.Screen name="MultiplayerGame" component={MultiplayerGame} options={{ animation: 'fade' }} />
             <Stack.Screen name="MultiplayerResults" component={MultiplayerResults} />
+            {/* Local Multiplayer Screens (Bluetooth/WiFi Direct) */}
+            <Stack.Screen name="LocalMultiplayerMenu" component={LocalMultiplayerMenu} />
+            <Stack.Screen name="LocalLobby" component={LocalLobby} />
+            <Stack.Screen name="LocalMultiplayerGame" component={LocalMultiplayerGame} options={{ animation: 'fade' }} />
+            <Stack.Screen name="LocalMultiplayerResults" component={LocalMultiplayerResults} />
           </Stack.Navigator>
         </NavigationContainer>
       </SafeAreaProvider>
