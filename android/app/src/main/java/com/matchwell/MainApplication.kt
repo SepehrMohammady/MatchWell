@@ -6,6 +6,7 @@ import com.facebook.react.ReactApplication
 import com.facebook.react.ReactHost
 import com.facebook.react.ReactNativeApplicationEntryPoint.loadReactNative
 import com.facebook.react.defaults.DefaultReactHost.getDefaultReactHost
+import com.butchmarshall.reactnative.google.nearby.connection.NearbyConnectionPackage
 
 class MainApplication : Application(), ReactApplication {
 
@@ -15,7 +16,7 @@ class MainApplication : Application(), ReactApplication {
       packageList =
         PackageList(this).packages.apply {
           // Packages that cannot be autolinked yet can be added manually here:
-          // NearbyConnectionPackage removed: incompatible with RN 0.83
+          add(NearbyConnectionPackage())
         },
     )
   }
