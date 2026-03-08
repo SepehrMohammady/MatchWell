@@ -5,9 +5,9 @@
 export const VERSION = {
     major: 0,
     minor: 7,
-    patch: 31,
-
-    // Computed version string
+    patch: 32,
+    
+    // Helper to get formatted version string
     get string() {
         return `${this.major}.${this.minor}.${this.patch}`;
     },

@@ -38,7 +38,7 @@ index 2fd94d5..3a293b8 100644
 +    implementation 'com.google.android.gms:play-services-nearby:19.1.0'
  }
 diff --git a/node_modules/react-native-google-nearby-connection/android/src/main/java/com/butchmarshall/reactnative/google/nearby/connection/NearbyConnectionModule.java b/node_modules/react-native-google-nearby-connection/android/src/main/java/com/butchmarshall/reactnative/google/nearby/connection/NearbyConnectionModule.java
-index c4090f5..9c6eb9b 100644
+index c4090f5..686a978 100644
 --- a/node_modules/react-native-google-nearby-connection/android/src/main/java/com/butchmarshall/reactnative/google/nearby/connection/NearbyConnectionModule.java
 +++ b/node_modules/react-native-google-nearby-connection/android/src/main/java/com/butchmarshall/reactnative/google/nearby/connection/NearbyConnectionModule.java
 @@ -44,15 +44,15 @@ import android.os.Bundle;
@@ -245,6 +245,26 @@ index c4090f5..9c6eb9b 100644
  		IntentFilter intentFilter = new IntentFilter("com.butchmarshall.reactnative.google.nearby.connection.EndPointDiscovered");
 -		getReactApplicationContext().registerReceiver(mEndpointDiscoveredReceiver, intentFilter);
 +        safeRegisterReceiver(mEndpointDiscoveredReceiver, intentFilter);
+ 	}
+ 
+ 	/**
+@@ -1638,7 +1660,18 @@ public class NearbyConnectionModule extends ReactContextBaseJavaModule implement
+ 	 * @return All permissions required for the app connectivity to properly function.
+ 	 */
+ 	protected String[] getRequiredPermissions() {
+-		return REQUIRED_PERMISSIONS;
++		java.util.List<String> perms = new java.util.ArrayList<>(java.util.Arrays.asList(REQUIRED_PERMISSIONS));
++		
++		if (android.os.Build.VERSION.SDK_INT >= 31) {
++			perms.add("android.permission.BLUETOOTH_SCAN");
++			perms.add("android.permission.BLUETOOTH_CONNECT");
++			perms.add("android.permission.BLUETOOTH_ADVERTISE");
++		}
++		if (android.os.Build.VERSION.SDK_INT >= 33) {
++			perms.add("android.permission.NEARBY_WIFI_DEVICES");
++		}
++		
++		return perms.toArray(new String[0]);
  	}
  
  	/**
