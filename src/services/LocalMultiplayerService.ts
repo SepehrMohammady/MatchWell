@@ -57,7 +57,8 @@ export type MessageType =
     | 'RANKINGS'
     | 'GAME_END'
     | 'PLAYER_LEFT'
-    | 'VOTE_THEME';
+    | 'VOTE_THEME'
+    | 'VOTE_UPDATE';
 
 export interface P2PMessage {
     type: MessageType;
@@ -77,6 +78,7 @@ export interface LocalMultiplayerCallbacks {
     onError?: (error: string) => void;
     onConnectionStatusChanged?: (status: 'advertising' | 'discovering' | 'connected' | 'disconnected' | 'idle') => void;
     onThemeVoteReceived?: (endpointId: string, themeId: string) => void;
+    onVotesUpdated?: (votes: Record<string, string>) => void;
 }
 
 // ============================================================
@@ -317,6 +319,16 @@ class LocalMultiplayerServiceImpl {
         await this.sendMessage(this.hostEndpointId, {
             type: 'VOTE_THEME',
             payload: { themeId },
+            timestamp: Date.now(),
+        });
+    }
+
+    // Host: broadcast theme votes
+    async broadcastVotes(votes: Record<string, string>): Promise<void> {
+        if (!this.isHost) return;
+        await this.broadcastMessage({
+            type: 'VOTE_UPDATE',
+            payload: { votes },
             timestamp: Date.now(),
         });
     }
@@ -564,6 +576,7 @@ class LocalMultiplayerServiceImpl {
                         player.name = message.payload.name;
                         this.callbacks.onPlayerJoined?.(player);
                     }
+                    this.broadcastRankings();
                 }
                 break;
 
@@ -624,6 +637,12 @@ class LocalMultiplayerServiceImpl {
             case 'VOTE_THEME':
                 if (this.isHost) {
                     this.callbacks.onThemeVoteReceived?.(endpointId, message.payload.themeId);
+                }
+                break;
+
+            case 'VOTE_UPDATE':
+                if (!this.isHost) {
+                    this.callbacks.onVotesUpdated?.(message.payload.votes);
                 }
                 break;
 

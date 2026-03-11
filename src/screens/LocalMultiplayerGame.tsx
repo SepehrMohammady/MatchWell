@@ -24,6 +24,7 @@ import LocalMultiplayerService, { LocalPlayer, LocalGameConfig } from '../servic
 import { formatNumber, getCurrentLanguage } from '../config/i18n';
 import { TRASH_FACTS, POLLUTION_FACTS, WATER_FACTS, ENERGY_FACTS, FOREST_FACTS, THEMES } from '../themes';
 import MultiplayerHUD from '../components/UI/MultiplayerHUD';
+import CustomAlert from '../components/UI/CustomAlert';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'LocalMultiplayerGame'>;
 
@@ -49,8 +50,15 @@ const LocalMultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
     const [timeRemaining, setTimeRemaining] = useState<number | null>(durationSeconds || null);
     const [showScoreboard, setShowScoreboard] = useState(false);
     const [finished, setFinished] = useState(false);
+    const isFinishing = useRef(false);
     const lastSyncScore = useRef(0);
     const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+    const [alertConfig, setAlertConfig] = useState<{ visible: boolean; title: string; message: string; buttons?: any[] }>({
+        visible: false,
+        title: '',
+        message: ''
+    });
 
     // Game store state
     const score = useGameStore((s) => s.score);
@@ -143,7 +151,7 @@ const LocalMultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
 
     // Score sync via P2P (every 150 points)
     useEffect(() => {
-        if (!gameInitialized || finished) return;
+        if (!gameInitialized || finished || isFinishing.current) return;
 
         if (score > lastSyncScore.current + 150) {
             lastSyncScore.current = score;
@@ -164,7 +172,8 @@ const LocalMultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
 
     const handleFinish = async () => {
         console.log(`[LocalMultiplayerGame] handleFinish called. isHost=${isHost}`);
-        if (finished) return;
+        if (finished || isFinishing.current) return;
+        isFinishing.current = true;
         setFinished(true);
         playSfx('tile_select');
 
@@ -248,23 +257,30 @@ const LocalMultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
     };
 
     const handlePause = () => {
-        // Simple quit alert for multiplayer
-        import('react-native').then(({ Alert }) => {
-            Alert.alert(
-                t('game.paused'),
-                t('localMultiplayer.quitConfirm', 'Are you sure you want to quit this multiplayer match?'),
-                [
-                    { text: t('common.cancel', 'Cancel'), style: 'cancel' },
-                    { text: t('common.quit', 'Quit'), style: 'destructive', onPress: async () => {
+        setAlertConfig({
+            visible: true,
+            title: t('game.paused'),
+            message: t('localMultiplayer.quitConfirm', 'Are you sure you want to quit this multiplayer match?'),
+            buttons: [
+                {
+                    text: t('common.cancel', 'Cancel'),
+                    onPress: () => setAlertConfig(prev => ({ ...prev, visible: false })),
+                    style: 'secondary'
+                },
+                {
+                    text: t('common.quit', 'Quit'),
+                    onPress: async () => {
+                        setAlertConfig(prev => ({ ...prev, visible: false }));
                         if (isHost) {
                             await LocalMultiplayerService.endGame();
                         } else {
                             await LocalMultiplayerService.stopAll();
                         }
                         navigation.replace('MainMenu');
-                    }}
-                ]
-            );
+                    },
+                    style: 'danger'
+                }
+            ]
         });
     };
 
@@ -280,6 +296,13 @@ const LocalMultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
                 timeRemaining={timeRemaining}
                 showScoreboard={showScoreboard}
                 onToggleScoreboard={() => setShowScoreboard(!showScoreboard)}
+            />
+
+            <CustomAlert
+                visible={alertConfig.visible}
+                title={alertConfig.title}
+                message={alertConfig.message}
+                buttons={alertConfig.buttons}
             />
 
             {/* Mini Scoreboard */}

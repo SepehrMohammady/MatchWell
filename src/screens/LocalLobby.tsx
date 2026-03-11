@@ -60,7 +60,7 @@ const LocalLobby: React.FC<Props> = ({ navigation, route }) => {
     
     // Theme Voting States
     const [themeVoting, setThemeVoting] = useState(false);
-    const [themeVotes, setThemeVotes] = useState<Record<string, number>>({});
+    const [themeVotes, setThemeVotes] = useState<Record<string, string>>({});
     const [myVote, setMyVote] = useState<ThemeType | null>(null);
     
     const [isAdvertising, setIsAdvertising] = useState(false);
@@ -117,13 +117,16 @@ const LocalLobby: React.FC<Props> = ({ navigation, route }) => {
                 },
                 onThemeVoteReceived: (endpointId, themeId) => {
                     setThemeVotes(prev => {
-                        const newVotes = { ...prev };
-                        // Increment vote for this theme
-                        newVotes[themeId] = (newVotes[themeId] || 0) + 1;
-                        // Simplistic approach: we don't track who voted for what here to undo previous votes, 
-                        // but this satisfies basic local tallying needs.
+                        const newVotes = { ...prev, [endpointId]: themeId };
+                        LocalMultiplayerService.broadcastVotes(newVotes);
                         return newVotes;
                     });
+                },
+                onVotesUpdated: (votes) => {
+                    setThemeVotes(votes);
+                },
+                onRankingsUpdated: (rankings) => {
+                    setPlayers([...rankings]);
                 },
                 onGameStarted: (config) => {
                     playSfx('combo');
@@ -216,9 +219,14 @@ const LocalLobby: React.FC<Props> = ({ navigation, route }) => {
         if (themeVoting) {
             let winningTheme: ThemeType = unlockedThemes[0]?.id || 'trash-sorting';
             let maxVotes = -1;
-            for (const [themeId, votes] of Object.entries(themeVotes)) {
-                if (votes > maxVotes) {
-                    maxVotes = votes;
+            const voteCounts: Record<string, number> = {};
+            for (const themeId of Object.values(themeVotes)) {
+                voteCounts[themeId] = (voteCounts[themeId] || 0) + 1;
+            }
+
+            for (const [themeId, count] of Object.entries(voteCounts)) {
+                if (count > maxVotes) {
+                    maxVotes = count;
                     winningTheme = themeId as ThemeType;
                 }
             }
@@ -531,7 +539,7 @@ const LocalLobby: React.FC<Props> = ({ navigation, route }) => {
                         <Text style={styles.sectionTitle}>{t('multiplayer.voteTheme')}</Text>
                         <View style={styles.themeGrid}>
                             {unlockedThemes.map((theme) => {
-                                const voteCount = themeVotes[theme.id] || 0;
+                                const voteCount = Object.values(themeVotes).filter(id => id === theme.id).length;
                                 return (
                                     <TouchableOpacity
                                         key={theme.id}
@@ -545,10 +553,13 @@ const LocalLobby: React.FC<Props> = ({ navigation, route }) => {
                                             setMyVote(theme.id);
                                             
                                             // Provide immediate local feedback
-                                            setThemeVotes(prev => ({
-                                                ...prev,
-                                                [theme.id]: (prev[theme.id] || 0) + 1
-                                            }));
+                                            setThemeVotes(prev => {
+                                                const newVotes = { ...prev, ['local_me']: theme.id };
+                                                if (isHost) {
+                                                    LocalMultiplayerService.broadcastVotes(newVotes);
+                                                }
+                                                return newVotes;
+                                            });
                                             
                                             await LocalMultiplayerService.sendThemeVote(theme.id);
                                         }}

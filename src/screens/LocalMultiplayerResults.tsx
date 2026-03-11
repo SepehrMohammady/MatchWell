@@ -110,7 +110,7 @@ const LocalMultiplayerResults: React.FC<Props> = ({ navigation }) => {
                                     {player.name}
                                 </Text>
                                 <Text style={styles.rankMoves}>
-                                    {formatNumber(player.moves)} {t('game.moves').toLowerCase()}
+                                    {formatNumber(player.moves)} {t('common.moves').toLowerCase()}
                                 </Text>
                             </View>
                         </View>
