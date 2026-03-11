@@ -371,6 +371,17 @@ class LocalMultiplayerServiceImpl {
         return this.gameStarted;
     }
 
+    isConnectedToHost(): boolean {
+        return !!this.hostEndpointId;
+    }
+
+    getConnectionStatus(): string {
+        if (this.isHost) {
+            return this.connectedEndpoints.size > 0 ? 'connected' : 'advertising';
+        }
+        return this.hostEndpointId ? 'connected' : 'disconnected';
+    }
+
     // --------------------------------------------------------
     // Event Listeners
     // --------------------------------------------------------
@@ -595,13 +606,13 @@ class LocalMultiplayerServiceImpl {
         this.eventSubscriptions = [];
     }
 
+    async stopDiscoveringAndAdvertising(): Promise<void> {
+        try { await NearbyConnection.stopAdvertising(SERVICE_ID); } catch (e) { /* ignore */ }
+        try { await NearbyConnection.stopDiscovering(SERVICE_ID); } catch (e) { /* ignore */ }
+    }
+
     async stopAll(): Promise<void> {
-        try {
-            await NearbyConnection.stopAdvertising(SERVICE_ID);
-        } catch (e) { /* ignore */ }
-        try {
-            await NearbyConnection.stopDiscovering(SERVICE_ID);
-        } catch (e) { /* ignore */ }
+        await this.stopDiscoveringAndAdvertising();
 
         // Disconnect all endpoints
         for (const endpointId of this.connectedEndpoints) {

@@ -41,9 +41,13 @@ const LocalMultiplayerMenu: React.FC<Props> = ({ navigation }) => {
 
     useEffect(() => {
         return () => {
-            // Cleanup on unmount
+            // Clean up: only stop discovery/advertising on unmount. We cannot call stopAll() here 
+            // because successful connection also unmounts this component during navigation,
+            // which would accidentally sever the freshly created connection!
             if (scanning) {
-                LocalMultiplayerService.stopAll();
+                // Actually, due to React closure, scanning might be true even on success.
+                // We'll rely on the manual handleBack or explicitly use NativeModule if needed.
+                LocalMultiplayerService.stopDiscoveringAndAdvertising().catch(() => {});
             }
         };
     }, [scanning]);

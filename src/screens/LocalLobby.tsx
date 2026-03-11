@@ -60,7 +60,7 @@ const LocalLobby: React.FC<Props> = ({ navigation, route }) => {
     
     const [isAdvertising, setIsAdvertising] = useState(false);
     const [gameConfig, setGameConfig] = useState<LocalGameConfig | null>(null);
-    const [connectionStatus, setConnectionStatus] = useState<string>('');
+    const [connectionStatus, setConnectionStatus] = useState<string>(() => LocalMultiplayerService.getConnectionStatus());
     const [alertConfig, setAlertConfig] = useState<{ visible: boolean; title: string; message: string; buttons?: any[] }>({
         visible: false,
         title: '',
