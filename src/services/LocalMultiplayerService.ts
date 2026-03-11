@@ -41,7 +41,8 @@ export interface LocalPlayer {
 
 export interface LocalGameConfig {
     gameMode: LocalGameMode;
-    theme: ThemeType;
+    theme?: ThemeType;
+    themeVoting?: boolean;
     targetScore?: number;
     movesLimit?: number;
     durationSeconds?: number;
@@ -55,7 +56,8 @@ export type MessageType =
     | 'SCORE_UPDATE'
     | 'RANKINGS'
     | 'GAME_END'
-    | 'PLAYER_LEFT';
+    | 'PLAYER_LEFT'
+    | 'VOTE_THEME';
 
 export interface P2PMessage {
     type: MessageType;
@@ -74,6 +76,7 @@ export interface LocalMultiplayerCallbacks {
     onScoreUpdate?: (endpointId: string, score: number, moves: number, finished: boolean) => void;
     onError?: (error: string) => void;
     onConnectionStatusChanged?: (status: 'advertising' | 'discovering' | 'connected' | 'disconnected' | 'idle') => void;
+    onThemeVoteReceived?: (endpointId: string, themeId: string) => void;
 }
 
 // ============================================================
@@ -308,6 +311,16 @@ class LocalMultiplayerServiceImpl {
         });
     }
 
+    // Client: send theme vote
+    async sendThemeVote(themeId: string): Promise<void> {
+        if (this.isHost || !this.hostEndpointId) return;
+        await this.sendMessage(this.hostEndpointId, {
+            type: 'VOTE_THEME',
+            payload: { themeId },
+            timestamp: Date.now(),
+        });
+    }
+
     // Host: update own score and broadcast rankings
     private updateHostScore(score: number, moves: number, finished: boolean): void {
         // Host's own data (endpointId = 'host')
@@ -326,35 +339,30 @@ class LocalMultiplayerServiceImpl {
     // Host: broadcast rankings
     async broadcastRankings(): Promise<void> {
         if (!this.isHost) return;
-        const rankings = Array.from(this.players.values());
         
-        // Include the host in the broadcasted rankings so clients see everyone
-        const hostPlayer: LocalPlayer = {
-            endpointId: 'host',
-            name: this.playerName,
-            score: useGameStore.getState().score,
-            moves: useGameStore.getState().moves,
-            finished: useGameStore.getState().score >= (this.gameConfig?.targetScore || 0) && this.gameConfig?.gameMode === 'race',
-            connected: true,
-        };
-        
-        const combinedRankings = [hostPlayer, ...rankings].sort((a, b) => b.score - a.score);
+        // The host's player object is already inside this.players (with endpointId = 'host').
+        // So we just take all the values.
+        const rankings = Array.from(this.players.values()).sort((a, b) => b.score - a.score);
 
         await this.broadcastMessage({
             type: 'RANKINGS',
-            payload: { rankings: combinedRankings },
+            payload: { rankings },
             timestamp: Date.now(),
         });
-        this.callbacks.onRankingsUpdated?.(combinedRankings);
+        this.callbacks.onRankingsUpdated?.(rankings);
     }
 
     // Host: end the game
     async endGame(): Promise<void> {
         if (!this.isHost) return;
         this.gameStarted = false;
+
+        // Ensure final rankings are broadcast one last time to act as definitive
+        await this.broadcastRankings();
+
         await this.broadcastMessage({
             type: 'GAME_END',
-            payload: {},
+            payload: { finalRankings: this.getRankings() },
             timestamp: Date.now(),
         });
         this.callbacks.onGameEnded?.();
@@ -601,7 +609,21 @@ class LocalMultiplayerServiceImpl {
             case 'GAME_END':
                 if (!this.isHost) {
                     this.gameStarted = false;
+                    if (message.payload?.finalRankings) {
+                        // Accept the host's final definitive rankings exactly as-is
+                        this.players.clear();
+                        message.payload.finalRankings.forEach((p: LocalPlayer) => {
+                            this.players.set(p.endpointId, p);
+                        });
+                        this.callbacks.onRankingsUpdated?.(message.payload.finalRankings);
+                    }
                     this.callbacks.onGameEnded?.();
+                }
+                break;
+                
+            case 'VOTE_THEME':
+                if (this.isHost) {
+                    this.callbacks.onThemeVoteReceived?.(endpointId, message.payload.themeId);
                 }
                 break;
 

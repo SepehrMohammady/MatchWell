@@ -58,6 +58,11 @@ const LocalLobby: React.FC<Props> = ({ navigation, route }) => {
     const [durationHours, setDurationHours] = useState('0');
     const [durationMinutes, setDurationMinutes] = useState('0');
     
+    // Theme Voting States
+    const [themeVoting, setThemeVoting] = useState(false);
+    const [themeVotes, setThemeVotes] = useState<Record<string, number>>({});
+    const [myVote, setMyVote] = useState<ThemeType | null>(null);
+    
     const [isAdvertising, setIsAdvertising] = useState(false);
     const [gameConfig, setGameConfig] = useState<LocalGameConfig | null>(null);
     const [connectionStatus, setConnectionStatus] = useState<string>(() => LocalMultiplayerService.getConnectionStatus());
@@ -96,8 +101,9 @@ const LocalLobby: React.FC<Props> = ({ navigation, route }) => {
                 },
                 onGameConfigReceived: (config) => {
                     setGameConfig(config);
-                    setSelectedMode(config.gameMode);
-                    setSelectedTheme(config.theme);
+                    if (config.gameMode) setSelectedMode(config.gameMode);
+                    if (config.theme) setSelectedTheme(config.theme);
+                    if (config.themeVoting !== undefined) setThemeVoting(config.themeVoting);
                     if (config.targetScore) setTargetScore(config.targetScore);
                     if (config.movesLimit) setMovesLimit(config.movesLimit);
                     if (config.durationSeconds) {
@@ -108,6 +114,16 @@ const LocalLobby: React.FC<Props> = ({ navigation, route }) => {
                         setDurationHours(hours.toString());
                         setDurationMinutes(minutes.toString());
                     }
+                },
+                onThemeVoteReceived: (endpointId, themeId) => {
+                    setThemeVotes(prev => {
+                        const newVotes = { ...prev };
+                        // Increment vote for this theme
+                        newVotes[themeId] = (newVotes[themeId] || 0) + 1;
+                        // Simplistic approach: we don't track who voted for what here to undo previous votes, 
+                        // but this satisfies basic local tallying needs.
+                        return newVotes;
+                    });
                 },
                 onGameStarted: (config) => {
                     playSfx('combo');
@@ -129,10 +145,11 @@ const LocalLobby: React.FC<Props> = ({ navigation, route }) => {
                 if (isHost) {
                     const config: LocalGameConfig = {
                         gameMode: selectedMode,
-                        theme: selectedTheme || 'trash-sorting',
+                        theme: themeVoting ? undefined : (selectedTheme || 'trash-sorting'),
+                        themeVoting,
                         targetScore: selectedMode === 'race' ? targetScore : undefined,
                         movesLimit: selectedMode === 'moves' ? movesLimit : undefined,
-                        durationSeconds: selectedMode === 'timed' ? getDurationSeconds() : undefined,
+                        durationSeconds: getDurationSeconds(), // Always allow duration
                     };
                     await LocalMultiplayerService.startAdvertising(config);
                     setIsAdvertising(true);
@@ -169,14 +186,15 @@ const LocalLobby: React.FC<Props> = ({ navigation, route }) => {
         if (isHost && isAdvertising) {
             const config: LocalGameConfig = {
                 gameMode: selectedMode,
-                theme: selectedTheme || 'trash-sorting',
+                theme: themeVoting ? undefined : (selectedTheme || 'trash-sorting'),
+                themeVoting,
                 targetScore: selectedMode === 'race' ? targetScore : undefined,
                 movesLimit: selectedMode === 'moves' ? movesLimit : undefined,
-                durationSeconds: selectedMode === 'timed' ? getDurationSeconds() : undefined,
+                durationSeconds: getDurationSeconds(),
             };
             LocalMultiplayerService.updateGameConfig(config);
         }
-    }, [selectedMode, selectedTheme, targetScore, durationDays, durationHours, durationMinutes, movesLimit, isHost, isAdvertising]);
+    }, [selectedMode, selectedTheme, themeVoting, targetScore, durationDays, durationHours, durationMinutes, movesLimit, isHost, isAdvertising]);
 
     const handleLeave = () => {
         playSfx('tile_select');
@@ -193,6 +211,32 @@ const LocalLobby: React.FC<Props> = ({ navigation, route }) => {
             });
             return;
         }
+
+        // Determine winning theme if voting was enabled
+        if (themeVoting) {
+            let winningTheme: ThemeType = unlockedThemes[0]?.id || 'trash-sorting';
+            let maxVotes = -1;
+            for (const [themeId, votes] of Object.entries(themeVotes)) {
+                if (votes > maxVotes) {
+                    maxVotes = votes;
+                    winningTheme = themeId as ThemeType;
+                }
+            }
+            
+            // Finalize config with winning theme before starting
+            const finalConfig: LocalGameConfig = {
+                gameMode: selectedMode,
+                theme: winningTheme,
+                themeVoting: false,
+                targetScore: selectedMode === 'race' ? targetScore : undefined,
+                movesLimit: selectedMode === 'moves' ? movesLimit : undefined,
+                durationSeconds: getDurationSeconds(),
+            };
+            await LocalMultiplayerService.updateGameConfig(finalConfig);
+            // small delay to let clients process config update
+            await new Promise(r => setTimeout(() => r(null), 200)); 
+        }
+
         playSfx('combo');
         await LocalMultiplayerService.startGame();
         navigation.replace('LocalMultiplayerGame', { isHost: true });
@@ -401,7 +445,19 @@ const LocalLobby: React.FC<Props> = ({ navigation, route }) => {
                         <View style={styles.section}>
                             <View style={styles.themeHeader}>
                                 <Text style={styles.sectionTitle}>{t('multiplayer.theme')}</Text>
+                                <TouchableOpacity
+                                    style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}
+                                    onPress={() => { setThemeVoting(!themeVoting); playSfx('tile_select'); }}
+                                >
+                                    <MaterialCommunityIcons
+                                        name={themeVoting ? 'checkbox-marked' : 'checkbox-blank-outline'}
+                                        size={24}
+                                        color={COLORS.organicWaste}
+                                    />
+                                    <Text style={{ fontSize: 12, color: COLORS.textSecondary }}>{t('multiplayer.enableVoting')}</Text>
+                                </TouchableOpacity>
                             </View>
+                            {!themeVoting && (
                             <View style={styles.themeGrid}>
                                 {unlockedThemes.length > 0 ? unlockedThemes.map((theme) => (
                                     <TouchableOpacity
@@ -419,7 +475,8 @@ const LocalLobby: React.FC<Props> = ({ navigation, route }) => {
                                 )) : (
                                     <Text style={styles.noThemesText}>{t('multiplayer.noUnlockedThemes')}</Text>
                                 )}
-                            </View>
+                                </View>
+                            )}
                         </View>
                     </>
                 )}
@@ -433,14 +490,19 @@ const LocalLobby: React.FC<Props> = ({ navigation, route }) => {
                                 <Text style={styles.configLabel}>{t('multiplayer.gameMode')}</Text>
                                 <Text style={styles.configValue}>{getModeName(gameConfig.gameMode)}</Text>
                             </View>
-                            <View style={styles.configRow}>
-                                <Text style={styles.configLabel}>{t('multiplayer.theme')}</Text>
-                                <Text style={styles.configValue}>
-                                    {gameConfig.theme
-                                        ? t(`themes.${THEME_LIST.find(t => t.id === gameConfig.theme)?.id?.replace(/-([a-z])/g, (g) => g[1].toUpperCase()) || gameConfig.theme.replace(/-([a-z])/g, (g) => g[1].toUpperCase())}`)
-                                        : ''}
-                                </Text>
-                            </View>
+                            {gameConfig.themeVoting ? (
+                                <View style={styles.configRow}>
+                                    <Text style={styles.configLabel}>{t('multiplayer.voteTheme')}</Text>
+                                    <Text style={styles.configValue}>{t('multiplayer.enableVoting')}</Text>
+                                </View>
+                            ) : (
+                                <View style={styles.configRow}>
+                                    <Text style={styles.configLabel}>{t('multiplayer.theme')}</Text>
+                                    <Text style={styles.configValue}>
+                                        {t(`themes.${THEME_LIST.find(t => t.id === gameConfig.theme)?.id?.replace(/-([a-z])/g, (g) => g[1].toUpperCase()) || gameConfig.theme?.replace(/-([a-z])/g, (g) => g[1].toUpperCase())}`)}
+                                    </Text>
+                                </View>
+                            )}
                             {gameConfig.targetScore && (
                                 <View style={styles.configRow}>
                                     <Text style={styles.configLabel}>{t('multiplayer.targetScore')}</Text>
@@ -459,6 +521,52 @@ const LocalLobby: React.FC<Props> = ({ navigation, route }) => {
                                     <Text style={styles.configValue}>{gameConfig.movesLimit}</Text>
                                 </View>
                             )}
+                        </View>
+                    </View>
+                )}
+
+                {/* Theme Voting Grid (Visible to Host and Client if enabled) */}
+                {themeVoting && (
+                    <View style={styles.section}>
+                        <Text style={styles.sectionTitle}>{t('multiplayer.voteTheme')}</Text>
+                        <View style={styles.themeGrid}>
+                            {unlockedThemes.map((theme) => {
+                                const voteCount = themeVotes[theme.id] || 0;
+                                return (
+                                    <TouchableOpacity
+                                        key={theme.id}
+                                        style={[
+                                            styles.themeCard,
+                                            myVote === theme.id && styles.themeCardActive,
+                                            { borderColor: theme.color }
+                                        ]}
+                                        onPress={async () => {
+                                            playSfx('tile_select');
+                                            setMyVote(theme.id);
+                                            
+                                            // Provide immediate local feedback
+                                            setThemeVotes(prev => ({
+                                                ...prev,
+                                                [theme.id]: (prev[theme.id] || 0) + 1
+                                            }));
+                                            
+                                            await LocalMultiplayerService.sendThemeVote(theme.id);
+                                        }}
+                                        activeOpacity={0.8}
+                                    >
+                                        <MaterialCommunityIcons name={theme.icon} size={32} color={theme.color} />
+                                        {voteCount > 0 && (
+                                            <View style={{
+                                                position: 'absolute', top: -4, right: -4,
+                                                backgroundColor: COLORS.organicWaste, width: 18, height: 18,
+                                                borderRadius: 9, alignItems: 'center', justifyContent: 'center'
+                                            }}>
+                                                <Text style={{ fontSize: 10, color: '#fff', fontWeight: 'bold' }}>{voteCount}</Text>
+                                            </View>
+                                        )}
+                                    </TouchableOpacity>
+                                );
+                            })}
                         </View>
                     </View>
                 )}

@@ -48,7 +48,7 @@ const MultiplayerHUD: React.FC<MultiplayerHUDProps> = ({
                 <View style={styles.scoreSection}>
                     <Text style={styles.scoreValue}>{formatNumber(score, getCurrentLanguage())}</Text>
                     {gameMode === 'race' && targetScore ? (
-                        <Text style={styles.targetText}>{t('multiplayer.target')}: {formatNumber(targetScore, getCurrentLanguage())}</Text>
+                        <Text style={styles.targetText}>{t('multiplayer.targetScore')}: {formatNumber(targetScore, getCurrentLanguage())}</Text>
                     ) : gameMode === 'timed' && timeRemaining !== null && timeRemaining !== undefined ? (
                         <Text style={[styles.targetText, timeRemaining <= 30 && styles.dangerText]}>
                             {t('game.time')}: {formatTime(timeRemaining)}
@@ -63,7 +63,7 @@ const MultiplayerHUD: React.FC<MultiplayerHUDProps> = ({
             {/* Bottom row: Moves on left, Scoreboard Toggle in middle, Theme Badge on right */}
             <View style={styles.bottomRow}>
                 <View style={styles.stat}>
-                    <Text style={styles.statLabel}>{t('game.moves')}</Text>
+                    <Text style={styles.statLabel}>{t('common.moves')}</Text>
                     <Text style={[styles.statValue, gameMode === 'moves' && movesLimit && (movesLimit - moves <= 5) ? styles.dangerText : undefined]}>
                         {formatNumber(moves, getCurrentLanguage())}{gameMode === 'moves' && movesLimit ? `/${formatNumber(movesLimit, getCurrentLanguage())}` : ''}
                     </Text>

@@ -22,7 +22,7 @@ import GameBoard from '../components/Game/GameBoard';
 import PowerProgress from '../components/UI/PowerProgress';
 import LocalMultiplayerService, { LocalPlayer, LocalGameConfig } from '../services/LocalMultiplayerService';
 import { formatNumber, getCurrentLanguage } from '../config/i18n';
-import { TRASH_FACTS, POLLUTION_FACTS, WATER_FACTS, ENERGY_FACTS, FOREST_FACTS } from '../themes';
+import { TRASH_FACTS, POLLUTION_FACTS, WATER_FACTS, ENERGY_FACTS, FOREST_FACTS, THEMES } from '../themes';
 import MultiplayerHUD from '../components/UI/MultiplayerHUD';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'LocalMultiplayerGame'>;
@@ -35,13 +35,9 @@ const LocalMultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
     const { t } = useTranslation();
 
     const [rankings, setRankings] = useState<LocalPlayer[]>([]);
-    const [timeRemaining, setTimeRemaining] = useState<number | null>(null);
-    const [showScoreboard, setShowScoreboard] = useState(false);
-    const [finished, setFinished] = useState(false);
+    const [endlessFactIndex, setEndlessFactIndex] = useState(0);
     const [gameInitialized, setGameInitialized] = useState(false);
-    const lastSyncScore = useRef(0);
-    const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
-
+    
     // Game config from service
     const gameConfig = LocalMultiplayerService.getGameConfig();
     const theme = gameConfig?.theme || 'trash-sorting';
@@ -49,6 +45,12 @@ const LocalMultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
     const targetScore = gameConfig?.targetScore;
     const movesLimit = gameConfig?.movesLimit;
     const durationSeconds = gameConfig?.durationSeconds;
+    
+    const [timeRemaining, setTimeRemaining] = useState<number | null>(durationSeconds || null);
+    const [showScoreboard, setShowScoreboard] = useState(false);
+    const [finished, setFinished] = useState(false);
+    const lastSyncScore = useRef(0);
+    const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
     // Game store state
     const score = useGameStore((s) => s.score);
@@ -63,10 +65,6 @@ const LocalMultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
             initializeGame(0, true, theme);
             setGameInitialized(true);
             playThemeBgm(theme);
-
-            if (durationSeconds) {
-                setTimeRemaining(durationSeconds);
-            }
         }
 
         return () => {
@@ -120,7 +118,28 @@ const LocalMultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
         if (gameMode === 'moves' && movesLimit && moves >= movesLimit) {
             handleFinish();
         }
+
+        // Timed mode: out of time
+        // Wait until timeRemaining hits 0 via the timer interval
     }, [score, moves, finished, gameInitialized, gameMode, targetScore, movesLimit]);
+
+    // Timer countdown
+    useEffect(() => {
+        if (!gameInitialized || finished) return;
+        if (timeRemaining === null || timeRemaining <= 0) return;
+
+        const timer = setInterval(() => {
+            setTimeRemaining((prev) => {
+                if (prev === null || prev <= 1) {
+                    handleFinish();
+                    return 0;
+                }
+                return prev - 1;
+            });
+        }, 1000);
+
+        return () => clearInterval(timer);
+    }, [timeRemaining, gameInitialized, finished]);
 
     // Score sync via P2P (every 150 points)
     useEffect(() => {
@@ -131,25 +150,6 @@ const LocalMultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
             LocalMultiplayerService.sendScoreUpdate(score, moves, false);
         }
     }, [score, gameInitialized, finished]);
-
-    // Timer countdown (timed mode)
-    useEffect(() => {
-        if (timeRemaining === null || timeRemaining <= 0) return;
-
-        timerRef.current = setInterval(() => {
-            setTimeRemaining((prev) => {
-                if (prev === null || prev <= 1) {
-                    handleFinish();
-                    return 0;
-                }
-                return prev - 1;
-            });
-        }, 1000);
-
-        return () => {
-            if (timerRef.current) clearInterval(timerRef.current);
-        };
-    }, [timeRemaining]);
 
     // Host: broadcast rankings every 2 seconds
     useEffect(() => {
@@ -163,12 +163,18 @@ const LocalMultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
     }, [isHost, gameInitialized]);
 
     const handleFinish = async () => {
+        console.log(`[LocalMultiplayerGame] handleFinish called. isHost=${isHost}`);
         if (finished) return;
         setFinished(true);
-        playSfx('level_complete');
+        playSfx('tile_select');
 
-        // Send final score
-        await LocalMultiplayerService.sendScoreUpdate(score, moves, true);
+        if (isHost) {
+            console.log(`[LocalMultiplayerGame] Host finishing game, calling sendScoreUpdate(true)`);
+            await LocalMultiplayerService.sendScoreUpdate(score, moves, true);
+        } else {
+            console.log(`[LocalMultiplayerGame] Client finishing game, calling sendScoreUpdate(true)`);
+            await LocalMultiplayerService.sendScoreUpdate(score, moves, true);
+        }
 
         if (isHost) {
             // Wait a moment for final scores to arrive, then end game
@@ -202,14 +208,43 @@ const LocalMultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
         return facts?.[0] || '';
     };
 
+    // Calculate a dynamic background color based on game progress
     const getBackgroundStyle = () => {
-        if (gameMode === 'race' && targetScore) {
-            const progress = Math.min(score / targetScore, 1);
-            const grayValue = Math.floor(128 - progress * 60);
-            const blueValue = Math.floor(140 + progress * 115);
-            return { backgroundColor: `rgb(${grayValue}, ${grayValue + 20}, ${blueValue})` };
+        // Find theme colors to interpolate between
+        const currentTheme = THEMES.find(t => t.id === theme) || THEMES[0];
+        // Use a generic polluted/dark grayish color as starting point
+        const startColor = { r: 68, g: 80, b: 140 }; // A dark dusky blue instead of generic gray
+        
+        // Extract RGB from theme color (assuming #RRGGBB format)
+        let endColor = { r: 52, g: 152, b: 219 }; // fallback blue
+        if (currentTheme.color.startsWith('#') && currentTheme.color.length === 7) {
+            endColor = {
+                r: parseInt(currentTheme.color.slice(1, 3), 16),
+                g: parseInt(currentTheme.color.slice(3, 5), 16),
+                b: parseInt(currentTheme.color.slice(5, 7), 16)
+            };
         }
-        return { backgroundColor: COLORS.backgroundPrimary };
+
+        let progress = 0;
+        
+        if (gameMode === 'race' && targetScore) {
+            progress = Math.min(score / targetScore, 1);
+        } else if (gameMode === 'moves' && movesLimit) {
+            progress = Math.min(moves / movesLimit, 1);
+        } else if (gameMode === 'timed' && timeRemaining !== null && durationSeconds) {
+            // progress from 0 (start) to 1 (end of time)
+            progress = 1 - Math.max(timeRemaining / durationSeconds, 0);
+        }
+
+        // Keep it slightly dimmed so tiles stand out more
+        progress = progress * 0.7;
+
+        // Interpolate colors
+        const r = Math.round(startColor.r + (endColor.r - startColor.r) * progress);
+        const g = Math.round(startColor.g + (endColor.g - startColor.g) * progress);
+        const b = Math.round(startColor.b + (endColor.b - startColor.b) * progress);
+
+        return { backgroundColor: `rgb(${r}, ${g}, ${b})` };
     };
 
     const handlePause = () => {
