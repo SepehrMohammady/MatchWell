@@ -1,6 +1,6 @@
 {
   "name": "matchwell",
-  "version": "0.8.17",
+  "version": "0.8.18",
   "description": "An environmental matching game",
   "private": true,
   "scripts": {
