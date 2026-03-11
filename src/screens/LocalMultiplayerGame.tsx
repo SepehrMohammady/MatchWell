@@ -21,8 +21,9 @@ import { useGameStore } from '../context/GameStore';
 import GameBoard from '../components/Game/GameBoard';
 import PowerProgress from '../components/UI/PowerProgress';
 import LocalMultiplayerService, { LocalPlayer, LocalGameConfig } from '../services/LocalMultiplayerService';
-import { formatNumber } from '../config/i18n';
+import { formatNumber, getCurrentLanguage } from '../config/i18n';
 import { TRASH_FACTS, POLLUTION_FACTS, WATER_FACTS, ENERGY_FACTS, FOREST_FACTS } from '../themes';
+import MultiplayerHUD from '../components/UI/MultiplayerHUD';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'LocalMultiplayerGame'>;
 
@@ -85,8 +86,14 @@ const LocalMultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
             },
             onPlayerLeft: (endpointId) => {
                 // Update rankings
-                setRankings(LocalMultiplayerService.getRankings());
+                setRankings(LocalMultiplayerService.getPlayers().sort((a,b) => b.score - a.score));
             },
+            onScoreUpdate: (endpointId, peerScore, peerMoves, peerFinished) => {
+                // If a client reaches the target in race mode, the host must end the game for everyone
+                if (isHost && gameMode === 'race' && peerFinished) {
+                    handleFinish();
+                }
+            }
         });
     }, []);
 
@@ -113,7 +120,7 @@ const LocalMultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
         if (gameMode === 'moves' && movesLimit && moves >= movesLimit) {
             handleFinish();
         }
-    }, [score, moves, finished, gameInitialized]);
+    }, [score, moves, finished, gameInitialized, gameMode, targetScore, movesLimit]);
 
     // Score sync via P2P (every 150 points)
     useEffect(() => {
@@ -178,7 +185,6 @@ const LocalMultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
         return `${m}:${String(s).padStart(2, '0')}`;
     };
 
-    // Get facts for current theme
     const getThemeFacts = () => {
         switch (theme) {
             case 'trash-sorting': return TRASH_FACTS;
@@ -190,60 +196,60 @@ const LocalMultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
         }
     };
 
+    const getTranslatedFact = () => {
+        const themeKey = theme === 'trash-sorting' ? 'trash' : theme === 'water-conservation' ? 'water' : theme === 'energy-efficiency' ? 'energy' : theme === 'deforestation' ? 'forest' : theme;
+        const facts = t(`facts.${themeKey}`, { returnObjects: true }) as string[];
+        return facts?.[0] || '';
+    };
+
+    const getBackgroundStyle = () => {
+        if (gameMode === 'race' && targetScore) {
+            const progress = Math.min(score / targetScore, 1);
+            const grayValue = Math.floor(128 - progress * 60);
+            const blueValue = Math.floor(140 + progress * 115);
+            return { backgroundColor: `rgb(${grayValue}, ${grayValue + 20}, ${blueValue})` };
+        }
+        return { backgroundColor: COLORS.backgroundPrimary };
+    };
+
+    const handlePause = () => {
+        // Simple quit alert for multiplayer
+        import('react-native').then(({ Alert }) => {
+            Alert.alert(
+                t('game.paused'),
+                t('localMultiplayer.quitConfirm', 'Are you sure you want to quit this multiplayer match?'),
+                [
+                    { text: t('common.cancel', 'Cancel'), style: 'cancel' },
+                    { text: t('common.quit', 'Quit'), style: 'destructive', onPress: async () => {
+                        if (isHost) {
+                            await LocalMultiplayerService.endGame();
+                        } else {
+                            await LocalMultiplayerService.stopAll();
+                        }
+                        navigation.replace('MainMenu');
+                    }}
+                ]
+            );
+        });
+    };
+
     return (
-        <View style={[styles.container, { paddingTop: insets.top }]}>
-            <StatusBar barStyle="light-content" backgroundColor={COLORS.backgroundPrimary} />
+        <View style={[styles.container, getBackgroundStyle(), { paddingTop: insets.top }]}>
+            <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
 
-            {/* Top HUD */}
-            <View style={styles.hud}>
-                <View style={styles.hudRow}>
-                    <View style={styles.hudItem}>
-                        <Text style={styles.hudLabel}>{t('game.score')}</Text>
-                        <Text style={styles.hudValue}>{formatNumber(score)}</Text>
-                    </View>
+            <MultiplayerHUD
+                onPause={handlePause}
+                gameMode={gameMode}
+                targetScore={targetScore}
+                movesLimit={movesLimit}
+                timeRemaining={timeRemaining}
+                showScoreboard={showScoreboard}
+                onToggleScoreboard={() => setShowScoreboard(!showScoreboard)}
+            />
 
-                    {timeRemaining !== null && (
-                        <View style={[styles.hudItem, styles.hudCenter]}>
-                            <Text style={styles.hudLabel}>{t('game.time')}</Text>
-                            <Text style={[styles.hudValue, timeRemaining <= 30 && styles.hudDanger]}>
-                                {formatTime(timeRemaining)}
-                            </Text>
-                        </View>
-                    )}
-
-                    {gameMode === 'race' && targetScore && (
-                        <View style={[styles.hudItem, styles.hudCenter]}>
-                            <Text style={styles.hudLabel}>{t('multiplayer.target')}</Text>
-                            <Text style={styles.hudValue}>{formatNumber(targetScore)}</Text>
-                        </View>
-                    )}
-
-                    <View style={styles.hudItem}>
-                        <Text style={styles.hudLabel}>{t('game.moves')}</Text>
-                        <Text style={styles.hudValue}>
-                            {formatNumber(moves)}{movesLimit ? `/${formatNumber(movesLimit)}` : ''}
-                        </Text>
-                    </View>
-                </View>
-
-                {/* Scoreboard toggle */}
-                <TouchableOpacity
-                    style={styles.scoreboardToggle}
-                    onPress={() => setShowScoreboard(!showScoreboard)}
-                >
-                    <MaterialCommunityIcons
-                        name={showScoreboard ? 'chevron-up' : 'trophy'}
-                        size={20}
-                        color={COLORS.organicWaste}
-                    />
-                    <Text style={styles.scoreboardToggleText}>
-                        {showScoreboard ? t('localMultiplayer.hideScoreboard') : t('localMultiplayer.showScoreboard')}
-                    </Text>
-                </TouchableOpacity>
-
-                {/* Mini Scoreboard */}
-                {showScoreboard && rankings.length > 0 && (
-                    <View style={styles.scoreboard}>
+            {/* Mini Scoreboard */}
+            {showScoreboard && rankings.length > 0 && (
+                <View style={[styles.scoreboard, { marginHorizontal: SPACING.md }]}>
                         {rankings.slice(0, 4).map((player, index) => (
                             <View key={player.endpointId} style={styles.rankRow}>
                                 <Text style={styles.rankNumber}>#{index + 1}</Text>
@@ -258,16 +264,21 @@ const LocalMultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
                         ))}
                     </View>
                 )}
+
+            {/* Environmental Fact - between HUD and board */}
+            <View style={styles.factContainer}>
+                <Text style={styles.factIcon}>💡</Text>
+                <Text style={styles.factText}>{getTranslatedFact()}</Text>
+            </View>
+
+            {/* Power Progress - Top */}
+            <View style={styles.powerContainer}>
+                <PowerProgress theme={theme} onActivate={activatePowerUp} />
             </View>
 
             {/* Game Board */}
             <View style={styles.boardContainer}>
                 <GameBoard />
-            </View>
-
-            {/* Power Progress */}
-            <View style={styles.powerContainer}>
-                <PowerProgress theme={theme} onActivate={activatePowerUp} />
             </View>
         </View>
     );
@@ -276,49 +287,27 @@ const LocalMultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: COLORS.backgroundPrimary,
     },
-    hud: {
-        paddingHorizontal: SPACING.md,
+    factContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.6)',
+        marginHorizontal: SPACING.md,
+        marginVertical: SPACING.xs,
         paddingVertical: SPACING.sm,
+        paddingHorizontal: SPACING.md,
+        borderRadius: RADIUS.lg,
     },
-    hudRow: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
+    factIcon: {
+        fontSize: 20,
+        marginRight: SPACING.sm,
     },
-    hudItem: {
-        alignItems: 'flex-start',
-    },
-    hudCenter: {
-        alignItems: 'center',
-    },
-    hudLabel: {
-        fontSize: TYPOGRAPHY.caption,
+    factText: {
+        flex: 1,
+        color: '#fff',
+        fontSize: TYPOGRAPHY.bodySmall,
         fontFamily: TYPOGRAPHY.fontFamily,
-        color: COLORS.textSecondary,
-    },
-    hudValue: {
-        fontSize: TYPOGRAPHY.h3,
-        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
-        fontWeight: TYPOGRAPHY.semibold,
-        color: COLORS.textPrimary,
-    },
-    hudDanger: {
-        color: '#E53935',
-    },
-    scoreboardToggle: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: SPACING.xs,
-        paddingVertical: SPACING.xs,
-        marginTop: SPACING.xs,
-    },
-    scoreboardToggleText: {
-        fontSize: TYPOGRAPHY.caption,
-        fontFamily: TYPOGRAPHY.fontFamily,
-        color: COLORS.organicWaste,
+        lineHeight: 18,
     },
     scoreboard: {
         backgroundColor: COLORS.cardBackground,

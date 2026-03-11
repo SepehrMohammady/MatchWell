@@ -272,35 +272,38 @@ const LocalLobby: React.FC<Props> = ({ navigation, route }) => {
                 {/* Players List */}
                 <View style={styles.section}>
                     <Text style={styles.sectionTitle}>
-                        {t('localMultiplayer.players')} ({players.length + 1})
+                        {t('localMultiplayer.players')} ({isHost ? players.length + 1 : Math.max(1, players.length)})
                     </Text>
-                    {/* Host/Self */}
-                    <View style={styles.playerCard}>
-                        <MaterialCommunityIcons
-                            name={isHost ? 'crown' : 'account'}
-                            size={24}
-                            color={COLORS.organicWaste}
-                        />
-                        <Text style={styles.playerName}>
-                            {LocalMultiplayerService.getPlayerCount() >= 0 ? (isHost ? t('localMultiplayer.you_host') : t('localMultiplayer.you')) : ''}
-                        </Text>
-                    </View>
-                    {/* Other players */}
-                    {players.map((player) => (
-                        <View key={player.endpointId} style={styles.playerCard}>
-                            <MaterialCommunityIcons
-                                name="account"
-                                size={24}
-                                color={player.connected ? COLORS.textPrimary : COLORS.textSecondary}
-                            />
-                            <Text style={[styles.playerName, !player.connected && styles.disconnected]}>
-                                {player.name}
-                            </Text>
-                            {!player.connected && (
-                                <Text style={styles.disconnectedLabel}>{t('localMultiplayer.disconnected')}</Text>
-                            )}
+                    
+                    {/* Host's own view of themselves */}
+                    {isHost && (
+                        <View style={styles.playerCard}>
+                            <MaterialCommunityIcons name="crown" size={24} color={COLORS.organicWaste} />
+                            <Text style={styles.playerName}>{t('localMultiplayer.you_host')}</Text>
                         </View>
-                    ))}
+                    )}
+
+                    {/* All other players (or everyone, for client) */}
+                    {players.map((player) => {
+                        const isMe = !isHost && player.name === LocalMultiplayerService.getPlayerNameSync();
+                        const isThisHost = player.endpointId === 'host';
+                        
+                        return (
+                            <View key={player.endpointId} style={styles.playerCard}>
+                                <MaterialCommunityIcons
+                                    name={isThisHost ? 'crown' : 'account'}
+                                    size={24}
+                                    color={player.connected ? COLORS.textPrimary : COLORS.textSecondary}
+                                />
+                                <Text style={[styles.playerName, !player.connected && styles.disconnected]}>
+                                    {isMe ? `${player.name} (${t('localMultiplayer.you')})` : player.name}
+                                </Text>
+                                {!player.connected && (
+                                    <Text style={styles.disconnectedLabel}>{t('localMultiplayer.disconnected')}</Text>
+                                )}
+                            </View>
+                        );
+                    })}
                 </View>
 
                 {/* Game Config (Host Only) */}

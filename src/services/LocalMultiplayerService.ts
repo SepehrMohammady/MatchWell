@@ -20,6 +20,7 @@ import { PermissionsAndroid, Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ThemeType } from '../types';
 import { getDeviceId } from './LeaderboardService';
+import { useGameStore } from '../context/GameStore';
 
 const SERVICE_ID = 'com.matchwell.local_multiplayer';
 
@@ -103,6 +104,10 @@ class LocalMultiplayerServiceImpl {
     async getPlayerName(): Promise<string> {
         const name = await AsyncStorage.getItem('playerName');
         this.playerName = name || 'Player';
+        return this.playerName;
+    }
+
+    getPlayerNameSync(): string {
         return this.playerName;
     }
 
@@ -318,16 +323,29 @@ class LocalMultiplayerServiceImpl {
         this.broadcastRankings();
     }
 
-    // Host: broadcast rankings to all players
+    // Host: broadcast rankings
     async broadcastRankings(): Promise<void> {
         if (!this.isHost) return;
-        const rankings = this.getRankings();
+        const rankings = Array.from(this.players.values());
+        
+        // Include the host in the broadcasted rankings so clients see everyone
+        const hostPlayer: LocalPlayer = {
+            endpointId: 'host',
+            name: this.playerName,
+            score: useGameStore.getState().score,
+            moves: useGameStore.getState().moves,
+            finished: useGameStore.getState().score >= (this.gameConfig?.targetScore || 0) && this.gameConfig?.gameMode === 'race',
+            connected: true,
+        };
+        
+        const combinedRankings = [hostPlayer, ...rankings].sort((a, b) => b.score - a.score);
+
         await this.broadcastMessage({
             type: 'RANKINGS',
-            payload: { rankings },
+            payload: { rankings: combinedRankings },
             timestamp: Date.now(),
         });
-        this.callbacks.onRankingsUpdated?.(rankings);
+        this.callbacks.onRankingsUpdated?.(combinedRankings);
     }
 
     // Host: end the game
