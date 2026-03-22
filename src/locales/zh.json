@@ -23,7 +23,8 @@
         "best": "最高",
         "tapToSkip": "点击跳过",
         "exitApp": "退出应用",
-        "exitConfirm": "确定要退出吗？"
+        "exitConfirm": "确定要退出吗？",
+        "time": "时间"
     },
     "menu": {
         "storyMode": "故事模式",
@@ -357,6 +358,7 @@
         "waitingForPlayers": "等待玩家加入...",
         "waitingRoom": "等候室",
         "you": "你",
-        "you_host": "你（主机）"
+        "you_host": "你（主机）",
+        "hardwareReminder": "为获得稳定的连接，请确保已启用Wi-Fi、蓝牙和位置服务。"
     }
 }

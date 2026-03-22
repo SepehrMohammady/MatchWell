@@ -149,15 +149,19 @@ const LocalMultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
         return () => clearInterval(timer);
     }, [timeRemaining, gameInitialized, finished]);
 
-    // Score sync via P2P (every 150 points)
+    // Score sync via P2P (every 1 second)
     useEffect(() => {
         if (!gameInitialized || finished || isFinishing.current) return;
 
-        if (score > lastSyncScore.current + 150) {
-            lastSyncScore.current = score;
-            LocalMultiplayerService.sendScoreUpdate(score, moves, false);
-        }
-    }, [score, gameInitialized, finished]);
+        const syncInterval = setInterval(() => {
+            if (score !== lastSyncScore.current) {
+                lastSyncScore.current = score;
+                LocalMultiplayerService.sendScoreUpdate(score, moves, false);
+            }
+        }, 1000);
+
+        return () => clearInterval(syncInterval);
+    }, [score, moves, gameInitialized, finished]);
 
     // Host: broadcast rankings every 2 seconds
     useEffect(() => {

@@ -23,7 +23,8 @@
         "best": "Best",
         "tapToSkip": "Tap to skip",
         "exitApp": "Exit App",
-        "exitConfirm": "Are you sure you want to exit?"
+        "exitConfirm": "Are you sure you want to exit?",
+        "time": "Time"
     },
     "menu": {
         "storyMode": "Story Mode",
@@ -357,6 +358,7 @@
         "gameOver": "Game Over!",
         "noResults": "No results available",
         "playAgain": "Play Again",
-        "backToMenu": "Back to Menu"
+        "backToMenu": "Back to Menu",
+        "hardwareReminder": "Please ensure Wi-Fi, Bluetooth, and Location services are enabled for stable connections."
     }
 }

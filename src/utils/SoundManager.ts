@@ -240,8 +240,24 @@ export const playBgm = async (name: SoundName): Promise<void> => {
     // Stop current music
     stopBgm();
 
+    // Mark this as the intended music before async load to prevent overlap
+    currentBgmName = name;
+
     try {
         const sound = await loadSound(name);
+
+        // Check if BGM was changed or stopped while we were loading
+        if (currentBgmName !== name) {
+            console.log(`BGM ${name} load aborted because intended track changed/stopped`);
+            // The Sound manager will cache it, so we don't necessarily release it completely,
+            // but we absolutely should not call play() and assign it to currentBgm.
+            if (!soundCache[name]) {
+                sound.stop();
+                sound.release();
+            }
+            return;
+        }
+
         sound.setVolume(SOUND_CONFIG[name].volume * musicVolume);
         sound.play((success) => {
             if (!success) {
@@ -250,10 +266,12 @@ export const playBgm = async (name: SoundName): Promise<void> => {
         });
 
         currentBgm = sound;
-        currentBgmName = name;
         console.log(`🎵 Playing BGM: ${name}`);
     } catch (error) {
         console.warn(`Could not play BGM ${name}:`, error);
+        if (currentBgmName === name) {
+            currentBgmName = null;
+        }
     }
 };
 

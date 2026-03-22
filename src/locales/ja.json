@@ -23,7 +23,8 @@
         "best": "ベスト",
         "tapToSkip": "タップでスキップ",
         "exitApp": "アプリを終了",
-        "exitConfirm": "終了してもよろしいですか？"
+        "exitConfirm": "終了してもよろしいですか？",
+        "time": "時間"
     },
     "menu": {
         "storyMode": "ストーリーモード",
@@ -357,6 +358,7 @@
         "waitingForPlayers": "プレイヤーを待っています...",
         "waitingRoom": "待機室",
         "you": "あなた",
-        "you_host": "あなた（ホスト）"
+        "you_host": "あなた（ホスト）",
+        "hardwareReminder": "安定した接続のために、Wi-Fi、Bluetooth、位置情報が有効になっていることを確認してください。"
     }
 }

@@ -310,7 +310,11 @@ const LocalLobby: React.FC<Props> = ({ navigation, route }) => {
                         <Text style={styles.statusText}>
                             {isHost
                                 ? (isAdvertising ? t('localMultiplayer.waitingForPlayers') : t('localMultiplayer.settingUp'))
-                                : (connectionStatus === 'connected' ? t('localMultiplayer.connectedToHost') : t('localMultiplayer.connecting'))
+                                : (connectionStatus === 'connected' 
+                                    ? (players.find(p => p.endpointId === 'host') 
+                                        ? `${t('localMultiplayer.connectedToHost')} (${players.find(p => p.endpointId === 'host')?.name})` 
+                                        : t('localMultiplayer.connectedToHost')) 
+                                    : t('localMultiplayer.connecting'))
                             }
                         </Text>
                     </View>

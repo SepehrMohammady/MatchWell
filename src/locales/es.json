@@ -23,7 +23,8 @@
         "best": "Mejor",
         "tapToSkip": "Toca para saltar",
         "exitApp": "Salir de la App",
-        "exitConfirm": "¿Estás seguro de que quieres salir?"
+        "exitConfirm": "¿Estás seguro de que quieres salir?",
+        "time": "Tiempo"
     },
     "menu": {
         "storyMode": "Modo Historia",
@@ -357,6 +358,7 @@
         "waitingForPlayers": "Esperando jugadores...",
         "waitingRoom": "Sala de Espera",
         "you": "Tú",
-        "you_host": "Tú (Anfitrión)"
+        "you_host": "Tú (Anfitrión)",
+        "hardwareReminder": "Asegúrate de que el Wi-Fi, el Bluetooth y la Ubicación estén activados para una conexión estable."
     }
 }

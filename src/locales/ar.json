@@ -23,7 +23,8 @@
         "best": "الأفضل",
         "tapToSkip": "انقر للتخطي",
         "exitApp": "خروج من التطبيق",
-        "exitConfirm": "هل أنت متأكد أنك تريد الخروج؟"
+        "exitConfirm": "هل أنت متأكد أنك تريد الخروج؟",
+        "time": "وقت"
     },
     "menu": {
         "storyMode": "وضع القصة",
@@ -357,6 +358,7 @@
         "gameOver": "انتهت اللعبة!",
         "noResults": "لا توجد نتائج",
         "playAgain": "العب مرة أخرى",
-        "backToMenu": "العودة للقائمة"
+        "backToMenu": "العودة للقائمة",
+        "hardwareReminder": "يرجى التأكد من تمكين Wi-Fi و Bluetooth والموقع للحصول على اتصال ثابت."
     }
 }

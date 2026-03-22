@@ -23,7 +23,8 @@
         "best": "Beste",
         "tapToSkip": "Tippen zum Überspringen",
         "exitApp": "App beenden",
-        "exitConfirm": "Sind Sie sicher, dass Sie beenden möchten?"
+        "exitConfirm": "Sind Sie sicher, dass Sie beenden möchten?",
+        "time": "Zeit"
     },
     "menu": {
         "storyMode": "Story-Modus",
@@ -357,6 +358,7 @@
         "waitingForPlayers": "Warte auf Spieler...",
         "waitingRoom": "Warteraum",
         "you": "Du",
-        "you_host": "Du (Host)"
+        "you_host": "Du (Host)",
+        "hardwareReminder": "Bitte stellen Sie sicher, dass WLAN, Bluetooth und Standortdienste aktiviert sind."
     }
 }

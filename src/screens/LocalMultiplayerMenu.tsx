@@ -179,6 +179,14 @@ const LocalMultiplayerMenu: React.FC<Props> = ({ navigation }) => {
                 <Text style={styles.descText}>{t('localMultiplayer.description')}</Text>
             </View>
 
+            {/* Requirement Reminder */}
+            <View style={styles.hardwareReminder}>
+                <MaterialCommunityIcons name="information-outline" size={24} color={COLORS.plastic} />
+                <Text style={styles.hardwareReminderText}>
+                    {t('localMultiplayer.hardwareReminder')}
+                </Text>
+            </View>
+
             {/* Action Buttons */}
             {!scanning && (
                 <View style={styles.actions}>
@@ -258,6 +266,24 @@ const styles = StyleSheet.create({
         gap: SPACING.md,
     },
     descText: {
+        flex: 1,
+        fontSize: TYPOGRAPHY.caption,
+        fontFamily: TYPOGRAPHY.fontFamily,
+        color: COLORS.textSecondary,
+        lineHeight: 20,
+    },
+    hardwareReminder: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: SPACING.lg,
+        paddingVertical: SPACING.sm,
+        marginHorizontal: SPACING.md,
+        marginBottom: SPACING.lg,
+        backgroundColor: COLORS.plastic + '20', // Give it a subtle info box background
+        borderRadius: RADIUS.md,
+        gap: SPACING.sm,
+    },
+    hardwareReminderText: {
         flex: 1,
         fontSize: TYPOGRAPHY.caption,
         fontFamily: TYPOGRAPHY.fontFamily,
