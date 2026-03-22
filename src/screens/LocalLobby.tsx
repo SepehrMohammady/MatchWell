@@ -339,12 +339,12 @@ const LocalLobby: React.FC<Props> = ({ navigation, route }) => {
                         return (
                             <View key={player.endpointId} style={styles.playerCard}>
                                 <MaterialCommunityIcons
-                                    name={isThisHost ? 'crown' : 'account'}
+                                    name="account"
                                     size={24}
                                     color={player.connected ? (isThisHost ? COLORS.organicWaste : COLORS.textPrimary) : COLORS.textSecondary}
                                 />
                                 <Text style={[styles.playerName, !player.connected && styles.disconnected]}>
-                                    {isMe ? `${player.name} (${t('localMultiplayer.you_host') || t('localMultiplayer.you')})` : player.name}
+                                    {isMe ? `${player.name} (${t('localMultiplayer.you')})` : player.name}
                                 </Text>
                                 {!player.connected && (
                                     <Text style={styles.disconnectedLabel}>{t('localMultiplayer.disconnected')}</Text>
