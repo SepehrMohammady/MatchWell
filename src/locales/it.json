@@ -24,7 +24,8 @@
         "tapToSkip": "Tocca per saltare",
         "exitApp": "Esci dall'App",
         "exitConfirm": "Sei sicuro di voler uscire?",
-        "time": "Tempo"
+        "time": "Tempo",
+        "error": "Errore"
     },
     "menu": {
         "storyMode": "Modalità Storia",

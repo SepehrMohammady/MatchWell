@@ -136,9 +136,10 @@ const LocalLobby: React.FC<Props> = ({ navigation, route }) => {
                     setConnectionStatus(status);
                 },
                 onError: (error) => {
+                    const isDisconnect = error.toLowerCase().includes('connection');
                     setAlertConfig({
                         visible: true,
-                        title: t('common.error'),
+                        title: isDisconnect ? t('localMultiplayer.disconnected') : t('common.error', 'Oops!'),
                         message: error
                     });
                 },
@@ -328,20 +329,11 @@ const LocalLobby: React.FC<Props> = ({ navigation, route }) => {
                 {/* Players List */}
                 <View style={styles.section}>
                     <Text style={styles.sectionTitle}>
-                        {t('localMultiplayer.players')} ({isHost ? players.length + 1 : Math.max(1, players.length)})
+                        {t('localMultiplayer.players')} ({players.length})
                     </Text>
-                    
-                    {/* Host's own view of themselves */}
-                    {isHost && (
-                        <View style={styles.playerCard}>
-                            <MaterialCommunityIcons name="crown" size={24} color={COLORS.organicWaste} />
-                            <Text style={styles.playerName}>{t('localMultiplayer.you_host')}</Text>
-                        </View>
-                    )}
 
-                    {/* All other players (or everyone, for client) */}
                     {players.map((player) => {
-                        const isMe = !isHost && player.name === LocalMultiplayerService.getPlayerNameSync();
+                        const isMe = (isHost && player.endpointId === 'host') || (!isHost && player.name === LocalMultiplayerService.getPlayerNameSync());
                         const isThisHost = player.endpointId === 'host';
                         
                         return (
@@ -349,10 +341,10 @@ const LocalLobby: React.FC<Props> = ({ navigation, route }) => {
                                 <MaterialCommunityIcons
                                     name={isThisHost ? 'crown' : 'account'}
                                     size={24}
-                                    color={player.connected ? COLORS.textPrimary : COLORS.textSecondary}
+                                    color={player.connected ? (isThisHost ? COLORS.organicWaste : COLORS.textPrimary) : COLORS.textSecondary}
                                 />
                                 <Text style={[styles.playerName, !player.connected && styles.disconnected]}>
-                                    {isMe ? `${player.name} (${t('localMultiplayer.you')})` : player.name}
+                                    {isMe ? `${player.name} (${t('localMultiplayer.you_host') || t('localMultiplayer.you')})` : player.name}
                                 </Text>
                                 {!player.connected && (
                                     <Text style={styles.disconnectedLabel}>{t('localMultiplayer.disconnected')}</Text>

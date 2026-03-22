@@ -24,7 +24,8 @@
         "tapToSkip": "点击跳过",
         "exitApp": "退出应用",
         "exitConfirm": "确定要退出吗？",
-        "time": "时间"
+        "time": "时间",
+        "error": "错误"
     },
     "menu": {
         "storyMode": "故事模式",

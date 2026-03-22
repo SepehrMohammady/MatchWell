@@ -24,7 +24,8 @@
         "tapToSkip": "Tippen zum Überspringen",
         "exitApp": "App beenden",
         "exitConfirm": "Sind Sie sicher, dass Sie beenden möchten?",
-        "time": "Zeit"
+        "time": "Zeit",
+        "error": "Fehler"
     },
     "menu": {
         "storyMode": "Story-Modus",

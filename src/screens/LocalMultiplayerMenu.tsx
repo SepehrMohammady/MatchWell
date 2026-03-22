@@ -101,9 +101,10 @@ const LocalMultiplayerMenu: React.FC<Props> = ({ navigation }) => {
             onError: (error) => {
                 setScanning(false);
                 setConnecting(false);
+                const isDisconnect = error.toLowerCase().includes('connection') || error.toLowerCase().includes('connect');
                 setAlertConfig({
                     visible: true,
-                    title: t('common.error'),
+                    title: isDisconnect ? t('localMultiplayer.disconnected') : t('common.error', 'Oops!'),
                     message: error
                 });
             },

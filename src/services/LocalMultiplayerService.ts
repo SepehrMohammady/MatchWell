@@ -173,6 +173,16 @@ class LocalMultiplayerServiceImpl {
             this.connectedEndpoints.clear();
             await this.getPlayerName();
 
+            const hostPlayer: LocalPlayer = {
+                endpointId: 'host',
+                name: this.playerName,
+                score: 0,
+                moves: 0,
+                finished: false,
+                connected: true,
+            };
+            this.players.set('host', hostPlayer);
+
             if (!NearbyConnection) {
                 this.callbacks.onError?.(`Local multiplayer init failed. Module crashed on load: ${NearbyInitError || 'Unknown Error'}`);
                 return;

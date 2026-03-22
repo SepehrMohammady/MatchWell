@@ -24,7 +24,8 @@
         "tapToSkip": "タップでスキップ",
         "exitApp": "アプリを終了",
         "exitConfirm": "終了してもよろしいですか？",
-        "time": "時間"
+        "time": "時間",
+        "error": "エラー"
     },
     "menu": {
         "storyMode": "ストーリーモード",

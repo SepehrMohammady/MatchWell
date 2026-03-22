@@ -24,7 +24,8 @@
         "tapToSkip": "탭하여 건너뛰기",
         "exitApp": "앱 종료",
         "exitConfirm": "정말 종료하시겠습니까?",
-        "time": "시간"
+        "time": "시간",
+        "error": "오류"
     },
     "menu": {
         "storyMode": "스토리 모드",
