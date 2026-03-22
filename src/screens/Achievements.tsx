@@ -296,7 +296,7 @@ const Achievements: React.FC<Props> = ({ navigation }) => {
                                                         <LockIcon size={16} color={COLORS.textMuted} />
                                                     )}
                                                 </View>
-                                                <Text style={styles.endlessMedalTier}>
+                                                <Text style={styles.endlessMedalTier} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.7}>
                                                     {t(`endlessTiers.${a.tier === 'earth-saver' ? 'earthSaver' : a.tier}`)}
                                                 </Text>
                                                 <Text style={styles.endlessMedalScore}>
@@ -468,17 +468,17 @@ const styles = StyleSheet.create({
     },
     endlessTierRow: {
         flexDirection: 'row',
-        gap: SPACING.sm,
+        gap: SPACING.xs,
     },
     endlessMedal: {
+        flex: 1,
         alignItems: 'center',
         backgroundColor: COLORS.cardBackground,
         paddingVertical: SPACING.sm,
-        paddingHorizontal: SPACING.md,
+        paddingHorizontal: SPACING.xs,
         borderRadius: RADIUS.sm,
         borderWidth: 1,
         borderColor: COLORS.cardBorder,
-        minWidth: 56,
     },
     endlessMedalLocked: {
         backgroundColor: COLORS.backgroundSecondary,

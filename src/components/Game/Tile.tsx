@@ -41,6 +41,16 @@ interface TileProps {
 const TileComponent: React.FC<TileProps> = memo(({ tile, isSelected, onPress, onSwipe, isPowerUpTarget = false }) => {
   const tileInfo = TILE_INFO[tile.type];
 
+  // Keep a ref to the latest tile/callbacks so PanResponder always uses fresh data
+  const tileRef = useRef(tile);
+  const onPressRef = useRef(onPress);
+  const onSwipeRef = useRef(onSwipe);
+  const isSelectedRef = useRef(isSelected);
+  tileRef.current = tile;
+  onPressRef.current = onPress;
+  onSwipeRef.current = onSwipe;
+  isSelectedRef.current = isSelected;
+
   // Animation values
   const scaleAnim = useRef(new Animated.Value(1)).current;
   const opacityAnim = useRef(new Animated.Value(1)).current;
@@ -96,7 +106,7 @@ const TileComponent: React.FC<TileProps> = memo(({ tile, isSelected, onPress, on
     }
   }, []);
 
-  // Pan responder for swipe gestures
+  // Pan responder for swipe gestures — reads from refs to avoid stale closures
   const panResponder = useRef(
     PanResponder.create({
       onStartShouldSetPanResponder: () => true,
@@ -128,6 +138,7 @@ const TileComponent: React.FC<TileProps> = memo(({ tile, isSelected, onPress, on
       },
       onPanResponderRelease: (_, gestureState) => {
         const { dx, dy } = gestureState;
+        const currentTile = tileRef.current;
 
         // Reset position with animation
         Animated.parallel([
@@ -144,7 +155,7 @@ const TileComponent: React.FC<TileProps> = memo(({ tile, isSelected, onPress, on
             useNativeDriver: true,
           }),
           Animated.spring(scaleAnim, {
-            toValue: isSelected ? 1.15 : 1,
+            toValue: isSelectedRef.current ? 1.15 : 1,
             friction: 8,
             useNativeDriver: true,
           }),
@@ -152,15 +163,15 @@ const TileComponent: React.FC<TileProps> = memo(({ tile, isSelected, onPress, on
 
         const direction = getSwipeDirection(dx, dy);
 
-        console.log('🔄 Tile gesture:', { position: tile.position, dx, dy, direction, isSwipe: isSwipe.current });
+        console.log('🔄 Tile gesture:', { position: currentTile.position, dx, dy, direction, isSwipe: isSwipe.current });
 
         if (direction && isSwipe.current) {
           // It's a swipe
-          console.log('➡️ Executing swipe:', { position: tile.position, direction });
-          onSwipe(tile.position, direction);
+          console.log('➡️ Executing swipe:', { position: currentTile.position, direction });
+          onSwipeRef.current(currentTile.position, direction);
         } else {
           // It's a tap
-          onPress(tile.position);
+          onPressRef.current(currentTile.position);
         }
       },
       onPanResponderTerminate: () => {
