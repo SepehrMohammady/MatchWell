@@ -26,6 +26,16 @@ import th from '../locales/th.json';
 import pl from '../locales/pl.json';
 import nl from '../locales/nl.json';
 import sv from '../locales/sv.json';
+import uk from '../locales/uk.json';
+import tl from '../locales/tl.json';
+import sw from '../locales/sw.json';
+import ro from '../locales/ro.json';
+import cs from '../locales/cs.json';
+import hu from '../locales/hu.json';
+import el from '../locales/el.json';
+import he from '../locales/he.json';
+import da from '../locales/da.json';
+import fi from '../locales/fi.json';
 
 // Language configuration
 export const LANGUAGES = {
@@ -49,12 +59,22 @@ export const LANGUAGES = {
     pl: { name: 'Polish', nativeName: 'Polski', rtl: false },
     nl: { name: 'Dutch', nativeName: 'Nederlands', rtl: false },
     sv: { name: 'Swedish', nativeName: 'Svenska', rtl: false },
+    uk: { name: 'Ukrainian', nativeName: 'Українська', rtl: false },
+    tl: { name: 'Filipino', nativeName: 'Filipino', rtl: false },
+    sw: { name: 'Swahili', nativeName: 'Kiswahili', rtl: false },
+    ro: { name: 'Romanian', nativeName: 'Română', rtl: false },
+    cs: { name: 'Czech', nativeName: 'Čeština', rtl: false },
+    hu: { name: 'Hungarian', nativeName: 'Magyar', rtl: false },
+    el: { name: 'Greek', nativeName: 'Ελληνικά', rtl: false },
+    he: { name: 'Hebrew', nativeName: 'עברית', rtl: true },
+    da: { name: 'Danish', nativeName: 'Dansk', rtl: false },
+    fi: { name: 'Finnish', nativeName: 'Suomi', rtl: false },
 } as const;
 
 export type LanguageCode = keyof typeof LANGUAGES;
 
 // RTL languages list
-export const RTL_LANGUAGES: LanguageCode[] = ['ar', 'fa'];
+export const RTL_LANGUAGES: LanguageCode[] = ['ar', 'fa', 'he'];
 
 // Resources for i18next
 const resources = {
@@ -78,6 +98,16 @@ const resources = {
     pl: { translation: pl },
     nl: { translation: nl },
     sv: { translation: sv },
+    uk: { translation: uk },
+    tl: { translation: tl },
+    sw: { translation: sw },
+    ro: { translation: ro },
+    cs: { translation: cs },
+    hu: { translation: hu },
+    el: { translation: el },
+    he: { translation: he },
+    da: { translation: da },
+    fi: { translation: fi },
 };
 
 // Storage key for language preference
