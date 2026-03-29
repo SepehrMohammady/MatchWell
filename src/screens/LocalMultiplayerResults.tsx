@@ -7,6 +7,7 @@ import {
     TouchableOpacity,
     StatusBar,
     BackHandler,
+    ScrollView,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -16,7 +17,7 @@ import { COLORS, TYPOGRAPHY, SPACING, RADIUS } from '../config/theme';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useTranslation } from 'react-i18next';
 import { playSfx, stopBgm } from '../utils/SoundManager';
-import LocalMultiplayerService, { LocalPlayer } from '../services/LocalMultiplayerService';
+import LocalMultiplayerService, { LocalPlayer, LocalGameMode } from '../services/LocalMultiplayerService';
 import { formatNumber } from '../config/i18n';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'LocalMultiplayerResults'>;
@@ -25,6 +26,8 @@ const LocalMultiplayerResults: React.FC<Props> = ({ navigation }) => {
     const insets = useSafeAreaInsets();
     const { t } = useTranslation();
     const [rankings, setRankings] = useState<LocalPlayer[]>([]);
+    const gameConfig = LocalMultiplayerService.getGameConfig();
+    const gameMode: LocalGameMode = gameConfig?.gameMode || 'race';
 
     useEffect(() => {
         stopBgm();
@@ -77,6 +80,9 @@ const LocalMultiplayerResults: React.FC<Props> = ({ navigation }) => {
         }
     };
 
+    // Only show finished indicators in moves mode where it's meaningful
+    const showFinishedIndicator = gameMode === 'moves';
+
     return (
         <View style={[styles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
             <StatusBar barStyle="light-content" backgroundColor={COLORS.backgroundPrimary} />
@@ -87,8 +93,12 @@ const LocalMultiplayerResults: React.FC<Props> = ({ navigation }) => {
                 <Text style={styles.subtitle}>{t('localMultiplayer.gameOver')}</Text>
             </View>
 
-            {/* Rankings */}
-            <View style={styles.rankingsContainer}>
+            {/* Rankings - scrollable */}
+            <ScrollView
+                style={styles.rankingsContainer}
+                contentContainerStyle={styles.rankingsContent}
+                showsVerticalScrollIndicator={false}
+            >
                 {rankings.map((player, index) => (
                     <View
                         key={player.endpointId}
@@ -118,10 +128,12 @@ const LocalMultiplayerResults: React.FC<Props> = ({ navigation }) => {
                             <Text style={[styles.rankScore, index === 0 && styles.rankScoreFirst]}>
                                 {formatNumber(player.score)}
                             </Text>
-                            {player.finished ? (
-                                <MaterialCommunityIcons name="check-circle" size={16} color="#4CAF50" />
-                            ) : (
-                                <MaterialCommunityIcons name="close-circle" size={16} color={'#E53935'} />
+                            {showFinishedIndicator && (
+                                player.finished ? (
+                                    <MaterialCommunityIcons name="check-circle" size={16} color="#4CAF50" />
+                                ) : (
+                                    <MaterialCommunityIcons name="close-circle" size={16} color={'#E53935'} />
+                                )
                             )}
                         </View>
                     </View>
@@ -133,7 +145,7 @@ const LocalMultiplayerResults: React.FC<Props> = ({ navigation }) => {
                         <Text style={styles.emptyText}>{t('localMultiplayer.noResults')}</Text>
                     </View>
                 )}
-            </View>
+            </ScrollView>
 
             {/* Action Buttons */}
             <View style={styles.actions}>
@@ -174,6 +186,9 @@ const styles = StyleSheet.create({
     rankingsContainer: {
         flex: 1,
         paddingHorizontal: SPACING.md,
+    },
+    rankingsContent: {
+        paddingBottom: SPACING.md,
     },
     rankCard: {
         flexDirection: 'row',

@@ -47,12 +47,20 @@ const LocalMultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
     const movesLimit = gameConfig?.movesLimit;
     const durationSeconds = gameConfig?.durationSeconds;
     
-    const [timeRemaining, setTimeRemaining] = useState<number | null>(durationSeconds || null);
+    // For timed mode: start with durationSeconds; for moves mode: timer starts later
+    const [timeRemaining, setTimeRemaining] = useState<number | null>(
+        gameMode === 'timed' ? (durationSeconds || null) : null
+    );
     const [showScoreboard, setShowScoreboard] = useState(false);
     const [finished, setFinished] = useState(false);
+    // Moves mode: this player used all their moves (but game continues for others)
+    const [myMovesExhausted, setMyMovesExhausted] = useState(false);
     const isFinishing = useRef(false);
     const lastSyncScore = useRef(0);
     const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+    // Refs to always have the latest score/moves for async callbacks
+    const scoreRef = useRef(0);
+    const movesRef = useRef(0);
 
     const [alertConfig, setAlertConfig] = useState<{ visible: boolean; title: string; message: string; buttons?: any[] }>({
         visible: false,
@@ -66,6 +74,10 @@ const LocalMultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
     const initializeGame = useGameStore((s) => s.initializeGame);
     const isGameOver = useGameStore((s) => s.isGameOver);
     const activatePowerUp = useGameStore((s) => s.activatePowerUp);
+
+    // Keep refs in sync with latest values
+    useEffect(() => { scoreRef.current = score; }, [score]);
+    useEffect(() => { movesRef.current = moves; }, [moves]);
 
     // Initialize game
     useEffect(() => {
@@ -99,6 +111,14 @@ const LocalMultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
                 if (isHost && gameMode === 'race' && peerFinished) {
                     handleFinish();
                 }
+                // In moves mode, check if ALL players have finished their moves
+                if (isHost && gameMode === 'moves' && peerFinished) {
+                    const allPlayers = LocalMultiplayerService.getPlayers();
+                    const allFinished = allPlayers.every(p => p.finished);
+                    if (allFinished) {
+                        handleFinish();
+                    }
+                }
             }
         });
     }, []);
@@ -122,14 +142,21 @@ const LocalMultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
             handleFinish();
         }
 
-        // Moves mode: used all moves
-        if (gameMode === 'moves' && movesLimit && moves >= movesLimit) {
-            handleFinish();
+        // Moves mode: this player used all moves
+        // Don't end the game! Just mark this player as finished and start the countdown timer
+        if (gameMode === 'moves' && movesLimit && moves >= movesLimit && !myMovesExhausted) {
+            setMyMovesExhausted(true);
+            // Send finished=true so host knows this player is done
+            LocalMultiplayerService.sendScoreUpdate(score, moves, true);
+            // If host, start a countdown timer using durationSeconds for remaining players
+            if (isHost && durationSeconds && durationSeconds > 0 && timeRemaining === null) {
+                setTimeRemaining(durationSeconds);
+            }
         }
 
         // Timed mode: out of time
         // Wait until timeRemaining hits 0 via the timer interval
-    }, [score, moves, finished, gameInitialized, gameMode, targetScore, movesLimit]);
+    }, [score, moves, finished, gameInitialized, gameMode, targetScore, movesLimit, myMovesExhausted]);
 
     // Timer countdown
     useEffect(() => {
@@ -154,14 +181,16 @@ const LocalMultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
         if (!gameInitialized || finished || isFinishing.current) return;
 
         const syncInterval = setInterval(() => {
-            if (score !== lastSyncScore.current) {
-                lastSyncScore.current = score;
-                LocalMultiplayerService.sendScoreUpdate(score, moves, false);
+            const latestScore = scoreRef.current;
+            const latestMoves = movesRef.current;
+            if (latestScore !== lastSyncScore.current) {
+                lastSyncScore.current = latestScore;
+                LocalMultiplayerService.sendScoreUpdate(latestScore, latestMoves, myMovesExhausted);
             }
         }, 1000);
 
         return () => clearInterval(syncInterval);
-    }, [score, moves, gameInitialized, finished]);
+    }, [gameInitialized, finished, myMovesExhausted]);
 
     // Host: broadcast rankings every 2 seconds
     useEffect(() => {
@@ -181,13 +210,12 @@ const LocalMultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
         setFinished(true);
         playSfx('tile_select');
 
-        if (isHost) {
-            console.log(`[LocalMultiplayerGame] Host finishing game, calling sendScoreUpdate(true)`);
-            await LocalMultiplayerService.sendScoreUpdate(score, moves, true);
-        } else {
-            console.log(`[LocalMultiplayerGame] Client finishing game, calling sendScoreUpdate(true)`);
-            await LocalMultiplayerService.sendScoreUpdate(score, moves, true);
-        }
+        // Use refs to get latest score/moves (avoids stale closure)
+        const finalScore = scoreRef.current;
+        const finalMoves = movesRef.current;
+
+        console.log(`[LocalMultiplayerGame] Sending final score: ${finalScore}, moves: ${finalMoves}`);
+        await LocalMultiplayerService.sendScoreUpdate(finalScore, finalMoves, true);
 
         if (isHost) {
             // Wait a moment for final scores to arrive, then end game

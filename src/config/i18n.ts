@@ -16,19 +16,39 @@ import ja from '../locales/ja.json';
 import ko from '../locales/ko.json';
 import fa from '../locales/fa.json';
 import it from '../locales/it.json';
+import hi from '../locales/hi.json';
+import pt from '../locales/pt.json';
+import id from '../locales/id.json';
+import ru from '../locales/ru.json';
+import tr from '../locales/tr.json';
+import vi from '../locales/vi.json';
+import th from '../locales/th.json';
+import pl from '../locales/pl.json';
+import nl from '../locales/nl.json';
+import sv from '../locales/sv.json';
 
 // Language configuration
 export const LANGUAGES = {
     en: { name: 'English', nativeName: 'English', rtl: false },
     zh: { name: 'Chinese', nativeName: '简体中文', rtl: false },
     es: { name: 'Spanish', nativeName: 'Español', rtl: false },
-    fr: { name: 'French', nativeName: 'Français', rtl: false },
+    hi: { name: 'Hindi', nativeName: 'हिन्दी', rtl: false },
     ar: { name: 'Arabic', nativeName: 'العربية', rtl: true },
+    pt: { name: 'Portuguese', nativeName: 'Português', rtl: false },
+    id: { name: 'Indonesian', nativeName: 'Bahasa Indonesia', rtl: false },
+    ru: { name: 'Russian', nativeName: 'Русский', rtl: false },
+    fr: { name: 'French', nativeName: 'Français', rtl: false },
     de: { name: 'German', nativeName: 'Deutsch', rtl: false },
     ja: { name: 'Japanese', nativeName: '日本語', rtl: false },
+    tr: { name: 'Turkish', nativeName: 'Türkçe', rtl: false },
+    vi: { name: 'Vietnamese', nativeName: 'Tiếng Việt', rtl: false },
     ko: { name: 'Korean', nativeName: '한국어', rtl: false },
-    fa: { name: 'Persian', nativeName: 'فارسی', rtl: true },
     it: { name: 'Italian', nativeName: 'Italiano', rtl: false },
+    th: { name: 'Thai', nativeName: 'ไทย', rtl: false },
+    fa: { name: 'Persian', nativeName: 'فارسی', rtl: true },
+    pl: { name: 'Polish', nativeName: 'Polski', rtl: false },
+    nl: { name: 'Dutch', nativeName: 'Nederlands', rtl: false },
+    sv: { name: 'Swedish', nativeName: 'Svenska', rtl: false },
 } as const;
 
 export type LanguageCode = keyof typeof LANGUAGES;
@@ -41,13 +61,23 @@ const resources = {
     en: { translation: en },
     zh: { translation: zh },
     es: { translation: es },
-    fr: { translation: fr },
+    hi: { translation: hi },
     ar: { translation: ar },
+    pt: { translation: pt },
+    id: { translation: id },
+    ru: { translation: ru },
+    fr: { translation: fr },
     de: { translation: de },
     ja: { translation: ja },
+    tr: { translation: tr },
+    vi: { translation: vi },
     ko: { translation: ko },
-    fa: { translation: fa },
     it: { translation: it },
+    th: { translation: th },
+    fa: { translation: fa },
+    pl: { translation: pl },
+    nl: { translation: nl },
+    sv: { translation: sv },
 };
 
 // Storage key for language preference
