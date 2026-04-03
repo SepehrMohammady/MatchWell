@@ -46,6 +46,7 @@ export interface LocalGameConfig {
     targetScore?: number;
     movesLimit?: number;
     durationSeconds?: number;
+    movesCountdownSeconds?: number;
 }
 
 // Message types for P2P communication

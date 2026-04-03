@@ -93,7 +93,8 @@
         "enterName": "이름을 입력하세요",
         "gameActive": "진행 중",
         "gameComplete": "완료됨",
-        "you": "당신"
+        "you": "나",
+        "countdownDuration": "카운트다운 시간 (초)"
     },
     "game": {
         "paused": "일시정지",
@@ -360,6 +361,8 @@
         "waitingRoom": "대기실",
         "you": "나",
         "you_host": "나 (호스트)",
-        "hardwareReminder": "안정적인 연결을 위해 Wi-Fi, Bluetooth 및 위치 서비스가 켜져 있는지 확인하세요."
+        "hardwareReminder": "안정적인 연결을 위해 Wi-Fi, Bluetooth 및 위치 서비스가 켜져 있는지 확인하세요.",
+        "movesCompleted": "이동 완료!",
+        "waitingForOthers": "다른 플레이어를 기다리는 중..."
     }
 }

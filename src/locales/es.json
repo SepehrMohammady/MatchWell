@@ -93,7 +93,8 @@
         "enterName": "Ingresa tu nombre",
         "gameActive": "En Progreso",
         "gameComplete": "Completado",
-        "you": "Tú"
+        "you": "Tú",
+        "countdownDuration": "Duración del conteo (seg)"
     },
     "game": {
         "paused": "Pausado",
@@ -360,6 +361,8 @@
         "waitingRoom": "Sala de Espera",
         "you": "Tú",
         "you_host": "Tú (Anfitrión)",
-        "hardwareReminder": "Asegúrate de que el Wi-Fi, el Bluetooth y la Ubicación estén activados para una conexión estable."
+        "hardwareReminder": "Asegúrate de que el Wi-Fi, el Bluetooth y la Ubicación estén activados para una conexión estable.",
+        "movesCompleted": "¡Movimientos completados!",
+        "waitingForOthers": "Esperando a otros jugadores..."
     }
 }

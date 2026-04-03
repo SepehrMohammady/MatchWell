@@ -93,7 +93,8 @@
         "enterName": "名前を入力してください",
         "gameActive": "進行中",
         "gameComplete": "完了",
-        "you": "あなた"
+        "you": "あなた",
+        "countdownDuration": "カウントダウン時間（秒）"
     },
     "game": {
         "paused": "一時停止",
@@ -360,6 +361,8 @@
         "waitingRoom": "待機室",
         "you": "あなた",
         "you_host": "あなた（ホスト）",
-        "hardwareReminder": "安定した接続のために、Wi-Fi、Bluetooth、位置情報が有効になっていることを確認してください。"
+        "hardwareReminder": "安定した接続のために、Wi-Fi、Bluetooth、位置情報が有効になっていることを確認してください。",
+        "movesCompleted": "手数完了！",
+        "waitingForOthers": "他のプレイヤーを待っています..."
     }
 }

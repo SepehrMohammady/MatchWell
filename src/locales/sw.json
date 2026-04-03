@@ -93,7 +93,8 @@
         "enterName": "Enter your name",
         "gameActive": "In Progress",
         "gameComplete": "Completed",
-        "you": "You"
+        "you": "You",
+        "countdownDuration": "Muda wa kuhesabu nyuma (s)"
     },
     "game": {
         "paused": "Paused",
@@ -360,6 +361,8 @@
         "noResults": "No results available",
         "playAgain": "Play Again",
         "backToMenu": "Back to Menu",
-        "hardwareReminder": "Please ensure Wi-Fi, Bluetooth, and Location services are enabled for stable connections."
+        "hardwareReminder": "Please ensure Wi-Fi, Bluetooth, and Location services are enabled for stable connections.",
+        "movesCompleted": "Hatua zimekamilika!",
+        "waitingForOthers": "Kusubiri wachezaji wengine..."
     }
 }

@@ -47,6 +47,7 @@ const LocalMultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
     const targetScore = gameConfig?.targetScore;
     const movesLimit = gameConfig?.movesLimit;
     const durationSeconds = gameConfig?.durationSeconds;
+    const movesCountdownSeconds = gameConfig?.movesCountdownSeconds ?? 30;
     
     // For timed mode: start with durationSeconds; for moves mode: timer starts later
     const [timeRemaining, setTimeRemaining] = useState<number | null>(
@@ -225,10 +226,10 @@ const LocalMultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
     const startMovesCountdown = useCallback(() => {
         if (!isHost || countdownStartedRef.current) return;
         countdownStartedRef.current = true;
-        const seconds = (durationSeconds && durationSeconds > 0) ? durationSeconds : MOVES_COUNTDOWN_SECONDS;
+        const seconds = movesCountdownSeconds > 0 ? movesCountdownSeconds : MOVES_COUNTDOWN_SECONDS;
         setTimeRemaining(seconds);
         LocalMultiplayerService.broadcastCountdownStart(seconds);
-    }, [isHost, durationSeconds]);
+    }, [isHost, movesCountdownSeconds]);
 
     const handleFinish = async () => {
         console.log(`[LocalMultiplayerGame] handleFinish called. isHost=${isHost}`);

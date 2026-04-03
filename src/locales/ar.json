@@ -93,7 +93,8 @@
         "enterName": "أدخل اسمك",
         "gameActive": "جاري اللعب",
         "gameComplete": "مكتمل",
-        "you": "أنت"
+        "you": "أنت",
+        "countdownDuration": "مدة العد التنازلي (ث)"
     },
     "game": {
         "paused": "متوقف مؤقتاً",
@@ -360,6 +361,8 @@
         "noResults": "لا توجد نتائج",
         "playAgain": "العب مرة أخرى",
         "backToMenu": "العودة للقائمة",
-        "hardwareReminder": "يرجى التأكد من تمكين Wi-Fi و Bluetooth والموقع للحصول على اتصال ثابت."
+        "hardwareReminder": "يرجى التأكد من تمكين Wi-Fi و Bluetooth والموقع للحصول على اتصال ثابت.",
+        "movesCompleted": "اكتملت الحركات!",
+        "waitingForOthers": "انتظار اللاعبين الآخرين..."
     }
 }

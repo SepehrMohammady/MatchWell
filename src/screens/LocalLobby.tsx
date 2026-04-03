@@ -35,6 +35,7 @@ const GAME_MODES: { key: LocalGameMode; icon: string; labelKey: string }[] = [
 
 const TARGET_SCORE_OPTIONS = [10000, 50000, 100000, 250000, 500000];
 const MOVES_OPTIONS = [50, 100, 150, 200];
+const MOVES_COUNTDOWN_OPTIONS = [15, 30, 45, 60, 90, 120];
 
 const THEMES: ThemeType[] = [
     'trash-sorting',
@@ -54,6 +55,7 @@ const LocalLobby: React.FC<Props> = ({ navigation, route }) => {
     const [selectedTheme, setSelectedTheme] = useState<ThemeType | null>('trash-sorting');
     const [targetScore, setTargetScore] = useState(50000);
     const [movesLimit, setMovesLimit] = useState(100);
+    const [movesCountdownSeconds, setMovesCountdownSeconds] = useState(30);
     const [durationDays, setDurationDays] = useState('0');
     const [durationHours, setDurationHours] = useState('0');
     const [durationMinutes, setDurationMinutes] = useState('0');
@@ -106,6 +108,7 @@ const LocalLobby: React.FC<Props> = ({ navigation, route }) => {
                     if (config.themeVoting !== undefined) setThemeVoting(config.themeVoting);
                     if (config.targetScore) setTargetScore(config.targetScore);
                     if (config.movesLimit) setMovesLimit(config.movesLimit);
+                    if (config.movesCountdownSeconds) setMovesCountdownSeconds(config.movesCountdownSeconds);
                     if (config.durationSeconds) {
                         const days = Math.floor(config.durationSeconds / 86400);
                         const hours = Math.floor((config.durationSeconds % 86400) / 3600);
@@ -153,6 +156,7 @@ const LocalLobby: React.FC<Props> = ({ navigation, route }) => {
                         themeVoting,
                         targetScore: selectedMode === 'race' ? targetScore : undefined,
                         movesLimit: selectedMode === 'moves' ? movesLimit : undefined,
+                        movesCountdownSeconds: selectedMode === 'moves' ? movesCountdownSeconds : undefined,
                         durationSeconds: getDurationSeconds(), // Always allow duration
                     };
                     await LocalMultiplayerService.startAdvertising(config);
@@ -194,11 +198,12 @@ const LocalLobby: React.FC<Props> = ({ navigation, route }) => {
                 themeVoting,
                 targetScore: selectedMode === 'race' ? targetScore : undefined,
                 movesLimit: selectedMode === 'moves' ? movesLimit : undefined,
+                movesCountdownSeconds: selectedMode === 'moves' ? movesCountdownSeconds : undefined,
                 durationSeconds: getDurationSeconds(),
             };
             LocalMultiplayerService.updateGameConfig(config);
         }
-    }, [selectedMode, selectedTheme, themeVoting, targetScore, durationDays, durationHours, durationMinutes, movesLimit, isHost, isAdvertising]);
+    }, [selectedMode, selectedTheme, themeVoting, targetScore, durationDays, durationHours, durationMinutes, movesLimit, movesCountdownSeconds, isHost, isAdvertising]);
 
     const handleLeave = () => {
         playSfx('tile_select');
@@ -239,6 +244,7 @@ const LocalLobby: React.FC<Props> = ({ navigation, route }) => {
                 themeVoting: false,
                 targetScore: selectedMode === 'race' ? targetScore : undefined,
                 movesLimit: selectedMode === 'moves' ? movesLimit : undefined,
+                movesCountdownSeconds: selectedMode === 'moves' ? movesCountdownSeconds : undefined,
                 durationSeconds: getDurationSeconds(),
             };
             await LocalMultiplayerService.updateGameConfig(finalConfig);
@@ -443,6 +449,13 @@ const LocalLobby: React.FC<Props> = ({ navigation, route }) => {
                             MOVES_OPTIONS.map(v => ({ label: `${v}`, value: v })),
                             movesLimit,
                             setMovesLimit
+                        )}
+
+                        {selectedMode === 'moves' && renderOptionRow(
+                            t('multiplayer.countdownDuration'),
+                            MOVES_COUNTDOWN_OPTIONS.map(v => ({ label: `${v}s`, value: v })),
+                            movesCountdownSeconds,
+                            setMovesCountdownSeconds
                         )}
 
                         {/* Theme Selection */}

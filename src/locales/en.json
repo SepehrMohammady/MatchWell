@@ -93,7 +93,8 @@
         "enterName": "Enter your name",
         "gameActive": "In Progress",
         "gameComplete": "Completed",
-        "you": "You"
+        "you": "You",
+        "countdownDuration": "Countdown Duration (sec)"
     },
     "game": {
         "paused": "Paused",

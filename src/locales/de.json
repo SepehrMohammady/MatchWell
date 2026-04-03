@@ -93,7 +93,8 @@
         "enterName": "Gib deinen Namen ein",
         "gameActive": "Läuft",
         "gameComplete": "Abgeschlossen",
-        "you": "Du"
+        "you": "Du",
+        "countdownDuration": "Countdown-Dauer (Sek.)"
     },
     "game": {
         "paused": "Pausiert",
@@ -360,6 +361,8 @@
         "waitingRoom": "Warteraum",
         "you": "Du",
         "you_host": "Du (Host)",
-        "hardwareReminder": "Bitte stellen Sie sicher, dass WLAN, Bluetooth und Standortdienste aktiviert sind."
+        "hardwareReminder": "Bitte stellen Sie sicher, dass WLAN, Bluetooth und Standortdienste aktiviert sind.",
+        "movesCompleted": "Züge abgeschlossen!",
+        "waitingForOthers": "Warte auf andere Spieler..."
     }
 }

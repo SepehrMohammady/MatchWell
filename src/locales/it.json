@@ -93,7 +93,8 @@
         "enterName": "Inserisci il tuo nome",
         "gameActive": "In Corso",
         "gameComplete": "Completato",
-        "you": "Tu"
+        "you": "Tu",
+        "countdownDuration": "Durata countdown (sec)"
     },
     "game": {
         "paused": "In Pausa",
@@ -360,6 +361,8 @@
         "waitingRoom": "Sala d'attesa",
         "you": "Tu",
         "you_host": "Tu (Host)",
-        "hardwareReminder": "Assicurati che Wi-Fi, Bluetooth e posizione siano abilitati."
+        "hardwareReminder": "Assicurati che Wi-Fi, Bluetooth e posizione siano abilitati.",
+        "movesCompleted": "Mosse completate!",
+        "waitingForOthers": "Aspettando altri giocatori..."
     }
 }

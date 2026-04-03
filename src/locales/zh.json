@@ -93,7 +93,8 @@
         "enterName": "输入你的名字",
         "gameActive": "进行中",
         "gameComplete": "已完成",
-        "you": "你"
+        "you": "你",
+        "countdownDuration": "倒计时时长（秒）"
     },
     "game": {
         "paused": "已暂停",
@@ -360,6 +361,8 @@
         "waitingRoom": "等候室",
         "you": "你",
         "you_host": "你（主机）",
-        "hardwareReminder": "为获得稳定的连接，请确保已启用Wi-Fi、蓝牙和位置服务。"
+        "hardwareReminder": "为获得稳定的连接，请确保已启用Wi-Fi、蓝牙和位置服务。",
+        "movesCompleted": "步数已用完！",
+        "waitingForOthers": "等待其他玩家..."
     }
 }
