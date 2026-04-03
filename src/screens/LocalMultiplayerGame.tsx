@@ -29,6 +29,7 @@ import CustomAlert from '../components/UI/CustomAlert';
 type Props = NativeStackScreenProps<RootStackParamList, 'LocalMultiplayerGame'>;
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
+const MOVES_COUNTDOWN_SECONDS = 30; // Grace period after first player finishes in moves mode
 
 const LocalMultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
     const { isHost } = route.params;
@@ -111,15 +112,25 @@ const LocalMultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
                 if (isHost && gameMode === 'race' && peerFinished) {
                     handleFinish();
                 }
-                // In moves mode, check if ALL players have finished their moves
+                // In moves mode, when any player finishes:
                 if (isHost && gameMode === 'moves' && peerFinished) {
                     const allPlayers = LocalMultiplayerService.getPlayers();
                     const allFinished = allPlayers.every(p => p.finished);
                     if (allFinished) {
+                        // All done, end game immediately
                         handleFinish();
+                    } else {
+                        // First player finished - start countdown for remaining players
+                        startMovesCountdown();
                     }
                 }
-            }
+            },
+            onCountdownStart: (seconds) => {
+                // Client received countdown start from host
+                if (timeRemaining === null) {
+                    setTimeRemaining(seconds);
+                }
+            },
         });
     }, []);
 
@@ -143,14 +154,20 @@ const LocalMultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
         }
 
         // Moves mode: this player used all moves
-        // Don't end the game! Just mark this player as finished and start the countdown timer
+        // Disable the board and start countdown for remaining players
         if (gameMode === 'moves' && movesLimit && moves >= movesLimit && !myMovesExhausted) {
             setMyMovesExhausted(true);
             // Send finished=true so host knows this player is done
             LocalMultiplayerService.sendScoreUpdate(score, moves, true);
-            // If host, start a countdown timer using durationSeconds for remaining players
-            if (isHost && durationSeconds && durationSeconds > 0 && timeRemaining === null) {
-                setTimeRemaining(durationSeconds);
+            // If host, check if all done or start countdown
+            if (isHost) {
+                const allPlayers = LocalMultiplayerService.getPlayers();
+                const allFinished = allPlayers.every(p => p.finished);
+                if (allFinished) {
+                    handleFinish();
+                } else {
+                    startMovesCountdown();
+                }
             }
         }
 
@@ -202,6 +219,16 @@ const LocalMultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
 
         return () => clearInterval(rankInterval);
     }, [isHost, gameInitialized]);
+
+    // Host: start countdown for remaining players in moves mode
+    const countdownStartedRef = useRef(false);
+    const startMovesCountdown = useCallback(() => {
+        if (!isHost || countdownStartedRef.current) return;
+        countdownStartedRef.current = true;
+        const seconds = (durationSeconds && durationSeconds > 0) ? durationSeconds : MOVES_COUNTDOWN_SECONDS;
+        setTimeRemaining(seconds);
+        LocalMultiplayerService.broadcastCountdownStart(seconds);
+    }, [isHost, durationSeconds]);
 
     const handleFinish = async () => {
         console.log(`[LocalMultiplayerGame] handleFinish called. isHost=${isHost}`);
@@ -366,9 +393,26 @@ const LocalMultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
                 <PowerProgress theme={theme} onActivate={activatePowerUp} />
             </View>
 
-            {/* Game Board */}
-            <View style={styles.boardContainer}>
+            {/* Game Board - disabled when moves exhausted */}
+            <View style={styles.boardContainer} pointerEvents={myMovesExhausted ? 'none' : 'auto'}>
                 <GameBoard />
+                {/* Moves exhausted overlay */}
+                {myMovesExhausted && (
+                    <View style={styles.movesExhaustedOverlay}>
+                        <MaterialCommunityIcons name="check-circle" size={48} color="#4CAF50" />
+                        <Text style={styles.movesExhaustedText}>
+                            {t('localMultiplayer.movesCompleted', 'Moves completed!')}
+                        </Text>
+                        <Text style={styles.movesExhaustedSubtext}>
+                            {t('localMultiplayer.waitingForOthers', 'Waiting for other players...')}
+                        </Text>
+                        {timeRemaining !== null && timeRemaining > 0 && (
+                            <Text style={[styles.movesExhaustedTimer, timeRemaining <= 10 && styles.dangerText]}>
+                                {formatTime(timeRemaining)}
+                            </Text>
+                        )}
+                    </View>
+                )}
             </View>
         </View>
     );
@@ -435,6 +479,36 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    movesExhaustedOverlay: {
+        ...StyleSheet.absoluteFillObject,
+        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 12,
+    },
+    movesExhaustedText: {
+        color: '#fff',
+        fontSize: TYPOGRAPHY.h3,
+        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
+        fontWeight: TYPOGRAPHY.semibold,
+        marginTop: SPACING.md,
+    },
+    movesExhaustedSubtext: {
+        color: 'rgba(255, 255, 255, 0.7)',
+        fontSize: TYPOGRAPHY.body,
+        fontFamily: TYPOGRAPHY.fontFamily,
+        marginTop: SPACING.xs,
+    },
+    movesExhaustedTimer: {
+        color: '#fff',
+        fontSize: TYPOGRAPHY.h1,
+        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
+        fontWeight: TYPOGRAPHY.semibold,
+        marginTop: SPACING.md,
+    },
+    dangerText: {
+        color: '#E53935',
     },
     powerContainer: {
         paddingHorizontal: SPACING.md,

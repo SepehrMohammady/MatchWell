@@ -360,6 +360,8 @@
         "noResults": "No results available",
         "playAgain": "Play Again",
         "backToMenu": "Back to Menu",
-        "hardwareReminder": "Please ensure Wi-Fi, Bluetooth, and Location services are enabled for stable connections."
+        "hardwareReminder": "Please ensure Wi-Fi, Bluetooth, and Location services are enabled for stable connections.",
+        "movesCompleted": "Moves completed!",
+        "waitingForOthers": "Waiting for other players..."
     }
 }

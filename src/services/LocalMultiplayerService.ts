@@ -58,7 +58,8 @@ export type MessageType =
     | 'GAME_END'
     | 'PLAYER_LEFT'
     | 'VOTE_THEME'
-    | 'VOTE_UPDATE';
+    | 'VOTE_UPDATE'
+    | 'COUNTDOWN_START';
 
 export interface P2PMessage {
     type: MessageType;
@@ -79,6 +80,7 @@ export interface LocalMultiplayerCallbacks {
     onConnectionStatusChanged?: (status: 'advertising' | 'discovering' | 'connected' | 'disconnected' | 'idle') => void;
     onThemeVoteReceived?: (endpointId: string, themeId: string) => void;
     onVotesUpdated?: (votes: Record<string, string>) => void;
+    onCountdownStart?: (seconds: number) => void;
 }
 
 // ============================================================
@@ -339,6 +341,16 @@ class LocalMultiplayerServiceImpl {
         await this.broadcastMessage({
             type: 'VOTE_UPDATE',
             payload: { votes },
+            timestamp: Date.now(),
+        });
+    }
+
+    // Host: broadcast countdown start to all players (moves mode grace period)
+    async broadcastCountdownStart(seconds: number): Promise<void> {
+        if (!this.isHost) return;
+        await this.broadcastMessage({
+            type: 'COUNTDOWN_START',
+            payload: { seconds },
             timestamp: Date.now(),
         });
     }
@@ -658,6 +670,12 @@ class LocalMultiplayerServiceImpl {
 
             case 'PLAYER_LEFT':
                 this.callbacks.onPlayerLeft?.(endpointId);
+                break;
+
+            case 'COUNTDOWN_START':
+                if (!this.isHost) {
+                    this.callbacks.onCountdownStart?.(message.payload.seconds);
+                }
                 break;
         }
     }

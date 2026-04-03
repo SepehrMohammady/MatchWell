@@ -72,6 +72,7 @@ const soundCache: Partial<Record<SoundName, Sound>> = {};
 // Current playing background music
 let currentBgm: Sound | null = null;
 let currentBgmName: SoundName | null = null;
+let bgmLoadingName: SoundName | null = null; // Track in-progress BGM load to prevent overlap
 
 // Sound settings
 let sfxEnabled = true;
@@ -237,14 +238,25 @@ export const playBgm = async (name: SoundName): Promise<void> => {
         return;
     }
 
+    // Prevent concurrent loads of the same BGM (race condition causing overlap)
+    if (bgmLoadingName === name) {
+        return;
+    }
+
     // Stop current music
     stopBgm();
 
     // Mark this as the intended music before async load to prevent overlap
     currentBgmName = name;
+    bgmLoadingName = name;
 
     try {
         const sound = await loadSound(name);
+
+        // Clear loading flag
+        if (bgmLoadingName === name) {
+            bgmLoadingName = null;
+        }
 
         // Check if BGM was changed or stopped while we were loading
         if (currentBgmName !== name) {
@@ -269,6 +281,9 @@ export const playBgm = async (name: SoundName): Promise<void> => {
         console.log(`🎵 Playing BGM: ${name}`);
     } catch (error) {
         console.warn(`Could not play BGM ${name}:`, error);
+        if (bgmLoadingName === name) {
+            bgmLoadingName = null;
+        }
         if (currentBgmName === name) {
             currentBgmName = null;
         }
@@ -318,6 +333,7 @@ export const stopBgm = (): void => {
 
     currentBgm = null;
     currentBgmName = null;
+    bgmLoadingName = null;
     console.log('🔇 All BGM stopped and released');
 };
 

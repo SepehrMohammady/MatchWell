@@ -49,8 +49,8 @@ const MultiplayerHUD: React.FC<MultiplayerHUDProps> = ({
                     <Text style={styles.scoreValue}>{formatNumber(score, getCurrentLanguage())}</Text>
                     {gameMode === 'race' && targetScore ? (
                         <Text style={styles.targetText}>{t('multiplayer.targetScore')}: {formatNumber(targetScore, getCurrentLanguage())}</Text>
-                    ) : gameMode === 'timed' && timeRemaining !== null && timeRemaining !== undefined ? (
-                        <Text style={[styles.targetText, timeRemaining <= 30 && styles.dangerText]}>
+                    ) : (gameMode === 'timed' || gameMode === 'moves') && timeRemaining !== null && timeRemaining !== undefined ? (
+                        <Text style={[styles.targetText, timeRemaining <= 10 && styles.dangerText]}>
                             {t('common.time')}: {formatTime(timeRemaining)}
                         </Text>
                     ) : null}
