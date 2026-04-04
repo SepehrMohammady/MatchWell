@@ -8,6 +8,7 @@ import {
     Dimensions,
     TouchableOpacity,
     BackHandler,
+    Modal,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -16,7 +17,8 @@ import { RootStackParamList } from '../types';
 import { COLORS, TYPOGRAPHY, SPACING, RADIUS } from '../config/theme';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useTranslation } from 'react-i18next';
-import { playSfx, playThemeBgm, stopBgm } from '../utils/SoundManager';
+import { playSfx, playThemeBgm, stopBgm, getSoundSettings, toggleSfx, toggleMusic } from '../utils/SoundManager';
+import { MusicIcon, MusicOffIcon, VolumeIcon, VolumeOffIcon } from '../components/UI/Icons';
 import { useGameStore } from '../context/GameStore';
 import GameBoard from '../components/Game/GameBoard';
 import PowerProgress from '../components/UI/PowerProgress';
@@ -24,7 +26,6 @@ import LocalMultiplayerService, { LocalPlayer, LocalGameConfig } from '../servic
 import { formatNumber, getCurrentLanguage } from '../config/i18n';
 import { TRASH_FACTS, POLLUTION_FACTS, WATER_FACTS, ENERGY_FACTS, FOREST_FACTS, THEMES } from '../themes';
 import MultiplayerHUD from '../components/UI/MultiplayerHUD';
-import CustomAlert from '../components/UI/CustomAlert';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'LocalMultiplayerGame'>;
 
@@ -55,6 +56,9 @@ const LocalMultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
     );
     const [showScoreboard, setShowScoreboard] = useState(false);
     const [finished, setFinished] = useState(false);
+    const [pauseVisible, setPauseVisible] = useState(false);
+    const [sfxEnabled, setSfxEnabled] = useState(true);
+    const [musicEnabled, setMusicEnabled] = useState(true);
     // Moves mode: this player used all their moves (but game continues for others)
     const [myMovesExhausted, setMyMovesExhausted] = useState(false);
     const isFinishing = useRef(false);
@@ -69,6 +73,15 @@ const LocalMultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
         title: '',
         message: ''
     });
+
+    // Load sound settings whenever pause opens
+    useEffect(() => {
+        if (pauseVisible) {
+            const s = getSoundSettings();
+            setSfxEnabled(s.sfxEnabled);
+            setMusicEnabled(s.musicEnabled);
+        }
+    }, [pauseVisible]);
 
     // Game store state
     const score = useGameStore((s) => s.score);
@@ -86,13 +99,20 @@ const LocalMultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
         if (theme) {
             initializeGame(0, true, theme);
             setGameInitialized(true);
-            playThemeBgm(theme);
         }
-
-        return () => {
-            stopBgm();
-        };
     }, []);
+
+    // BGM: play on focus, stop on blur (same pattern as GameScreen - prevents overlap with menu music)
+    useFocusEffect(
+        useCallback(() => {
+            if (theme) {
+                playThemeBgm(theme);
+            }
+            return () => {
+                stopBgm();
+            };
+        }, [theme])
+    );
 
     // Set up P2P callbacks
     useEffect(() => {
@@ -102,6 +122,7 @@ const LocalMultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
             },
             onGameEnded: () => {
                 setFinished(true);
+                stopBgm();
                 navigation.replace('LocalMultiplayerResults');
             },
             onPlayerLeft: (endpointId) => {
@@ -249,6 +270,7 @@ const LocalMultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
             // Wait a moment for final scores to arrive, then end game
             setTimeout(async () => {
                 await LocalMultiplayerService.endGame();
+                stopBgm();
                 navigation.replace('LocalMultiplayerResults');
             }, 2000);
         }
@@ -316,32 +338,38 @@ const LocalMultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
         return { backgroundColor: `rgb(${r}, ${g}, ${b})` };
     };
 
+    const handleSfxToggle = () => {
+        const next = !sfxEnabled;
+        setSfxEnabled(next);
+        toggleSfx(next);
+        if (next) playSfx('tile_select');
+    };
+
+    const handleMusicToggle = () => {
+        const next = !musicEnabled;
+        setMusicEnabled(next);
+        toggleMusic(next);
+        if (next) playThemeBgm(theme);
+    };
+
     const handlePause = () => {
-        setAlertConfig({
-            visible: true,
-            title: t('game.paused'),
-            message: t('localMultiplayer.quitConfirm', 'Are you sure you want to quit this multiplayer match?'),
-            buttons: [
-                {
-                    text: t('common.cancel', 'Cancel'),
-                    onPress: () => setAlertConfig(prev => ({ ...prev, visible: false })),
-                    style: 'secondary'
-                },
-                {
-                    text: t('common.quit', 'Quit'),
-                    onPress: async () => {
-                        setAlertConfig(prev => ({ ...prev, visible: false }));
-                        if (isHost) {
-                            await LocalMultiplayerService.endGame();
-                        } else {
-                            await LocalMultiplayerService.stopAll();
-                        }
-                        navigation.replace('MainMenu');
-                    },
-                    style: 'danger'
-                }
-            ]
-        });
+        setPauseVisible(true);
+    };
+
+    const handleResume = () => {
+        setPauseVisible(false);
+        playSfx('tile_select');
+    };
+
+    const handleQuit = async () => {
+        setPauseVisible(false);
+        stopBgm();
+        if (isHost) {
+            await LocalMultiplayerService.endGame();
+        } else {
+            await LocalMultiplayerService.stopAll();
+        }
+        navigation.replace('MainMenu');
     };
 
     return (
@@ -358,12 +386,46 @@ const LocalMultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
                 onToggleScoreboard={() => setShowScoreboard(!showScoreboard)}
             />
 
-            <CustomAlert
-                visible={alertConfig.visible}
-                title={alertConfig.title}
-                message={alertConfig.message}
-                buttons={alertConfig.buttons}
-            />
+            {/* Pause Modal */}
+            <Modal visible={pauseVisible} transparent animationType="fade">
+                <View style={styles.modalOverlay}>
+                    <View style={styles.modalContent}>
+                        <Text style={styles.modalTitle}>{t('game.paused')}</Text>
+
+                        <TouchableOpacity style={styles.modalButton} onPress={handleResume} activeOpacity={0.8}>
+                            <MaterialCommunityIcons name="play" size={20} color="#fff" />
+                            <Text style={styles.modalButtonText}>{t('common.resume', 'Resume')}</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={[styles.modalButton, styles.dangerButton]} onPress={handleQuit} activeOpacity={0.8}>
+                            <MaterialCommunityIcons name="exit-to-app" size={20} color="#fff" />
+                            <Text style={styles.modalButtonText}>{t('common.quit', 'Quit')}</Text>
+                        </TouchableOpacity>
+
+                        {/* Sound controls */}
+                        <View style={styles.soundToggleFooter}>
+                            <TouchableOpacity
+                                style={[styles.soundToggleButton, musicEnabled && styles.soundToggleActive]}
+                                onPress={handleMusicToggle}
+                                activeOpacity={0.7}
+                            >
+                                {musicEnabled
+                                    ? <MusicIcon size={24} color={COLORS.organicWaste} />
+                                    : <MusicOffIcon size={24} color={COLORS.textMuted} />}
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={[styles.soundToggleButton, sfxEnabled && styles.soundToggleActive]}
+                                onPress={handleSfxToggle}
+                                activeOpacity={0.7}
+                            >
+                                {sfxEnabled
+                                    ? <VolumeIcon size={24} color={COLORS.organicWaste} />
+                                    : <VolumeOffIcon size={24} color={COLORS.textMuted} />}
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
 
             {/* Mini Scoreboard */}
             {showScoreboard && rankings.length > 0 && (
@@ -514,6 +576,73 @@ const styles = StyleSheet.create({
     powerContainer: {
         paddingHorizontal: SPACING.md,
         paddingBottom: SPACING.md,
+    },
+    // Pause modal styles
+    modalOverlay: {
+        flex: 1,
+        backgroundColor: 'rgba(0,0,0,0.6)',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: SPACING.xl,
+    },
+    modalContent: {
+        backgroundColor: COLORS.cardBackground,
+        borderRadius: RADIUS.xl,
+        padding: SPACING.xl,
+        width: '100%',
+        alignItems: 'center',
+        gap: SPACING.sm,
+        borderWidth: 1,
+        borderColor: COLORS.cardBorder,
+    },
+    modalTitle: {
+        fontSize: TYPOGRAPHY.h2,
+        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
+        fontWeight: TYPOGRAPHY.semibold,
+        color: COLORS.textPrimary,
+        marginBottom: SPACING.md,
+    },
+    modalButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: SPACING.sm,
+        backgroundColor: COLORS.organicWaste,
+        paddingVertical: SPACING.md,
+        borderRadius: RADIUS.lg,
+        width: '100%',
+    },
+    dangerButton: {
+        backgroundColor: 'transparent',
+        borderWidth: 1,
+        borderColor: COLORS.cardBorder,
+    },
+    modalButtonText: {
+        color: '#fff',
+        fontSize: TYPOGRAPHY.body,
+        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
+        fontWeight: TYPOGRAPHY.semibold,
+    },
+    soundToggleFooter: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        gap: SPACING.xl,
+        marginTop: SPACING.md,
+        paddingTop: SPACING.md,
+        borderTopWidth: 1,
+        borderTopColor: COLORS.cardBorder,
+        width: '100%',
+    },
+    soundToggleButton: {
+        width: 48,
+        height: 48,
+        borderRadius: 24,
+        backgroundColor: COLORS.backgroundSecondary,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    soundToggleActive: {
+        backgroundColor: 'rgba(139, 195, 74, 0.15)',
     },
 });
 
