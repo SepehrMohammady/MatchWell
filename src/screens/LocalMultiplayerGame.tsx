@@ -613,9 +613,7 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     dangerButton: {
-        backgroundColor: 'transparent',
-        borderWidth: 1,
-        borderColor: COLORS.cardBorder,
+        backgroundColor: '#E53935',
     },
     modalButtonText: {
         color: '#fff',

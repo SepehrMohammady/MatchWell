@@ -306,13 +306,9 @@ export const playThemeBgm = async (theme: ThemeType): Promise<void> => {
  * Stop background music - stops, releases, and clears all cached BGM sounds
  */
 export const stopBgm = (): void => {
-    // Stop and release the tracked currentBgm
-    if (currentBgm) {
-        currentBgm.stop();
-        currentBgm.release();
-    }
-
-    // Also stop and release ALL cached BGM sounds to prevent any overlap
+    // Stop and release ALL cached BGM sounds.
+    // currentBgm is always the same object as soundCache[currentBgmName], so we only
+    // handle it once here to avoid double-release (which causes MediaPlayer IllegalStateException).
     const bgmNames: SoundName[] = [
         'bgm_menu',
         'bgm_theme_trash',
@@ -325,8 +321,13 @@ export const stopBgm = (): void => {
     bgmNames.forEach(bgmName => {
         const cachedSound = soundCache[bgmName];
         if (cachedSound) {
-            cachedSound.stop();
-            cachedSound.release();
+            try {
+                cachedSound.setNumberOfLoops(0); // Disable looping before stop to ensure playback ends
+                cachedSound.stop();
+                cachedSound.release();
+            } catch (e) {
+                console.warn(`Error stopping BGM ${bgmName}:`, e);
+            }
             delete soundCache[bgmName]; // Remove from cache so it gets recreated fresh
         }
     });
