@@ -372,7 +372,13 @@ export const toggleMusic = (enabled?: boolean): boolean => {
     musicEnabled = enabled !== undefined ? enabled : !musicEnabled;
 
     if (!musicEnabled) {
-        stopBgm();
+        // Pause (not stop/release) so we can resume seamlessly
+        pauseBgm();
+    } else {
+        // Resume if a track is already loaded, otherwise caller must invoke playThemeBgm/playBgm
+        if (currentBgm) {
+            currentBgm.play();
+        }
     }
 
     saveSoundSettings();

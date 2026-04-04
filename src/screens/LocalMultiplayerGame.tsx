@@ -349,7 +349,11 @@ const LocalMultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
         const next = !musicEnabled;
         setMusicEnabled(next);
         toggleMusic(next);
-        if (next) playThemeBgm(theme);
+        // toggleMusic(true) resumes currentBgm if loaded.
+        // If no BGM was loaded yet (game started with music off), load it now.
+        if (next) {
+            playThemeBgm(theme); // playBgm's "same track already playing" guard prevents double-play
+        }
     };
 
     const handlePause = () => {
