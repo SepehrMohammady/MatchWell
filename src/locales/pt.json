@@ -94,7 +94,10 @@
         "gameActive": "Em Andamento",
         "gameComplete": "Completo",
         "you": "Você",
-        "countdownDuration": "Contagem regressiva (seg)"
+        "countdownDuration": "Contagem regressiva (seg)",
+        "namePromptTitle": "Qual é o seu nome?",
+        "namePromptMessage": "Escolha um nome que os outros jogadores verão",
+        "saveNameButton": "Vamos jogar!"
     },
     "game": {
         "paused": "Pausado",
@@ -327,8 +330,8 @@
     },
     "localMultiplayer": {
         "title": "Jogo Local",
-        "localPlay": "Jogo Local (Bluetooth/WiFi)",
-        "description": "Jogue com amigos próximos usando Bluetooth ou WiFi Direct - sem internet!",
+        "localPlay": "Jogo Local",
+        "description": "Jogue com amigos próximos - sem internet!",
         "hostGame": "Criar Jogo",
         "hostDescription": "Crie um jogo e aguarde amigos",
         "findGame": "Encontrar Jogo",
@@ -361,8 +364,9 @@
         "noResults": "Sem resultados disponíveis",
         "playAgain": "Jogar Novamente",
         "backToMenu": "Voltar ao Menu",
-        "hardwareReminder": "Certifique-se de que Wi-Fi, Bluetooth e Localização estão ativados.",
+        "hardwareReminder": "Certifique-se de que Wi-Fi e Localização estão ativados.",
         "movesCompleted": "Movimentos concluídos!",
-        "waitingForOthers": "Aguardando outros jogadores..."
+        "waitingForOthers": "Aguardando outros jogadores...",
+        "offline": "Offline"
     }
 }

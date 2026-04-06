@@ -94,7 +94,10 @@
         "gameActive": "En Cours",
         "gameComplete": "Terminé",
         "you": "Vous",
-        "countdownDuration": "Compte à rebours (sec)"
+        "countdownDuration": "Compte à rebours (sec)",
+        "namePromptTitle": "Comment t'appelles-tu ?",
+        "namePromptMessage": "Choisis un nom que les autres joueurs verront",
+        "saveNameButton": "C'est parti !"
     },
     "game": {
         "paused": "Pause",
@@ -329,7 +332,7 @@
         "backToMenu": "Retour au Menu",
         "connectedToHost": "Connecté à l'hôte",
         "connecting": "Connexion...",
-        "description": "Jouez avec des amis proches via Bluetooth ou WiFi - sans internet !",
+        "description": "Jouez avec des amis proches - sans internet !",
         "disconnected": "Déconnecté",
         "findDescription": "Cherchez des parties à proximité",
         "findGame": "Trouver une Partie",
@@ -339,7 +342,7 @@
         "hostDescription": "Créez une partie et attendez vos amis",
         "hostGame": "Créer une Partie",
         "lobby": "Salon",
-        "localPlay": "Jeu Local (Bluetooth/WiFi)",
+        "localPlay": "Jeu Local",
         "needOnePlayer": "Au moins un joueur doit rejoindre avant de commencer.",
         "noGamesFound": "Aucune partie trouvée",
         "noGamesHint": "Vérifiez que la partie hôte est active à proximité",
@@ -361,8 +364,9 @@
         "waitingRoom": "Salle d'attente",
         "you": "Vous",
         "you_host": "Vous (Hôte)",
-        "hardwareReminder": "Assurez-vous que le Wi-Fi, le Bluetooth et les services de localisation sont activés.",
+        "hardwareReminder": "Assurez-vous que le Wi-Fi et les services de localisation sont activés.",
         "movesCompleted": "Coups terminés !",
-        "waitingForOthers": "En attente des autres joueurs..."
+        "waitingForOthers": "En attente des autres joueurs...",
+        "offline": "Hors ligne"
     }
 }

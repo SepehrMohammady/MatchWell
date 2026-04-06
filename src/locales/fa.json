@@ -94,7 +94,10 @@
         "gameActive": "در حال انجام",
         "gameComplete": "تمام شده",
         "you": "شما",
-        "countdownDuration": "مدت شمارش معکوس (ث)"
+        "countdownDuration": "مدت شمارش معکوس (ث)",
+        "namePromptTitle": "نام شما چیست؟",
+        "namePromptMessage": "نامی انتخاب کنید که بازیکنان دیگر خواهند دید",
+        "saveNameButton": "بزن بریم!"
     },
     "game": {
         "paused": "متوقف شده",
@@ -327,8 +330,8 @@
     },
     "localMultiplayer": {
         "title": "بازی محلی",
-        "localPlay": "بازی محلی (بلوتوث/وای‌فای)",
-        "description": "با دوستان نزدیک خود از طریق بلوتوث یا وای‌فای بازی کنید - بدون نیاز به اینترنت!",
+        "localPlay": "بازی محلی",
+        "description": "با دوستان نزدیک خود بازی کنید - بدون نیاز به اینترنت!",
         "hostGame": "میزبانی بازی",
         "hostDescription": "یک بازی بساز و منتظر دوستانت بمان",
         "findGame": "پیدا کردن بازی",
@@ -361,8 +364,9 @@
         "noResults": "نتایجی موجود نیست",
         "playAgain": "بازی دوباره",
         "backToMenu": "بازگشت به منو",
-        "hardwareReminder": "لطفاً اطمینان حاصل کنید که Wi-Fi، بلوتوث و مکان برای اتصال پایدار روشن هستند.",
+        "hardwareReminder": "لطفاً اطمینان حاصل کنید که Wi-Fi و مکان برای اتصال پایدار روشن هستند.",
         "movesCompleted": "حرکت‌ها تمام شد!",
-        "waitingForOthers": "منتظر بازیکنان دیگر..."
+        "waitingForOthers": "منتظر بازیکنان دیگر...",
+        "offline": "آفلاین"
     }
 }

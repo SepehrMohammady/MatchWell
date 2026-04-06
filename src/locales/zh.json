@@ -94,7 +94,10 @@
         "gameActive": "进行中",
         "gameComplete": "已完成",
         "you": "你",
-        "countdownDuration": "倒计时时长（秒）"
+        "countdownDuration": "倒计时时长（秒）",
+        "namePromptTitle": "你叫什么名字？",
+        "namePromptMessage": "选择一个其他玩家会看到的名字",
+        "saveNameButton": "开始游戏！"
     },
     "game": {
         "paused": "已暂停",
@@ -329,7 +332,7 @@
         "backToMenu": "返回菜单",
         "connectedToHost": "已连接到主机",
         "connecting": "连接中...",
-        "description": "通过蓝牙或WiFi与附近的朋友一起玩 - 无需网络！",
+        "description": "与附近的朋友一起玩 - 无需网络！",
         "disconnected": "已断开",
         "findDescription": "搜索附近的游戏",
         "findGame": "查找游戏",
@@ -339,7 +342,7 @@
         "hostDescription": "创建游戏并等待朋友加入",
         "hostGame": "创建游戏",
         "lobby": "大厅",
-        "localPlay": "本地游戏（蓝牙/WiFi）",
+        "localPlay": "本地游戏",
         "needOnePlayer": "至少需要一名玩家才能开始。",
         "noGamesFound": "尚未找到游戏",
         "noGamesHint": "请确保主机游戏在附近运行",
@@ -361,8 +364,9 @@
         "waitingRoom": "等候室",
         "you": "你",
         "you_host": "你（主机）",
-        "hardwareReminder": "为获得稳定的连接，请确保已启用Wi-Fi、蓝牙和位置服务。",
+        "hardwareReminder": "为获得稳定的连接，请确保已启用Wi-Fi和位置服务。",
         "movesCompleted": "步数已用完！",
-        "waitingForOthers": "等待其他玩家..."
+        "waitingForOthers": "等待其他玩家...",
+        "offline": "离线"
     }
 }

@@ -91,7 +91,7 @@ const ClimateClock: React.FC = () => {
     }
 
     if (!clockData) {
-        return null;
+        return <View style={styles.container} />;
     }
 
     return (
@@ -134,10 +134,12 @@ const styles = StyleSheet.create({
         borderRadius: RADIUS.md,
         padding: SPACING.sm,
         alignItems: 'center',
+        justifyContent: 'center',
         marginHorizontal: SPACING.md,
         marginBottom: SPACING.sm,
         borderWidth: 1,
         borderColor: COLORS.accentDanger,
+        minHeight: 72,
     },
     label: {
         fontSize: TYPOGRAPHY.caption,

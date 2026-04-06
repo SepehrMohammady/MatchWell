@@ -94,7 +94,10 @@
         "gameActive": "جاري اللعب",
         "gameComplete": "مكتمل",
         "you": "أنت",
-        "countdownDuration": "مدة العد التنازلي (ث)"
+        "countdownDuration": "مدة العد التنازلي (ث)",
+        "namePromptTitle": "ما اسمك؟",
+        "namePromptMessage": "اختر اسمًا سيراه اللاعبون الآخرون",
+        "saveNameButton": "هيا نلعب!"
     },
     "game": {
         "paused": "متوقف مؤقتاً",
@@ -327,8 +330,8 @@
     },
     "localMultiplayer": {
         "title": "لعب محلي",
-        "localPlay": "لعب محلي (بلوتوث/واي فاي)",
-        "description": "العب مع أصدقائك القريبين عبر البلوتوث أو واي فاي - بدون إنترنت!",
+        "localPlay": "لعب محلي",
+        "description": "العب مع أصدقائك القريبين - بدون إنترنت!",
         "hostGame": "استضافة لعبة",
         "hostDescription": "أنشئ لعبة وانتظر انضمام الأصدقاء",
         "findGame": "البحث عن لعبة",
@@ -361,8 +364,9 @@
         "noResults": "لا توجد نتائج",
         "playAgain": "العب مرة أخرى",
         "backToMenu": "العودة للقائمة",
-        "hardwareReminder": "يرجى التأكد من تمكين Wi-Fi و Bluetooth والموقع للحصول على اتصال ثابت.",
+        "hardwareReminder": "يرجى التأكد من تمكين Wi-Fi والموقع للحصول على اتصال ثابت.",
         "movesCompleted": "اكتملت الحركات!",
-        "waitingForOthers": "انتظار اللاعبين الآخرين..."
+        "waitingForOthers": "انتظار اللاعبين الآخرين...",
+        "offline": "غير متصل"
     }
 }

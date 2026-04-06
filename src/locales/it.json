@@ -94,7 +94,10 @@
         "gameActive": "In Corso",
         "gameComplete": "Completato",
         "you": "Tu",
-        "countdownDuration": "Durata countdown (sec)"
+        "countdownDuration": "Durata countdown (sec)",
+        "namePromptTitle": "Come ti chiami?",
+        "namePromptMessage": "Scegli un nome che gli altri giocatori vedranno",
+        "saveNameButton": "Giochiamo!"
     },
     "game": {
         "paused": "In Pausa",
@@ -329,7 +332,7 @@
         "backToMenu": "Torna al Menu",
         "connectedToHost": "Connesso all'host",
         "connecting": "Connessione...",
-        "description": "Gioca con amici vicini tramite Bluetooth o WiFi - senza internet!",
+        "description": "Gioca con amici vicini - senza internet!",
         "disconnected": "Disconnesso",
         "findDescription": "Cerca partite vicine",
         "findGame": "Trova Partita",
@@ -339,7 +342,7 @@
         "hostDescription": "Crea una partita e attendi gli amici",
         "hostGame": "Crea Partita",
         "lobby": "Lobby",
-        "localPlay": "Gioco Locale (Bluetooth/WiFi)",
+        "localPlay": "Gioco Locale",
         "needOnePlayer": "Almeno un giocatore deve unirsi prima di iniziare.",
         "noGamesFound": "Nessuna partita trovata",
         "noGamesHint": "Assicurati che la partita host sia attiva nelle vicinanze",
@@ -361,8 +364,9 @@
         "waitingRoom": "Sala d'attesa",
         "you": "Tu",
         "you_host": "Tu (Host)",
-        "hardwareReminder": "Assicurati che Wi-Fi, Bluetooth e posizione siano abilitati.",
+        "hardwareReminder": "Assicurati che Wi-Fi e posizione siano abilitati.",
         "movesCompleted": "Mosse completate!",
-        "waitingForOthers": "Aspettando altri giocatori..."
+        "waitingForOthers": "Aspettando altri giocatori...",
+        "offline": "Offline"
     }
 }

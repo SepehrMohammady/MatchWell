@@ -94,7 +94,10 @@
         "gameActive": "In Progress",
         "gameComplete": "Completed",
         "you": "You",
-        "countdownDuration": "Durasi hitung mundur (dtk)"
+        "countdownDuration": "Durasi hitung mundur (dtk)",
+        "namePromptTitle": "Siapa namamu?",
+        "namePromptMessage": "Pilih nama yang akan dilihat pemain lain",
+        "saveNameButton": "Ayo main!"
     },
     "game": {
         "paused": "Paused",
@@ -327,8 +330,8 @@
     },
     "localMultiplayer": {
         "title": "Local Play",
-        "localPlay": "Local Play (Bluetooth/WiFi)",
-        "description": "Play with friends nearby using Bluetooth or WiFi Direct - no internet needed!",
+        "localPlay": "Local Play",
+        "description": "Play with friends nearby - no internet needed!",
         "hostGame": "Host Game",
         "hostDescription": "Create a game and wait for friends to join",
         "findGame": "Find Game",
@@ -361,8 +364,9 @@
         "noResults": "No results available",
         "playAgain": "Play Again",
         "backToMenu": "Back to Menu",
-        "hardwareReminder": "Please ensure Wi-Fi, Bluetooth, and Location services are enabled for stable connections.",
+        "hardwareReminder": "Please ensure Wi-Fi and Location services are enabled for stable connections.",
         "movesCompleted": "Langkah selesai!",
-        "waitingForOthers": "Menunggu pemain lain..."
+        "waitingForOthers": "Menunggu pemain lain...",
+        "offline": "Offline"
     }
 }

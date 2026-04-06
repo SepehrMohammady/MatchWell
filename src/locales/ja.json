@@ -94,7 +94,10 @@
         "gameActive": "進行中",
         "gameComplete": "完了",
         "you": "あなた",
-        "countdownDuration": "カウントダウン時間（秒）"
+        "countdownDuration": "カウントダウン時間（秒）",
+        "namePromptTitle": "お名前は？",
+        "namePromptMessage": "他のプレイヤーに表示される名前を入力してください",
+        "saveNameButton": "プレイ開始！"
     },
     "game": {
         "paused": "一時停止",
@@ -329,7 +332,7 @@
         "backToMenu": "メニューに戻る",
         "connectedToHost": "ホストに接続しました",
         "connecting": "接続中...",
-        "description": "BluetoothやWiFiで近くの友達と遊ぼう - インターネット不要！",
+        "description": "近くの友達と遊ぼう - インターネット不要！",
         "disconnected": "切断されました",
         "findDescription": "近くのゲームを検索",
         "findGame": "ゲームを探す",
@@ -339,7 +342,7 @@
         "hostDescription": "ゲームを作って友達の参加を待つ",
         "hostGame": "ゲームを作成",
         "lobby": "ロビー",
-        "localPlay": "ローカルプレイ（Bluetooth/WiFi）",
+        "localPlay": "ローカルプレイ",
         "needOnePlayer": "開始前に少なくとも1人のプレイヤーが必要です。",
         "noGamesFound": "まだゲームが見つかりません",
         "noGamesHint": "ホストのゲームが近くで起動していることを確認してください",
@@ -361,8 +364,9 @@
         "waitingRoom": "待機室",
         "you": "あなた",
         "you_host": "あなた（ホスト）",
-        "hardwareReminder": "安定した接続のために、Wi-Fi、Bluetooth、位置情報が有効になっていることを確認してください。",
+        "hardwareReminder": "安定した接続のために、Wi-Fiと位置情報が有効になっていることを確認してください。",
         "movesCompleted": "手数完了！",
-        "waitingForOthers": "他のプレイヤーを待っています..."
+        "waitingForOthers": "他のプレイヤーを待っています...",
+        "offline": "オフライン"
     }
 }

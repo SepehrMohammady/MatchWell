@@ -10,6 +10,7 @@ import {
     RefreshControl,
     ActivityIndicator,
     TextInput,
+    Modal,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -33,11 +34,17 @@ const MultiplayerMenu: React.FC<Props> = ({ navigation }) => {
     const [waitingRooms, setWaitingRooms] = useState<RoomListItem[]>([]);
     const [completedRooms, setCompletedRooms] = useState<RoomListItem[]>([]);
     const [playerName, setPlayerName] = useState('');
+    const [showNameModal, setShowNameModal] = useState(false);
+    const [tempName, setTempName] = useState('');
 
     // Load player name from storage
     useEffect(() => {
         AsyncStorage.getItem('playerName').then(name => {
-            if (name) setPlayerName(name);
+            if (name) {
+                setPlayerName(name);
+            } else {
+                setShowNameModal(true);
+            }
         });
     }, []);
 
@@ -47,6 +54,14 @@ const MultiplayerMenu: React.FC<Props> = ({ navigation }) => {
         try {
             await AsyncStorage.setItem('playerName', name);
         } catch (e) { /* ignore */ }
+    };
+
+    const handleSaveNameModal = () => {
+        const trimmed = tempName.trim();
+        if (trimmed.length > 0) {
+            handleNameChange(trimmed);
+            setShowNameModal(false);
+        }
     };
 
     const loadRooms = async () => {
@@ -199,6 +214,9 @@ const MultiplayerMenu: React.FC<Props> = ({ navigation }) => {
                 >
                     <MaterialCommunityIcons name="access-point-network" size={28} color="#fff" />
                     <Text style={styles.actionText}>{t('localMultiplayer.localPlay')}</Text>
+                    <View style={styles.offlineTag}>
+                        <Text style={styles.offlineTagText}>{t('localMultiplayer.offline')}</Text>
+                    </View>
                 </TouchableOpacity>
             </View>
 
@@ -231,6 +249,39 @@ const MultiplayerMenu: React.FC<Props> = ({ navigation }) => {
                     contentContainerStyle={styles.listContent}
                 />
             )}
+
+            {/* Name Prompt Modal */}
+            <Modal
+                visible={showNameModal}
+                transparent
+                animationType="fade"
+                onRequestClose={() => {}}
+            >
+                <View style={styles.modalOverlay}>
+                    <View style={styles.modalContent}>
+                        <MaterialCommunityIcons name="account-edit" size={48} color={COLORS.organicWaste} />
+                        <Text style={styles.modalTitle}>{t('multiplayer.namePromptTitle')}</Text>
+                        <Text style={styles.modalMessage}>{t('multiplayer.namePromptMessage')}</Text>
+                        <TextInput
+                            style={styles.modalInput}
+                            value={tempName}
+                            onChangeText={setTempName}
+                            placeholder={t('multiplayer.enterName')}
+                            placeholderTextColor={COLORS.textSecondary}
+                            maxLength={20}
+                            autoFocus
+                        />
+                        <TouchableOpacity
+                            style={[styles.modalButton, !tempName.trim() && styles.modalButtonDisabled]}
+                            onPress={handleSaveNameModal}
+                            disabled={!tempName.trim()}
+                            activeOpacity={0.8}
+                        >
+                            <Text style={styles.modalButtonText}>{t('multiplayer.saveNameButton')}</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
         </View>
     );
 };
@@ -388,6 +439,80 @@ const styles = StyleSheet.create({
         fontFamily: TYPOGRAPHY.fontFamily,
         color: COLORS.textSecondary,
         marginTop: SPACING.xs,
+    },
+    offlineTag: {
+        backgroundColor: 'rgba(255, 255, 255, 0.25)',
+        paddingHorizontal: 8,
+        paddingVertical: 2,
+        borderRadius: 8,
+    },
+    offlineTagText: {
+        fontSize: 10,
+        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
+        fontWeight: TYPOGRAPHY.semibold,
+        color: '#fff',
+        textTransform: 'uppercase',
+    },
+    modalOverlay: {
+        flex: 1,
+        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: SPACING.lg,
+    },
+    modalContent: {
+        backgroundColor: COLORS.cardBackground,
+        borderRadius: RADIUS.lg,
+        padding: SPACING.xl,
+        alignItems: 'center',
+        width: '100%',
+        maxWidth: 340,
+        borderWidth: 1,
+        borderColor: COLORS.cardBorder,
+    },
+    modalTitle: {
+        fontSize: TYPOGRAPHY.h3,
+        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
+        fontWeight: TYPOGRAPHY.semibold,
+        color: COLORS.textPrimary,
+        marginTop: SPACING.md,
+        marginBottom: SPACING.xs,
+    },
+    modalMessage: {
+        fontSize: TYPOGRAPHY.caption,
+        fontFamily: TYPOGRAPHY.fontFamily,
+        color: COLORS.textSecondary,
+        textAlign: 'center',
+        marginBottom: SPACING.lg,
+    },
+    modalInput: {
+        width: '100%',
+        backgroundColor: COLORS.backgroundPrimary,
+        borderRadius: RADIUS.md,
+        borderWidth: 1,
+        borderColor: COLORS.cardBorder,
+        paddingHorizontal: SPACING.md,
+        paddingVertical: SPACING.sm,
+        fontSize: TYPOGRAPHY.body,
+        fontFamily: TYPOGRAPHY.fontFamily,
+        color: COLORS.textPrimary,
+        textAlign: 'center',
+        marginBottom: SPACING.lg,
+    },
+    modalButton: {
+        backgroundColor: COLORS.organicWaste,
+        paddingVertical: SPACING.sm,
+        paddingHorizontal: SPACING.xl,
+        borderRadius: RADIUS.md,
+    },
+    modalButtonDisabled: {
+        opacity: 0.5,
+    },
+    modalButtonText: {
+        fontSize: TYPOGRAPHY.body,
+        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
+        fontWeight: TYPOGRAPHY.semibold,
+        color: '#fff',
     },
 });
 

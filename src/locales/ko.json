@@ -94,7 +94,10 @@
         "gameActive": "진행 중",
         "gameComplete": "완료됨",
         "you": "나",
-        "countdownDuration": "카운트다운 시간 (초)"
+        "countdownDuration": "카운트다운 시간 (초)",
+        "namePromptTitle": "이름이 뭐예요?",
+        "namePromptMessage": "다른 플레이어가 볼 이름을 선택하세요",
+        "saveNameButton": "플레이하자!"
     },
     "game": {
         "paused": "일시정지",
@@ -329,7 +332,7 @@
         "backToMenu": "메뉴로 돌아가기",
         "connectedToHost": "호스트에 연결됨",
         "connecting": "연결 중...",
-        "description": "블루투스나 WiFi로 근처 친구와 플레이 - 인터넷 불필요!",
+        "description": "근처 친구와 플레이 - 인터넷 불필요!",
         "disconnected": "연결 끊김",
         "findDescription": "근처 게임 검색",
         "findGame": "게임 찾기",
@@ -339,7 +342,7 @@
         "hostDescription": "게임을 만들고 친구를 기다리세요",
         "hostGame": "게임 만들기",
         "lobby": "로비",
-        "localPlay": "로컬 플레이 (블루투스/WiFi)",
+        "localPlay": "로컬 플레이",
         "needOnePlayer": "시작 전에 최소 한 명의 플레이어가 필요합니다.",
         "noGamesFound": "아직 게임을 찾지 못했습니다",
         "noGamesHint": "호스트의 게임이 근처에서 실행 중인지 확인하세요",
@@ -361,8 +364,9 @@
         "waitingRoom": "대기실",
         "you": "나",
         "you_host": "나 (호스트)",
-        "hardwareReminder": "안정적인 연결을 위해 Wi-Fi, Bluetooth 및 위치 서비스가 켜져 있는지 확인하세요.",
+        "hardwareReminder": "안정적인 연결을 위해 Wi-Fi 및 위치 서비스가 켜져 있는지 확인하세요.",
         "movesCompleted": "이동 완료!",
-        "waitingForOthers": "다른 플레이어를 기다리는 중..."
+        "waitingForOthers": "다른 플레이어를 기다리는 중...",
+        "offline": "오프라인"
     }
 }
