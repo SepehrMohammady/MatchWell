@@ -66,8 +66,9 @@ const THEME_BGM_MAP: Record<ThemeType, SoundName> = {
     'deforestation': 'bgm_theme_forest',
 };
 
-// Cache for loaded sounds
+// Cache for loaded sounds and in-progress loads
 const soundCache: Partial<Record<SoundName, Sound>> = {};
+const soundLoadPromises: Partial<Record<SoundName, Promise<Sound>>> = {};
 
 // Current playing background music
 let currentBgm: Sound | null = null;
@@ -148,14 +149,21 @@ const saveSoundSettings = async (): Promise<void> => {
  * Load a sound file and cache it
  */
 const loadSound = (name: SoundName): Promise<Sound> => {
-    return new Promise((resolve, reject) => {
-        if (soundCache[name]) {
-            resolve(soundCache[name]!);
-            return;
-        }
+    // If successfully loaded, return from cache immediately
+    if (soundCache[name]) {
+        return Promise.resolve(soundCache[name]!);
+    }
 
+    // If currently loading, return the existing promise to prevent duplicate concurrent native instances
+    if (soundLoadPromises[name]) {
+        return soundLoadPromises[name]!;
+    }
+
+    const promise = new Promise<Sound>((resolve, reject) => {
         const config = SOUND_CONFIG[name];
         const sound = new Sound(config.filename, Sound.MAIN_BUNDLE, (error) => {
+            delete soundLoadPromises[name];
+            
             if (error) {
                 console.warn(`Failed to load sound: ${name}`, error);
                 reject(error);
@@ -171,6 +179,9 @@ const loadSound = (name: SoundName): Promise<Sound> => {
             resolve(sound);
         });
     });
+    
+    soundLoadPromises[name] = promise;
+    return promise;
 };
 
 /**
@@ -261,28 +272,24 @@ export const playBgm = async (name: SoundName): Promise<void> => {
         // Check if BGM was changed or stopped while we were loading
         if (currentBgmName !== name) {
             console.log(`BGM ${name} load aborted because intended track changed/stopped`);
-            if (!soundCache[name]) {
-                try { sound.stop(); } catch (e) {}
-                try { sound.release(); } catch (e) {}
-            }
-            return;
+            return; // Safe to leave in soundCache since no multiple native instances were created
         }
 
         // Re-check musicEnabled: user may have toggled music off during the async load
         if (!musicEnabled) {
             console.log(`BGM ${name} load aborted because music was disabled during load`);
-            try { sound.stop(); } catch (e) {}
-            try { sound.release(); } catch (e) {}
-            delete soundCache[name];
             currentBgmName = null;
             return;
         }
 
         sound.setVolume(SOUND_CONFIG[name].volume * musicVolume);
-        sound.play((success) => {
-            if (!success) {
-                console.warn(`BGM ${name} playback failed`);
-            }
+        // Explicitly stop before play to ensure native player restarts cleanly if it somehow stuck playing
+        sound.stop(() => {
+            sound.play((success) => {
+                if (!success) {
+                    console.warn(`BGM ${name} playback failed`);
+                }
+            });
         });
 
         currentBgm = sound;
