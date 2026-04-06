@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
         marginBottom: SPACING.sm,
         borderWidth: 1,
         borderColor: COLORS.accentDanger,
-        minHeight: 72,
+        minHeight: 90,
     },
     label: {
         fontSize: TYPOGRAPHY.caption,
