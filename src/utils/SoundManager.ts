@@ -261,12 +261,20 @@ export const playBgm = async (name: SoundName): Promise<void> => {
         // Check if BGM was changed or stopped while we were loading
         if (currentBgmName !== name) {
             console.log(`BGM ${name} load aborted because intended track changed/stopped`);
-            // The Sound manager will cache it, so we don't necessarily release it completely,
-            // but we absolutely should not call play() and assign it to currentBgm.
             if (!soundCache[name]) {
-                sound.stop();
-                sound.release();
+                try { sound.stop(); } catch (e) {}
+                try { sound.release(); } catch (e) {}
             }
+            return;
+        }
+
+        // Re-check musicEnabled: user may have toggled music off during the async load
+        if (!musicEnabled) {
+            console.log(`BGM ${name} load aborted because music was disabled during load`);
+            try { sound.stop(); } catch (e) {}
+            try { sound.release(); } catch (e) {}
+            delete soundCache[name];
+            currentBgmName = null;
             return;
         }
 
@@ -306,9 +314,6 @@ export const playThemeBgm = async (theme: ThemeType): Promise<void> => {
  * Stop background music - stops, releases, and clears all cached BGM sounds
  */
 export const stopBgm = (): void => {
-    // Stop and release ALL cached BGM sounds.
-    // currentBgm is always the same object as soundCache[currentBgmName], so we only
-    // handle it once here to avoid double-release (which causes MediaPlayer IllegalStateException).
     const bgmNames: SoundName[] = [
         'bgm_menu',
         'bgm_theme_trash',
@@ -321,14 +326,12 @@ export const stopBgm = (): void => {
     bgmNames.forEach(bgmName => {
         const cachedSound = soundCache[bgmName];
         if (cachedSound) {
-            try {
-                cachedSound.setNumberOfLoops(0); // Disable looping before stop to ensure playback ends
-                cachedSound.stop();
-                cachedSound.release();
-            } catch (e) {
-                console.warn(`Error stopping BGM ${bgmName}:`, e);
-            }
-            delete soundCache[bgmName]; // Remove from cache so it gets recreated fresh
+            // Use separate try-catch per call: if stop() throws, release() still runs.
+            // (setNumberOfLoops is omitted - it can throw on paused/invalid MediaPlayer
+            //  states and would skip both stop() and release() in a shared try block.)
+            try { cachedSound.stop(); } catch (e) { console.warn(`stop() failed for ${bgmName}:`, e); }
+            try { cachedSound.release(); } catch (e) { console.warn(`release() failed for ${bgmName}:`, e); }
+            delete soundCache[bgmName];
         }
     });
 
@@ -372,14 +375,11 @@ export const toggleMusic = (enabled?: boolean): boolean => {
     musicEnabled = enabled !== undefined ? enabled : !musicEnabled;
 
     if (!musicEnabled) {
-        // Pause (not stop/release) so we can resume seamlessly
-        pauseBgm();
-    } else {
-        // Resume if a track is already loaded, otherwise caller must invoke playThemeBgm/playBgm
-        if (currentBgm) {
-            currentBgm.play();
-        }
+        // Hard stop (not just pause): clears currentBgm, currentBgmName, bgmLoadingName
+        // so any in-progress async load also gets aborted when it completes.
+        stopBgm();
     }
+    // When enabling, the caller (handleMusicToggle / screen) must invoke playThemeBgm/playBgm.
 
     saveSoundSettings();
     return musicEnabled;
