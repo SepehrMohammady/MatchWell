@@ -23,7 +23,7 @@ import { useGameStore } from '../context/GameStore';
 import GameBoard from '../components/Game/GameBoard';
 import PowerProgress from '../components/UI/PowerProgress';
 import LocalMultiplayerService, { LocalPlayer, LocalGameConfig } from '../services/LocalMultiplayerService';
-import { formatNumber, getCurrentLanguage } from '../config/i18n';
+import { formatNumber, formatTimeLocalized, getCurrentLanguage } from '../config/i18n';
 import { TRASH_FACTS, POLLUTION_FACTS, WATER_FACTS, ENERGY_FACTS, FOREST_FACTS, THEMES } from '../themes';
 import MultiplayerHUD from '../components/UI/MultiplayerHUD';
 
@@ -277,9 +277,7 @@ const LocalMultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
     };
 
     const formatTime = (seconds: number): string => {
-        const m = Math.floor(seconds / 60);
-        const s = seconds % 60;
-        return `${m}:${String(s).padStart(2, '0')}`;
+        return formatTimeLocalized(seconds, getCurrentLanguage());
     };
 
     const getThemeFacts = () => {
@@ -434,7 +432,7 @@ const LocalMultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
                 <View style={[styles.scoreboard, { marginHorizontal: SPACING.md }]}>
                         {rankings.slice(0, 4).map((player, index) => (
                             <View key={player.endpointId} style={styles.rankRow}>
-                                <Text style={styles.rankNumber}>#{index + 1}</Text>
+                                <Text style={styles.rankNumber}>#{formatNumber(index + 1, getCurrentLanguage())}</Text>
                                 <Text style={styles.rankName} numberOfLines={1}>
                                     {player.name}
                                 </Text>

@@ -30,7 +30,7 @@ import {
     Achievement,
 } from '../config/achievements';
 import { useTranslation } from 'react-i18next';
-import { formatNumber, getCurrentLanguage } from '../config/i18n';
+import { formatNumber, formatCompactScore, getCurrentLanguage } from '../config/i18n';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Achievements'>;
 
@@ -300,11 +300,7 @@ const Achievements: React.FC<Props> = ({ navigation }) => {
                                                     {t(`endlessTiers.${a.tier === 'earth-saver' ? 'earthSaver' : a.tier}`)}
                                                 </Text>
                                                 <Text style={styles.endlessMedalScore}>
-                                                    {a.requirement && a.requirement >= 1000000
-                                                        ? `${a.requirement / 1000000}M`
-                                                        : a.requirement && a.requirement >= 1000
-                                                            ? `${a.requirement / 1000}K`
-                                                            : a.requirement}
+                                                    {a.requirement ? formatCompactScore(a.requirement, getCurrentLanguage()) : ''}
                                                 </Text>
                                             </View>
                                         );

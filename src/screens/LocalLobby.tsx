@@ -20,6 +20,7 @@ import { COLORS, TYPOGRAPHY, SPACING, RADIUS } from '../config/theme';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useTranslation } from 'react-i18next';
 import { playSfx } from '../utils/SoundManager';
+import { formatNumber, formatCompactScore, formatTimeLocalized, getCurrentLanguage } from '../config/i18n';
 import LocalMultiplayerService, { LocalPlayer, LocalGameConfig, LocalGameMode } from '../services/LocalMultiplayerService';
 import { THEMES as THEME_LIST, LEVELS } from '../themes';
 import { useGameStore } from '../context/GameStore';
@@ -335,7 +336,7 @@ const LocalLobby: React.FC<Props> = ({ navigation, route }) => {
                 {/* Players List */}
                 <View style={styles.section}>
                     <Text style={styles.sectionTitle}>
-                        {t('localMultiplayer.players')} ({players.length})
+                        {t('localMultiplayer.players')} ({formatNumber(players.length, getCurrentLanguage())})
                     </Text>
 
                     {players.map((player) => {
@@ -395,7 +396,7 @@ const LocalLobby: React.FC<Props> = ({ navigation, route }) => {
                         {/* Mode-specific settings */}
                         {selectedMode === 'race' && renderOptionRow(
                             t('multiplayer.targetScore'),
-                            TARGET_SCORE_OPTIONS.map(v => ({ label: `${v / 1000}K`, value: v })),
+                            TARGET_SCORE_OPTIONS.map(v => ({ label: formatCompactScore(v, getCurrentLanguage()), value: v })),
                             targetScore,
                             setTargetScore
                         )}
@@ -446,14 +447,14 @@ const LocalLobby: React.FC<Props> = ({ navigation, route }) => {
 
                         {selectedMode === 'moves' && renderOptionRow(
                             t('multiplayer.movesLimit'),
-                            MOVES_OPTIONS.map(v => ({ label: `${v}`, value: v })),
+                            MOVES_OPTIONS.map(v => ({ label: formatNumber(v, getCurrentLanguage()), value: v })),
                             movesLimit,
                             setMovesLimit
                         )}
 
                         {selectedMode === 'moves' && renderOptionRow(
                             t('multiplayer.countdownDuration'),
-                            MOVES_COUNTDOWN_OPTIONS.map(v => ({ label: `${v}s`, value: v })),
+                            MOVES_COUNTDOWN_OPTIONS.map(v => ({ label: `${formatNumber(v, getCurrentLanguage())}s`, value: v })),
                             movesCountdownSeconds,
                             setMovesCountdownSeconds
                         )}
@@ -523,19 +524,19 @@ const LocalLobby: React.FC<Props> = ({ navigation, route }) => {
                             {gameConfig.targetScore && (
                                 <View style={styles.configRow}>
                                     <Text style={styles.configLabel}>{t('multiplayer.targetScore')}</Text>
-                                    <Text style={styles.configValue}>{gameConfig.targetScore.toLocaleString()}</Text>
+                                    <Text style={styles.configValue}>{formatCompactScore(gameConfig.targetScore, getCurrentLanguage())}</Text>
                                 </View>
                             )}
                             {gameConfig.durationSeconds && (
                                 <View style={styles.configRow}>
                                     <Text style={styles.configLabel}>{t('multiplayer.duration')}</Text>
-                                    <Text style={styles.configValue}>{Math.floor(gameConfig.durationSeconds / 60)}:{String(gameConfig.durationSeconds % 60).padStart(2, '0')}</Text>
+                                    <Text style={styles.configValue}>{formatTimeLocalized(gameConfig.durationSeconds, getCurrentLanguage())}</Text>
                                 </View>
                             )}
                             {gameConfig.movesLimit && (
                                 <View style={styles.configRow}>
                                     <Text style={styles.configLabel}>{t('multiplayer.movesLimit')}</Text>
-                                    <Text style={styles.configValue}>{gameConfig.movesLimit}</Text>
+                                    <Text style={styles.configValue}>{formatNumber(gameConfig.movesLimit, getCurrentLanguage())}</Text>
                                 </View>
                             )}
                         </View>
@@ -581,7 +582,7 @@ const LocalLobby: React.FC<Props> = ({ navigation, route }) => {
                                                 backgroundColor: COLORS.organicWaste, width: 18, height: 18,
                                                 borderRadius: 9, alignItems: 'center', justifyContent: 'center'
                                             }}>
-                                                <Text style={{ fontSize: 10, color: '#fff', fontWeight: 'bold' }}>{voteCount}</Text>
+                                                <Text style={{ fontSize: 10, color: '#fff', fontWeight: 'bold' }}>{formatNumber(voteCount, getCurrentLanguage())}</Text>
                                             </View>
                                         )}
                                     </TouchableOpacity>

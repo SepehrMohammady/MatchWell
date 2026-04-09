@@ -22,6 +22,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { listMyRooms, RoomListItem } from '../services/MultiplayerService';
 import { useTranslation } from 'react-i18next';
 import { playSfx } from '../utils/SoundManager';
+import { formatNumber, getCurrentLanguage } from '../config/i18n';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'MultiplayerMenu'>;
 
@@ -137,7 +138,7 @@ const MultiplayerMenu: React.FC<Props> = ({ navigation }) => {
             <View style={styles.roomInfo}>
                 <Text style={styles.roomCode}>{item.code}</Text>
                 <Text style={styles.playerCount}>
-                    {item.player_count}/{item.max_players} {t('multiplayer.players')}
+                    {formatNumber(item.player_count, getCurrentLanguage())}/{formatNumber(item.max_players, getCurrentLanguage())} {t('multiplayer.players')}
                 </Text>
             </View>
         </TouchableOpacity>

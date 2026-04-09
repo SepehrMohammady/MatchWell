@@ -18,6 +18,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { createRoom, GameMode } from '../services/MultiplayerService';
 import { useTranslation } from 'react-i18next';
 import { playSfx } from '../utils/SoundManager';
+import { formatNumber, formatCompactScore, getCurrentLanguage } from '../config/i18n';
 import { THEMES, LEVELS } from '../themes';
 import { useGameStore } from '../context/GameStore';
 
@@ -248,7 +249,7 @@ const CreateRoom: React.FC<Props> = ({ navigation }) => {
                 {/* Target Score (Race mode) */}
                 {gameMode === 'race' && renderOptionRow(
                     t('multiplayer.targetScore'),
-                    TARGET_SCORE_OPTIONS.map(v => ({ label: `${v / 1000}K`, value: v })),
+                    TARGET_SCORE_OPTIONS.map(v => ({ label: formatCompactScore(v, getCurrentLanguage()), value: v })),
                     targetScore,
                     setTargetScore
                 )}
@@ -299,7 +300,7 @@ const CreateRoom: React.FC<Props> = ({ navigation }) => {
                 {/* Moves Limit (Moves mode) */}
                 {gameMode === 'moves' && renderOptionRow(
                     t('multiplayer.movesLimit'),
-                    MOVES_OPTIONS.map(v => ({ label: `${v}`, value: v })),
+                    MOVES_OPTIONS.map(v => ({ label: formatNumber(v, getCurrentLanguage()), value: v })),
                     movesLimit,
                     setMovesLimit
                 )}

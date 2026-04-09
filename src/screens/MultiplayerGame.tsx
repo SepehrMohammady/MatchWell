@@ -20,7 +20,7 @@ import { playSfx, playBgm } from '../utils/SoundManager';
 import { useGameStore } from '../context/GameStore';
 import GameBoard from '../components/Game/GameBoard';
 import PowerProgress from '../components/UI/PowerProgress';
-import { formatNumber, getCurrentLanguage } from '../config/i18n';
+import { formatNumber, formatTimeLocalized, getCurrentLanguage } from '../config/i18n';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'MultiplayerGame'>;
 
@@ -156,14 +156,7 @@ const MultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
     };
 
     const formatTime = (seconds: number): string => {
-        const h = Math.floor(seconds / 3600);
-        const m = Math.floor((seconds % 3600) / 60);
-        const s = seconds % 60;
-
-        if (h > 0) {
-            return `${h}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-        }
-        return `${m}:${s.toString().padStart(2, '0')}`;
+        return formatTimeLocalized(seconds, getCurrentLanguage());
     };
 
     const getMyRank = () => {
@@ -234,7 +227,7 @@ const MultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
                         style={[styles.rankBadge, { backgroundColor: COLORS.organicWaste }]}
                         onPress={() => setShowScoreboard(!showScoreboard)}
                     >
-                        <Text style={styles.rankBadgeText}>#{getMyRank()}</Text>
+                        <Text style={styles.rankBadgeText}>#{formatNumber(getMyRank(), getCurrentLanguage())}</Text>
                         <MaterialCommunityIcons name="account-group" size={16} color="#fff" />
                     </TouchableOpacity>
                     {timeRemaining !== null && (
@@ -252,7 +245,7 @@ const MultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
                     <Text style={styles.scoreboardTitle}>{t('multiplayer.liveRankings')}</Text>
                     {rankings.slice(0, 5).map((player, index) => (
                         <View key={player.username} style={styles.rankRow}>
-                            <Text style={styles.rankNum}>#{index + 1}</Text>
+                            <Text style={styles.rankNum}>#{formatNumber(index + 1, getCurrentLanguage())}</Text>
                             <Text style={styles.rankName}>{player.username}</Text>
                             <Text style={styles.rankScore}>
                                 {formatNumber(player.current_score, getCurrentLanguage())}

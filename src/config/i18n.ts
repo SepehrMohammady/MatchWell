@@ -159,6 +159,24 @@ export const formatPaddedNumber = (num: number, padLength: number, lang?: Langua
     return formatNumber(paddedNum, lang);
 };
 
+// Format time (seconds) as m:ss or h:mm:ss with localized digits
+export const formatTimeLocalized = (seconds: number, lang?: LanguageCode): string => {
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = seconds % 60;
+    const timeStr = h > 0
+        ? `${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
+        : `${m}:${String(s).padStart(2, '0')}`;
+    return formatNumber(timeStr, lang);
+};
+
+// Format a compact score like "50K", "1M" with localized digits
+export const formatCompactScore = (value: number, lang?: LanguageCode): string => {
+    if (value >= 1000000) return formatNumber(value / 1000000, lang) + 'M';
+    if (value >= 1000) return formatNumber(value / 1000, lang) + 'K';
+    return formatNumber(value, lang);
+};
+
 // Load saved language
 export const loadSavedLanguage = async (): Promise<LanguageCode> => {
     try {

@@ -18,7 +18,7 @@ import { getRoomStatus, Participant, Room } from '../services/MultiplayerService
 import { useTranslation } from 'react-i18next';
 import { useFocusEffect } from '@react-navigation/native';
 import { playSfx, playBgm } from '../utils/SoundManager';
-import { formatNumber, getCurrentLanguage } from '../config/i18n';
+import { formatNumber, formatTimeLocalized, getCurrentLanguage } from '../config/i18n';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'MultiplayerResults'>;
 
@@ -108,9 +108,7 @@ const MultiplayerResults: React.FC<Props> = ({ navigation, route }) => {
 
     const formatCompletionTime = (seconds: number | undefined): string => {
         if (!seconds) return '--:--';
-        const m = Math.floor(seconds / 60);
-        const s = seconds % 60;
-        return `${m}:${s.toString().padStart(2, '0')}`;
+        return formatTimeLocalized(seconds, getCurrentLanguage());
     };
 
     const renderRankItem = ({ item, index }: { item: Participant; index: number }) => (
@@ -119,7 +117,7 @@ const MultiplayerResults: React.FC<Props> = ({ navigation, route }) => {
                 {getRankIcon(index) ? (
                     <Text style={styles.rankEmoji}>{getRankIcon(index)}</Text>
                 ) : (
-                    <Text style={styles.rankNumber}>#{index + 1}</Text>
+                    <Text style={styles.rankNumber}>#{formatNumber(index + 1, getCurrentLanguage())}</Text>
                 )}
             </View>
             <View style={styles.rankInfo}>
@@ -191,7 +189,7 @@ const MultiplayerResults: React.FC<Props> = ({ navigation, route }) => {
             {!isWinner && (
                 <View style={styles.yourResult}>
                     <Text style={styles.yourRankLabel}>{t('multiplayer.yourRank')}</Text>
-                    <Text style={styles.yourRank}>#{myRank}</Text>
+                    <Text style={styles.yourRank}>#{formatNumber(myRank, getCurrentLanguage())}</Text>
                 </View>
             )}
 

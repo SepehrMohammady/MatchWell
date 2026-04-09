@@ -3,6 +3,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import { COLORS, TYPOGRAPHY, SPACING, RADIUS } from '../../config/theme';
 import { useTranslation } from 'react-i18next';
+import { formatNumber, formatPaddedNumber, getCurrentLanguage } from '../../config/i18n';
 
 interface ClockData {
     years: number;
@@ -99,27 +100,27 @@ const ClimateClock: React.FC = () => {
             <Text style={styles.label}>🌍 {t('climate.timeLeft')}</Text>
             <View style={styles.clockRow}>
                 <View style={styles.timeUnit}>
-                    <Text style={styles.timeValue}>{clockData.years}</Text>
+                    <Text style={styles.timeValue}>{formatNumber(clockData.years, getCurrentLanguage())}</Text>
                     <Text style={styles.timeLabel}>YRS</Text>
                 </View>
                 <Text style={styles.separator}>:</Text>
                 <View style={styles.timeUnit}>
-                    <Text style={styles.timeValue}>{String(clockData.days).padStart(3, '0')}</Text>
+                    <Text style={styles.timeValue}>{formatPaddedNumber(clockData.days, 3, getCurrentLanguage())}</Text>
                     <Text style={styles.timeLabel}>DAYS</Text>
                 </View>
                 <Text style={styles.separator}>:</Text>
                 <View style={styles.timeUnit}>
-                    <Text style={styles.timeValue}>{String(clockData.hours).padStart(2, '0')}</Text>
+                    <Text style={styles.timeValue}>{formatPaddedNumber(clockData.hours, 2, getCurrentLanguage())}</Text>
                     <Text style={styles.timeLabel}>HRS</Text>
                 </View>
                 <Text style={styles.separator}>:</Text>
                 <View style={styles.timeUnit}>
-                    <Text style={styles.timeValue}>{String(clockData.minutes).padStart(2, '0')}</Text>
+                    <Text style={styles.timeValue}>{formatPaddedNumber(clockData.minutes, 2, getCurrentLanguage())}</Text>
                     <Text style={styles.timeLabel}>MIN</Text>
                 </View>
                 <Text style={styles.separator}>:</Text>
                 <View style={styles.timeUnit}>
-                    <Text style={styles.timeValue}>{String(clockData.seconds).padStart(2, '0')}</Text>
+                    <Text style={styles.timeValue}>{formatPaddedNumber(clockData.seconds, 2, getCurrentLanguage())}</Text>
                     <Text style={styles.timeLabel}>SEC</Text>
                 </View>
             </View>

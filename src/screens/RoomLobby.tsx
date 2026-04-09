@@ -19,6 +19,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { getRoomStatus, startGame, voteTheme, leaveRoom, Participant, ThemeVote, Room } from '../services/MultiplayerService';
 import { useTranslation } from 'react-i18next';
 import { playSfx } from '../utils/SoundManager';
+import { formatNumber, formatCompactScore, getCurrentLanguage } from '../config/i18n';
 import { THEMES, LEVELS } from '../themes';
 import { useGameStore } from '../context/GameStore';
 
@@ -193,13 +194,13 @@ const RoomLobby: React.FC<Props> = ({ navigation, route }) => {
                 {room?.target_score && (
                     <View style={styles.infoCard}>
                         <MaterialCommunityIcons name="target" size={24} color={COLORS.plastic} />
-                        <Text style={styles.infoLabel}>{(room.target_score / 1000)}K</Text>
+                        <Text style={styles.infoLabel}>{formatCompactScore(room.target_score, getCurrentLanguage())}</Text>
                     </View>
                 )}
                 {room?.moves_limit && (
                     <View style={styles.infoCard}>
                         <MaterialCommunityIcons name="shoe-print" size={24} color={COLORS.accentHighlight} />
-                        <Text style={styles.infoLabel}>{room.moves_limit} {t('common.moves')}</Text>
+                        <Text style={styles.infoLabel}>{formatNumber(room.moves_limit, getCurrentLanguage())} {t('common.moves')}</Text>
                     </View>
                 )}
             </View>
@@ -225,7 +226,7 @@ const RoomLobby: React.FC<Props> = ({ navigation, route }) => {
                                     <MaterialCommunityIcons name={theme.icon} size={32} color={theme.color} />
                                     {voteCount > 0 && (
                                         <View style={styles.voteBadge}>
-                                            <Text style={styles.voteCount}>{voteCount}</Text>
+                                            <Text style={styles.voteCount}>{formatNumber(voteCount, getCurrentLanguage())}</Text>
                                         </View>
                                     )}
                                 </TouchableOpacity>
@@ -238,7 +239,7 @@ const RoomLobby: React.FC<Props> = ({ navigation, route }) => {
             {/* Participants */}
             <View style={styles.section}>
                 <Text style={styles.sectionTitle}>
-                    {t('multiplayer.players')} ({participants.length}/{room?.max_players})
+                    {t('multiplayer.players')} ({formatNumber(participants.length, getCurrentLanguage())}/{formatNumber(room?.max_players, getCurrentLanguage())})
                 </Text>
                 <FlatList
                     data={participants}

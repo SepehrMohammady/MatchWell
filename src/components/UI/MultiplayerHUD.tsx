@@ -6,7 +6,7 @@ import { THEME_CONFIGS } from '../../themes';
 import { COLORS, TYPOGRAPHY, SPACING, RADIUS } from '../../config/theme';
 import { PauseIcon } from './Icons';
 import { useTranslation } from 'react-i18next';
-import { formatNumber, getCurrentLanguage } from '../../config/i18n';
+import { formatNumber, formatTimeLocalized, getCurrentLanguage } from '../../config/i18n';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
@@ -36,9 +36,7 @@ const MultiplayerHUD: React.FC<MultiplayerHUDProps> = ({
     const theme = useGameStore((state) => state.theme);
 
     const formatTime = (seconds: number): string => {
-        const m = Math.floor(seconds / 60);
-        const s = seconds % 60;
-        return `${m}:${String(s).padStart(2, '0')}`;
+        return formatTimeLocalized(seconds, getCurrentLanguage());
     };
 
     return (
