@@ -107,7 +107,7 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
     }, []);
 
     // Endless mode rotating facts
-    const [endlessFactIndex, setEndlessFactIndex] = useState(0);
+    const [endlessFactIndex, setEndlessFactIndex] = useState(() => Math.floor(Math.random() * 10));
 
     // Track already shown endless achievements to avoid duplicates
     const shownEndlessAchievements = useRef<Set<string>>(new Set());

@@ -35,7 +35,7 @@ const MultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
     const [timeRemaining, setTimeRemaining] = useState<number | null>(null);
     const [showScoreboard, setShowScoreboard] = useState(false);
     const [finished, setFinished] = useState(false);
-    const [endlessFactIndex, setEndlessFactIndex] = useState(0);
+    const [endlessFactIndex, setEndlessFactIndex] = useState(() => Math.floor(Math.random() * 10));
     const [gameInitialized, setGameInitialized] = useState(false);
     const lastSyncScore = useRef(0);
 

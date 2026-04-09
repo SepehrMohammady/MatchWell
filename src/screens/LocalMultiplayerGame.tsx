@@ -38,7 +38,7 @@ const LocalMultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
     const { t } = useTranslation();
 
     const [rankings, setRankings] = useState<LocalPlayer[]>([]);
-    const [endlessFactIndex, setEndlessFactIndex] = useState(0);
+    const [endlessFactIndex, setEndlessFactIndex] = useState(() => Math.floor(Math.random() * 10));
     const [gameInitialized, setGameInitialized] = useState(false);
     
     // Game config from service
@@ -113,6 +113,14 @@ const LocalMultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
             };
         }, [theme])
     );
+
+    // Rotate facts every 60 seconds
+    useEffect(() => {
+        const factTimer = setInterval(() => {
+            setEndlessFactIndex(prev => prev + 1);
+        }, 60000);
+        return () => clearInterval(factTimer);
+    }, []);
 
     // Set up P2P callbacks
     useEffect(() => {
@@ -294,7 +302,8 @@ const LocalMultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
     const getTranslatedFact = () => {
         const themeKey = theme === 'trash-sorting' ? 'trash' : theme === 'water-conservation' ? 'water' : theme === 'energy-efficiency' ? 'energy' : theme === 'deforestation' ? 'forest' : theme;
         const facts = t(`facts.${themeKey}`, { returnObjects: true }) as string[];
-        return facts?.[0] || '';
+        if (!Array.isArray(facts) || facts.length === 0) return '';
+        return facts[endlessFactIndex % facts.length] || '';
     };
 
     // Calculate a dynamic background color based on game progress

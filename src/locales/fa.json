@@ -94,7 +94,7 @@
         "gameActive": "در حال انجام",
         "gameComplete": "تمام شده",
         "you": "شما",
-        "countdownDuration": "مدت شمارش معکوس (ث)",
+        "countdownDuration": "مدت شمارش معکوس (ثانیه)",
         "namePromptTitle": "نام شما چیست؟",
         "namePromptMessage": "نامی انتخاب کنید که بازیکنان دیگر خواهند دید",
         "saveNameButton": "بزن بریم!"
