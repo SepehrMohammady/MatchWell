@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getDeviceId } from './LeaderboardService';
 import { ThemeType } from '../types';
 
-const API_BASE_URL = 'https://sepehrmohammady.ir/semolab/matchwell/multiplayer';
+const API_BASE_URL = 'https://semo-lab.com/matchwell/multiplayer';
 
 // Types
 export type GameMode = 'race' | 'timed' | 'moves';

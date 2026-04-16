@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 
-const API_BASE_URL = 'https://sepehrmohammady.ir/semolab/matchwell/leaderboard';
+const API_BASE_URL = 'https://semo-lab.com/matchwell/leaderboard';
 
 const DEVICE_ID_KEY = '@matchwell_device_id';
 const USERNAME_KEY = '@matchwell_username';
