@@ -8,7 +8,6 @@ import {
     StatusBar,
     FlatList,
     ActivityIndicator,
-    Alert,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -22,6 +21,7 @@ import { playSfx } from '../utils/SoundManager';
 import { formatNumber, formatCompactScore, getCurrentLanguage } from '../config/i18n';
 import { THEMES, LEVELS } from '../themes';
 import { useGameStore } from '../context/GameStore';
+import CustomAlert from '../components/UI/CustomAlert';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'RoomLobby'>;
 
@@ -38,6 +38,15 @@ const RoomLobby: React.FC<Props> = ({ navigation, route }) => {
     const [themeVotes, setThemeVotes] = useState<ThemeVote[]>([]);
     const [myVote, setMyVote] = useState<string | null>(null);
     const [starting, setStarting] = useState(false);
+    const [alertConfig, setAlertConfig] = useState<{ visible: boolean; title: string; message: string; buttons?: any[] }>({
+        visible: false,
+        title: '',
+        message: '',
+    });
+
+    const showAlert = (title: string, message: string, buttons?: any[]) =>
+        setAlertConfig({ visible: true, title, message, buttons });
+    const hideAlert = () => setAlertConfig(prev => ({ ...prev, visible: false }));
 
     // Get completed levels to filter themes
     const completedLevels = useGameStore((state) => state.completedLevels);
@@ -51,8 +60,8 @@ const RoomLobby: React.FC<Props> = ({ navigation, route }) => {
     const loadRoomStatus = async () => {
         const result = await getRoomStatus(roomCode);
         if (result.error) {
-            Alert.alert(t('common.error'), result.error, [
-                { text: t('common.ok'), onPress: () => navigation.goBack() }
+            showAlert(t('common.error'), result.error, [
+                { text: t('common.ok'), onPress: () => { hideAlert(); navigation.goBack(); } }
             ]);
             return;
         }
@@ -88,13 +97,14 @@ const RoomLobby: React.FC<Props> = ({ navigation, route }) => {
 
     const handleBack = () => {
         playSfx('tile_select');
-        Alert.alert(
+        showAlert(
             t('multiplayer.leaveRoom'),
             t('multiplayer.leaveConfirm'),
             [
-                { text: t('common.no'), style: 'cancel' },
+                { text: t('common.no'), style: 'cancel', onPress: hideAlert },
                 {
                     text: t('common.yes'), style: 'destructive', onPress: async () => {
+                        hideAlert();
                         await leaveRoom(roomCode);
                         navigation.goBack();
                     }
@@ -130,7 +140,7 @@ const RoomLobby: React.FC<Props> = ({ navigation, route }) => {
                 movesLimit: room.moves_limit,
             });
         } else {
-            Alert.alert(t('common.error'), result.error || t('multiplayer.errorStart'));
+            showAlert(t('common.error'), result.error || t('multiplayer.errorStart'), [{ text: t('common.ok'), onPress: hideAlert }]);
             setStarting(false);
         }
     };
@@ -169,6 +179,14 @@ const RoomLobby: React.FC<Props> = ({ navigation, route }) => {
     return (
         <View style={[styles.container, { paddingTop: insets.top }]}>
             <StatusBar barStyle="light-content" backgroundColor={COLORS.backgroundPrimary} />
+
+            <CustomAlert
+                visible={alertConfig.visible}
+                title={alertConfig.title}
+                message={alertConfig.message}
+                buttons={alertConfig.buttons}
+                onDismiss={hideAlert}
+            />
 
             {/* Header */}
             <View style={styles.header}>

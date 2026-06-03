@@ -7,7 +7,6 @@ import {
     TouchableOpacity,
     StatusBar,
     Switch,
-    Alert,
     Linking,
     ScrollView,
     Modal,
@@ -28,6 +27,7 @@ import VERSION from '../config/version';
 import { useGameStore } from '../context/GameStore';
 import { COLORS, TYPOGRAPHY, SPACING, RADIUS, SHADOWS } from '../config/theme';
 import { BackIcon } from '../components/UI/Icons';
+import CustomAlert from '../components/UI/CustomAlert';
 import { useTranslation } from 'react-i18next';
 import { LANGUAGES, LanguageCode, changeLanguage, getCurrentLanguage, formatNumber } from '../config/i18n';
 import RNRestart from 'react-native-restart';
@@ -42,6 +42,15 @@ const Settings: React.FC<Props> = ({ navigation }) => {
     const [currentLang, setCurrentLang] = useState<LanguageCode>(getCurrentLanguage());
     const [showLanguageModal, setShowLanguageModal] = useState(false);
     const [needsRestart, setNeedsRestart] = useState(false);
+    const [alertConfig, setAlertConfig] = useState<{ visible: boolean; title: string; message: string; buttons?: any[] }>({
+        visible: false,
+        title: '',
+        message: '',
+    });
+
+    const showAlert = (title: string, message: string, buttons?: any[]) =>
+        setAlertConfig({ visible: true, title, message, buttons });
+    const hideAlert = () => setAlertConfig(prev => ({ ...prev, visible: false }));
 
     useEffect(() => {
         const settings = getSoundSettings();
@@ -81,17 +90,17 @@ const Settings: React.FC<Props> = ({ navigation }) => {
     const resetProgress = useGameStore((state) => state.resetProgress);
 
     const handleResetData = () => {
-        Alert.alert(
+        showAlert(
             t('settings.resetProgress'),
             t('settings.resetWarning'),
             [
-                { text: t('common.cancel'), style: 'cancel' },
+                { text: t('common.cancel'), style: 'cancel', onPress: hideAlert },
                 {
                     text: t('common.yes'),
                     style: 'destructive',
                     onPress: async () => {
                         await resetProgress();
-                        Alert.alert(t('common.ok'), t('settings.resetProgress'));
+                        showAlert(t('common.ok'), t('settings.resetProgress'), [{ text: t('common.ok'), onPress: hideAlert }]);
                     },
                 },
             ]
@@ -117,6 +126,14 @@ const Settings: React.FC<Props> = ({ navigation }) => {
     return (
         <View style={[styles.container, { paddingTop: insets.top }]}>
             <StatusBar barStyle="dark-content" backgroundColor={COLORS.backgroundPrimary} />
+
+            <CustomAlert
+                visible={alertConfig.visible}
+                title={alertConfig.title}
+                message={alertConfig.message}
+                buttons={alertConfig.buttons}
+                onDismiss={hideAlert}
+            />
 
             {/* Header */}
             <View style={styles.header}>

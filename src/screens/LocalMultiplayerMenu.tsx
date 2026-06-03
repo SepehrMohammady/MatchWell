@@ -8,7 +8,6 @@ import {
     StatusBar,
     FlatList,
     ActivityIndicator,
-    Alert,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';

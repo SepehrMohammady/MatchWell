@@ -12,7 +12,6 @@ import {
     ScrollView,
     RefreshControl,
     StatusBar,
-    Alert,
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -21,6 +20,7 @@ import { RootStackParamList } from '../types';
 import { COLORS, TYPOGRAPHY, SPACING, RADIUS } from '../config/theme';
 import { useGameStore } from '../context/GameStore';
 import { BackIcon, TrophyIcon, StarFilledIcon, MedalIcon, RankIcon } from '../components/UI/Icons';
+import CustomAlert from '../components/UI/CustomAlert';
 import {
     getGlobalLeaderboard,
     getThemeLeaderboard,
@@ -78,6 +78,15 @@ const Leaderboard: React.FC<Props> = ({ navigation }) => {
     const [usernameError, setUsernameError] = useState('');
     const [publishing, setPublishing] = useState(false);
     const [totalPlayers, setTotalPlayers] = useState(0);
+    const [alertConfig, setAlertConfig] = useState<{ visible: boolean; title: string; message: string; buttons?: any[] }>({
+        visible: false,
+        title: '',
+        message: '',
+    });
+
+    const showAlert = (title: string, message: string, buttons?: any[]) =>
+        setAlertConfig({ visible: true, title, message, buttons });
+    const hideAlert = () => setAlertConfig(prev => ({ ...prev, visible: false }));
 
     // Calculate medals from achievements
     // Endless scores use negative IDs: -1 = trash, -2 = pollution, -3 = water, -4 = energy, -5 = forest
@@ -225,10 +234,10 @@ const Leaderboard: React.FC<Props> = ({ navigation }) => {
             endlessScoresData.water + endlessScoresData.energy + endlessScoresData.forest;
 
         if (totalEndlessScore === 0) {
-            Alert.alert(
+            showAlert(
                 t('leaderboard.noScoresTitle'),
                 t('leaderboard.noScoresMessage'),
-                [{ text: t('common.ok') }]
+                [{ text: t('common.ok'), onPress: hideAlert }]
             );
             return;
         }
@@ -279,9 +288,9 @@ const Leaderboard: React.FC<Props> = ({ navigation }) => {
                 setPlayerInfo(result.player);
             }
             loadRankings();
-            Alert.alert(t('leaderboard.successTitle'), t('leaderboard.successMessage'));
+            showAlert(t('leaderboard.successTitle'), t('leaderboard.successMessage'), [{ text: t('common.ok'), onPress: hideAlert }]);
         } else {
-            Alert.alert(t('leaderboard.errorTitle'), result.error || t('leaderboard.publishFailed'));
+            showAlert(t('leaderboard.errorTitle'), result.error || t('leaderboard.publishFailed'), [{ text: t('common.ok'), onPress: hideAlert }]);
         }
     };
 
@@ -320,7 +329,7 @@ const Leaderboard: React.FC<Props> = ({ navigation }) => {
     const renderRankItem = ({ item, index }: { item: LeaderboardEntry; index: number }) => {
         const isPlayer = playerInfo && item.username === playerInfo.username;
         const rankColors = ['#FFD700', '#C0C0C0', '#CD7F32'];
-        const rankColor = item.rank <= 3 ? rankColors[item.rank - 1] : COLORS.textMuted;
+        const rankColor = item.rank <= 3 ? rankColors[item.rank - 1] : COLORS.organicWaste;
 
         return (
             <View style={[styles.rankItem, isPlayer && styles.rankItemHighlight]}>
@@ -379,6 +388,14 @@ const Leaderboard: React.FC<Props> = ({ navigation }) => {
     return (
         <View style={[styles.container, { paddingTop: insets.top }]}>
             <StatusBar barStyle="light-content" />
+
+            <CustomAlert
+                visible={alertConfig.visible}
+                title={alertConfig.title}
+                message={alertConfig.message}
+                buttons={alertConfig.buttons}
+                onDismiss={hideAlert}
+            />
 
             {/* Header */}
             <View style={styles.header}>
