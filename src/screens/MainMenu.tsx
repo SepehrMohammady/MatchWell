@@ -11,7 +11,6 @@ import {
     Dimensions,
     ScrollView,
     BackHandler,
-    Alert,
     Animated,
     Easing,
 } from 'react-native';
