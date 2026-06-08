@@ -657,7 +657,7 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
                                 : <StarEmptyIcon size={32} />}
                         </View>
 
-                        <Text style={styles.movesLeftText}>{t('game.movesRemaining', { count: movesRemaining })}</Text>
+                        <Text style={styles.movesLeftText}>{t('game.movesRemaining', { count: movesRemaining }).replace(String(movesRemaining), formatNumber(movesRemaining, getCurrentLanguage()))}</Text>
 
                         <View style={styles.modalButtonsContainer}>
                             {/* Only show Next Level if there's a next level */}

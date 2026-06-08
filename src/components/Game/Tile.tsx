@@ -18,9 +18,15 @@ const GRID_SIZE = 8;
 const TILE_MARGIN = 2;
 const BOARD_PADDING = 10;
 
+// Horizontal safe zone on each side so the board never touches the screen edges,
+// which can conflict with the system back-swipe gesture on some devices.
+const BOARD_SCREEN_MARGIN = 16;
+// Board chrome not covered by BOARD_PADDING: outer border (4px) + inner padding (8px), both sides
+const BOARD_FRAME = (4 + 8) * 2;
+
 // Calculate tile size based on both width and available height
 // For height: subtract HUD (~160px) + fact card (~80px) + nav bar (~60px) + safe areas (~80px)
-const TILE_SIZE_BY_WIDTH = (SCREEN_WIDTH - BOARD_PADDING * 2 - TILE_MARGIN * 2 * GRID_SIZE) / GRID_SIZE;
+const TILE_SIZE_BY_WIDTH = (SCREEN_WIDTH - BOARD_SCREEN_MARGIN * 2 - BOARD_PADDING * 2 - BOARD_FRAME - TILE_MARGIN * 2 * GRID_SIZE) / GRID_SIZE;
 const AVAILABLE_HEIGHT_FOR_BOARD = SCREEN_HEIGHT - 380; // HUD + fact + nav + padding
 const TILE_SIZE_BY_HEIGHT = (AVAILABLE_HEIGHT_FOR_BOARD - BOARD_PADDING * 2 - TILE_MARGIN * 2 * GRID_SIZE) / GRID_SIZE;
 
