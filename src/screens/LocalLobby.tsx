@@ -21,7 +21,8 @@ import { useTranslation } from 'react-i18next';
 import { playSfx } from '../utils/SoundManager';
 import { formatNumber, formatCompactScore, formatTimeLocalized, getCurrentLanguage } from '../config/i18n';
 import LocalMultiplayerService, { LocalPlayer, LocalGameConfig, LocalGameMode } from '../services/LocalMultiplayerService';
-import { THEMES as THEME_LIST } from '../themes';
+import { THEMES as THEME_LIST, LEVELS } from '../themes';
+import { useGameStore } from '../context/GameStore';
 import CustomAlert from '../components/UI/CustomAlert';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'LocalLobby'>;
@@ -75,9 +76,14 @@ const LocalLobby: React.FC<Props> = ({ navigation, route }) => {
         message: ''
     });
 
-    // Every theme is available in local multiplayer - see CreateRoom for why this
-    // is not gated on Story progress.
-    const unlockedThemes = THEME_LIST;
+    // Get completed levels to filter themes
+    const completedLevels = useGameStore((state) => state.completedLevels);
+
+    // Get unlocked themes (at least one level completed in that theme)
+    const unlockedThemes = THEME_LIST.filter(theme => {
+        const themeLevels = LEVELS.filter(l => l.theme === theme.id);
+        return themeLevels.some(level => completedLevels.includes(level.id));
+    });
 
     // Calculate duration in seconds from inputs
     const getDurationSeconds = () => {
@@ -472,7 +478,7 @@ const LocalLobby: React.FC<Props> = ({ navigation, route }) => {
                             </View>
                             {!themeVoting && (
                             <View style={styles.themeGrid}>
-                                {unlockedThemes.map((theme) => (
+                                {unlockedThemes.length > 0 ? unlockedThemes.map((theme) => (
                                     <TouchableOpacity
                                         key={theme.id}
                                         style={[
@@ -485,7 +491,9 @@ const LocalLobby: React.FC<Props> = ({ navigation, route }) => {
                                     >
                                         <MaterialCommunityIcons name={theme.icon} size={32} color={theme.color} />
                                     </TouchableOpacity>
-                                ))}
+                                )) : (
+                                    <Text style={styles.noThemesText}>{t('multiplayer.noUnlockedThemes')}</Text>
+                                )}
                                 </View>
                             )}
                         </View>

@@ -97,7 +97,8 @@
         "namePromptTitle": "Πώς σε λένε;",
         "namePromptMessage": "Επίλεξε ένα όνομα που θα βλέπουν οι άλλοι παίκτες",
         "saveNameButton": "Πάμε να παίξουμε!",
-        "errorDuration": "Ορίστε χρονικό όριο για αυτή τη λειτουργία"
+        "errorDuration": "Ορίστε χρονικό όριο για αυτή τη λειτουργία",
+        "noUnlockedThemes": "Complete Story mode levels to unlock themes"
     },
     "game": {
         "paused": "Paused",

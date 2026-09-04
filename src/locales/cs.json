@@ -97,7 +97,8 @@
         "namePromptTitle": "Jak se jmenuješ?",
         "namePromptMessage": "Zvol si jméno, které uvidí ostatní hráči",
         "saveNameButton": "Pojďme hrát!",
-        "errorDuration": "Nastavte časový limit pro tento režim"
+        "errorDuration": "Nastavte časový limit pro tento režim",
+        "noUnlockedThemes": "Complete Story mode levels to unlock themes"
     },
     "game": {
         "paused": "Paused",

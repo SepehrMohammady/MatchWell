@@ -97,7 +97,8 @@
         "gameComplete": "Completed",
         "you": "You",
         "countdownDuration": "Countdown Duration (sec)",
-        "errorDuration": "Set a time limit for this mode"
+        "errorDuration": "Set a time limit for this mode",
+        "noUnlockedThemes": "Complete Story mode levels to unlock themes"
     },
     "game": {
         "paused": "Paused",

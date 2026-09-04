@@ -97,7 +97,8 @@
         "namePromptTitle": "이름이 뭐예요?",
         "namePromptMessage": "다른 플레이어가 볼 이름을 선택하세요",
         "saveNameButton": "플레이하자!",
-        "errorDuration": "이 모드의 제한 시간을 설정하세요"
+        "errorDuration": "이 모드의 제한 시간을 설정하세요",
+        "noUnlockedThemes": "테마 잠금 해제를 위해 스토리 모드 레벨을 완료하세요"
     },
     "game": {
         "paused": "일시정지",

@@ -97,7 +97,8 @@
         "namePromptTitle": "Comment t'appelles-tu ?",
         "namePromptMessage": "Choisis un nom que les autres joueurs verront",
         "saveNameButton": "C'est parti !",
-        "errorDuration": "Définissez une limite de temps pour ce mode"
+        "errorDuration": "Définissez une limite de temps pour ce mode",
+        "noUnlockedThemes": "Complétez les niveaux du mode histoire pour débloquer les thèmes"
     },
     "game": {
         "paused": "Pause",

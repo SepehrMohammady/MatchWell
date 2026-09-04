@@ -97,7 +97,8 @@
         "namePromptTitle": "ما اسمك؟",
         "namePromptMessage": "اختر اسمًا سيراه اللاعبون الآخرون",
         "saveNameButton": "هيا نلعب!",
-        "errorDuration": "حدّد مهلة زمنية لهذا الوضع"
+        "errorDuration": "حدّد مهلة زمنية لهذا الوضع",
+        "noUnlockedThemes": "أكمل مستويات وضع القصة لفتح المواضيع"
     },
     "game": {
         "paused": "متوقف مؤقتاً",

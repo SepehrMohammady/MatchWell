@@ -97,7 +97,8 @@
         "namePromptTitle": "आपका नाम क्या है?",
         "namePromptMessage": "एक नाम चुनें जो अन्य खिलाड़ी देखेंगे",
         "saveNameButton": "चलो खेलते हैं!",
-        "errorDuration": "इस मोड के लिए समय सीमा तय करें"
+        "errorDuration": "इस मोड के लिए समय सीमा तय करें",
+        "noUnlockedThemes": "थीम अनलॉक करने के लिए कहानी मोड स्तर पूर्ण करें"
     },
     "game": {
         "paused": "रुका हुआ",

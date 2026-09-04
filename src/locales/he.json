@@ -97,7 +97,8 @@
         "namePromptTitle": "מה השם שלך?",
         "namePromptMessage": "בחר שם שהשחקנים האחרים יראו",
         "saveNameButton": "!בואו נשחק",
-        "errorDuration": "הגדירו מגבלת זמן למצב הזה"
+        "errorDuration": "הגדירו מגבלת זמן למצב הזה",
+        "noUnlockedThemes": "Complete Story mode levels to unlock themes"
     },
     "game": {
         "paused": "Paused",

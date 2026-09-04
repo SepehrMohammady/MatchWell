@@ -19,7 +19,8 @@ import { getRoomStatus, startGame, voteTheme, leaveRoom, Participant, ThemeVote,
 import { useTranslation } from 'react-i18next';
 import { playSfx } from '../utils/SoundManager';
 import { formatNumber, formatCompactScore, getCurrentLanguage } from '../config/i18n';
-import { THEMES } from '../themes';
+import { THEMES, LEVELS } from '../themes';
+import { useGameStore } from '../context/GameStore';
 import CustomAlert from '../components/UI/CustomAlert';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'RoomLobby'>;
@@ -47,9 +48,14 @@ const RoomLobby: React.FC<Props> = ({ navigation, route }) => {
         setAlertConfig({ visible: true, title, message, buttons });
     const hideAlert = () => setAlertConfig(prev => ({ ...prev, visible: false }));
 
-    // Every theme is votable in multiplayer - see CreateRoom for why this is not
-    // gated on Story progress (players in one room must see the same ballot).
-    const unlockedThemes = THEMES;
+    // Get completed levels to filter themes
+    const completedLevels = useGameStore((state) => state.completedLevels);
+
+    // Get unlocked themes (at least one level completed in that theme)
+    const unlockedThemes = THEMES.filter(theme => {
+        const themeLevels = LEVELS.filter(l => l.theme === theme.id);
+        return themeLevels.some(level => completedLevels.includes(level.id));
+    });
 
     const loadRoomStatus = async () => {
         const result = await getRoomStatus(roomCode);

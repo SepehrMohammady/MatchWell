@@ -97,7 +97,8 @@
         "namePromptTitle": "Hoe heet je?",
         "namePromptMessage": "Kies een naam die andere spelers zullen zien",
         "saveNameButton": "Laten we spelen!",
-        "errorDuration": "Stel een tijdslimiet in voor deze modus"
+        "errorDuration": "Stel een tijdslimiet in voor deze modus",
+        "noUnlockedThemes": "Complete Story mode levels to unlock themes"
     },
     "game": {
         "paused": "Paused",

@@ -97,7 +97,8 @@
         "namePromptTitle": "Wie heißt du?",
         "namePromptMessage": "Wähle einen Namen, den andere Spieler sehen werden",
         "saveNameButton": "Los geht's!",
-        "errorDuration": "Lege ein Zeitlimit für diesen Modus fest"
+        "errorDuration": "Lege ein Zeitlimit für diesen Modus fest",
+        "noUnlockedThemes": "Schließe Story-Modus Level ab um Themen freizuschalten"
     },
     "game": {
         "paused": "Pausiert",

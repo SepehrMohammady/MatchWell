@@ -97,7 +97,8 @@
         "namePromptTitle": "Mikä on nimesi?",
         "namePromptMessage": "Valitse nimi, jonka muut pelaajat näkevät",
         "saveNameButton": "Pelataan!",
-        "errorDuration": "Aseta aikaraja tälle pelimuodolle"
+        "errorDuration": "Aseta aikaraja tälle pelimuodolle",
+        "noUnlockedThemes": "Complete Story mode levels to unlock themes"
     },
     "game": {
         "paused": "Paused",

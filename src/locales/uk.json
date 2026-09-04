@@ -97,7 +97,8 @@
         "namePromptTitle": "Як тебе звати?",
         "namePromptMessage": "Обери ім'я, яке бачитимуть інші гравці",
         "saveNameButton": "Грати!",
-        "errorDuration": "Установіть обмеження часу для цього режиму"
+        "errorDuration": "Установіть обмеження часу для цього режиму",
+        "noUnlockedThemes": "Complete Story mode levels to unlock themes"
     },
     "game": {
         "paused": "Paused",

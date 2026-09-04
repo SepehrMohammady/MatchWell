@@ -97,7 +97,8 @@
         "namePromptTitle": "Hogy hívnak?",
         "namePromptMessage": "Válassz egy nevet, amit a többi játékos látni fog",
         "saveNameButton": "Játsszunk!",
-        "errorDuration": "Állíts be időkorlátot ehhez a módhoz"
+        "errorDuration": "Állíts be időkorlátot ehhez a módhoz",
+        "noUnlockedThemes": "Complete Story mode levels to unlock themes"
     },
     "game": {
         "paused": "Paused",

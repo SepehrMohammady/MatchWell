@@ -97,7 +97,8 @@
         "namePromptTitle": "Vad heter du?",
         "namePromptMessage": "Välj ett namn som andra spelare ser",
         "saveNameButton": "Nu kör vi!",
-        "errorDuration": "Ange en tidsgräns för det här läget"
+        "errorDuration": "Ange en tidsgräns för det här läget",
+        "noUnlockedThemes": "Complete Story mode levels to unlock themes"
     },
     "game": {
         "paused": "Paused",

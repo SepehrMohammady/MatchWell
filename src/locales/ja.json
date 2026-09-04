@@ -97,7 +97,8 @@
         "namePromptTitle": "お名前は？",
         "namePromptMessage": "他のプレイヤーに表示される名前を入力してください",
         "saveNameButton": "プレイ開始！",
-        "errorDuration": "このモードの制限時間を設定してください"
+        "errorDuration": "このモードの制限時間を設定してください",
+        "noUnlockedThemes": "ストーリーモードのレベルをクリアしてテーマを解除"
     },
     "game": {
         "paused": "一時停止",

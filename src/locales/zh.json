@@ -97,7 +97,8 @@
         "namePromptTitle": "你叫什么名字？",
         "namePromptMessage": "选择一个其他玩家会看到的名字",
         "saveNameButton": "开始游戏！",
-        "errorDuration": "请为该模式设置时间限制"
+        "errorDuration": "请为该模式设置时间限制",
+        "noUnlockedThemes": "完成故事模式关卡以解锁主题"
     },
     "game": {
         "paused": "已暂停",

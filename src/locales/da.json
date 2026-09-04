@@ -97,7 +97,8 @@
         "namePromptTitle": "Hvad hedder du?",
         "namePromptMessage": "Vælg et navn, som andre spillere vil se",
         "saveNameButton": "Lad os spille!",
-        "errorDuration": "Angiv en tidsgrænse for denne tilstand"
+        "errorDuration": "Angiv en tidsgrænse for denne tilstand",
+        "noUnlockedThemes": "Complete Story mode levels to unlock themes"
     },
     "game": {
         "paused": "Paused",

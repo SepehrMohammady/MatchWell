@@ -97,7 +97,8 @@
         "namePromptTitle": "Adın ne?",
         "namePromptMessage": "Diğer oyuncuların göreceği bir isim seç",
         "saveNameButton": "Hadi oynayalım!",
-        "errorDuration": "Bu mod için bir süre sınırı belirleyin"
+        "errorDuration": "Bu mod için bir süre sınırı belirleyin",
+        "noUnlockedThemes": "Complete Story mode levels to unlock themes"
     },
     "game": {
         "paused": "Paused",

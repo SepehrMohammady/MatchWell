@@ -97,7 +97,8 @@
         "namePromptTitle": "Jina lako ni nani?",
         "namePromptMessage": "Chagua jina ambalo wachezaji wengine wataona",
         "saveNameButton": "Tucheze!",
-        "errorDuration": "Weka kikomo cha muda kwa hali hii"
+        "errorDuration": "Weka kikomo cha muda kwa hali hii",
+        "noUnlockedThemes": "Complete Story mode levels to unlock themes"
     },
     "game": {
         "paused": "Paused",

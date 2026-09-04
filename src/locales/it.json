@@ -97,7 +97,8 @@
         "namePromptTitle": "Come ti chiami?",
         "namePromptMessage": "Scegli un nome che gli altri giocatori vedranno",
         "saveNameButton": "Giochiamo!",
-        "errorDuration": "Imposta un limite di tempo per questa modalità"
+        "errorDuration": "Imposta un limite di tempo per questa modalità",
+        "noUnlockedThemes": "Completa i livelli della modalità storia per sbloccare i temi"
     },
     "game": {
         "paused": "In Pausa",

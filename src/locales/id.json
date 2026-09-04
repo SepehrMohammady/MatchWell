@@ -97,7 +97,8 @@
         "namePromptTitle": "Siapa namamu?",
         "namePromptMessage": "Pilih nama yang akan dilihat pemain lain",
         "saveNameButton": "Ayo main!",
-        "errorDuration": "Tetapkan batas waktu untuk mode ini"
+        "errorDuration": "Tetapkan batas waktu untuk mode ini",
+        "noUnlockedThemes": "Complete Story mode levels to unlock themes"
     },
     "game": {
         "paused": "Paused",

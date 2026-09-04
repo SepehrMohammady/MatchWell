@@ -97,7 +97,8 @@
         "namePromptTitle": "Как тебя зовут?",
         "namePromptMessage": "Выбери имя, которое увидят другие игроки",
         "saveNameButton": "Поехали!",
-        "errorDuration": "Задайте ограничение времени для этого режима"
+        "errorDuration": "Задайте ограничение времени для этого режима",
+        "noUnlockedThemes": "Complete Story mode levels to unlock themes"
     },
     "game": {
         "paused": "Paused",

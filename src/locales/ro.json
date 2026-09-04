@@ -97,7 +97,8 @@
         "namePromptTitle": "Cum te numești?",
         "namePromptMessage": "Alege un nume pe care ceilalți jucători îl vor vedea",
         "saveNameButton": "Hai să jucăm!",
-        "errorDuration": "Stabilește o limită de timp pentru acest mod"
+        "errorDuration": "Stabilește o limită de timp pentru acest mod",
+        "noUnlockedThemes": "Complete Story mode levels to unlock themes"
     },
     "game": {
         "paused": "Paused",

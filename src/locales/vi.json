@@ -97,7 +97,8 @@
         "namePromptTitle": "Tên bạn là gì?",
         "namePromptMessage": "Chọn tên mà người chơi khác sẽ thấy",
         "saveNameButton": "Chơi thôi!",
-        "errorDuration": "Hãy đặt giới hạn thời gian cho chế độ này"
+        "errorDuration": "Hãy đặt giới hạn thời gian cho chế độ này",
+        "noUnlockedThemes": "Complete Story mode levels to unlock themes"
     },
     "game": {
         "paused": "Paused",

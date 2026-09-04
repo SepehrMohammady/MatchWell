@@ -97,7 +97,8 @@
         "namePromptTitle": "คุณชื่ออะไร?",
         "namePromptMessage": "เลือกชื่อที่ผู้เล่นคนอื่นจะเห็น",
         "saveNameButton": "เล่นเลย!",
-        "errorDuration": "ตั้งเวลาจำกัดสำหรับโหมดนี้"
+        "errorDuration": "ตั้งเวลาจำกัดสำหรับโหมดนี้",
+        "noUnlockedThemes": "Complete Story mode levels to unlock themes"
     },
     "game": {
         "paused": "Paused",

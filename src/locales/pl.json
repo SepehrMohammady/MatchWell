@@ -97,7 +97,8 @@
         "namePromptTitle": "Jak masz na imię?",
         "namePromptMessage": "Wybierz nazwę, którą zobaczą inni gracze",
         "saveNameButton": "Grajmy!",
-        "errorDuration": "Ustaw limit czasu dla tego trybu"
+        "errorDuration": "Ustaw limit czasu dla tego trybu",
+        "noUnlockedThemes": "Complete Story mode levels to unlock themes"
     },
     "game": {
         "paused": "Paused",

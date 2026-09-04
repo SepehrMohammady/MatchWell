@@ -97,7 +97,8 @@
         "namePromptTitle": "Ano ang pangalan mo?",
         "namePromptMessage": "Pumili ng pangalan na makikita ng ibang manlalaro",
         "saveNameButton": "Maglaro na!",
-        "errorDuration": "Magtakda ng limitasyon sa oras para sa mode na ito"
+        "errorDuration": "Magtakda ng limitasyon sa oras para sa mode na ito",
+        "noUnlockedThemes": "Complete Story mode levels to unlock themes"
     },
     "game": {
         "paused": "Paused",

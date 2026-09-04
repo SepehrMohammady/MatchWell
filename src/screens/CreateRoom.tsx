@@ -19,7 +19,8 @@ import { createRoom, GameMode } from '../services/MultiplayerService';
 import { useTranslation } from 'react-i18next';
 import { playSfx } from '../utils/SoundManager';
 import { formatNumber, formatCompactScore, getCurrentLanguage } from '../config/i18n';
-import { THEMES } from '../themes';
+import { THEMES, LEVELS } from '../themes';
+import { useGameStore } from '../context/GameStore';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'CreateRoom'>;
 
@@ -53,10 +54,14 @@ const CreateRoom: React.FC<Props> = ({ navigation }) => {
     const [creating, setCreating] = useState(false);
     const [error, setError] = useState('');
 
-    // Every theme is available in multiplayer. Gating these behind Story progress
-    // left new players with no theme to pick (and no ballot to vote on), and gave
-    // players in the same room different options depending on their own progress.
-    const unlockedThemes = THEMES;
+    // Get completed levels to filter themes
+    const completedLevels = useGameStore((state) => state.completedLevels);
+
+    // Get unlocked themes (at least one level completed in that theme)
+    const unlockedThemes = THEMES.filter(theme => {
+        const themeLevels = LEVELS.filter(l => l.theme === theme.id);
+        return themeLevels.some(level => completedLevels.includes(level.id));
+    });
 
     // Drop a stale validation message as soon as the player changes anything -
     // otherwise "select a theme" stayed on screen after voting was ticked.
@@ -190,7 +195,7 @@ const CreateRoom: React.FC<Props> = ({ navigation }) => {
             </View>
             {!themeVoting && (
                 <View style={styles.themeGrid}>
-                    {unlockedThemes.map((theme) => (
+                    {unlockedThemes.length > 0 ? unlockedThemes.map((theme) => (
                         <TouchableOpacity
                             key={theme.id}
                             style={[
@@ -203,7 +208,9 @@ const CreateRoom: React.FC<Props> = ({ navigation }) => {
                         >
                             <MaterialCommunityIcons name={theme.icon} size={32} color={theme.color} />
                         </TouchableOpacity>
-                    ))}
+                    )) : (
+                        <Text style={styles.noThemesText}>{t('multiplayer.noUnlockedThemes')}</Text>
+                    )}
                 </View>
             )}
         </View>
