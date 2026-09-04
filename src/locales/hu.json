@@ -182,7 +182,7 @@
         "developer": "Developer",
         "sourceCode": "Source Code",
         "privacy": "Privacy",
-        "privacyDesc": "No data is collected or shared",
+        "privacyDesc": "Az offline játék semmit nem küld. Az online funkciók egy véletlenszerű azonosítót, a becenevedet és a pontszámaidat osztják meg.",
         "credits": "Credits",
         "privacyPolicy": "Privacy Policy"
     },

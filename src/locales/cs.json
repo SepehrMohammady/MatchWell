@@ -182,7 +182,7 @@
         "developer": "Developer",
         "sourceCode": "Source Code",
         "privacy": "Privacy",
-        "privacyDesc": "No data is collected or shared",
+        "privacyDesc": "Hra offline neodesílá nic. Online funkce sdílejí náhodné ID, tvou přezdívku a skóre.",
         "credits": "Credits",
         "privacyPolicy": "Privacy Policy"
     },

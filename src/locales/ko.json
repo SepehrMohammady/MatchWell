@@ -182,7 +182,7 @@
         "developer": "개발자",
         "sourceCode": "소스 코드",
         "privacy": "개인정보",
-        "privacyDesc": "데이터를 수집하거나 공유하지 않음",
+        "privacyDesc": "오프라인 플레이는 아무것도 전송하지 않습니다. 온라인 기능은 임의 ID, 닉네임, 점수를 공유합니다.",
         "credits": "크레딧",
         "privacyPolicy": "개인정보 처리방침"
     },

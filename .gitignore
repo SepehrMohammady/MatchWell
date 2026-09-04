@@ -91,3 +91,7 @@ yarn-error.log
 
 # Local documentation (not for GitHub)
 game-reference.html
+
+# Local QA artefacts (kept out of the repo by request)
+test-console.html
+test-report-*.md

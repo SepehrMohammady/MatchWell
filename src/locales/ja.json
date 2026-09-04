@@ -182,7 +182,7 @@
         "developer": "開発者",
         "sourceCode": "ソースコード",
         "privacy": "プライバシー",
-        "privacyDesc": "データの収集・共有なし",
+        "privacyDesc": "オフラインプレイは何も送信しません。オンライン機能ではランダムID、ニックネーム、スコアを共有します。",
         "credits": "クレジット",
         "privacyPolicy": "プライバシーポリシー"
     },

@@ -182,7 +182,7 @@
         "developer": "开发者",
         "sourceCode": "源代码",
         "privacy": "隐私",
-        "privacyDesc": "不收集或分享任何数据",
+        "privacyDesc": "离线游戏不发送任何数据。联网功能会共享一个随机 ID、你的昵称和分数。",
         "credits": "制作人员",
         "privacyPolicy": "隐私政策"
     },

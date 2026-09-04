@@ -182,7 +182,7 @@
         "developer": "Developer",
         "sourceCode": "Source Code",
         "privacy": "Privacy",
-        "privacyDesc": "No data is collected or shared",
+        "privacyDesc": "Offline play sends nothing. Online features share a random ID, your nickname and scores.",
         "credits": "Credits",
         "privacyPolicy": "Privacy Policy"
     },

@@ -182,7 +182,7 @@
         "developer": "Desarrollador",
         "sourceCode": "Código Fuente",
         "privacy": "Privacidad",
-        "privacyDesc": "No se recopilan ni comparten datos",
+        "privacyDesc": "El juego sin conexión no envía nada. Las funciones en línea comparten un ID aleatorio, tu apodo y tus puntuaciones.",
         "credits": "Créditos",
         "privacyPolicy": "Política de Privacidad"
     },

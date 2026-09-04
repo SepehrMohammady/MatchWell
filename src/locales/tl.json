@@ -182,7 +182,7 @@
         "developer": "Developer",
         "sourceCode": "Source Code",
         "privacy": "Privacy",
-        "privacyDesc": "No data is collected or shared",
+        "privacyDesc": "Walang ipinapadala kapag naglalaro offline. Ang mga online na feature ay nagbabahagi ng random na ID, palayaw mo at mga iskor.",
         "credits": "Credits",
         "privacyPolicy": "Privacy Policy"
     },

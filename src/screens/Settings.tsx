@@ -262,11 +262,17 @@ const Settings: React.FC<Props> = ({ navigation }) => {
                             <Text style={styles.linkIcon}>⎋</Text>
                         </TouchableOpacity>
 
-                        {/* Privacy */}
-                        <View style={[styles.aboutCardRow, styles.aboutCardLastRow]}>
-                            <Text style={styles.aboutCardLabel}>{t('settings.privacy')}</Text>
-                            <Text style={styles.aboutCardValue}>{t('settings.privacyDesc')}</Text>
-                        </View>
+                        {/* Privacy Policy */}
+                        <TouchableOpacity
+                            style={[styles.aboutCardRow, styles.aboutCardLastRow]}
+                            onPress={() => Linking.openURL('https://semo-lab.com/matchwell/privacy-policy/')}
+                        >
+                            <View style={styles.aboutCardTextGroup}>
+                                <Text style={styles.aboutCardLabel}>{t('settings.privacyPolicy')}</Text>
+                                <Text style={styles.aboutCardValue}>{t('settings.privacyDesc')}</Text>
+                            </View>
+                            <Text style={styles.linkIcon}>↗</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
 
@@ -528,6 +534,12 @@ const styles = StyleSheet.create({
         fontFamily: TYPOGRAPHY.fontFamily,
         color: COLORS.textSecondary,
         marginTop: 2,
+    },
+    // Lets a multi-line description wrap instead of pushing the link arrow
+    // off the row.
+    aboutCardTextGroup: {
+        flex: 1,
+        paddingRight: SPACING.md,
     },
     linkIcon: {
         fontSize: TYPOGRAPHY.body,

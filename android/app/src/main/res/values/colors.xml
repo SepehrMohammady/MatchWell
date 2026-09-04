@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Launcher adaptive-icon background. Matches the space-black of the icon
+         artwork, so the inset foreground blends seamlessly into it. -->
+    <color name="iconBackground">#000000</color>
+</resources>

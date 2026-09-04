@@ -182,7 +182,7 @@
         "developer": "Sviluppatore",
         "sourceCode": "Codice Sorgente",
         "privacy": "Privacy",
-        "privacyDesc": "Nessun dato raccolto o condiviso",
+        "privacyDesc": "Il gioco offline non invia nulla. Le funzioni online condividono un ID casuale, il tuo soprannome e i punteggi.",
         "credits": "Crediti",
         "privacyPolicy": "Informativa sulla Privacy"
     },

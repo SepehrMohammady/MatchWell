@@ -182,7 +182,7 @@
         "developer": "Developer",
         "sourceCode": "Source Code",
         "privacy": "Privacy",
-        "privacyDesc": "No data is collected or shared",
+        "privacyDesc": "Offline-pelaaminen ei lähetä mitään. Verkkotoiminnot jakavat satunnaisen tunnisteen, nimimerkkisi ja pisteesi.",
         "credits": "Credits",
         "privacyPolicy": "Privacy Policy"
     },

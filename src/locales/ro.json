@@ -182,7 +182,7 @@
         "developer": "Developer",
         "sourceCode": "Source Code",
         "privacy": "Privacy",
-        "privacyDesc": "No data is collected or shared",
+        "privacyDesc": "Jocul offline nu trimite nimic. Funcțiile online partajează un ID aleatoriu, porecla și scorurile tale.",
         "credits": "Credits",
         "privacyPolicy": "Privacy Policy"
     },

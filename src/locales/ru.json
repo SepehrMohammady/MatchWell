@@ -182,7 +182,7 @@
         "developer": "Developer",
         "sourceCode": "Source Code",
         "privacy": "Privacy",
-        "privacyDesc": "No data is collected or shared",
+        "privacyDesc": "Офлайн-игра ничего не отправляет. Онлайн-функции передают случайный идентификатор, ваш никнейм и результаты.",
         "credits": "Credits",
         "privacyPolicy": "Privacy Policy"
     },

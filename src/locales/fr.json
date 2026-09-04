@@ -182,7 +182,7 @@
         "developer": "Développeur",
         "sourceCode": "Code Source",
         "privacy": "Confidentialité",
-        "privacyDesc": "Aucune donnée collectée ou partagée",
+        "privacyDesc": "Le jeu hors ligne n'envoie rien. Les fonctions en ligne partagent un identifiant aléatoire, votre pseudo et vos scores.",
         "credits": "Crédits",
         "privacyPolicy": "Politique de Confidentialité"
     },

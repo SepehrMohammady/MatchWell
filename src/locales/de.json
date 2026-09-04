@@ -182,7 +182,7 @@
         "developer": "Entwickler",
         "sourceCode": "Quellcode",
         "privacy": "Datenschutz",
-        "privacyDesc": "Es werden keine Daten gesammelt oder geteilt",
+        "privacyDesc": "Offline-Spiel sendet nichts. Online-Funktionen teilen eine zufällige ID, deinen Spitznamen und deine Punktzahlen.",
         "credits": "Mitwirkende",
         "privacyPolicy": "Datenschutzrichtlinie"
     },

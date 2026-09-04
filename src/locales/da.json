@@ -182,7 +182,7 @@
         "developer": "Developer",
         "sourceCode": "Source Code",
         "privacy": "Privacy",
-        "privacyDesc": "No data is collected or shared",
+        "privacyDesc": "Offlinespil sender ingenting. Onlinefunktioner deler et tilfældigt id, dit kaldenavn og dine scorer.",
         "credits": "Credits",
         "privacyPolicy": "Privacy Policy"
     },

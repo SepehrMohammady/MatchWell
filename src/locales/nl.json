@@ -182,7 +182,7 @@
         "developer": "Developer",
         "sourceCode": "Source Code",
         "privacy": "Privacy",
-        "privacyDesc": "No data is collected or shared",
+        "privacyDesc": "Offline spelen verstuurt niets. Onlinefuncties delen een willekeurige ID, je bijnaam en scores.",
         "credits": "Credits",
         "privacyPolicy": "Privacy Policy"
     },
