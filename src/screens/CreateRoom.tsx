@@ -1,5 +1,5 @@
 // Create Room Screen - Set up a new multiplayer room
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     View,
     Text,
@@ -19,8 +19,7 @@ import { createRoom, GameMode } from '../services/MultiplayerService';
 import { useTranslation } from 'react-i18next';
 import { playSfx } from '../utils/SoundManager';
 import { formatNumber, formatCompactScore, getCurrentLanguage } from '../config/i18n';
-import { THEMES, LEVELS } from '../themes';
-import { useGameStore } from '../context/GameStore';
+import { THEMES } from '../themes';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'CreateRoom'>;
 
@@ -45,21 +44,26 @@ const CreateRoom: React.FC<Props> = ({ navigation }) => {
     const [targetScore, setTargetScore] = useState(50000);
     const [durationDays, setDurationDays] = useState('0');
     const [durationHours, setDurationHours] = useState('0');
-    const [durationMinutes, setDurationMinutes] = useState('0');
+    // Race and Timed both require a time limit. Default to a playable 10 minutes so
+    // the form is valid as it stands - a 0/0/0 default only failed on submit.
+    const [durationMinutes, setDurationMinutes] = useState('10');
     const [movesLimit, setMovesLimit] = useState(100);
     const [selectedTheme, setSelectedTheme] = useState<ThemeType | null>(null);
     const [themeVoting, setThemeVoting] = useState(false);
     const [creating, setCreating] = useState(false);
     const [error, setError] = useState('');
 
-    // Get completed levels to filter themes
-    const completedLevels = useGameStore((state) => state.completedLevels);
+    // Every theme is available in multiplayer. Gating these behind Story progress
+    // left new players with no theme to pick (and no ballot to vote on), and gave
+    // players in the same room different options depending on their own progress.
+    const unlockedThemes = THEMES;
 
-    // Get unlocked themes (at least one level completed in that theme)
-    const unlockedThemes = THEMES.filter(theme => {
-        const themeLevels = LEVELS.filter(l => l.theme === theme.id);
-        return themeLevels.some(level => completedLevels.includes(level.id));
-    });
+    // Drop a stale validation message as soon as the player changes anything -
+    // otherwise "select a theme" stayed on screen after voting was ticked.
+    useEffect(() => {
+        setError('');
+    }, [roomName, password, gameMode, selectedTheme, themeVoting, targetScore, movesLimit,
+        durationDays, durationHours, durationMinutes]);
 
     // Calculate duration in seconds from inputs
     const getDurationSeconds = () => {
@@ -84,6 +88,12 @@ const CreateRoom: React.FC<Props> = ({ navigation }) => {
         }
         if (!themeVoting && !selectedTheme) {
             setError(t('multiplayer.errorTheme'));
+            return;
+        }
+        // The server rejects these too, but catching it here names the field
+        // instead of bouncing the player off a round trip.
+        if ((gameMode === 'race' || gameMode === 'timed') && getDurationSeconds() <= 0) {
+            setError(t('multiplayer.errorDuration'));
             return;
         }
 
@@ -180,7 +190,7 @@ const CreateRoom: React.FC<Props> = ({ navigation }) => {
             </View>
             {!themeVoting && (
                 <View style={styles.themeGrid}>
-                    {unlockedThemes.length > 0 ? unlockedThemes.map((theme) => (
+                    {unlockedThemes.map((theme) => (
                         <TouchableOpacity
                             key={theme.id}
                             style={[
@@ -193,9 +203,7 @@ const CreateRoom: React.FC<Props> = ({ navigation }) => {
                         >
                             <MaterialCommunityIcons name={theme.icon} size={32} color={theme.color} />
                         </TouchableOpacity>
-                    )) : (
-                        <Text style={styles.noThemesText}>{t('multiplayer.noUnlockedThemes')}</Text>
-                    )}
+                    ))}
                 </View>
             )}
         </View>

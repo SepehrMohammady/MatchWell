@@ -88,7 +88,6 @@
         "days": "روز",
         "hours": "ساعت",
         "minutes": "دقیقه",
-        "noUnlockedThemes": "مراحل حالت داستان را کامل کنید تا موضوعات باز شوند",
         "yourName": "نام شما",
         "enterName": "نام خود را وارد کنید",
         "gameActive": "در حال انجام",
@@ -97,7 +96,8 @@
         "countdownDuration": "مدت شمارش معکوس (ثانیه)",
         "namePromptTitle": "نام شما چیست؟",
         "namePromptMessage": "نامی انتخاب کنید که بازیکنان دیگر خواهند دید",
-        "saveNameButton": "بزن بریم!"
+        "saveNameButton": "بزن بریم!",
+        "errorDuration": "برای این حالت یک محدودیت زمانی تعیین کنید"
     },
     "game": {
         "paused": "متوقف شده",
@@ -331,7 +331,7 @@
     "localMultiplayer": {
         "title": "بازی محلی",
         "localPlay": "بازی محلی",
-        "description": "با دوستان نزدیک خود بازی کنید - بدون نیاز به اینترنت!",
+        "description": "با دوستان نزدیک بازی کنید - به اتصال اینترنت نیازی نیست!",
         "hostGame": "میزبانی بازی",
         "hostDescription": "یک بازی بساز و منتظر دوستانت بمان",
         "findGame": "پیدا کردن بازی",
@@ -364,9 +364,12 @@
         "noResults": "نتایجی موجود نیست",
         "playAgain": "بازی دوباره",
         "backToMenu": "بازگشت به منو",
-        "hardwareReminder": "لطفاً اطمینان حاصل کنید که Wi-Fi و مکان برای اتصال پایدار روشن هستند.",
+        "hardwareReminder": "وای‌فای، بلوتوث و موقعیت مکانی را روشن نگه دارید - ارتباط دستگاه‌ها از طریق آن‌ها برقرار می‌شود.",
         "movesCompleted": "حرکت‌ها تمام شد!",
         "waitingForOthers": "منتظر بازیکنان دیگر...",
-        "offline": "آفلاین"
+        "offline": "آفلاین",
+        "playerLeft": "{{name}} از بازی خارج شد",
+        "connectionLost": "اتصال قطع شد",
+        "connectionLostMessage": "اتصال با میزبان قطع شد. بازی به پایان رسید."
     }
 }

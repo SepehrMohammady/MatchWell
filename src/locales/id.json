@@ -88,7 +88,6 @@
         "days": "Days",
         "hours": "Hours",
         "minutes": "Minutes",
-        "noUnlockedThemes": "Complete Story mode levels to unlock themes",
         "yourName": "Your Name",
         "enterName": "Enter your name",
         "gameActive": "In Progress",
@@ -97,7 +96,8 @@
         "countdownDuration": "Durasi hitung mundur (dtk)",
         "namePromptTitle": "Siapa namamu?",
         "namePromptMessage": "Pilih nama yang akan dilihat pemain lain",
-        "saveNameButton": "Ayo main!"
+        "saveNameButton": "Ayo main!",
+        "errorDuration": "Tetapkan batas waktu untuk mode ini"
     },
     "game": {
         "paused": "Paused",
@@ -331,7 +331,7 @@
     "localMultiplayer": {
         "title": "Local Play",
         "localPlay": "Local Play",
-        "description": "Play with friends nearby - no internet needed!",
+        "description": "Main dengan teman di sekitar - tidak perlu koneksi internet!",
         "hostGame": "Host Game",
         "hostDescription": "Create a game and wait for friends to join",
         "findGame": "Find Game",
@@ -364,9 +364,12 @@
         "noResults": "No results available",
         "playAgain": "Play Again",
         "backToMenu": "Back to Menu",
-        "hardwareReminder": "Please ensure Wi-Fi and Location services are enabled for stable connections.",
+        "hardwareReminder": "Biarkan Wi-Fi, Bluetooth, dan Lokasi tetap aktif - itulah yang menghubungkan perangkat.",
         "movesCompleted": "Langkah selesai!",
         "waitingForOthers": "Menunggu pemain lain...",
-        "offline": "Offline"
+        "offline": "Offline",
+        "playerLeft": "{{name}} keluar dari permainan",
+        "connectionLost": "Koneksi terputus",
+        "connectionLostMessage": "Koneksi ke host terputus. Permainan telah berakhir."
     }
 }

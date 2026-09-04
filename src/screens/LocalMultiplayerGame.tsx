@@ -23,6 +23,7 @@ import { useGameStore } from '../context/GameStore';
 import GameBoard from '../components/Game/GameBoard';
 import PowerProgress from '../components/UI/PowerProgress';
 import LocalMultiplayerService, { LocalPlayer, LocalGameConfig } from '../services/LocalMultiplayerService';
+import CustomAlert from '../components/UI/CustomAlert';
 import { formatNumber, formatTimeLocalized, getCurrentLanguage } from '../config/i18n';
 import { TRASH_FACTS, POLLUTION_FACTS, WATER_FACTS, ENERGY_FACTS, FOREST_FACTS, THEMES } from '../themes';
 import MultiplayerHUD from '../components/UI/MultiplayerHUD';
@@ -73,6 +74,14 @@ const LocalMultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
         title: '',
         message: ''
     });
+    // Transient "X left the game" banner - a modal per leaver would interrupt play.
+    const [leftNotice, setLeftNotice] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (!leftNotice) return;
+        const timer = setTimeout(() => setLeftNotice(null), 4000);
+        return () => clearTimeout(timer);
+    }, [leftNotice]);
 
     // Load sound settings whenever pause opens
     useEffect(() => {
@@ -134,8 +143,34 @@ const LocalMultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
                 navigation.replace('LocalMultiplayerResults');
             },
             onPlayerLeft: (endpointId) => {
-                // Update rankings
+                // A peer dropped out. Keep playing, but refresh the board so the
+                // scoreboard can mark them as gone instead of showing a frozen score.
+                const left = LocalMultiplayerService.getPlayers().find(p => p.endpointId === endpointId);
                 setRankings(LocalMultiplayerService.getPlayers().sort((a,b) => b.score - a.score));
+                if (left) {
+                    setLeftNotice(t('localMultiplayer.playerLeft', { name: left.name }));
+                }
+            },
+            onError: (message) => {
+                // Fatal P2P problem - most often "Lost connection to host". The match
+                // cannot continue, so tell the player instead of leaving them playing
+                // into a dead session.
+                if (isFinishing.current) return;
+                isFinishing.current = true;
+                stopBgm();
+                setAlertConfig({
+                    visible: true,
+                    title: t('localMultiplayer.connectionLost'),
+                    message: message || t('localMultiplayer.connectionLostMessage'),
+                    buttons: [{
+                        text: t('common.ok'),
+                        onPress: async () => {
+                            setAlertConfig(prev => ({ ...prev, visible: false }));
+                            await LocalMultiplayerService.stopAll();
+                            navigation.replace('LocalMultiplayerMenu');
+                        }
+                    }]
+                });
             },
             onScoreUpdate: (endpointId, peerScore, peerMoves, peerFinished) => {
                 // If a client reaches the target in race mode, the host must end the game for everyone
@@ -440,15 +475,20 @@ const LocalMultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
             {showScoreboard && rankings.length > 0 && (
                 <View style={[styles.scoreboard, { marginHorizontal: SPACING.md }]}>
                         {rankings.slice(0, 4).map((player, index) => (
-                            <View key={player.endpointId} style={styles.rankRow}>
+                            <View
+                                key={player.endpointId}
+                                style={[styles.rankRow, player.connected === false && styles.rankRowGone]}
+                            >
                                 <Text style={styles.rankNumber}>#{formatNumber(index + 1, getCurrentLanguage())}</Text>
                                 <Text style={styles.rankName} numberOfLines={1}>
                                     {player.name}
                                 </Text>
                                 <Text style={styles.rankScore}>{formatNumber(player.score)}</Text>
-                                {player.finished && (
+                                {player.connected === false ? (
+                                    <MaterialCommunityIcons name="lan-disconnect" size={16} color={COLORS.textSecondary} />
+                                ) : player.finished ? (
                                     <MaterialCommunityIcons name="check-circle" size={16} color="#4CAF50" />
-                                )}
+                                ) : null}
                             </View>
                         ))}
                     </View>
@@ -486,6 +526,22 @@ const LocalMultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
                     </View>
                 )}
             </View>
+
+            {/* A peer dropped out - brief, non-blocking notice */}
+            {leftNotice && (
+                <View style={styles.leftNotice}>
+                    <MaterialCommunityIcons name="lan-disconnect" size={16} color="#fff" />
+                    <Text style={styles.leftNoticeText}>{leftNotice}</Text>
+                </View>
+            )}
+
+            <CustomAlert
+                visible={alertConfig.visible}
+                title={alertConfig.title}
+                message={alertConfig.message}
+                buttons={alertConfig.buttons}
+                onDismiss={() => setAlertConfig(prev => ({ ...prev, visible: false }))}
+            />
         </View>
     );
 };
@@ -528,6 +584,29 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         gap: SPACING.sm,
         paddingVertical: 3,
+    },
+    rankRowGone: {
+        opacity: 0.45,
+    },
+    leftNotice: {
+        position: 'absolute',
+        left: SPACING.md,
+        right: SPACING.md,
+        bottom: SPACING.xl,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: SPACING.sm,
+        paddingVertical: SPACING.sm,
+        paddingHorizontal: SPACING.md,
+        borderRadius: RADIUS.lg,
+        backgroundColor: 'rgba(0, 0, 0, 0.82)',
+    },
+    leftNoticeText: {
+        fontSize: TYPOGRAPHY.caption,
+        fontFamily: TYPOGRAPHY.fontFamilyMedium,
+        color: '#fff',
+        flexShrink: 1,
     },
     rankNumber: {
         fontSize: TYPOGRAPHY.caption,

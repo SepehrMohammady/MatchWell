@@ -88,7 +88,6 @@
         "days": "Giorni",
         "hours": "Ore",
         "minutes": "Minuti",
-        "noUnlockedThemes": "Completa i livelli della modalità storia per sbloccare i temi",
         "yourName": "Il Tuo Nome",
         "enterName": "Inserisci il tuo nome",
         "gameActive": "In Corso",
@@ -97,7 +96,8 @@
         "countdownDuration": "Durata countdown (sec)",
         "namePromptTitle": "Come ti chiami?",
         "namePromptMessage": "Scegli un nome che gli altri giocatori vedranno",
-        "saveNameButton": "Giochiamo!"
+        "saveNameButton": "Giochiamo!",
+        "errorDuration": "Imposta un limite di tempo per questa modalità"
     },
     "game": {
         "paused": "In Pausa",
@@ -332,7 +332,7 @@
         "backToMenu": "Torna al Menu",
         "connectedToHost": "Connesso all'host",
         "connecting": "Connessione...",
-        "description": "Gioca con amici vicini - senza internet!",
+        "description": "Gioca con gli amici vicini - nessuna connessione a internet richiesta!",
         "disconnected": "Disconnesso",
         "findDescription": "Cerca partite vicine",
         "findGame": "Trova Partita",
@@ -364,9 +364,12 @@
         "waitingRoom": "Sala d'attesa",
         "you": "Tu",
         "you_host": "Tu (Host)",
-        "hardwareReminder": "Assicurati che Wi-Fi e posizione siano abilitati.",
+        "hardwareReminder": "Tieni attivi Wi-Fi, Bluetooth e posizione: sono loro a collegare i dispositivi.",
         "movesCompleted": "Mosse completate!",
         "waitingForOthers": "Aspettando altri giocatori...",
-        "offline": "Offline"
+        "offline": "Offline",
+        "playerLeft": "{{name}} ha lasciato la partita",
+        "connectionLost": "Connessione persa",
+        "connectionLostMessage": "Connessione con l'host persa. La partita è terminata."
     }
 }

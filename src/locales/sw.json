@@ -88,7 +88,6 @@
         "days": "Days",
         "hours": "Hours",
         "minutes": "Minutes",
-        "noUnlockedThemes": "Complete Story mode levels to unlock themes",
         "yourName": "Your Name",
         "enterName": "Enter your name",
         "gameActive": "In Progress",
@@ -97,7 +96,8 @@
         "countdownDuration": "Muda wa kuhesabu nyuma (s)",
         "namePromptTitle": "Jina lako ni nani?",
         "namePromptMessage": "Chagua jina ambalo wachezaji wengine wataona",
-        "saveNameButton": "Tucheze!"
+        "saveNameButton": "Tucheze!",
+        "errorDuration": "Weka kikomo cha muda kwa hali hii"
     },
     "game": {
         "paused": "Paused",
@@ -331,7 +331,7 @@
     "localMultiplayer": {
         "title": "Local Play",
         "localPlay": "Local Play",
-        "description": "Play with friends nearby - no internet needed!",
+        "description": "Cheza na marafiki walio karibu - hakuna muunganisho wa intaneti unaohitajika!",
         "hostGame": "Host Game",
         "hostDescription": "Create a game and wait for friends to join",
         "findGame": "Find Game",
@@ -364,9 +364,12 @@
         "noResults": "No results available",
         "playAgain": "Play Again",
         "backToMenu": "Back to Menu",
-        "hardwareReminder": "Please ensure Wi-Fi and Location services are enabled for stable connections.",
+        "hardwareReminder": "Acha Wi-Fi, Bluetooth na Mahali vikiwa vimewashwa - ndivyo vinavyounganisha vifaa.",
         "movesCompleted": "Hatua zimekamilika!",
         "waitingForOthers": "Kusubiri wachezaji wengine...",
-        "offline": "Offline"
+        "offline": "Offline",
+        "playerLeft": "{{name}} ameondoka kwenye mchezo",
+        "connectionLost": "Muunganisho umekatika",
+        "connectionLostMessage": "Muunganisho na mwenyeji umekatika. Mchezo umeisha."
     }
 }

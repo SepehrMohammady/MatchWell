@@ -88,7 +88,6 @@
         "days": "दिन",
         "hours": "घंटे",
         "minutes": "मिनट",
-        "noUnlockedThemes": "थीम अनलॉक करने के लिए कहानी मोड स्तर पूर्ण करें",
         "yourName": "आपका नाम",
         "enterName": "अपना नाम दर्ज करें",
         "gameActive": "प्रगति में",
@@ -97,7 +96,8 @@
         "countdownDuration": "काउंटडाउन समय (से.)",
         "namePromptTitle": "आपका नाम क्या है?",
         "namePromptMessage": "एक नाम चुनें जो अन्य खिलाड़ी देखेंगे",
-        "saveNameButton": "चलो खेलते हैं!"
+        "saveNameButton": "चलो खेलते हैं!",
+        "errorDuration": "इस मोड के लिए समय सीमा तय करें"
     },
     "game": {
         "paused": "रुका हुआ",
@@ -331,7 +331,7 @@
     "localMultiplayer": {
         "title": "स्थानीय खेल",
         "localPlay": "स्थानीय खेल",
-        "description": "पास के दोस्तों के साथ खेलें - इंटरनेट की आवश्यकता नहीं!",
+        "description": "आस-पास के दोस्तों के साथ खेलें - इंटरनेट कनेक्शन की ज़रूरत नहीं!",
         "hostGame": "गेम होस्ट करें",
         "hostDescription": "गेम बनाएं और दोस्तों के शामिल होने की प्रतीक्षा करें",
         "findGame": "गेम खोजें",
@@ -364,9 +364,12 @@
         "noResults": "कोई परिणाम उपलब्ध नहीं",
         "playAgain": "फिर से खेलें",
         "backToMenu": "मेनू पर वापस",
-        "hardwareReminder": "स्थिर कनेक्शन के लिए कृपया सुनिश्चित करें कि Wi-Fi और स्थान सेवाएँ सक्षम हैं।",
+        "hardwareReminder": "Wi-Fi, ब्लूटूथ और लोकेशन चालू रखें - डिवाइस इन्हीं से जुड़ते हैं।",
         "movesCompleted": "चालें पूरी हुईं!",
         "waitingForOthers": "अन्य खिलाड़ियों का इंतजार...",
-        "offline": "ऑफ़लाइन"
+        "offline": "ऑफ़लाइन",
+        "playerLeft": "{{name}} ने गेम छोड़ दिया",
+        "connectionLost": "कनेक्शन टूट गया",
+        "connectionLostMessage": "होस्ट से कनेक्शन टूट गया। मैच समाप्त हो गया।"
     }
 }

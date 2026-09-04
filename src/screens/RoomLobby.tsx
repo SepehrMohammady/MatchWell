@@ -19,8 +19,7 @@ import { getRoomStatus, startGame, voteTheme, leaveRoom, Participant, ThemeVote,
 import { useTranslation } from 'react-i18next';
 import { playSfx } from '../utils/SoundManager';
 import { formatNumber, formatCompactScore, getCurrentLanguage } from '../config/i18n';
-import { THEMES, LEVELS } from '../themes';
-import { useGameStore } from '../context/GameStore';
+import { THEMES } from '../themes';
 import CustomAlert from '../components/UI/CustomAlert';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'RoomLobby'>;
@@ -48,14 +47,9 @@ const RoomLobby: React.FC<Props> = ({ navigation, route }) => {
         setAlertConfig({ visible: true, title, message, buttons });
     const hideAlert = () => setAlertConfig(prev => ({ ...prev, visible: false }));
 
-    // Get completed levels to filter themes
-    const completedLevels = useGameStore((state) => state.completedLevels);
-
-    // Get unlocked themes (at least one level completed in that theme)
-    const unlockedThemes = THEMES.filter(theme => {
-        const themeLevels = LEVELS.filter(l => l.theme === theme.id);
-        return themeLevels.some(level => completedLevels.includes(level.id));
-    });
+    // Every theme is votable in multiplayer - see CreateRoom for why this is not
+    // gated on Story progress (players in one room must see the same ballot).
+    const unlockedThemes = THEMES;
 
     const loadRoomStatus = async () => {
         const result = await getRoomStatus(roomCode);
@@ -257,7 +251,7 @@ const RoomLobby: React.FC<Props> = ({ navigation, route }) => {
             {/* Participants */}
             <View style={styles.section}>
                 <Text style={styles.sectionTitle}>
-                    {t('multiplayer.players')} ({formatNumber(participants.length, getCurrentLanguage())}/{formatNumber(room?.max_players, getCurrentLanguage())})
+                    {t('multiplayer.players')} ({formatNumber(participants.length, getCurrentLanguage())}/{formatNumber(room?.max_players ?? 0, getCurrentLanguage())})
                 </Text>
                 <FlatList
                     data={participants}

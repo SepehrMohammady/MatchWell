@@ -88,7 +88,6 @@
         "days": "Dias",
         "hours": "Horas",
         "minutes": "Minutos",
-        "noUnlockedThemes": "Complete níveis do Modo História para desbloquear temas",
         "yourName": "Seu Nome",
         "enterName": "Digite seu nome",
         "gameActive": "Em Andamento",
@@ -97,7 +96,8 @@
         "countdownDuration": "Contagem regressiva (seg)",
         "namePromptTitle": "Qual é o seu nome?",
         "namePromptMessage": "Escolha um nome que os outros jogadores verão",
-        "saveNameButton": "Vamos jogar!"
+        "saveNameButton": "Vamos jogar!",
+        "errorDuration": "Defina um limite de tempo para este modo"
     },
     "game": {
         "paused": "Pausado",
@@ -331,7 +331,7 @@
     "localMultiplayer": {
         "title": "Jogo Local",
         "localPlay": "Jogo Local",
-        "description": "Jogue com amigos próximos - sem internet!",
+        "description": "Jogue com amigos por perto - não precisa de ligação à internet!",
         "hostGame": "Criar Jogo",
         "hostDescription": "Crie um jogo e aguarde amigos",
         "findGame": "Encontrar Jogo",
@@ -364,9 +364,12 @@
         "noResults": "Sem resultados disponíveis",
         "playAgain": "Jogar Novamente",
         "backToMenu": "Voltar ao Menu",
-        "hardwareReminder": "Certifique-se de que Wi-Fi e Localização estão ativados.",
+        "hardwareReminder": "Mantenha o Wi-Fi, o Bluetooth e a localização ativados - são eles que ligam os dispositivos.",
         "movesCompleted": "Movimentos concluídos!",
         "waitingForOthers": "Aguardando outros jogadores...",
-        "offline": "Offline"
+        "offline": "Offline",
+        "playerLeft": "{{name}} saiu do jogo",
+        "connectionLost": "Ligação perdida",
+        "connectionLostMessage": "Perdeu-se a ligação ao anfitrião. A partida terminou."
     }
 }

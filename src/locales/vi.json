@@ -88,7 +88,6 @@
         "days": "Days",
         "hours": "Hours",
         "minutes": "Minutes",
-        "noUnlockedThemes": "Complete Story mode levels to unlock themes",
         "yourName": "Your Name",
         "enterName": "Enter your name",
         "gameActive": "In Progress",
@@ -97,7 +96,8 @@
         "countdownDuration": "Đếm ngược (giây)",
         "namePromptTitle": "Tên bạn là gì?",
         "namePromptMessage": "Chọn tên mà người chơi khác sẽ thấy",
-        "saveNameButton": "Chơi thôi!"
+        "saveNameButton": "Chơi thôi!",
+        "errorDuration": "Hãy đặt giới hạn thời gian cho chế độ này"
     },
     "game": {
         "paused": "Paused",
@@ -331,7 +331,7 @@
     "localMultiplayer": {
         "title": "Local Play",
         "localPlay": "Local Play",
-        "description": "Play with friends nearby - no internet needed!",
+        "description": "Chơi với bạn bè ở gần - không cần kết nối internet!",
         "hostGame": "Host Game",
         "hostDescription": "Create a game and wait for friends to join",
         "findGame": "Find Game",
@@ -364,9 +364,12 @@
         "noResults": "No results available",
         "playAgain": "Play Again",
         "backToMenu": "Back to Menu",
-        "hardwareReminder": "Please ensure Wi-Fi and Location services are enabled for stable connections.",
+        "hardwareReminder": "Hãy bật Wi-Fi, Bluetooth và Vị trí - các thiết bị kết nối qua chúng.",
         "movesCompleted": "Hoàn thành số nước!",
         "waitingForOthers": "Đang chờ người chơi khác...",
-        "offline": "Offline"
+        "offline": "Offline",
+        "playerLeft": "{{name}} đã rời khỏi trò chơi",
+        "connectionLost": "Mất kết nối",
+        "connectionLostMessage": "Mất kết nối với chủ phòng. Trận đấu đã kết thúc."
     }
 }

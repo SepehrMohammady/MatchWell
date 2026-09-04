@@ -88,7 +88,6 @@
         "days": "Days",
         "hours": "Hours",
         "minutes": "Minutes",
-        "noUnlockedThemes": "Complete Story mode levels to unlock themes",
         "yourName": "Your Name",
         "enterName": "Enter your name",
         "gameActive": "In Progress",
@@ -97,7 +96,8 @@
         "countdownDuration": "Visszaszámlálás (mp)",
         "namePromptTitle": "Hogy hívnak?",
         "namePromptMessage": "Válassz egy nevet, amit a többi játékos látni fog",
-        "saveNameButton": "Játsszunk!"
+        "saveNameButton": "Játsszunk!",
+        "errorDuration": "Állíts be időkorlátot ehhez a módhoz"
     },
     "game": {
         "paused": "Paused",
@@ -331,7 +331,7 @@
     "localMultiplayer": {
         "title": "Local Play",
         "localPlay": "Local Play",
-        "description": "Play with friends nearby - no internet needed!",
+        "description": "Játssz a közeli barátaiddal - nincs szükség internetkapcsolatra!",
         "hostGame": "Host Game",
         "hostDescription": "Create a game and wait for friends to join",
         "findGame": "Find Game",
@@ -364,9 +364,12 @@
         "noResults": "No results available",
         "playAgain": "Play Again",
         "backToMenu": "Back to Menu",
-        "hardwareReminder": "Please ensure Wi-Fi and Location services are enabled for stable connections.",
+        "hardwareReminder": "Hagyd bekapcsolva a Wi-Fi-t, a Bluetootht és a helymeghatározást - ezek kötik össze az eszközöket.",
         "movesCompleted": "Lépések teljesítve!",
         "waitingForOthers": "Más játékosokra várakozás...",
-        "offline": "Offline"
+        "offline": "Offline",
+        "playerLeft": "{{name}} kilépett a játékból",
+        "connectionLost": "A kapcsolat megszakadt",
+        "connectionLostMessage": "Megszakadt a kapcsolat a gazdával. A meccs véget ért."
     }
 }

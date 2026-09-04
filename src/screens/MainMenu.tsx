@@ -168,7 +168,9 @@ const MainMenu: React.FC<Props> = ({ navigation }) => {
 
             <ScrollView
                 contentContainerStyle={styles.scrollContent}
-                showsVerticalScrollIndicator={false}
+                // Shown so that on short/wide panes (e.g. one screen of a Surface Duo)
+                // it is obvious the lower buttons are reachable by scrolling.
+                showsVerticalScrollIndicator={true}
             >
                 {/* Animated space background with rotating stars */}
                 <Animated.View style={[

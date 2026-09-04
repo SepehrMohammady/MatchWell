@@ -88,7 +88,6 @@
         "days": "Days",
         "hours": "Hours",
         "minutes": "Minutes",
-        "noUnlockedThemes": "Complete Story mode levels to unlock themes",
         "yourName": "Your Name",
         "enterName": "Enter your name",
         "gameActive": "In Progress",
@@ -97,7 +96,8 @@
         "countdownDuration": "นับถอยหลัง (วินาที)",
         "namePromptTitle": "คุณชื่ออะไร?",
         "namePromptMessage": "เลือกชื่อที่ผู้เล่นคนอื่นจะเห็น",
-        "saveNameButton": "เล่นเลย!"
+        "saveNameButton": "เล่นเลย!",
+        "errorDuration": "ตั้งเวลาจำกัดสำหรับโหมดนี้"
     },
     "game": {
         "paused": "Paused",
@@ -331,7 +331,7 @@
     "localMultiplayer": {
         "title": "Local Play",
         "localPlay": "Local Play",
-        "description": "Play with friends nearby - no internet needed!",
+        "description": "เล่นกับเพื่อนที่อยู่ใกล้ ๆ - ไม่ต้องเชื่อมต่ออินเทอร์เน็ต!",
         "hostGame": "Host Game",
         "hostDescription": "Create a game and wait for friends to join",
         "findGame": "Find Game",
@@ -364,9 +364,12 @@
         "noResults": "No results available",
         "playAgain": "Play Again",
         "backToMenu": "Back to Menu",
-        "hardwareReminder": "Please ensure Wi-Fi and Location services are enabled for stable connections.",
+        "hardwareReminder": "เปิด Wi-Fi บลูทูธ และตำแหน่งไว้ - อุปกรณ์เชื่อมต่อกันผ่านสิ่งเหล่านี้",
         "movesCompleted": "ครบจำนวนตา!",
         "waitingForOthers": "รอผู้เล่นอื่น...",
-        "offline": "Offline"
+        "offline": "Offline",
+        "playerLeft": "{{name}} ออกจากเกมแล้ว",
+        "connectionLost": "การเชื่อมต่อหลุด",
+        "connectionLostMessage": "การเชื่อมต่อกับโฮสต์หลุด การแข่งขันสิ้นสุดลงแล้ว"
     }
 }

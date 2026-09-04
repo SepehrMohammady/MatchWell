@@ -88,7 +88,6 @@
         "days": "Tage",
         "hours": "Stunden",
         "minutes": "Minuten",
-        "noUnlockedThemes": "Schließe Story-Modus Level ab um Themen freizuschalten",
         "yourName": "Dein Name",
         "enterName": "Gib deinen Namen ein",
         "gameActive": "Läuft",
@@ -97,7 +96,8 @@
         "countdownDuration": "Countdown-Dauer (Sek.)",
         "namePromptTitle": "Wie heißt du?",
         "namePromptMessage": "Wähle einen Namen, den andere Spieler sehen werden",
-        "saveNameButton": "Los geht's!"
+        "saveNameButton": "Los geht's!",
+        "errorDuration": "Lege ein Zeitlimit für diesen Modus fest"
     },
     "game": {
         "paused": "Pausiert",
@@ -332,7 +332,7 @@
         "backToMenu": "Zurück zum Menü",
         "connectedToHost": "Mit Host verbunden",
         "connecting": "Verbinde...",
-        "description": "Spiele mit Freunden in der Nähe - kein Internet nötig!",
+        "description": "Spiele mit Freunden in der Nähe - keine Internetverbindung nötig!",
         "disconnected": "Getrennt",
         "findDescription": "Suche nach Spielen in der Nähe",
         "findGame": "Spiel finden",
@@ -364,9 +364,12 @@
         "waitingRoom": "Warteraum",
         "you": "Du",
         "you_host": "Du (Host)",
-        "hardwareReminder": "Bitte stellen Sie sicher, dass WLAN und Standortdienste aktiviert sind.",
+        "hardwareReminder": "Lass WLAN, Bluetooth und Standort eingeschaltet - darüber verbinden sich die Geräte.",
         "movesCompleted": "Züge abgeschlossen!",
         "waitingForOthers": "Warte auf andere Spieler...",
-        "offline": "Offline"
+        "offline": "Offline",
+        "playerLeft": "{{name}} hat das Spiel verlassen",
+        "connectionLost": "Verbindung getrennt",
+        "connectionLostMessage": "Verbindung zum Host verloren. Das Spiel ist beendet."
     }
 }

@@ -88,7 +88,6 @@
         "days": "Days",
         "hours": "Hours",
         "minutes": "Minutes",
-        "noUnlockedThemes": "Complete Story mode levels to unlock themes",
         "yourName": "Your Name",
         "enterName": "Enter your name",
         "gameActive": "In Progress",
@@ -97,7 +96,8 @@
         "countdownDuration": "משך ספירה לאחור (שנ')",
         "namePromptTitle": "מה השם שלך?",
         "namePromptMessage": "בחר שם שהשחקנים האחרים יראו",
-        "saveNameButton": "!בואו נשחק"
+        "saveNameButton": "!בואו נשחק",
+        "errorDuration": "הגדירו מגבלת זמן למצב הזה"
     },
     "game": {
         "paused": "Paused",
@@ -331,7 +331,7 @@
     "localMultiplayer": {
         "title": "Local Play",
         "localPlay": "Local Play",
-        "description": "Play with friends nearby - no internet needed!",
+        "description": "שחקו עם חברים בקרבת מקום - אין צורך בחיבור לאינטרנט!",
         "hostGame": "Host Game",
         "hostDescription": "Create a game and wait for friends to join",
         "findGame": "Find Game",
@@ -364,9 +364,12 @@
         "noResults": "No results available",
         "playAgain": "Play Again",
         "backToMenu": "Back to Menu",
-        "hardwareReminder": "Please ensure Wi-Fi and Location services are enabled for stable connections.",
+        "hardwareReminder": "השאירו את ה-Wi-Fi, הבלוטות' והמיקום פועלים - דרכם נוצר החיבור בין המכשירים.",
         "movesCompleted": "מהלכים הסתיימו!",
         "waitingForOthers": "ממתין לשחקנים אחרים...",
-        "offline": "Offline"
+        "offline": "Offline",
+        "playerLeft": "{{name}} עזב את המשחק",
+        "connectionLost": "החיבור נותק",
+        "connectionLostMessage": "החיבור למארח נותק. המשחק הסתיים."
     }
 }

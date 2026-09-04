@@ -88,7 +88,6 @@
         "days": "Days",
         "hours": "Hours",
         "minutes": "Minutes",
-        "noUnlockedThemes": "Complete Story mode levels to unlock themes",
         "yourName": "Your Name",
         "enterName": "Enter your name",
         "gameActive": "In Progress",
@@ -97,7 +96,8 @@
         "countdownDuration": "Обратный отсчёт (с)",
         "namePromptTitle": "Как тебя зовут?",
         "namePromptMessage": "Выбери имя, которое увидят другие игроки",
-        "saveNameButton": "Поехали!"
+        "saveNameButton": "Поехали!",
+        "errorDuration": "Задайте ограничение времени для этого режима"
     },
     "game": {
         "paused": "Paused",
@@ -331,7 +331,7 @@
     "localMultiplayer": {
         "title": "Local Play",
         "localPlay": "Local Play",
-        "description": "Play with friends nearby - no internet needed!",
+        "description": "Играйте с друзьями рядом — интернет-соединение не нужно!",
         "hostGame": "Host Game",
         "hostDescription": "Create a game and wait for friends to join",
         "findGame": "Find Game",
@@ -364,9 +364,12 @@
         "noResults": "No results available",
         "playAgain": "Play Again",
         "backToMenu": "Back to Menu",
-        "hardwareReminder": "Please ensure Wi-Fi and Location services are enabled for stable connections.",
+        "hardwareReminder": "Держите Wi-Fi, Bluetooth и геолокацию включёнными — именно они соединяют устройства.",
         "movesCompleted": "Ходы исчерпаны!",
         "waitingForOthers": "Ожидание других игроков...",
-        "offline": "Offline"
+        "offline": "Offline",
+        "playerLeft": "{{name}} покинул игру",
+        "connectionLost": "Соединение потеряно",
+        "connectionLostMessage": "Соединение с хостом потеряно. Матч завершён."
     }
 }

@@ -88,7 +88,6 @@
         "days": "أيام",
         "hours": "ساعات",
         "minutes": "دقائق",
-        "noUnlockedThemes": "أكمل مستويات وضع القصة لفتح المواضيع",
         "yourName": "اسمك",
         "enterName": "أدخل اسمك",
         "gameActive": "جاري اللعب",
@@ -97,7 +96,8 @@
         "countdownDuration": "مدة العد التنازلي (ث)",
         "namePromptTitle": "ما اسمك؟",
         "namePromptMessage": "اختر اسمًا سيراه اللاعبون الآخرون",
-        "saveNameButton": "هيا نلعب!"
+        "saveNameButton": "هيا نلعب!",
+        "errorDuration": "حدّد مهلة زمنية لهذا الوضع"
     },
     "game": {
         "paused": "متوقف مؤقتاً",
@@ -331,7 +331,7 @@
     "localMultiplayer": {
         "title": "لعب محلي",
         "localPlay": "لعب محلي",
-        "description": "العب مع أصدقائك القريبين - بدون إنترنت!",
+        "description": "العب مع الأصدقاء القريبين - لا حاجة إلى اتصال بالإنترنت!",
         "hostGame": "استضافة لعبة",
         "hostDescription": "أنشئ لعبة وانتظر انضمام الأصدقاء",
         "findGame": "البحث عن لعبة",
@@ -364,9 +364,12 @@
         "noResults": "لا توجد نتائج",
         "playAgain": "العب مرة أخرى",
         "backToMenu": "العودة للقائمة",
-        "hardwareReminder": "يرجى التأكد من تمكين Wi-Fi والموقع للحصول على اتصال ثابت.",
+        "hardwareReminder": "أبقِ Wi-Fi والبلوتوث والموقع مفعّلة - فهي التي تربط الأجهزة ببعضها.",
         "movesCompleted": "اكتملت الحركات!",
         "waitingForOthers": "انتظار اللاعبين الآخرين...",
-        "offline": "غير متصل"
+        "offline": "غير متصل",
+        "playerLeft": "غادر {{name}} اللعبة",
+        "connectionLost": "انقطع الاتصال",
+        "connectionLostMessage": "انقطع الاتصال بالمضيف. انتهت المباراة."
     }
 }

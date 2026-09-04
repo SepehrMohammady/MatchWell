@@ -88,7 +88,6 @@
         "days": "Days",
         "hours": "Hours",
         "minutes": "Minutes",
-        "noUnlockedThemes": "Complete Story mode levels to unlock themes",
         "yourName": "Your Name",
         "enterName": "Enter your name",
         "gameActive": "In Progress",
@@ -97,7 +96,8 @@
         "countdownDuration": "Numărătoare inversă (sec)",
         "namePromptTitle": "Cum te numești?",
         "namePromptMessage": "Alege un nume pe care ceilalți jucători îl vor vedea",
-        "saveNameButton": "Hai să jucăm!"
+        "saveNameButton": "Hai să jucăm!",
+        "errorDuration": "Stabilește o limită de timp pentru acest mod"
     },
     "game": {
         "paused": "Paused",
@@ -331,7 +331,7 @@
     "localMultiplayer": {
         "title": "Local Play",
         "localPlay": "Local Play",
-        "description": "Play with friends nearby - no internet needed!",
+        "description": "Joacă cu prietenii din apropiere - nu ai nevoie de conexiune la internet!",
         "hostGame": "Host Game",
         "hostDescription": "Create a game and wait for friends to join",
         "findGame": "Find Game",
@@ -364,9 +364,12 @@
         "noResults": "No results available",
         "playAgain": "Play Again",
         "backToMenu": "Back to Menu",
-        "hardwareReminder": "Please ensure Wi-Fi and Location services are enabled for stable connections.",
+        "hardwareReminder": "Ține Wi-Fi, Bluetooth și Locația pornite - prin ele se conectează dispozitivele.",
         "movesCompleted": "Mutări completate!",
         "waitingForOthers": "Așteptând alți jucători...",
-        "offline": "Offline"
+        "offline": "Offline",
+        "playerLeft": "{{name}} a părăsit jocul",
+        "connectionLost": "Conexiune pierdută",
+        "connectionLostMessage": "S-a pierdut conexiunea cu gazda. Meciul s-a încheiat."
     }
 }

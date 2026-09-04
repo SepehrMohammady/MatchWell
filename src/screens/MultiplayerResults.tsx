@@ -111,6 +111,11 @@ const MultiplayerResults: React.FC<Props> = ({ navigation, route }) => {
         return formatTimeLocalized(seconds, getCurrentLanguage());
     };
 
+    // "DNF" only means something when somebody actually reached the target. When a
+    // race ends on the clock nobody finishes, and labelling every player - the
+    // winner included - as Did Not Finish just reads as a contradiction.
+    const anyoneFinished = rankings.some(p => !!p.completion_time && p.completion_time > 0);
+
     const renderRankItem = ({ item, index }: { item: Participant; index: number }) => (
         <View style={[styles.rankCard, index < 3 && styles.topRankCard]}>
             <View style={[styles.rankBadge, getRankStyle(index)]}>
@@ -136,7 +141,9 @@ const MultiplayerResults: React.FC<Props> = ({ navigation, route }) => {
                         color={item.completion_time && item.completion_time > 0 ? COLORS.organicWaste : COLORS.textSecondary}
                     />
                     <Text style={styles.timeText}>
-                        {item.completion_time && item.completion_time > 0 ? formatCompletionTime(item.completion_time) : t('multiplayer.dnf')}
+                        {item.completion_time && item.completion_time > 0
+                            ? formatCompletionTime(item.completion_time)
+                            : (anyoneFinished ? t('multiplayer.dnf') : '—')}
                     </Text>
                 </View>
             )}

@@ -88,7 +88,6 @@
         "days": "Days",
         "hours": "Hours",
         "minutes": "Minutes",
-        "noUnlockedThemes": "Complete Story mode levels to unlock themes",
         "yourName": "Your Name",
         "enterName": "Enter your name",
         "gameActive": "In Progress",
@@ -97,7 +96,8 @@
         "countdownDuration": "Délka odpočtu (s)",
         "namePromptTitle": "Jak se jmenuješ?",
         "namePromptMessage": "Zvol si jméno, které uvidí ostatní hráči",
-        "saveNameButton": "Pojďme hrát!"
+        "saveNameButton": "Pojďme hrát!",
+        "errorDuration": "Nastavte časový limit pro tento režim"
     },
     "game": {
         "paused": "Paused",
@@ -331,7 +331,7 @@
     "localMultiplayer": {
         "title": "Local Play",
         "localPlay": "Local Play",
-        "description": "Play with friends nearby - no internet needed!",
+        "description": "Hrajte s přáteli poblíž - připojení k internetu není potřeba!",
         "hostGame": "Host Game",
         "hostDescription": "Create a game and wait for friends to join",
         "findGame": "Find Game",
@@ -364,9 +364,12 @@
         "noResults": "No results available",
         "playAgain": "Play Again",
         "backToMenu": "Back to Menu",
-        "hardwareReminder": "Please ensure Wi-Fi and Location services are enabled for stable connections.",
+        "hardwareReminder": "Nechte zapnuté Wi-Fi, Bluetooth a polohu - přes ně se zařízení spojí.",
         "movesCompleted": "Tahy dokončeny!",
         "waitingForOthers": "Čekání na ostatní hráče...",
-        "offline": "Offline"
+        "offline": "Offline",
+        "playerLeft": "Hráč {{name}} opustil hru",
+        "connectionLost": "Spojení přerušeno",
+        "connectionLostMessage": "Spojení s hostitelem bylo přerušeno. Zápas skončil."
     }
 }

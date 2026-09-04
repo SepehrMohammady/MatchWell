@@ -88,7 +88,6 @@
         "days": "Days",
         "hours": "Hours",
         "minutes": "Minutes",
-        "noUnlockedThemes": "Complete Story mode levels to unlock themes",
         "yourName": "Your Name",
         "enterName": "Enter your name",
         "gameActive": "In Progress",
@@ -97,7 +96,8 @@
         "countdownDuration": "Nedräkning (sek.)",
         "namePromptTitle": "Vad heter du?",
         "namePromptMessage": "Välj ett namn som andra spelare ser",
-        "saveNameButton": "Nu kör vi!"
+        "saveNameButton": "Nu kör vi!",
+        "errorDuration": "Ange en tidsgräns för det här läget"
     },
     "game": {
         "paused": "Paused",
@@ -331,7 +331,7 @@
     "localMultiplayer": {
         "title": "Local Play",
         "localPlay": "Local Play",
-        "description": "Play with friends nearby - no internet needed!",
+        "description": "Spela med vänner i närheten - ingen internetanslutning behövs!",
         "hostGame": "Host Game",
         "hostDescription": "Create a game and wait for friends to join",
         "findGame": "Find Game",
@@ -364,9 +364,12 @@
         "noResults": "No results available",
         "playAgain": "Play Again",
         "backToMenu": "Back to Menu",
-        "hardwareReminder": "Please ensure Wi-Fi and Location services are enabled for stable connections.",
+        "hardwareReminder": "Ha Wi-Fi, Bluetooth och plats påslagna - det är de som kopplar ihop enheterna.",
         "movesCompleted": "Drag slutförda!",
         "waitingForOthers": "Väntar på andra spelare...",
-        "offline": "Offline"
+        "offline": "Offline",
+        "playerLeft": "{{name}} lämnade spelet",
+        "connectionLost": "Anslutningen bröts",
+        "connectionLostMessage": "Anslutningen till värden bröts. Matchen är slut."
     }
 }

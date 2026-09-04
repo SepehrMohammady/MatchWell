@@ -88,7 +88,6 @@
         "days": "Days",
         "hours": "Hours",
         "minutes": "Minutes",
-        "noUnlockedThemes": "Complete Story mode levels to unlock themes",
         "yourName": "Your Name",
         "enterName": "Enter your name",
         "gameActive": "In Progress",
@@ -97,7 +96,8 @@
         "countdownDuration": "Lähtölaskennan kesto (s)",
         "namePromptTitle": "Mikä on nimesi?",
         "namePromptMessage": "Valitse nimi, jonka muut pelaajat näkevät",
-        "saveNameButton": "Pelataan!"
+        "saveNameButton": "Pelataan!",
+        "errorDuration": "Aseta aikaraja tälle pelimuodolle"
     },
     "game": {
         "paused": "Paused",
@@ -331,7 +331,7 @@
     "localMultiplayer": {
         "title": "Local Play",
         "localPlay": "Local Play",
-        "description": "Play with friends nearby - no internet needed!",
+        "description": "Pelaa lähellä olevien kavereiden kanssa - internetyhteyttä ei tarvita!",
         "hostGame": "Host Game",
         "hostDescription": "Create a game and wait for friends to join",
         "findGame": "Find Game",
@@ -364,9 +364,12 @@
         "noResults": "No results available",
         "playAgain": "Play Again",
         "backToMenu": "Back to Menu",
-        "hardwareReminder": "Please ensure Wi-Fi and Location services are enabled for stable connections.",
+        "hardwareReminder": "Pidä Wi-Fi, Bluetooth ja sijainti päällä - laitteet yhdistyvät niiden kautta.",
         "movesCompleted": "Siirrot käytetty!",
         "waitingForOthers": "Odotetaan muita pelaajia...",
-        "offline": "Offline"
+        "offline": "Offline",
+        "playerLeft": "{{name}} poistui pelistä",
+        "connectionLost": "Yhteys katkesi",
+        "connectionLostMessage": "Yhteys isäntään katkesi. Ottelu päättyi."
     }
 }

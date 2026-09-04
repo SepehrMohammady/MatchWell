@@ -88,7 +88,6 @@
         "days": "Days",
         "hours": "Hours",
         "minutes": "Minutes",
-        "noUnlockedThemes": "Complete Story mode levels to unlock themes",
         "yourName": "Your Name",
         "enterName": "Enter your name",
         "gameActive": "In Progress",
@@ -97,7 +96,8 @@
         "countdownDuration": "Tagal ng countdown (seg)",
         "namePromptTitle": "Ano ang pangalan mo?",
         "namePromptMessage": "Pumili ng pangalan na makikita ng ibang manlalaro",
-        "saveNameButton": "Maglaro na!"
+        "saveNameButton": "Maglaro na!",
+        "errorDuration": "Magtakda ng limitasyon sa oras para sa mode na ito"
     },
     "game": {
         "paused": "Paused",
@@ -331,7 +331,7 @@
     "localMultiplayer": {
         "title": "Local Play",
         "localPlay": "Local Play",
-        "description": "Play with friends nearby - no internet needed!",
+        "description": "Maglaro kasama ang mga kaibigan sa malapit - hindi kailangan ng koneksyon sa internet!",
         "hostGame": "Host Game",
         "hostDescription": "Create a game and wait for friends to join",
         "findGame": "Find Game",
@@ -364,9 +364,12 @@
         "noResults": "No results available",
         "playAgain": "Play Again",
         "backToMenu": "Back to Menu",
-        "hardwareReminder": "Please ensure Wi-Fi and Location services are enabled for stable connections.",
+        "hardwareReminder": "Panatilihing naka-on ang Wi-Fi, Bluetooth at Location - dito dumadaan ang koneksyon.",
         "movesCompleted": "Natapos na ang mga galaw!",
         "waitingForOthers": "Naghihintay sa ibang mga manlalaro...",
-        "offline": "Offline"
+        "offline": "Offline",
+        "playerLeft": "Umalis si {{name}} sa laro",
+        "connectionLost": "Nawala ang koneksyon",
+        "connectionLostMessage": "Nawala ang koneksyon sa host. Tapos na ang laban."
     }
 }

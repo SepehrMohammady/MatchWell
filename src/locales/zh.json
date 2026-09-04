@@ -88,7 +88,6 @@
         "days": "天",
         "hours": "小时",
         "minutes": "分钟",
-        "noUnlockedThemes": "完成故事模式关卡以解锁主题",
         "yourName": "你的名字",
         "enterName": "输入你的名字",
         "gameActive": "进行中",
@@ -97,7 +96,8 @@
         "countdownDuration": "倒计时时长（秒）",
         "namePromptTitle": "你叫什么名字？",
         "namePromptMessage": "选择一个其他玩家会看到的名字",
-        "saveNameButton": "开始游戏！"
+        "saveNameButton": "开始游戏！",
+        "errorDuration": "请为该模式设置时间限制"
     },
     "game": {
         "paused": "已暂停",
@@ -332,7 +332,7 @@
         "backToMenu": "返回菜单",
         "connectedToHost": "已连接到主机",
         "connecting": "连接中...",
-        "description": "与附近的朋友一起玩 - 无需网络！",
+        "description": "与附近的朋友一起玩 - 无需联网！",
         "disconnected": "已断开",
         "findDescription": "搜索附近的游戏",
         "findGame": "查找游戏",
@@ -364,9 +364,12 @@
         "waitingRoom": "等候室",
         "you": "你",
         "you_host": "你（主机）",
-        "hardwareReminder": "为获得稳定的连接，请确保已启用Wi-Fi和位置服务。",
+        "hardwareReminder": "请保持 Wi-Fi、蓝牙和定位开启 - 设备之间通过它们连接。",
         "movesCompleted": "步数已用完！",
         "waitingForOthers": "等待其他玩家...",
-        "offline": "离线"
+        "offline": "离线",
+        "playerLeft": "{{name}} 离开了游戏",
+        "connectionLost": "连接已断开",
+        "connectionLostMessage": "与房主的连接已断开，本局比赛结束。"
     }
 }

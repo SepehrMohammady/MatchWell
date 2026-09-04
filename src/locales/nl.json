@@ -88,7 +88,6 @@
         "days": "Days",
         "hours": "Hours",
         "minutes": "Minutes",
-        "noUnlockedThemes": "Complete Story mode levels to unlock themes",
         "yourName": "Your Name",
         "enterName": "Enter your name",
         "gameActive": "In Progress",
@@ -97,7 +96,8 @@
         "countdownDuration": "Aftelduur (sec)",
         "namePromptTitle": "Hoe heet je?",
         "namePromptMessage": "Kies een naam die andere spelers zullen zien",
-        "saveNameButton": "Laten we spelen!"
+        "saveNameButton": "Laten we spelen!",
+        "errorDuration": "Stel een tijdslimiet in voor deze modus"
     },
     "game": {
         "paused": "Paused",
@@ -331,7 +331,7 @@
     "localMultiplayer": {
         "title": "Local Play",
         "localPlay": "Local Play",
-        "description": "Play with friends nearby - no internet needed!",
+        "description": "Speel met vrienden in de buurt - geen internetverbinding nodig!",
         "hostGame": "Host Game",
         "hostDescription": "Create a game and wait for friends to join",
         "findGame": "Find Game",
@@ -364,9 +364,12 @@
         "noResults": "No results available",
         "playAgain": "Play Again",
         "backToMenu": "Back to Menu",
-        "hardwareReminder": "Please ensure Wi-Fi and Location services are enabled for stable connections.",
+        "hardwareReminder": "Houd wifi, bluetooth en locatie ingeschakeld - daarmee verbinden de apparaten.",
         "movesCompleted": "Zetten voltooid!",
         "waitingForOthers": "Wachten op andere spelers...",
-        "offline": "Offline"
+        "offline": "Offline",
+        "playerLeft": "{{name}} heeft het spel verlaten",
+        "connectionLost": "Verbinding verbroken",
+        "connectionLostMessage": "Verbinding met de host verbroken. De wedstrijd is beëindigd."
     }
 }

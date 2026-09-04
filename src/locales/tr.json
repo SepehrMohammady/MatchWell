@@ -88,7 +88,6 @@
         "days": "Days",
         "hours": "Hours",
         "minutes": "Minutes",
-        "noUnlockedThemes": "Complete Story mode levels to unlock themes",
         "yourName": "Your Name",
         "enterName": "Enter your name",
         "gameActive": "In Progress",
@@ -97,7 +96,8 @@
         "countdownDuration": "Geri sayım süresi (sn)",
         "namePromptTitle": "Adın ne?",
         "namePromptMessage": "Diğer oyuncuların göreceği bir isim seç",
-        "saveNameButton": "Hadi oynayalım!"
+        "saveNameButton": "Hadi oynayalım!",
+        "errorDuration": "Bu mod için bir süre sınırı belirleyin"
     },
     "game": {
         "paused": "Paused",
@@ -331,7 +331,7 @@
     "localMultiplayer": {
         "title": "Local Play",
         "localPlay": "Local Play",
-        "description": "Play with friends nearby - no internet needed!",
+        "description": "Yakındaki arkadaşlarınla oyna - internet bağlantısı gerekmez!",
         "hostGame": "Host Game",
         "hostDescription": "Create a game and wait for friends to join",
         "findGame": "Find Game",
@@ -364,9 +364,12 @@
         "noResults": "No results available",
         "playAgain": "Play Again",
         "backToMenu": "Back to Menu",
-        "hardwareReminder": "Please ensure Wi-Fi and Location services are enabled for stable connections.",
+        "hardwareReminder": "Wi-Fi, Bluetooth ve Konum'u açık tutun - cihazlar bunlar üzerinden bağlanır.",
         "movesCompleted": "Hamleler tamamlandı!",
         "waitingForOthers": "Diğer oyuncular bekleniyor...",
-        "offline": "Offline"
+        "offline": "Offline",
+        "playerLeft": "{{name}} oyundan ayrıldı",
+        "connectionLost": "Bağlantı kesildi",
+        "connectionLostMessage": "Ana makineyle bağlantı kesildi. Maç sona erdi."
     }
 }
