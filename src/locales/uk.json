@@ -231,7 +231,8 @@
         "deforestationDesc": "Садіть дерева!"
     },
     "endless": {
-        "noMoveLimit": "No move limit — just keep matching and beat your high score!"
+        "noMoveLimit": "No move limit — just keep matching and beat your high score!",
+        "unlockHint": "Заблоковано — пройдіть усі рівні історії цієї теми ({{done}}/{{total}})"
     },
     "themeAchievements": {
         "recycler": "Recycler",

@@ -231,7 +231,8 @@
         "deforestationDesc": "Trồng cây!"
     },
     "endless": {
-        "noMoveLimit": "No move limit — just keep matching and beat your high score!"
+        "noMoveLimit": "No move limit — just keep matching and beat your high score!",
+        "unlockHint": "Đã khoá — hoàn thành tất cả màn Cốt truyện của chủ đề này ({{done}}/{{total}})"
     },
     "themeAchievements": {
         "recycler": "Recycler",

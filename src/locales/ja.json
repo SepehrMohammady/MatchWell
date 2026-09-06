@@ -231,7 +231,8 @@
         "deforestationDesc": "木を植えよう！未来の世代のために森林を守ろう。"
     },
     "endless": {
-        "noMoveLimit": "手数制限なし — マッチを続けてハイスコアを目指そう！"
+        "noMoveLimit": "手数制限なし — マッチを続けてハイスコアを目指そう！",
+        "unlockHint": "ロック中 — このテーマのストーリーレベルをすべてクリア（{{done}}/{{total}}）"
     },
     "themeAchievements": {
         "recycler": "リサイクラー",

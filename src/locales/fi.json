@@ -231,7 +231,8 @@
         "deforestationDesc": "Istuta puita!"
     },
     "endless": {
-        "noMoveLimit": "No move limit — just keep matching and beat your high score!"
+        "noMoveLimit": "No move limit — just keep matching and beat your high score!",
+        "unlockHint": "Lukittu — läpäise tämän teeman kaikki tarinatasot ({{done}}/{{total}})"
     },
     "themeAchievements": {
         "recycler": "Recycler",

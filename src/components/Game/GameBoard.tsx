@@ -1,6 +1,6 @@
 // Game Board Component - Renders the 8x8 grid of tiles with swipe support
-import React, { useCallback } from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { View, StyleSheet, Dimensions, Animated, Easing, AccessibilityInfo } from 'react-native';
 import { useGameStore } from '../../context/GameStore';
 import TileComponent, { BOARD_PADDING, TILE_SIZE, TILE_MARGIN, GRID_DIMENSION, SwipeDirection } from './Tile';
 import { Position } from '../../types';
@@ -17,6 +17,53 @@ const GameBoard: React.FC = () => {
     const cancelPowerUp = useGameStore((state) => state.cancelPowerUp);
 
     const gridSize = grid.length;
+
+    // One shared pulse drives the board frame and every targetable tile, so the
+    // orange outline blinks in sync and costs a single native-driven animation.
+    const pulse = useRef(new Animated.Value(1)).current;
+    const [reduceMotion, setReduceMotion] = useState(false);
+
+    useEffect(() => {
+        let alive = true;
+        AccessibilityInfo.isReduceMotionEnabled().then((enabled) => {
+            if (alive) setReduceMotion(enabled);
+        });
+        const sub = AccessibilityInfo.addEventListener('reduceMotionChanged', setReduceMotion);
+        return () => {
+            alive = false;
+            sub?.remove?.();
+        };
+    }, []);
+
+    useEffect(() => {
+        // A steady pulse rather than a hard on/off blink: it draws the eye without
+        // strobing. Held solid when the system asks for reduced motion.
+        if (!isPowerUpActive || reduceMotion) {
+            pulse.setValue(1);
+            return;
+        }
+        const loop = Animated.loop(
+            Animated.sequence([
+                Animated.timing(pulse, {
+                    toValue: 0.25,
+                    duration: 550,
+                    easing: Easing.inOut(Easing.quad),
+                    useNativeDriver: true,
+                }),
+                Animated.timing(pulse, {
+                    toValue: 1,
+                    duration: 550,
+                    easing: Easing.inOut(Easing.quad),
+                    useNativeDriver: true,
+                }),
+            ])
+        );
+        loop.start();
+        return () => {
+            loop.stop();
+            pulse.setValue(1);
+        };
+    }, [isPowerUpActive, reduceMotion, pulse]);
 
     // Check if a position is a border block
     const isBorderBlock = useCallback((row: number, col: number): boolean => {
@@ -60,7 +107,13 @@ const GameBoard: React.FC = () => {
 
     return (
         <View style={styles.container}>
-            <View style={[styles.board, isPowerUpActive && styles.boardPowerUpMode]}>
+            <View style={styles.board}>
+                {isPowerUpActive && (
+                    <Animated.View
+                        pointerEvents="none"
+                        style={[styles.boardPulseRing, { opacity: pulse }]}
+                    />
+                )}
                 {grid.map((row, rowIndex) => (
                     <View key={`row-${rowIndex}`} style={styles.row}>
                         {row.map((tile, colIndex) => {
@@ -88,6 +141,7 @@ const GameBoard: React.FC = () => {
                                     onPress={handleTilePress}
                                     onSwipe={handleTileSwipe}
                                     isPowerUpTarget={isPowerUpActive && canTarget}
+                                    pulse={pulse}
                                 />
                             );
                         })}
@@ -122,9 +176,18 @@ const styles = StyleSheet.create({
         height: TILE_SIZE,
         margin: TILE_MARGIN,
     },
-    boardPowerUpMode: {
-        borderColor: '#FFA726',
+    // Sits exactly over the board's own 4px frame and pulses orange while the
+    // power-up is armed.
+    boardPulseRing: {
+        position: 'absolute',
+        top: -4,
+        left: -4,
+        right: -4,
+        bottom: -4,
         borderWidth: 4,
+        borderColor: '#FFA726',
+        borderRadius: 12,
+        zIndex: 2,
     },
 });
 

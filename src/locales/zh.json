@@ -231,7 +231,8 @@
         "deforestationDesc": "种植树木！为子孙后代保护森林。"
     },
     "endless": {
-        "noMoveLimit": "无步数限制——持续消除，打破最高分！"
+        "noMoveLimit": "无步数限制——持续消除，打破最高分！",
+        "unlockHint": "已锁定 — 完成本主题的所有故事关卡（{{done}}/{{total}}）"
     },
     "themeAchievements": {
         "recycler": "回收达人",

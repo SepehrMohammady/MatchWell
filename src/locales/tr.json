@@ -231,7 +231,8 @@
         "deforestationDesc": "Ağaç dikin!"
     },
     "endless": {
-        "noMoveLimit": "No move limit — just keep matching and beat your high score!"
+        "noMoveLimit": "No move limit — just keep matching and beat your high score!",
+        "unlockHint": "Kilitli — bu temanın tüm Hikâye bölümlerini tamamla ({{done}}/{{total}})"
     },
     "themeAchievements": {
         "recycler": "Recycler",

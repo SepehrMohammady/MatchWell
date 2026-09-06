@@ -231,7 +231,8 @@
         "deforestationDesc": "ปลูกต้นไม้!"
     },
     "endless": {
-        "noMoveLimit": "No move limit — just keep matching and beat your high score!"
+        "noMoveLimit": "No move limit — just keep matching and beat your high score!",
+        "unlockHint": "ล็อกอยู่ — เล่นด่านเนื้อเรื่องของธีมนี้ให้ครบ ({{done}}/{{total}})"
     },
     "themeAchievements": {
         "recycler": "Recycler",

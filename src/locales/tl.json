@@ -231,7 +231,8 @@
         "deforestationDesc": "Magtanim ng puno!"
     },
     "endless": {
-        "noMoveLimit": "No move limit — just keep matching and beat your high score!"
+        "noMoveLimit": "No move limit — just keep matching and beat your high score!",
+        "unlockHint": "Naka-lock — tapusin ang lahat ng Story level ng temang ito ({{done}}/{{total}})"
     },
     "themeAchievements": {
         "recycler": "Recycler",

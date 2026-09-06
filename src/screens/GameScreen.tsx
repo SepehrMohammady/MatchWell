@@ -17,6 +17,7 @@ import { useGameStore } from '../context/GameStore';
 import GameBoard from '../components/Game/GameBoard';
 import HUD from '../components/UI/HUD';
 import PowerProgress from '../components/UI/PowerProgress';
+import ThemeAmbience from '../components/UI/ThemeAmbience';
 import Tutorial from '../components/UI/Tutorial';
 import StoryComplete from '../components/UI/StoryComplete';
 import { THEME_CONFIGS, getLevelById, getLevelsByTheme, LEVELS, TRASH_FACTS, POLLUTION_FACTS, WATER_FACTS, ENERGY_FACTS, FOREST_FACTS } from '../themes';
@@ -526,6 +527,9 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
     return (
         <View style={[styles.container, getBackgroundStyle(), { paddingTop: insets.top, paddingBottom: bottomPadding }]}>
             <StatusBar barStyle="light-content" />
+
+            {/* Drifting theme icons over the flat background colour. */}
+            <ThemeAmbience theme={theme} />
 
             {/* Achievement Toast Notification - uses Modal to appear above level complete */}
             <Modal visible={!!toastAchievement} transparent animationType="none">

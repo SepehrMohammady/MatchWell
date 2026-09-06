@@ -20,6 +20,7 @@ import { playSfx, playBgm } from '../utils/SoundManager';
 import { useGameStore } from '../context/GameStore';
 import GameBoard from '../components/Game/GameBoard';
 import PowerProgress from '../components/UI/PowerProgress';
+import ThemeAmbience from '../components/UI/ThemeAmbience';
 import { formatNumber, formatTimeLocalized, getCurrentLanguage } from '../config/i18n';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'MultiplayerGame'>;
@@ -198,6 +199,10 @@ const MultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
     return (
         <View style={[styles.container, { paddingTop: insets.top }]}>
             <StatusBar barStyle="dark-content" backgroundColor={COLORS.backgroundPrimary} />
+
+            {/* Drifting theme icons. This screen's background is a light sage
+                (#F0F4EF), so the icons are tinted dark - white would be invisible. */}
+            {theme && <ThemeAmbience theme={theme} tint={COLORS.backgroundDark} />}
 
             {/* HUD Card */}
             <View style={styles.hudCard}>

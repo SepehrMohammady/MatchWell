@@ -231,7 +231,8 @@
         "deforestationDesc": "Φυτέψτε δέντρα!"
     },
     "endless": {
-        "noMoveLimit": "No move limit — just keep matching and beat your high score!"
+        "noMoveLimit": "No move limit — just keep matching and beat your high score!",
+        "unlockHint": "Κλειδωμένο — ολοκληρώστε όλες τις πίστες Ιστορίας αυτού του θέματος ({{done}}/{{total}})"
     },
     "themeAchievements": {
         "recycler": "Recycler",

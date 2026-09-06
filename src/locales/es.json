@@ -231,7 +231,8 @@
         "deforestationDesc": "¡Planta árboles! Protege nuestros bosques para las generaciones futuras."
     },
     "endless": {
-        "noMoveLimit": "Sin límite de movimientos — ¡sigue combinando y supera tu mejor puntuación!"
+        "noMoveLimit": "Sin límite de movimientos — ¡sigue combinando y supera tu mejor puntuación!",
+        "unlockHint": "Bloqueado: completa todos los niveles de Historia de este tema ({{done}}/{{total}})"
     },
     "themeAchievements": {
         "recycler": "Reciclador",

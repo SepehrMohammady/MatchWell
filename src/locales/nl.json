@@ -231,7 +231,8 @@
         "deforestationDesc": "Plant bomen!"
     },
     "endless": {
-        "noMoveLimit": "No move limit — just keep matching and beat your high score!"
+        "noMoveLimit": "No move limit — just keep matching and beat your high score!",
+        "unlockHint": "Vergrendeld — voltooi alle Verhaal-levels van dit thema ({{done}}/{{total}})"
     },
     "themeAchievements": {
         "recycler": "Recycler",

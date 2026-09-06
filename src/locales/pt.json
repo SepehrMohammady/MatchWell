@@ -231,7 +231,8 @@
         "deforestationDesc": "Plante árvores! Proteja nossas florestas."
     },
     "endless": {
-        "noMoveLimit": "Sem limite de movimentos — continue combinando e supere sua pontuação!"
+        "noMoveLimit": "Sem limite de movimentos — continue combinando e supere sua pontuação!",
+        "unlockHint": "Bloqueado — completa todos os níveis da História deste tema ({{done}}/{{total}})"
     },
     "themeAchievements": {
         "recycler": "Reciclador",

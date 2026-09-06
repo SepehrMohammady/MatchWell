@@ -16,7 +16,7 @@ import { RootStackParamList } from '../types';
 import { ThemeType } from '../types';
 import { useGameStore } from '../context/GameStore';
 import { THEME_CONFIGS, getLevelsByTheme } from '../themes';
-import { formatNumber } from '../config/i18n';
+import { formatNumber, getCurrentLanguage } from '../config/i18n';
 import { playSfx, playBgm } from '../utils/SoundManager';
 import { COLORS, TYPOGRAPHY, SPACING, RADIUS, SHADOWS } from '../config/theme';
 import { getThemeIcon, LockIcon, BackIcon } from '../components/UI/Icons';
@@ -78,6 +78,16 @@ const EndlessSelect: React.FC<Props> = ({ navigation }) => {
         // ALL themes require ALL levels in that theme to be completed
         const themeLevels = getLevelsByTheme(theme);
         return themeLevels.every(level => completedLevels.includes(level.id));
+    };
+
+    // How far the player is toward unlocking a theme, so a locked card can say what
+    // to do about it instead of only saying "Locked".
+    const getUnlockProgress = (theme: ThemeType) => {
+        const themeLevels = getLevelsByTheme(theme);
+        return {
+            done: themeLevels.filter(level => completedLevels.includes(level.id)).length,
+            total: themeLevels.length,
+        };
     };
 
     // Get endless high score for a theme (stored with negative IDs)
@@ -186,8 +196,13 @@ const EndlessSelect: React.FC<Props> = ({ navigation }) => {
                                     ]}>
                                         {t(`themes.${themeId === 'trash-sorting' ? 'trashSorting' : themeId === 'water-conservation' ? 'waterConservation' : themeId === 'energy-efficiency' ? 'energyEfficiency' : themeId}`)}
                                     </Text>
-                                    <Text style={styles.themeDescription}>
-                                        {unlocked ? t(`themes.${themeId === 'trash-sorting' ? 'trashSorting' : themeId === 'water-conservation' ? 'waterConservation' : themeId === 'energy-efficiency' ? 'energyEfficiency' : themeId}Desc`) : t('achievements.locked')}
+                                    <Text style={[styles.themeDescription, !unlocked && styles.unlockHintText]}>
+                                        {unlocked
+                                            ? t(`themes.${themeId === 'trash-sorting' ? 'trashSorting' : themeId === 'water-conservation' ? 'waterConservation' : themeId === 'energy-efficiency' ? 'energyEfficiency' : themeId}Desc`)
+                                            : t('endless.unlockHint', {
+                                                done: formatNumber(getUnlockProgress(themeId).done, getCurrentLanguage()),
+                                                total: formatNumber(getUnlockProgress(themeId).total, getCurrentLanguage()),
+                                            })}
                                     </Text>
                                 </View>
                             </View>
@@ -294,7 +309,10 @@ const styles = StyleSheet.create({
         borderColor: COLORS.cardBorder,
     },
     lockedCard: {
-        opacity: 0.5,
+        // Was 0.5, which dimmed the whole card - including the text that tells the
+        // player how to unlock it - down to roughly 3:1 contrast. The lock icon and
+        // muted title already read as "locked", so only take the edge off.
+        opacity: 0.85,
     },
     themeHeader: {
         flexDirection: 'row',
@@ -329,6 +347,11 @@ const styles = StyleSheet.create({
         fontSize: TYPOGRAPHY.caption,
         fontFamily: TYPOGRAPHY.fontFamily,
         color: COLORS.textSecondary,
+    },
+    // The unlock instruction is the actionable line on a locked card, so it gets
+    // full-strength text rather than the muted description colour.
+    unlockHintText: {
+        color: COLORS.textPrimary,
     },
     statsRow: {
         flexDirection: 'row',

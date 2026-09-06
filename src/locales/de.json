@@ -231,7 +231,8 @@
         "deforestationDesc": "Pflanze Bäume! Schütze unsere Wälder für zukünftige Generationen."
     },
     "endless": {
-        "noMoveLimit": "Kein Zuglimit — kombiniere weiter und übertreffe deinen Highscore!"
+        "noMoveLimit": "Kein Zuglimit — kombiniere weiter und übertreffe deinen Highscore!",
+        "unlockHint": "Gesperrt — schließe alle Story-Level dieses Themas ab ({{done}}/{{total}})"
     },
     "themeAchievements": {
         "recycler": "Recycler",

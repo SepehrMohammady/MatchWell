@@ -22,6 +22,7 @@ import { MusicIcon, MusicOffIcon, VolumeIcon, VolumeOffIcon } from '../component
 import { useGameStore } from '../context/GameStore';
 import GameBoard from '../components/Game/GameBoard';
 import PowerProgress from '../components/UI/PowerProgress';
+import ThemeAmbience from '../components/UI/ThemeAmbience';
 import LocalMultiplayerService, { LocalPlayer, LocalGameConfig } from '../services/LocalMultiplayerService';
 import CustomAlert from '../components/UI/CustomAlert';
 import { formatNumber, formatTimeLocalized, getCurrentLanguage } from '../config/i18n';
@@ -419,6 +420,9 @@ const LocalMultiplayerGame: React.FC<Props> = ({ navigation, route }) => {
     return (
         <View style={[styles.container, getBackgroundStyle(), { paddingTop: insets.top }]}>
             <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
+
+            {/* Drifting theme icons; white reads on this screen's dusky background. */}
+            {theme && <ThemeAmbience theme={theme} />}
 
             <MultiplayerHUD
                 onPause={handlePause}

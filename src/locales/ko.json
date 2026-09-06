@@ -231,7 +231,8 @@
         "deforestationDesc": "나무를 심으세요! 미래 세대를 위해 숲을 보호합니다."
     },
     "endless": {
-        "noMoveLimit": "이동 제한 없음 — 계속 매치하고 최고 점수를 깨세요!"
+        "noMoveLimit": "이동 제한 없음 — 계속 매치하고 최고 점수를 깨세요!",
+        "unlockHint": "잠김 — 이 테마의 스토리 레벨을 모두 완료하세요 ({{done}}/{{total}})"
     },
     "themeAchievements": {
         "recycler": "재활용가",

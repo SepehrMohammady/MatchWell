@@ -231,7 +231,8 @@
         "deforestationDesc": "Pianta alberi! Proteggi le nostre foreste per le generazioni future."
     },
     "endless": {
-        "noMoveLimit": "Nessun limite di mosse — continua ad abbinare e batti il tuo record!"
+        "noMoveLimit": "Nessun limite di mosse — continua ad abbinare e batti il tuo record!",
+        "unlockHint": "Bloccato — completa tutti i livelli Storia di questo tema ({{done}}/{{total}})"
     },
     "themeAchievements": {
         "recycler": "Riciclatore",

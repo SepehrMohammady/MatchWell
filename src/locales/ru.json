@@ -231,7 +231,8 @@
         "deforestationDesc": "Сажайте деревья!"
     },
     "endless": {
-        "noMoveLimit": "No move limit — just keep matching and beat your high score!"
+        "noMoveLimit": "No move limit — just keep matching and beat your high score!",
+        "unlockHint": "Заблокировано — пройдите все уровни истории этой темы ({{done}}/{{total}})"
     },
     "themeAchievements": {
         "recycler": "Recycler",

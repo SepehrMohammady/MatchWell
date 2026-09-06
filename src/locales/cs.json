@@ -231,7 +231,8 @@
         "deforestationDesc": "Sázejte stromy!"
     },
     "endless": {
-        "noMoveLimit": "No move limit — just keep matching and beat your high score!"
+        "noMoveLimit": "No move limit — just keep matching and beat your high score!",
+        "unlockHint": "Zamčeno — dokonči všechny příběhové úrovně tohoto tématu ({{done}}/{{total}})"
     },
     "themeAchievements": {
         "recycler": "Recycler",

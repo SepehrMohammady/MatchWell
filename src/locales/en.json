@@ -231,7 +231,8 @@
         "deforestationDesc": "Plant trees! Protect our forests for future generations."
     },
     "endless": {
-        "noMoveLimit": "No move limit — just keep matching and beat your high score!"
+        "noMoveLimit": "No move limit — just keep matching and beat your high score!",
+        "unlockHint": "Locked — complete all Story levels of this theme ({{done}}/{{total}})"
     },
     "themeAchievements": {
         "recycler": "Recycler",

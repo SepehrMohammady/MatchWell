@@ -42,9 +42,11 @@ interface TileProps {
   onPress: (position: Position) => void;
   onSwipe: (position: Position, direction: SwipeDirection) => void;
   isPowerUpTarget?: boolean;
+  /** Shared pulse from GameBoard so every targetable tile blinks in sync. */
+  pulse?: Animated.Value;
 }
 
-const TileComponent: React.FC<TileProps> = memo(({ tile, isSelected, onPress, onSwipe, isPowerUpTarget = false }) => {
+const TileComponent: React.FC<TileProps> = memo(({ tile, isSelected, onPress, onSwipe, isPowerUpTarget = false, pulse }) => {
   const tileInfo = TILE_INFO[tile.type];
 
   // Keep a ref to the latest tile/callbacks so PanResponder always uses fresh data
@@ -208,7 +210,7 @@ const TileComponent: React.FC<TileProps> = memo(({ tile, isSelected, onPress, on
         styles.tile,
         { backgroundColor: tileInfo.color },
         isSelected && styles.selectedTile,
-        isPowerUpTarget && styles.powerUpTarget,
+        isPowerUpTarget && styles.powerUpTargetGlow,
         {
           opacity: opacityAnim,
           transform: [
@@ -220,6 +222,13 @@ const TileComponent: React.FC<TileProps> = memo(({ tile, isSelected, onPress, on
       ]}
       {...panResponder.panHandlers}
     >
+      {/* Pulsing outline marking a tile the armed power-up can be fired at. */}
+      {isPowerUpTarget && (
+        <Animated.View
+          pointerEvents="none"
+          style={[styles.powerUpRing, pulse ? { opacity: pulse } : null]}
+        />
+      )}
       <TileIcon type={tile.type} size={TILE_SIZE * 0.7} />
     </Animated.View>
   );
@@ -245,14 +254,26 @@ const styles = StyleSheet.create({
     borderColor: COLORS.accentHighlight,
     borderWidth: 2,
   },
-  powerUpTarget: {
-    borderColor: '#FFA726',
-    borderWidth: 3,
+  // Steady glow marking the tile as targetable, kept even at the dim end of the
+  // pulse so a target never looks unmarked.
+  powerUpTargetGlow: {
     shadowColor: '#FFA726',
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.8,
     shadowRadius: 6,
     elevation: 8,
+  },
+  // The part that actually blinks.
+  powerUpRing: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    borderColor: '#FFA726',
+    borderWidth: 3,
+    borderRadius: RADIUS.md,
+    zIndex: 2,
   },
 });
 

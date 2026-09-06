@@ -231,7 +231,8 @@
         "deforestationDesc": "Tanam pohon! Lindungi hutan kita."
     },
     "endless": {
-        "noMoveLimit": "No move limit — just keep matching and beat your high score!"
+        "noMoveLimit": "No move limit — just keep matching and beat your high score!",
+        "unlockHint": "Terkunci — selesaikan semua level Cerita tema ini ({{done}}/{{total}})"
     },
     "themeAchievements": {
         "recycler": "Recycler",
