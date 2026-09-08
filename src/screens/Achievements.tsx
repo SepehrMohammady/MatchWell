@@ -51,11 +51,20 @@ const Achievements: React.FC<Props> = ({ navigation }) => {
         return () => backHandler.remove();
     }, []);
 
+    // Which achievements to mark as new on this visit. Snapshotted before the store
+    // is cleared, otherwise the dots would vanish the moment the screen opened - the
+    // player would never see which one was new.
+    const [newlyUnlocked, setNewlyUnlocked] = React.useState<string[]>([]);
+
     // Play menu music and clear unseen achievements when screen is focused
     useFocusEffect(
         useCallback(() => {
             playBgm('bgm_menu');
-            clearUnseenAchievements(); // Clear red dot when user views achievements
+            const unseen = useGameStore.getState().unseenAchievements;
+            if (unseen.length > 0) {
+                setNewlyUnlocked(unseen);
+            }
+            clearUnseenAchievements(); // Clear the main-menu dot; the per-card dots stay for this visit
         }, [clearUnseenAchievements])
     );
 
@@ -166,11 +175,13 @@ const Achievements: React.FC<Props> = ({ navigation }) => {
     // Render a single achievement medal
     const renderAchievement = (achievement: Achievement) => {
         const unlocked = isUnlocked(achievement);
+        const isNew = unlocked && newlyUnlocked.includes(achievement.id);
         return (
             <View
                 key={achievement.id}
                 style={[styles.medalCard, !unlocked && styles.medalLocked]}
             >
+                {isNew && <View style={styles.newDot} />}
                 <View style={[styles.medalIconContainer, unlocked && { backgroundColor: achievement.iconColor + '20' }]}>
                     {unlocked && achievement.icon ? (
                         <MaterialCommunityIcons
@@ -277,6 +288,7 @@ const Achievements: React.FC<Props> = ({ navigation }) => {
                                 <View style={styles.endlessTierRow}>
                                     {achievements.map((a) => {
                                         const unlocked = isUnlocked(a);
+                                        const isNew = unlocked && newlyUnlocked.includes(a.id);
                                         return (
                                             <View
                                                 key={a.id}
@@ -285,6 +297,7 @@ const Achievements: React.FC<Props> = ({ navigation }) => {
                                                     !unlocked && styles.endlessMedalLocked,
                                                 ]}
                                             >
+                                                {isNew && <View style={styles.newDotSmall} />}
                                                 <View style={[styles.endlessMedalIconContainer, unlocked && a.iconColor && { backgroundColor: a.iconColor + '20' }]}>
                                                     {unlocked && a.icon ? (
                                                         <MaterialCommunityIcons
@@ -420,6 +433,28 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: COLORS.cardBorder,
         ...SHADOWS.sm,
+    },
+    // Same red dot as the main-menu Achievements button, pinned to the card corner
+    // so the player can see which achievement the dot was actually about.
+    newDot: {
+        position: 'absolute',
+        top: 6,
+        right: 6,
+        width: 10,
+        height: 10,
+        borderRadius: 5,
+        backgroundColor: '#FF3B30',
+        zIndex: 2,
+    },
+    newDotSmall: {
+        position: 'absolute',
+        top: 4,
+        right: 4,
+        width: 8,
+        height: 8,
+        borderRadius: 4,
+        backgroundColor: '#FF3B30',
+        zIndex: 2,
     },
     medalLocked: {
         backgroundColor: COLORS.backgroundSecondary,

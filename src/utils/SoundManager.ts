@@ -7,8 +7,21 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AppState, AppStateStatus } from 'react-native';
 import { ThemeType } from '../types';
 
-// Enable playback that mixes with other audio (doesn't pause user's music)
-Sound.setCategory('Ambient', true);  // 'Ambient' allows mixing with other apps
+// Play on the MEDIA stream, and mix rather than taking audio focus.
+//
+// This must stay 'Playback'. On Android react-native-sound maps the category
+// straight onto a stream type (Sound.kt): 'Playback' -> STREAM_MUSIC, but
+// 'Ambient' -> STREAM_NOTIFICATION. Under 'Ambient' the game was riding the
+// notification stream, so silent mode muted the game entirely and the volume
+// keys adjusted notification volume instead of media volume.
+//
+// The second argument is mixWithOthers. Keeping it true preserves the original
+// intent - the library only calls requestAudioFocus() when it is false, so the
+// player's own music is still not interrupted.
+//
+// Category is applied when each player is created, so this has to run before any
+// sound is preloaded - hence module scope.
+Sound.setCategory('Playback', true);
 
 // Track app state for background/foreground music control
 let currentAppState: AppStateStatus = AppState.currentState;

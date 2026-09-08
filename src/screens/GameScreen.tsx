@@ -197,27 +197,59 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
     );
 
     // Helper to show toast for new achievement
-    const showAchievementToast = useCallback((achievement: Achievement) => {
-        setToastAchievement(achievement);
-        addUnseenAchievement(achievement.id);
+    // Achievements can unlock together (finishing a theme can also cross a star
+    // milestone), so toasts are queued and shown strictly one at a time rather than
+    // stacking on top of each other.
+    const toastQueue = useRef<Achievement[]>([]);
+    const isShowingToast = useRef(false);
+    const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+    const showNextToast = useCallback(() => {
+        if (isShowingToast.current) return;
+        const next = toastQueue.current.shift();
+        if (!next) return;
+
+        isShowingToast.current = true;
+        setToastAchievement(next);
         playSfx('level_complete');
 
+        // Fade in, hold 3s, fade out - then hand over to whatever is queued behind it.
         Animated.timing(toastOpacity, {
             toValue: 1,
             duration: 300,
             useNativeDriver: true,
         }).start(() => {
-            setTimeout(() => {
+            toastTimer.current = setTimeout(() => {
                 Animated.timing(toastOpacity, {
                     toValue: 0,
                     duration: 300,
                     useNativeDriver: true,
                 }).start(() => {
                     setToastAchievement(null);
+                    isShowingToast.current = false;
+                    showNextToast();
                 });
             }, 3000);
         });
-    }, [addUnseenAchievement, toastOpacity]);
+    }, [toastOpacity]);
+
+    const showAchievementToast = useCallback((achievement: Achievement) => {
+        // Mark it unseen immediately, so the red dot is correct even for
+        // achievements still waiting their turn in the queue.
+        addUnseenAchievement(achievement.id);
+        if (toastQueue.current.some(a => a.id === achievement.id)) return;
+        toastQueue.current.push(achievement);
+        showNextToast();
+    }, [addUnseenAchievement, showNextToast]);
+
+    // Drop any pending toast work when leaving the screen.
+    useEffect(() => {
+        return () => {
+            if (toastTimer.current) clearTimeout(toastTimer.current);
+            toastQueue.current = [];
+            isShowingToast.current = false;
+        };
+    }, []);
 
     // Check for new achievements when level completes
     useEffect(() => {
@@ -236,8 +268,8 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
                     const wasCompleted = checkThemeAchievement(theme, completedLevels, getLevelsByTheme);
                     const isNowCompleted = checkThemeAchievement(theme, updatedCompletedLevels, getLevelsByTheme);
                     if (!wasCompleted && isNowCompleted) {
+                        // Queued, not shown immediately - keep checking the rest.
                         showAchievementToast(themeAchievement);
-                        return; // Only show one toast at a time
                     }
                 }
             }
@@ -249,7 +281,6 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
                     const isNowEarned = checkStarAchievement(starAchievement.requirement, updatedMovesRemaining, getLevelById, allLevelIds);
                     if (!wasEarned && isNowEarned) {
                         showAchievementToast(starAchievement);
-                        return; // Only show one toast at a time
                     }
                 }
             }
@@ -267,7 +298,6 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
                     const isNowEarned = checkEndlessAchievement(theme, endlessAchievement.requirement, updatedHighScores);
                     if (!wasEarned && isNowEarned) {
                         showAchievementToast(endlessAchievement);
-                        return; // Only show one toast at a time
                     }
                 }
             }
@@ -296,9 +326,10 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
                     // Check if this is a new achievement (wasn't already earned)
                     const wasEarned = checkEndlessAchievement(theme, endlessAchievement.requirement, highScores);
                     if (!wasEarned) {
+                        // A single big cascade can cross more than one tier at once;
+                        // queue them all and let them play out in order.
                         shownEndlessAchievements.current.add(endlessAchievement.id);
                         showAchievementToast(endlessAchievement);
-                        break; // Only show one toast at a time
                     }
                 }
             }
