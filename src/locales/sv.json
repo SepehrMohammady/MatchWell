@@ -427,6 +427,7 @@
         "chooseNameMessage": "Välj ett spelarnamn och ett lösenord. Namnet är också ditt namn på topplistan, och du behöver båda för att fortsätta på en annan enhet.",
         "errorNameLength": "Spelarnamnet måste vara 3-20 tecken.",
         "errorNameTaken": "Det spelarnamnet är upptaget. Prova ett annat.",
-        "errorRateLimited": "För många misslyckade försök. Försök igen om några minuter."
+        "errorRateLimited": "För många misslyckade försök. Försök igen om några minuter.",
+        "errorUpdateRequired": "Den här versionen av MatchWell stöds inte längre. Uppdatera för att fortsätta."
     }
 }

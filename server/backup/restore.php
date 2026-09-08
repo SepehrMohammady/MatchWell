@@ -20,6 +20,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 $input = getJsonInput();
 
+requireSupportedClient($input);
+
 $username = isset($input['username']) ? trim((string)$input['username']) : '';
 $password = isset($input['password']) ? (string)$input['password'] : '';
 

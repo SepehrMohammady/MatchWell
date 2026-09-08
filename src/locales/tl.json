@@ -427,6 +427,7 @@
         "chooseNameMessage": "Pumili ng pangalan ng manlalaro at password. Ito rin ang pangalan mo sa leaderboard, at kakailanganin mo pareho para magpatuloy sa ibang device.",
         "errorNameLength": "Ang pangalan ng manlalaro ay dapat 3-20 karakter.",
         "errorNameTaken": "Ginagamit na ang pangalang iyon. Sumubok ng iba.",
-        "errorRateLimited": "Masyadong maraming maling subok. Subukan ulit makalipas ang ilang minuto."
+        "errorRateLimited": "Masyadong maraming maling subok. Subukan ulit makalipas ang ilang minuto.",
+        "errorUpdateRequired": "Hindi na suportado ang bersyong ito ng MatchWell. Mag-update para magpatuloy."
     }
 }

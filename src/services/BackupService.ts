@@ -34,6 +34,7 @@ export const BACKED_UP_KEYS: string[] = [
     '@MatchWell:soundSettings',                             // music/sfx toggles and volumes
     '@matchwell_language',                                  // UI language
     '@matchwell_device_id',                                 // leaderboard identity
+    '@matchwell_device_secret',                             // key that authorises leaderboard writes
     '@matchwell_username',                                  // leaderboard username
     'playerName',                                           // multiplayer display name
 ];
@@ -57,6 +58,7 @@ export type BackupErrorCode =
     | 'name-not-owned'
     | 'no-account'
     | 'rate-limited'    // too many wrong passwords, account in cooldown
+    | 'update-required' // build older than the server's minimum
     | 'corrupt'
     | 'weak-password'
     | 'unknown';
@@ -76,6 +78,7 @@ interface ApiResponse<T> {
 
 /** Map an HTTP status + server message onto a stable code the UI can branch on. */
 function classify(status: number, message?: string): BackupErrorCode {
+    if (status === 426) return 'update-required';
     if (status === 429) return 'rate-limited';
     if (status === 409) return 'superseded';
     if (status === 401) return 'bad-credentials';
@@ -245,6 +248,7 @@ export async function enableBackup(
         device_id: deviceId,
         payload,
         app_version: VERSION.string,
+        build: VERSION.buildNumber,
     });
 
     if (!result.ok || !result.data) return { ok: false, code: result.code, message: result.message };
@@ -272,6 +276,7 @@ export async function backupNow(): Promise<BackupResult<null>> {
         owner_token: token,
         payload,
         app_version: VERSION.string,
+        build: VERSION.buildNumber,
     });
 
     if (!result.ok) {

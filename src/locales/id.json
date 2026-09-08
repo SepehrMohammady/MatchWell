@@ -427,6 +427,7 @@
         "chooseNameMessage": "Pilih nama pemain dan kata sandi. Nama ini juga menjadi namamu di papan peringkat, dan kamu memerlukan keduanya untuk melanjutkan di perangkat lain.",
         "errorNameLength": "Nama pemain harus 3-20 karakter.",
         "errorNameTaken": "Nama pemain itu sudah dipakai. Coba yang lain.",
-        "errorRateLimited": "Terlalu banyak percobaan gagal. Coba lagi beberapa menit lagi."
+        "errorRateLimited": "Terlalu banyak percobaan gagal. Coba lagi beberapa menit lagi.",
+        "errorUpdateRequired": "Versi MatchWell ini sudah tidak didukung. Perbarui untuk melanjutkan."
     }
 }

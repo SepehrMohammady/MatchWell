@@ -21,6 +21,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 $input = getJsonInput();
 
+requireSupportedClient($input);
+
 $username = isset($input['username']) ? trim((string)$input['username']) : '';
 $password = isset($input['password']) ? (string)$input['password'] : '';
 $deviceId = isset($input['device_id']) ? (string)$input['device_id'] : '';

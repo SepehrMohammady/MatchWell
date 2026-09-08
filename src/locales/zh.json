@@ -427,6 +427,7 @@
         "chooseNameMessage": "选择一个玩家名称和密码。这个名称同时也是你在排行榜上的名称，在另一台设备上继续时两者都需要。",
         "errorNameLength": "玩家名称须为 3 至 20 个字符。",
         "errorNameTaken": "该玩家名称已被使用，请换一个。",
-        "errorRateLimited": "失败次数过多，请几分钟后再试。"
+        "errorRateLimited": "失败次数过多，请几分钟后再试。",
+        "errorUpdateRequired": "此版本的 MatchWell 已不再支持，请更新后继续。"
     }
 }

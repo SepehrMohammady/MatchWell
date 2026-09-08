@@ -4,11 +4,13 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
+import { VERSION } from '../config/version';
 
 const API_BASE_URL = 'https://semo-lab.com/matchwell/leaderboard';
 
 const DEVICE_ID_KEY = '@matchwell_device_id';
 const USERNAME_KEY = '@matchwell_username';
+const DEVICE_SECRET_KEY = '@matchwell_device_secret';
 
 // Types
 export interface PlayerData {
@@ -118,18 +120,40 @@ export const checkUsername = async (username: string): Promise<{ available: bool
     return { available: response.data?.available ?? false };
 };
 
+/**
+ * The device key that authorises leaderboard writes.
+ *
+ * Issued by the server at registration and sent automatically with every
+ * publish. It is deliberately NOT a login: the player never sees or types it.
+ * Before this existed, anyone who learned a device_id could overwrite that
+ * player's scores.
+ *
+ * It travels with a cloud backup, so restoring on another device keeps that
+ * player's leaderboard entry writable there.
+ */
+export const getDeviceSecret = async (): Promise<string | null> => {
+    return AsyncStorage.getItem(DEVICE_SECRET_KEY);
+};
+
+const saveDeviceSecret = async (secret: string): Promise<void> => {
+    await AsyncStorage.setItem(DEVICE_SECRET_KEY, secret);
+};
+
 // Register new player
 export const registerPlayer = async (username: string): Promise<{ success: boolean; error?: string }> => {
     const deviceId = await getDeviceId();
 
-    const response = await apiCall<{ registered: boolean; username: string }>(
+    const response = await apiCall<{ registered: boolean; username: string; device_secret?: string }>(
         'register.php',
         'POST',
-        { device_id: deviceId, username }
+        { device_id: deviceId, username, build: VERSION.buildNumber }
     );
 
     if (response.success && response.data?.registered) {
         await saveUsername(response.data.username);
+        if (response.data.device_secret) {
+            await saveDeviceSecret(response.data.device_secret);
+        }
         return { success: true };
     }
 
@@ -165,11 +189,12 @@ export interface PublishData {
 
 export const publishScores = async (data: PublishData): Promise<{ success: boolean; player?: PlayerData; error?: string }> => {
     const deviceId = await getDeviceId();
+    const deviceSecret = await getDeviceSecret();
 
     const response = await apiCall<{ published: boolean; player: PlayerData }>(
         'publish.php',
         'POST',
-        { device_id: deviceId, ...data }
+        { device_id: deviceId, device_secret: deviceSecret, build: VERSION.buildNumber, ...data }
     );
 
     if (response.success && response.data?.published) {

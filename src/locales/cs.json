@@ -427,6 +427,7 @@
         "chooseNameMessage": "Zvol si jméno hráče a heslo. Jméno bude zároveň tvým jménem v žebříčku a obojí budeš potřebovat k pokračování na jiném zařízení.",
         "errorNameLength": "Jméno hráče musí mít 3 až 20 znaků.",
         "errorNameTaken": "Toto jméno hráče je již obsazené. Zkus jiné.",
-        "errorRateLimited": "Příliš mnoho neúspěšných pokusů. Zkus to znovu za pár minut."
+        "errorRateLimited": "Příliš mnoho neúspěšných pokusů. Zkus to znovu za pár minut.",
+        "errorUpdateRequired": "Tato verze MatchWell už není podporována. Aktualizuj ji, abys mohl pokračovat."
     }
 }

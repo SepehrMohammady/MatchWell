@@ -4,6 +4,9 @@
 CREATE TABLE IF NOT EXISTS leaderboard (
     id INT AUTO_INCREMENT PRIMARY KEY,
     device_id VARCHAR(64) NOT NULL,
+    -- Random token issued at registration; required for writes. Not a login -
+    -- the app sends it automatically and the player never sees it.
+    device_secret VARCHAR(64) NULL,
     username VARCHAR(20) NOT NULL UNIQUE,
     
     -- Story Mode Stats

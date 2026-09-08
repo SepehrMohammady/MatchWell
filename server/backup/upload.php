@@ -20,6 +20,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 $input = getJsonInput();
 
+requireSupportedClient($input);
+
 $username   = isset($input['username']) ? trim((string)$input['username']) : '';
 $ownerToken = isset($input['owner_token']) ? (string)$input['owner_token'] : '';
 $payload    = isset($input['payload']) ? (string)$input['payload'] : '';

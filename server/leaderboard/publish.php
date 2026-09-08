@@ -23,20 +23,18 @@ if (empty($input['device_id'])) {
     sendError('Device ID is required');
 }
 
+requireSupportedClient($input);
+
 $deviceId = trim($input['device_id']);
+$deviceSecret = isset($input['device_secret']) ? (string)$input['device_secret'] : '';
 
 try {
     $db = getDB();
-    
-    // Check if device is registered
-    $stmt = $db->prepare("SELECT id, username FROM leaderboard WHERE device_id = ?");
-    $stmt->execute([$deviceId]);
-    $player = $stmt->fetch();
-    
-    if (!$player) {
-        sendError('Device not registered. Please register first.', 404);
-    }
-    
+
+    // Writes must prove they come from the device that owns this entry. Knowing
+    // a device_id is no longer enough to overwrite somebody's scores.
+    $player = authorisePlayerWrite($db, $deviceId, $deviceSecret);
+
     // Prepare update data
     $updates = [];
     $params = [];

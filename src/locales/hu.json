@@ -427,6 +427,7 @@
         "chooseNameMessage": "Válassz játékosnevet és jelszót. A név egyben a ranglistán megjelenő neved is, és mindkettőre szükséged lesz a folytatáshoz másik eszközön.",
         "errorNameLength": "A játékosnévnek 3-20 karakter hosszúnak kell lennie.",
         "errorNameTaken": "Ez a játékosnév már foglalt. Próbálj másikat.",
-        "errorRateLimited": "Túl sok sikertelen próbálkozás. Próbáld újra néhány perc múlva."
+        "errorRateLimited": "Túl sok sikertelen próbálkozás. Próbáld újra néhány perc múlva.",
+        "errorUpdateRequired": "A MatchWell ezen verziója már nem támogatott. Frissíts a folytatáshoz."
     }
 }

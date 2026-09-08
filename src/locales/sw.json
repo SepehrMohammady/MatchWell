@@ -427,6 +427,7 @@
         "chooseNameMessage": "Chagua jina la mchezaji na nenosiri. Jina hili pia ni jina lako kwenye ubao wa washindi, na utahitaji vyote viwili ili kuendelea kwenye kifaa kingine.",
         "errorNameLength": "Jina la mchezaji lazima liwe na herufi 3 hadi 20.",
         "errorNameTaken": "Jina hilo la mchezaji tayari linatumika. Jaribu jingine.",
-        "errorRateLimited": "Majaribio mengi yaliyoshindwa. Jaribu tena baada ya dakika chache."
+        "errorRateLimited": "Majaribio mengi yaliyoshindwa. Jaribu tena baada ya dakika chache.",
+        "errorUpdateRequired": "Toleo hili la MatchWell halitumiki tena. Sasisha ili kuendelea."
     }
 }

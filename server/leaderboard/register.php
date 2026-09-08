@@ -26,6 +26,8 @@ if (!$validation['valid']) {
     sendError($validation['error']);
 }
 
+requireSupportedClient($input);
+
 $deviceId = trim($input['device_id']);
 $username = $validation['username'];
 
@@ -33,14 +35,23 @@ try {
     $db = getDB();
     
     // Check if device already has an account
-    $stmt = $db->prepare("SELECT id, username FROM leaderboard WHERE device_id = ?");
+    $stmt = $db->prepare("SELECT id, username, device_secret FROM leaderboard WHERE device_id = ?");
     $stmt->execute([$deviceId]);
     $existing = $stmt->fetch();
     
     if ($existing) {
+        // Already registered. Hand back its device key, minting one if this row
+        // predates write auth, so the device can publish from now on.
+        $secret = $existing['device_secret'];
+        if ($secret === null || $secret === '') {
+            $secret = generateDeviceSecret();
+            $claim = $db->prepare("UPDATE leaderboard SET device_secret = ? WHERE id = ?");
+            $claim->execute([$secret, $existing['id']]);
+        }
         sendSuccess([
             'registered' => true,
             'username' => $existing['username'],
+            'device_secret' => $secret,
             'message' => 'Device already registered'
         ]);
     }
@@ -53,13 +64,15 @@ try {
         sendError('Username is already taken');
     }
     
-    // Register new player
-    $stmt = $db->prepare("INSERT INTO leaderboard (device_id, username) VALUES (?, ?)");
-    $stmt->execute([$deviceId, $username]);
-    
+    // Register new player, issuing the device key it will use to publish.
+    $secret = generateDeviceSecret();
+    $stmt = $db->prepare("INSERT INTO leaderboard (device_id, device_secret, username) VALUES (?, ?, ?)");
+    $stmt->execute([$deviceId, $secret, $username]);
+
     sendSuccess([
         'registered' => true,
         'username' => $username,
+        'device_secret' => $secret,
         'message' => 'Registration successful'
     ], 201);
     

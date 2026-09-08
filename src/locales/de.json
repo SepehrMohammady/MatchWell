@@ -427,6 +427,7 @@
         "chooseNameMessage": "Wähle einen Spielernamen und ein Passwort. Der Name ist auch dein Name in der Bestenliste, und du brauchst beides, um auf einem anderen Gerät weiterzuspielen.",
         "errorNameLength": "Der Spielername muss 3 bis 20 Zeichen lang sein.",
         "errorNameTaken": "Dieser Spielername ist bereits vergeben. Versuche einen anderen.",
-        "errorRateLimited": "Zu viele Fehlversuche. Versuche es in ein paar Minuten erneut."
+        "errorRateLimited": "Zu viele Fehlversuche. Versuche es in ein paar Minuten erneut.",
+        "errorUpdateRequired": "Diese Version von MatchWell wird nicht mehr unterstützt. Bitte aktualisiere, um fortzufahren."
     }
 }

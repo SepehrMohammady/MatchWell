@@ -427,6 +427,7 @@
         "chooseNameMessage": "Valitse pelaajanimi ja salasana. Nimi on myös nimesi tulostaulukossa, ja tarvitset molempia jatkaaksesi toisella laitteella.",
         "errorNameLength": "Pelaajanimen on oltava 3-20 merkkiä.",
         "errorNameTaken": "Tämä pelaajanimi on jo varattu. Kokeile toista.",
-        "errorRateLimited": "Liian monta epäonnistunutta yritystä. Yritä uudelleen muutaman minuutin kuluttua."
+        "errorRateLimited": "Liian monta epäonnistunutta yritystä. Yritä uudelleen muutaman minuutin kuluttua.",
+        "errorUpdateRequired": "Tätä MatchWellin versiota ei enää tueta. Päivitä jatkaaksesi."
     }
 }

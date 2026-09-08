@@ -427,6 +427,7 @@
         "chooseNameMessage": "Escolhe um nome de jogador e uma palavra-passe. O nome será também o teu nome na classificação, e vais precisar de ambos para continuar noutro dispositivo.",
         "errorNameLength": "O nome de jogador deve ter entre 3 e 20 caracteres.",
         "errorNameTaken": "Esse nome de jogador já está em uso. Tenta outro.",
-        "errorRateLimited": "Demasiadas tentativas falhadas. Tenta novamente dentro de alguns minutos."
+        "errorRateLimited": "Demasiadas tentativas falhadas. Tenta novamente dentro de alguns minutos.",
+        "errorUpdateRequired": "Esta versão do MatchWell já não é suportada. Atualiza para continuar."
     }
 }
