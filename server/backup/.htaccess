@@ -1,0 +1,27 @@
+# MatchWell Save Transfer API - Apache Configuration
+# The app calls the .php files directly, so no rewrites are needed here.
+
+# Security headers
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "DENY"
+</IfModule>
+
+# Prevent directory listing
+Options -Indexes
+
+# Saves are personal data; make sure nothing here is browsable or cached.
+<IfModule mod_headers.c>
+    Header always set Cache-Control "no-store"
+</IfModule>
+
+# Block access to config and schema
+<Files "config.php">
+    Order Allow,Deny
+    Deny from all
+</Files>
+
+<Files "schema.sql">
+    Order Allow,Deny
+    Deny from all
+</Files>

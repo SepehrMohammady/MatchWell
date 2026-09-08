@@ -6,7 +6,7 @@
  */
 
 import React from 'react';
-import { StatusBar, StyleSheet } from 'react-native';
+import { AppState, AppStateStatus, StatusBar, StyleSheet, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
@@ -33,6 +33,10 @@ import LocalLobby from './src/screens/LocalLobby';
 import LocalMultiplayerGame from './src/screens/LocalMultiplayerGame';
 import LocalMultiplayerResults from './src/screens/LocalMultiplayerResults';
 
+import BackupScreen from './src/screens/BackupScreen';
+import TransferLock from './src/components/UI/TransferLock';
+import { refreshLockState, getLocalState, backupNow } from './src/services/BackupService';
+
 // Types
 import { RootStackParamList } from './src/types';
 
@@ -42,6 +46,47 @@ import './src/config/i18n';
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function App(): React.JSX.Element {
+  // A save is live on one device at a time. Ask the server on launch whether this
+  // device still owns it; if another device has signed in, show the lock instead
+  // of the game. Being offline never locks anyone out - refreshLockState only
+  // locks on a definite "no".
+  const [locked, setLocked] = React.useState(false);
+
+  React.useEffect(() => {
+    refreshLockState().then(setLocked).catch(() => setLocked(false));
+  }, []);
+
+  // Automatic backup, when the player has opted in: push progress as the app
+  // leaves the foreground, which is the natural "session over" moment.
+  React.useEffect(() => {
+    const onChange = (next: AppStateStatus) => {
+      if (next !== 'background' && next !== 'inactive') return;
+      getLocalState()
+        .then(state => {
+          if (state.autoBackup && state.account && !state.locked) {
+            return backupNow();
+          }
+          return undefined;
+        })
+        .catch(() => undefined);
+    };
+    const sub = AppState.addEventListener('change', onChange);
+    return () => sub.remove();
+  }, []);
+
+  if (locked) {
+    return (
+      <GestureHandlerRootView style={styles.container}>
+        <SafeAreaProvider>
+          <StatusBar barStyle="dark-content" backgroundColor="#F0F4EF" />
+          <View style={styles.container}>
+            <TransferLock />
+          </View>
+        </SafeAreaProvider>
+      </GestureHandlerRootView>
+    );
+  }
+
   return (
     <GestureHandlerRootView style={styles.container}>
       <SafeAreaProvider>
@@ -68,6 +113,7 @@ function App(): React.JSX.Element {
             <Stack.Screen name="Settings" component={Settings} />
             <Stack.Screen name="Achievements" component={Achievements} />
             <Stack.Screen name="Leaderboard" component={Leaderboard} />
+            <Stack.Screen name="Backup" component={BackupScreen} />
             {/* Online Multiplayer Screens */}
             <Stack.Screen name="MultiplayerMenu" component={MultiplayerMenu} />
             <Stack.Screen name="CreateRoom" component={CreateRoom} />

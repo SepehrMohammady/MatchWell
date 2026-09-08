@@ -8,6 +8,7 @@ export type RootStackParamList = {
     Settings: undefined;
     Achievements: undefined;
     Leaderboard: undefined;
+    Backup: undefined;
     Game: { levelId: number; isEndless?: boolean; endlessTheme?: ThemeType; forceNew?: boolean };
     // Multiplayer screens (Online)
     MultiplayerMenu: undefined;

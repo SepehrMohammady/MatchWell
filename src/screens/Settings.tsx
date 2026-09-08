@@ -205,6 +205,21 @@ const Settings: React.FC<Props> = ({ navigation }) => {
                     </TouchableOpacity>
                 </View>
 
+                {/* Backup & Transfer */}
+                <View style={styles.section}>
+                    <Text style={styles.sectionTitle}>{t('backup.title')}</Text>
+                    <TouchableOpacity
+                        style={styles.settingRow}
+                        onPress={() => { playSfx('tile_select'); navigation.navigate('Backup'); }}
+                    >
+                        <View style={styles.settingInfo}>
+                            <Text style={styles.settingLabel}>{t('backup.title')}</Text>
+                            <Text style={styles.settingDescription}>{t('backup.settingsHint')}</Text>
+                        </View>
+                        <Text style={styles.linkIcon}>›</Text>
+                    </TouchableOpacity>
+                </View>
+
                 {/* Testers Section */}
                 <View style={styles.section}>
                     <Text style={styles.sectionTitle}>{t('settings.testers')}</Text>
