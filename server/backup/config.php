@@ -75,6 +75,23 @@ function validatePayload($payload) {
 define('MAX_FAILED_ATTEMPTS', 5);
 define('LOCKOUT_MINUTES', 15);
 
+// Burned on the account-not-found path so a missing account takes as long to
+// answer as a wrong password. Without this, short-circuit evaluation skips
+// bcrypt entirely on a miss and the response is measurably faster (~200ms vs
+// ~245ms), which reveals which player names have a backup even though the error
+// message is identical.
+//
+// This hash is intentionally a public constant: it is never compared against
+// anything real, it only needs to cost the same as a genuine verify.
+define('DUMMY_PASSWORD_HASH', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi');
+
+/**
+ * Spend the same time a real password check would, and discard the result.
+ */
+function burnPasswordCheck($password) {
+    verifyBackupPassword((string)$password, DUMMY_PASSWORD_HASH);
+}
+
 /**
  * True while an account is in cooldown after too many wrong passwords.
  */

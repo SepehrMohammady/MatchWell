@@ -37,19 +37,26 @@ try {
     $stmt->execute([$username]);
     $account = $stmt->fetch();
 
-    // Too many wrong passwords recently: refuse without even checking, so the
+    // No such account. Spend the same time a real bcrypt check would before
+    // answering: identical wording is not enough on its own, because skipping
+    // the hash makes the miss measurably faster and so leaks which player names
+    // have a backup.
+    if (!$account) {
+        burnPasswordCheck($password);
+        $pdo->rollBack();
+        sendError('Player name or password is incorrect', 401);
+    }
+
+    // Too many wrong passwords recently: refuse without checking, so the
     // cooldown cannot be worn down by continuing to guess.
-    if ($account && accountIsLocked($account)) {
+    if (accountIsLocked($account)) {
         $pdo->rollBack();
         sendError('Too many failed attempts. Try again in a few minutes.', 429);
     }
 
-    // Same message either way, so the endpoint cannot be used to discover which
-    // player names have backups.
-    if (!$account || !verifyBackupPassword($password, $account['password_hash'])) {
-        if ($account) {
-            registerFailedAttempt($pdo, $account);
-        }
+    // Same message as the not-found case above.
+    if (!verifyBackupPassword($password, $account['password_hash'])) {
+        registerFailedAttempt($pdo, $account);
         $pdo->commit();
         sendError('Player name or password is incorrect', 401);
     }
