@@ -77,7 +77,6 @@ const Leaderboard: React.FC<Props> = ({ navigation }) => {
     const [username, setUsername] = useState('');
     const [usernameError, setUsernameError] = useState('');
     const [publishing, setPublishing] = useState(false);
-    const [totalPlayers, setTotalPlayers] = useState(0);
     const [alertConfig, setAlertConfig] = useState<{ visible: boolean; title: string; message: string; buttons?: any[] }>({
         visible: false,
         title: '',
@@ -186,9 +185,6 @@ const Leaderboard: React.FC<Props> = ({ navigation }) => {
         setIsRegistered(info.registered);
         if (info.player) {
             setPlayerInfo(info.player);
-        }
-        if (info.totalPlayers) {
-            setTotalPlayers(info.totalPlayers);
         }
 
         // Also get stored username
@@ -464,7 +460,12 @@ const Leaderboard: React.FC<Props> = ({ navigation }) => {
                         </Text>
                     )}
                 </TouchableOpacity>
-                <Text style={styles.totalPlayers}>{`${formatNumber(totalPlayers, getCurrentLanguage())} ${t('leaderboard.playersWorldwideLabel')}`}</Text>
+                {/* "N players worldwide" is hidden while the player base is small.
+                    The count only ever populates for a registered device, so it
+                    read "0 players worldwide" under a full list of players. To
+                    bring it back: render styles.totalPlayers with totalPlayers and
+                    t('leaderboard.playersWorldwideLabel'), and make the count come
+                    from a source that does not require registration. */}
             </View>
 
             {/* Username Modal */}
