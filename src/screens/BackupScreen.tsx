@@ -52,6 +52,7 @@ const BackupScreen: React.FC<Props> = ({ navigation }) => {
 
     // Enable form
     const [newPassword, setNewPassword] = useState('');
+    const [desiredName, setDesiredName] = useState('');
     // Restore form
     const [restoreName, setRestoreName] = useState('');
     const [restorePassword, setRestorePassword] = useState('');
@@ -97,6 +98,7 @@ const BackupScreen: React.FC<Props> = ({ navigation }) => {
             case 'network': return t('backup.errorNetwork');
             case 'superseded': return t('backup.errorSuperseded');
             case 'bad-credentials': return t('backup.errorCredentials');
+            case 'name-taken': return t('backup.errorNameTaken');
             case 'name-not-owned': return t('backup.errorNameNotOwned');
             case 'no-account': return t('backup.errorNoAccount');
             case 'corrupt': return t('backup.errorCorrupt');
@@ -106,12 +108,16 @@ const BackupScreen: React.FC<Props> = ({ navigation }) => {
     };
 
     const doEnable = async () => {
+        if (!registeredName && desiredName.trim().length < 3) {
+            showAlert(t('common.error'), t('backup.errorNameLength'));
+            return;
+        }
         if (newPassword.length < 6) {
             showAlert(t('common.error'), t('backup.errorWeakPassword'));
             return;
         }
         setBusy(true);
-        const result = await enableBackup(newPassword);
+        const result = await enableBackup(newPassword, desiredName);
         setBusy(false);
         if (!result.ok) {
             showAlert(t('common.error'), explain(result.code, result.message));
@@ -224,13 +230,31 @@ const BackupScreen: React.FC<Props> = ({ navigation }) => {
                 <Text style={styles.sectionTitle}>{t('backup.thisDevice')}</Text>
                 <View style={styles.card}>
                     {!registeredName ? (
+                        // No leaderboard name yet: let the player choose one here. It is
+                        // registered on the leaderboard as part of turning backup on, so
+                        // they never have to go and set one up somewhere else first.
                         <>
-                            <Text style={styles.cardBody}>{t('backup.needsNameMessage')}</Text>
-                            <TouchableOpacity
-                                style={styles.primaryButton}
-                                onPress={() => navigation.navigate('Leaderboard')}
-                            >
-                                <Text style={styles.primaryButtonText}>{t('backup.goToLeaderboard')}</Text>
+                            <Text style={styles.cardBody}>{t('backup.chooseNameMessage')}</Text>
+                            <TextInput
+                                style={styles.input}
+                                placeholder={t('backup.playerName')}
+                                placeholderTextColor={COLORS.textMuted}
+                                autoCapitalize="none"
+                                autoCorrect={false}
+                                maxLength={20}
+                                value={desiredName}
+                                onChangeText={setDesiredName}
+                            />
+                            <TextInput
+                                style={styles.input}
+                                placeholder={t('backup.choosePassword')}
+                                placeholderTextColor={COLORS.textMuted}
+                                secureTextEntry
+                                value={newPassword}
+                                onChangeText={setNewPassword}
+                            />
+                            <TouchableOpacity style={styles.primaryButton} onPress={doEnable} disabled={busy}>
+                                <Text style={styles.primaryButtonText}>{t('backup.enableBackup')}</Text>
                             </TouchableOpacity>
                         </>
                     ) : enabled ? (

@@ -150,10 +150,22 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // Reset all progress data
     resetProgress: async () => {
         try {
-            await AsyncStorage.removeItem(STORAGE_KEY);
+            // Clear everything gameplay-related, in storage and in memory.
+            //
+            // This used to drop only completedLevels and highScores. Stars are
+            // derived from levelMovesRemaining, so achievements like Bronze/Silver/
+            // Gold Collector stayed unlocked after a reset - and because
+            // levelMovesRemaining survived in memory, the next saveProgress() wrote
+            // it straight back to storage. Saved endless runs were left behind too.
+            const endlessKeys = Array.from(new Set(LEVELS.map(l => l.theme)))
+                .map(theme => getEndlessStateKey(theme));
+            await AsyncStorage.multiRemove([STORAGE_KEY, ...endlessKeys]);
             set({
                 completedLevels: [],
-                highScores: {},
+                highScores: {},          // also clears endless bests (negative ids)
+                levelMovesRemaining: {}, // stars are computed from this
+                endlessMoves: {},
+                unseenAchievements: [],
             });
             console.log('✅ Progress reset');
         } catch (error) {

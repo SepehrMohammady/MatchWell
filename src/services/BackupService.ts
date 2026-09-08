@@ -14,6 +14,7 @@
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { VERSION } from '../config/version';
+import { checkUsername, registerPlayer } from './LeaderboardService';
 
 const API_BASE_URL = 'https://semo-lab.com/matchwell/backup';
 
@@ -52,6 +53,7 @@ export type BackupErrorCode =
     | 'superseded'      // another device signed in
     | 'bad-credentials'
     | 'not-registered'  // no leaderboard username on this device
+    | 'name-taken'      // chosen name already belongs to someone else
     | 'name-not-owned'
     | 'no-account'
     | 'corrupt'
@@ -200,11 +202,37 @@ async function getDeviceId(): Promise<string | null> {
 // --- operations ------------------------------------------------------------
 
 /**
- * Turn backup on for this device, setting the password the first time. Requires
- * a registered leaderboard name, which is what identifies the account.
+ * Turn backup on for this device, setting the password the first time.
+ *
+ * The account name is the player's leaderboard name. If they already have one we
+ * use it; if not, `desiredUsername` is registered on the leaderboard first, so a
+ * player never has to go and set one up elsewhere before they can back up.
  */
-export async function enableBackup(password: string): Promise<BackupResult<null>> {
-    const username = await getRegisteredUsername();
+export async function enableBackup(
+    password: string,
+    desiredUsername?: string,
+): Promise<BackupResult<null>> {
+    let username = await getRegisteredUsername();
+
+    if (!username) {
+        const wanted = (desiredUsername || '').trim();
+        if (!wanted) return { ok: false, code: 'not-registered' };
+
+        const availability = await checkUsername(wanted);
+        if (availability.error) {
+            return { ok: false, code: 'network', message: availability.error };
+        }
+        if (!availability.available) {
+            return { ok: false, code: 'name-taken' };
+        }
+
+        const registration = await registerPlayer(wanted);
+        if (!registration.success) {
+            return { ok: false, code: 'name-taken', message: registration.error };
+        }
+        username = wanted;
+    }
+
     const deviceId = await getDeviceId();
     if (!username || !deviceId) return { ok: false, code: 'not-registered' };
 

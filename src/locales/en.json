@@ -392,8 +392,6 @@
         "currentPassword": "Current password",
         "newPassword": "New password",
         "savePassword": "Save password",
-        "needsNameMessage": "Backup uses your leaderboard player name. Register a name first, then come back here.",
-        "goToLeaderboard": "Open Leaderboard",
         "restoreTitle": "Restore on this device",
         "restoreMessage": "Sign in with the player name and password you used on your other device.",
         "playerName": "Player name",
@@ -425,6 +423,9 @@
         "errorNoAccount": "No backup found for this player name.",
         "errorCorrupt": "That backup could not be read.",
         "errorWeakPassword": "Password must be at least 6 characters.",
-        "errorUnknown": "Something went wrong. Please try again."
+        "errorUnknown": "Something went wrong. Please try again.",
+        "chooseNameMessage": "Pick a player name and a password. The name is also your leaderboard name, and you will need both to continue on another device.",
+        "errorNameLength": "Player name must be 3-20 characters.",
+        "errorNameTaken": "That player name is already taken. Try another."
     }
 }
