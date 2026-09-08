@@ -25,6 +25,13 @@ CREATE TABLE IF NOT EXISTS save_backups (
     payload MEDIUMTEXT NOT NULL,
     payload_bytes INT NOT NULL DEFAULT 0,
 
+    -- Brute-force protection. Deliberately keyed on the account, not the client
+    -- IP: the server stores no IP addresses anywhere, and the privacy policy says
+    -- so. The trade-off is that someone spamming wrong passwords can lock an
+    -- account out, so the cooldown is short rather than permanent.
+    failed_attempts INT NOT NULL DEFAULT 0,
+    locked_until DATETIME NULL,
+
     app_version VARCHAR(16) NULL,
     last_restored_at DATETIME NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

@@ -37,13 +37,24 @@ try {
     $stmt->execute([$username]);
     $account = $stmt->fetch();
 
+    // Too many wrong passwords recently: refuse without even checking, so the
+    // cooldown cannot be worn down by continuing to guess.
+    if ($account && accountIsLocked($account)) {
+        $pdo->rollBack();
+        sendError('Too many failed attempts. Try again in a few minutes.', 429);
+    }
+
     // Same message either way, so the endpoint cannot be used to discover which
     // player names have backups.
     if (!$account || !verifyBackupPassword($password, $account['password_hash'])) {
-        $pdo->rollBack();
+        if ($account) {
+            registerFailedAttempt($pdo, $account);
+        }
+        $pdo->commit();
         sendError('Player name or password is incorrect', 401);
     }
 
+    clearFailedAttempts($pdo, $account);
     $token = generateOwnerToken();
 
     $update = $pdo->prepare(

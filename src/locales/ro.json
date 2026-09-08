@@ -426,6 +426,7 @@
         "errorUnknown": "Ceva n-a mers bine. Încearcă din nou.",
         "chooseNameMessage": "Alege un nume de jucător și o parolă. Numele va fi și numele tău din clasament și vei avea nevoie de amândouă pentru a continua pe alt dispozitiv.",
         "errorNameLength": "Numele de jucător trebuie să aibă între 3 și 20 de caractere.",
-        "errorNameTaken": "Acel nume de jucător este deja luat. Încearcă altul."
+        "errorNameTaken": "Acel nume de jucător este deja luat. Încearcă altul.",
+        "errorRateLimited": "Prea multe încercări eșuate. Încearcă din nou peste câteva minute."
     }
 }

@@ -101,6 +101,7 @@ const BackupScreen: React.FC<Props> = ({ navigation }) => {
             case 'name-taken': return t('backup.errorNameTaken');
             case 'name-not-owned': return t('backup.errorNameNotOwned');
             case 'no-account': return t('backup.errorNoAccount');
+            case 'rate-limited': return t('backup.errorRateLimited');
             case 'corrupt': return t('backup.errorCorrupt');
             case 'weak-password': return t('backup.errorWeakPassword');
             default: return fallbackMessage || t('backup.errorUnknown');

@@ -426,6 +426,7 @@
         "errorUnknown": "Er ging iets mis. Probeer het opnieuw.",
         "chooseNameMessage": "Kies een spelersnaam en een wachtwoord. De naam is ook je naam op het scorebord, en je hebt beide nodig om verder te gaan op een ander apparaat.",
         "errorNameLength": "De spelersnaam moet 3 tot 20 tekens lang zijn.",
-        "errorNameTaken": "Die spelersnaam is al in gebruik. Probeer een andere."
+        "errorNameTaken": "Die spelersnaam is al in gebruik. Probeer een andere.",
+        "errorRateLimited": "Te veel mislukte pogingen. Probeer het over een paar minuten opnieuw."
     }
 }

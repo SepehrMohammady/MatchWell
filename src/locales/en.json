@@ -426,6 +426,7 @@
         "errorUnknown": "Something went wrong. Please try again.",
         "chooseNameMessage": "Pick a player name and a password. The name is also your leaderboard name, and you will need both to continue on another device.",
         "errorNameLength": "Player name must be 3-20 characters.",
-        "errorNameTaken": "That player name is already taken. Try another."
+        "errorNameTaken": "That player name is already taken. Try another.",
+        "errorRateLimited": "Too many failed attempts. Try again in a few minutes."
     }
 }

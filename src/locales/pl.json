@@ -426,6 +426,7 @@
         "errorUnknown": "Coś poszło nie tak. Spróbuj ponownie.",
         "chooseNameMessage": "Wybierz nazwę gracza i hasło. Nazwa będzie też twoją nazwą w rankingu, a obie rzeczy będą potrzebne do kontynuowania na innym urządzeniu.",
         "errorNameLength": "Nazwa gracza musi mieć od 3 do 20 znaków.",
-        "errorNameTaken": "Ta nazwa gracza jest już zajęta. Wybierz inną."
+        "errorNameTaken": "Ta nazwa gracza jest już zajęta. Wybierz inną.",
+        "errorRateLimited": "Zbyt wiele nieudanych prób. Spróbuj ponownie za kilka minut."
     }
 }

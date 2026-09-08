@@ -52,9 +52,11 @@ const TransferLock: React.FC = () => {
                 title: t('common.error'),
                 message: result.code === 'bad-credentials'
                     ? t('backup.errorCredentials')
-                    : result.code === 'network'
-                        ? t('backup.errorNetwork')
-                        : t('backup.errorUnknown'),
+                    : result.code === 'rate-limited'
+                        ? t('backup.errorRateLimited')
+                        : result.code === 'network'
+                            ? t('backup.errorNetwork')
+                            : t('backup.errorUnknown'),
                 buttons: [{ text: t('common.ok'), onPress: hideAlert }],
             });
             return;

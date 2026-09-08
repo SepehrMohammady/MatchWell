@@ -56,6 +56,7 @@ export type BackupErrorCode =
     | 'name-taken'      // chosen name already belongs to someone else
     | 'name-not-owned'
     | 'no-account'
+    | 'rate-limited'    // too many wrong passwords, account in cooldown
     | 'corrupt'
     | 'weak-password'
     | 'unknown';
@@ -75,6 +76,7 @@ interface ApiResponse<T> {
 
 /** Map an HTTP status + server message onto a stable code the UI can branch on. */
 function classify(status: number, message?: string): BackupErrorCode {
+    if (status === 429) return 'rate-limited';
     if (status === 409) return 'superseded';
     if (status === 401) return 'bad-credentials';
     if (status === 403) return 'name-not-owned';

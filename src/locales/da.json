@@ -426,6 +426,7 @@
         "errorUnknown": "Noget gik galt. Prøv igen.",
         "chooseNameMessage": "Vælg et spillernavn og en adgangskode. Navnet er også dit navn på ranglisten, og du skal bruge begge for at fortsætte på en anden enhed.",
         "errorNameLength": "Spillernavnet skal være 3-20 tegn.",
-        "errorNameTaken": "Det spillernavn er allerede taget. Prøv et andet."
+        "errorNameTaken": "Det spillernavn er allerede taget. Prøv et andet.",
+        "errorRateLimited": "For mange mislykkede forsøg. Prøv igen om et par minutter."
     }
 }

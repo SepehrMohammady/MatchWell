@@ -426,6 +426,7 @@
         "errorUnknown": "Algo salió mal. Inténtalo de nuevo.",
         "chooseNameMessage": "Elige un nombre de jugador y una contraseña. El nombre también será tu nombre en la clasificación, y necesitarás ambos para continuar en otro dispositivo.",
         "errorNameLength": "El nombre de jugador debe tener entre 3 y 20 caracteres.",
-        "errorNameTaken": "Ese nombre de jugador ya está en uso. Prueba con otro."
+        "errorNameTaken": "Ese nombre de jugador ya está en uso. Prueba con otro.",
+        "errorRateLimited": "Demasiados intentos fallidos. Inténtalo de nuevo en unos minutos."
     }
 }

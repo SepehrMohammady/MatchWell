@@ -426,6 +426,7 @@
         "errorUnknown": "Qualcosa è andato storto. Riprova.",
         "chooseNameMessage": "Scegli un nome giocatore e una password. Il nome sarà anche il tuo nome in classifica e ti serviranno entrambi per continuare su un altro dispositivo.",
         "errorNameLength": "Il nome giocatore deve avere da 3 a 20 caratteri.",
-        "errorNameTaken": "Quel nome giocatore è già in uso. Provane un altro."
+        "errorNameTaken": "Quel nome giocatore è già in uso. Provane un altro.",
+        "errorRateLimited": "Troppi tentativi falliti. Riprova tra qualche minuto."
     }
 }

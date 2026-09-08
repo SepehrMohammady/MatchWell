@@ -426,6 +426,7 @@
         "errorUnknown": "Đã xảy ra lỗi. Vui lòng thử lại.",
         "chooseNameMessage": "Chọn tên người chơi và mật khẩu. Tên này cũng là tên của bạn trên bảng xếp hạng, và bạn cần cả hai để tiếp tục trên thiết bị khác.",
         "errorNameLength": "Tên người chơi phải từ 3 đến 20 ký tự.",
-        "errorNameTaken": "Tên người chơi đó đã có người dùng. Hãy thử tên khác."
+        "errorNameTaken": "Tên người chơi đó đã có người dùng. Hãy thử tên khác.",
+        "errorRateLimited": "Quá nhiều lần thử sai. Hãy thử lại sau vài phút."
     }
 }

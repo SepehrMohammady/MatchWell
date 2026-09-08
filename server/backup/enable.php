@@ -52,10 +52,16 @@ try {
     $token = generateOwnerToken();
 
     if ($account) {
-        // Existing account: the password is the proof of ownership.
+        // Existing account: the password is the proof of ownership, so this path
+        // gets the same cooldown as restore.php.
+        if (accountIsLocked($account)) {
+            sendError('Too many failed attempts. Try again in a few minutes.', 429);
+        }
         if (!verifyBackupPassword($password, $account['password_hash'])) {
+            registerFailedAttempt($pdo, $account);
             sendError('Incorrect password for this player name', 401);
         }
+        clearFailedAttempts($pdo, $account);
         $stmt = $pdo->prepare(
             'UPDATE save_backups
                 SET owner_token = ?, payload = ?, payload_bytes = ?, app_version = ?

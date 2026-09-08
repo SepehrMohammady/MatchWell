@@ -426,6 +426,7 @@
         "errorUnknown": "Bir şeyler ters gitti. Lütfen tekrar dene.",
         "chooseNameMessage": "Bir oyuncu adı ve şifre seç. Bu ad aynı zamanda skor tablosundaki adın olacak ve başka bir cihazda devam etmek için ikisine de ihtiyacın olacak.",
         "errorNameLength": "Oyuncu adı 3-20 karakter olmalı.",
-        "errorNameTaken": "Bu oyuncu adı zaten alınmış. Başka bir tane dene."
+        "errorNameTaken": "Bu oyuncu adı zaten alınmış. Başka bir tane dene.",
+        "errorRateLimited": "Çok fazla başarısız deneme. Birkaç dakika sonra tekrar dene."
     }
 }
