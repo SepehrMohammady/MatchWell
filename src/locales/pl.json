@@ -189,7 +189,16 @@
         "changePlayerNameHint": "Zmień swoją nazwę w rankingu",
         "changePlayerNameMessage": "To twoja nazwa w rankingu i konto kopii w chmurze.",
         "nameChangedTitle": "Nazwa zmieniona",
-        "nameChangedMessage": "W rankingu nazywasz się teraz {{name}}."
+        "nameChangedMessage": "W rankingu nazywasz się teraz {{name}}.",
+        "deleteAccount": "Usuń konto",
+        "deleteAccountHint": "Usuń swoje dane online z naszego serwera",
+        "deleteAccountTitle": "Usunąć twoje konto?",
+        "deleteAccountMessage": "To usunie twój wpis w rankingu, kopię w chmurze i wszystkie pokoje wieloosobowe z naszego serwera. Nie można tego cofnąć.\n\nPostęp na tym urządzeniu zostanie zachowany. Użyj Zresetuj cały postęp, aby usunąć także jego.",
+        "deleteAccountPasswordPrompt": "Wpisz hasło kopii zapasowej, aby potwierdzić.",
+        "deleteAccountConfirm": "Usuń",
+        "deleteAccountDone": "Konto usunięte",
+        "deleteAccountDoneMessage": "Twoje dane online zostały usunięte. Możesz grać dalej lub ponownie włączyć kopię w dowolnej chwili.",
+        "deleteAccountNothing": "Nie ma czego usuwać: to urządzenie nie ma jeszcze konta online."
     },
     "leaderboard": {
         "title": "Leaderboard",

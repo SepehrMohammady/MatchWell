@@ -189,7 +189,16 @@
         "changePlayerNameHint": "Đổi tên của bạn trên bảng xếp hạng",
         "changePlayerNameMessage": "Đây là tên của bạn trên bảng xếp hạng và tài khoản sao lưu đám mây.",
         "nameChangedTitle": "Đã đổi tên",
-        "nameChangedMessage": "Giờ bạn là {{name}} trên bảng xếp hạng."
+        "nameChangedMessage": "Giờ bạn là {{name}} trên bảng xếp hạng.",
+        "deleteAccount": "Xóa tài khoản",
+        "deleteAccountHint": "Xóa dữ liệu trực tuyến của bạn khỏi máy chủ của chúng tôi",
+        "deleteAccountTitle": "Xóa tài khoản của bạn?",
+        "deleteAccountMessage": "Thao tác này xóa mục của bạn trên bảng xếp hạng, bản sao lưu đám mây và mọi phòng nhiều người chơi khỏi máy chủ của chúng tôi. Không thể hoàn tác.\n\nTiến trình trên thiết bị này được giữ lại. Dùng Đặt lại toàn bộ tiến trình để xóa cả phần đó.",
+        "deleteAccountPasswordPrompt": "Nhập mật khẩu sao lưu của bạn để xác nhận.",
+        "deleteAccountConfirm": "Xóa",
+        "deleteAccountDone": "Đã xóa tài khoản",
+        "deleteAccountDoneMessage": "Dữ liệu trực tuyến của bạn đã được xóa. Bạn có thể chơi tiếp hoặc thiết lập lại sao lưu bất cứ lúc nào.",
+        "deleteAccountNothing": "Không có gì để xóa: thiết bị này chưa có tài khoản trực tuyến."
     },
     "leaderboard": {
         "title": "Leaderboard",

@@ -189,7 +189,16 @@
         "changePlayerNameHint": "Ændr dit navn på ranglisten",
         "changePlayerNameMessage": "Dette er dit navn på ranglisten og din konto til sikkerhedskopi i skyen.",
         "nameChangedTitle": "Navnet er ændret",
-        "nameChangedMessage": "Du hedder nu {{name}} på ranglisten."
+        "nameChangedMessage": "Du hedder nu {{name}} på ranglisten.",
+        "deleteAccount": "Slet konto",
+        "deleteAccountHint": "Slet dine onlinedata fra vores server",
+        "deleteAccountTitle": "Slet din konto?",
+        "deleteAccountMessage": "Dette sletter din placering på ranglisten, din sikkerhedskopi i skyen og alle flerspillerrum fra vores server. Det kan ikke fortrydes.\n\nFremskridt på denne enhed bevares. Brug Nulstil alle fremskridt for også at slette dem.",
+        "deleteAccountPasswordPrompt": "Indtast din adgangskode til sikkerhedskopien for at bekræfte.",
+        "deleteAccountConfirm": "Slet",
+        "deleteAccountDone": "Kontoen er slettet",
+        "deleteAccountDoneMessage": "Dine onlinedata er slettet. Du kan spille videre eller sætte sikkerhedskopiering op igen når som helst.",
+        "deleteAccountNothing": "Der er intet at slette: denne enhed har endnu ingen onlinekonto."
     },
     "leaderboard": {
         "title": "Leaderboard",

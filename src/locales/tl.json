@@ -189,7 +189,16 @@
         "changePlayerNameHint": "Palitan ang pangalan mo sa leaderboard",
         "changePlayerNameMessage": "Ito ang pangalan mo sa leaderboard at ang account mo para sa cloud backup.",
         "nameChangedTitle": "Napalitan ang pangalan",
-        "nameChangedMessage": "Ikaw na ngayon si {{name}} sa leaderboard."
+        "nameChangedMessage": "Ikaw na ngayon si {{name}} sa leaderboard.",
+        "deleteAccount": "Burahin ang account",
+        "deleteAccountHint": "Burahin ang online mong data sa server namin",
+        "deleteAccountTitle": "Burahin ang account mo?",
+        "deleteAccountMessage": "Buburahin nito ang tala mo sa leaderboard, ang cloud backup mo, at anumang multiplayer room sa server namin. Hindi na ito maibabalik.\n\nMananatili ang progreso sa device na ito. Gamitin ang I-reset ang lahat ng progreso para burahin din iyon.",
+        "deleteAccountPasswordPrompt": "Ilagay ang password ng backup mo para kumpirmahin.",
+        "deleteAccountConfirm": "Burahin",
+        "deleteAccountDone": "Nabura ang account",
+        "deleteAccountDoneMessage": "Nabura na ang online mong data. Puwede kang maglaro pa rin, o mag-set up ulit ng backup anumang oras.",
+        "deleteAccountNothing": "Walang maburang anuman: wala pang online account ang device na ito."
     },
     "leaderboard": {
         "title": "Leaderboard",

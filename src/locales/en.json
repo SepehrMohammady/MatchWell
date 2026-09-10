@@ -189,7 +189,16 @@
         "changePlayerNameHint": "Change your leaderboard name",
         "changePlayerNameMessage": "This is your name on the leaderboard and your cloud backup account.",
         "nameChangedTitle": "Name changed",
-        "nameChangedMessage": "You are now {{name}} on the leaderboard."
+        "nameChangedMessage": "You are now {{name}} on the leaderboard.",
+        "deleteAccount": "Delete account",
+        "deleteAccountHint": "Erase your online data from our server",
+        "deleteAccountTitle": "Delete your account?",
+        "deleteAccountMessage": "This erases your leaderboard entry, your cloud backup and any multiplayer rooms from our server. It cannot be undone.\n\nProgress on this device is kept. Use Reset All Progress to clear that too.",
+        "deleteAccountPasswordPrompt": "Enter your backup password to confirm.",
+        "deleteAccountConfirm": "Delete",
+        "deleteAccountDone": "Account deleted",
+        "deleteAccountDoneMessage": "Your online data has been erased. You can play on, or set up backup again any time.",
+        "deleteAccountNothing": "There is nothing to delete: this device has no online account yet."
     },
     "leaderboard": {
         "title": "Leaderboard",

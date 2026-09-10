@@ -189,7 +189,16 @@
         "changePlayerNameHint": "نام خود را در جدول امتیازات تغییر دهید",
         "changePlayerNameMessage": "این نام شما در جدول امتیازات و حساب پشتیبان ابری شماست.",
         "nameChangedTitle": "نام تغییر کرد",
-        "nameChangedMessage": "اکنون در جدول امتیازات {{name}} هستید."
+        "nameChangedMessage": "اکنون در جدول امتیازات {{name}} هستید.",
+        "deleteAccount": "حذف حساب",
+        "deleteAccountHint": "داده‌های آنلاین خود را از سرور ما پاک کنید",
+        "deleteAccountTitle": "حساب شما حذف شود؟",
+        "deleteAccountMessage": "این کار ورودی شما در جدول امتیازات، پشتیبان ابری و هر اتاق چندنفره را از سرور ما پاک می‌کند. قابل بازگشت نیست.\n\nپیشرفت روی این دستگاه باقی می‌ماند. برای پاک کردن آن از بازنشانی همه پیشرفت‌ها استفاده کنید.",
+        "deleteAccountPasswordPrompt": "برای تأیید، رمز پشتیبان خود را وارد کنید.",
+        "deleteAccountConfirm": "حذف",
+        "deleteAccountDone": "حساب حذف شد",
+        "deleteAccountDoneMessage": "داده‌های آنلاین شما پاک شد. می‌توانید به بازی ادامه دهید یا هر زمان خواستید دوباره پشتیبان‌گیری را تنظیم کنید.",
+        "deleteAccountNothing": "چیزی برای حذف نیست: این دستگاه هنوز حساب آنلاینی ندارد."
     },
     "leaderboard": {
         "title": "جدول امتیازات",

@@ -189,7 +189,16 @@
         "changePlayerNameHint": "Ubah namamu di papan peringkat",
         "changePlayerNameMessage": "Ini namamu di papan peringkat sekaligus akun cadangan awanmu.",
         "nameChangedTitle": "Nama diubah",
-        "nameChangedMessage": "Kini kamu adalah {{name}} di papan peringkat."
+        "nameChangedMessage": "Kini kamu adalah {{name}} di papan peringkat.",
+        "deleteAccount": "Hapus akun",
+        "deleteAccountHint": "Hapus data daringmu dari server kami",
+        "deleteAccountTitle": "Hapus akunmu?",
+        "deleteAccountMessage": "Ini menghapus entrimu di papan peringkat, cadangan awanmu, dan semua ruang multipemain dari server kami. Tidak bisa dibatalkan.\n\nKemajuan di perangkat ini tetap ada. Gunakan Atur ulang semua kemajuan untuk menghapusnya juga.",
+        "deleteAccountPasswordPrompt": "Masukkan kata sandi cadanganmu untuk mengonfirmasi.",
+        "deleteAccountConfirm": "Hapus",
+        "deleteAccountDone": "Akun dihapus",
+        "deleteAccountDoneMessage": "Data daringmu sudah dihapus. Kamu bisa terus bermain atau menyiapkan cadangan lagi kapan saja.",
+        "deleteAccountNothing": "Tidak ada yang bisa dihapus: perangkat ini belum punya akun daring."
     },
     "leaderboard": {
         "title": "Leaderboard",

@@ -189,7 +189,16 @@
         "changePlayerNameHint": "更改你在排行榜上的名称",
         "changePlayerNameMessage": "这是你在排行榜上的名称，也是你的云备份账户。",
         "nameChangedTitle": "名称已更改",
-        "nameChangedMessage": "你在排行榜上现在叫 {{name}}。"
+        "nameChangedMessage": "你在排行榜上现在叫 {{name}}。",
+        "deleteAccount": "删除账户",
+        "deleteAccountHint": "从我们的服务器抹除你的在线数据",
+        "deleteAccountTitle": "删除你的账户？",
+        "deleteAccountMessage": "这将从我们的服务器抹除你的排行榜记录、云备份以及所有多人游戏房间。此操作无法撤销。\n\n本设备上的进度会保留。若也想清除，请使用重置所有进度。",
+        "deleteAccountPasswordPrompt": "请输入你的备份密码以确认。",
+        "deleteAccountConfirm": "删除",
+        "deleteAccountDone": "账户已删除",
+        "deleteAccountDoneMessage": "你的在线数据已抹除。你可以继续游玩，也可以随时重新设置备份。",
+        "deleteAccountNothing": "没有可删除的内容：本设备尚未创建在线账户。"
     },
     "leaderboard": {
         "title": "排行榜",

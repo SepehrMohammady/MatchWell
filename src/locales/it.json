@@ -189,7 +189,16 @@
         "changePlayerNameHint": "Cambia il tuo nome in classifica",
         "changePlayerNameMessage": "Questo è il tuo nome in classifica e il tuo account di backup nel cloud.",
         "nameChangedTitle": "Nome cambiato",
-        "nameChangedMessage": "Ora in classifica sei {{name}}."
+        "nameChangedMessage": "Ora in classifica sei {{name}}.",
+        "deleteAccount": "Elimina account",
+        "deleteAccountHint": "Cancella i tuoi dati online dal nostro server",
+        "deleteAccountTitle": "Eliminare il tuo account?",
+        "deleteAccountMessage": "Questo cancella la tua voce in classifica, il tuo backup nel cloud e tutte le stanze multigiocatore dal nostro server. Non è reversibile.\n\nI progressi su questo dispositivo restano. Usa Azzera tutti i progressi per cancellare anche quelli.",
+        "deleteAccountPasswordPrompt": "Inserisci la password del backup per confermare.",
+        "deleteAccountConfirm": "Elimina",
+        "deleteAccountDone": "Account eliminato",
+        "deleteAccountDoneMessage": "I tuoi dati online sono stati cancellati. Puoi continuare a giocare o riattivare il backup quando vuoi.",
+        "deleteAccountNothing": "Non c'è nulla da eliminare: questo dispositivo non ha ancora un account online."
     },
     "leaderboard": {
         "title": "Classifica",

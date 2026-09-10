@@ -189,7 +189,16 @@
         "changePlayerNameHint": "Ändra ditt namn på topplistan",
         "changePlayerNameMessage": "Det här är ditt namn på topplistan och ditt konto för säkerhetskopiering.",
         "nameChangedTitle": "Namnet ändrat",
-        "nameChangedMessage": "Du heter nu {{name}} på topplistan."
+        "nameChangedMessage": "Du heter nu {{name}} på topplistan.",
+        "deleteAccount": "Radera konto",
+        "deleteAccountHint": "Radera dina onlinedata från vår server",
+        "deleteAccountTitle": "Radera ditt konto?",
+        "deleteAccountMessage": "Detta raderar din plats på topplistan, din säkerhetskopia i molnet och alla flerspelarrum från vår server. Det går inte att ångra.\n\nFramstegen på den här enheten behålls. Använd Återställ alla framsteg för att radera dem också.",
+        "deleteAccountPasswordPrompt": "Ange ditt lösenord för säkerhetskopian för att bekräfta.",
+        "deleteAccountConfirm": "Radera",
+        "deleteAccountDone": "Kontot raderat",
+        "deleteAccountDoneMessage": "Dina onlinedata har raderats. Du kan fortsätta spela eller sätta upp säkerhetskopiering igen när du vill.",
+        "deleteAccountNothing": "Det finns inget att radera: den här enheten har inget onlinekonto än."
     },
     "leaderboard": {
         "title": "Leaderboard",

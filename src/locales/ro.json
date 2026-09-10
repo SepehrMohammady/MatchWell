@@ -189,7 +189,16 @@
         "changePlayerNameHint": "Schimbă-ți numele din clasament",
         "changePlayerNameMessage": "Acesta este numele tău din clasament și contul tău de copie în cloud.",
         "nameChangedTitle": "Nume schimbat",
-        "nameChangedMessage": "Acum ești {{name}} în clasament."
+        "nameChangedMessage": "Acum ești {{name}} în clasament.",
+        "deleteAccount": "Șterge contul",
+        "deleteAccountHint": "Șterge-ți datele online de pe serverul nostru",
+        "deleteAccountTitle": "Ștergi contul tău?",
+        "deleteAccountMessage": "Aceasta șterge intrarea ta din clasament, copia din cloud și orice cameră multiplayer de pe serverul nostru. Nu poate fi anulată.\n\nProgresul de pe acest dispozitiv se păstrează. Folosește Resetează tot progresul ca să-l ștergi și pe acela.",
+        "deleteAccountPasswordPrompt": "Introdu parola copiei de rezervă pentru a confirma.",
+        "deleteAccountConfirm": "Șterge",
+        "deleteAccountDone": "Cont șters",
+        "deleteAccountDoneMessage": "Datele tale online au fost șterse. Poți juca mai departe sau poți reactiva copia oricând.",
+        "deleteAccountNothing": "Nu este nimic de șters: acest dispozitiv nu are încă un cont online."
     },
     "leaderboard": {
         "title": "Leaderboard",

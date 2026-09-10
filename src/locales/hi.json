@@ -189,7 +189,16 @@
         "changePlayerNameHint": "लीडरबोर्ड पर अपना नाम बदलें",
         "changePlayerNameMessage": "यह लीडरबोर्ड पर आपका नाम और आपका क्लाउड बैकअप खाता है।",
         "nameChangedTitle": "नाम बदल गया",
-        "nameChangedMessage": "अब लीडरबोर्ड पर आप {{name}} हैं।"
+        "nameChangedMessage": "अब लीडरबोर्ड पर आप {{name}} हैं।",
+        "deleteAccount": "खाता हटाएँ",
+        "deleteAccountHint": "अपना ऑनलाइन डेटा हमारे सर्वर से मिटाएँ",
+        "deleteAccountTitle": "अपना खाता हटाएँ?",
+        "deleteAccountMessage": "इससे लीडरबोर्ड की आपकी प्रविष्टि, आपका क्लाउड बैकअप और सभी मल्टीप्लेयर कक्ष हमारे सर्वर से मिट जाएँगे। इसे पूर्ववत नहीं किया जा सकता।\n\nइस डिवाइस की प्रगति बनी रहेगी। उसे भी मिटाने के लिए सारी प्रगति रीसेट करें का उपयोग करें।",
+        "deleteAccountPasswordPrompt": "पुष्टि के लिए अपना बैकअप पासवर्ड दर्ज करें।",
+        "deleteAccountConfirm": "हटाएँ",
+        "deleteAccountDone": "खाता हटा दिया गया",
+        "deleteAccountDoneMessage": "आपका ऑनलाइन डेटा मिटा दिया गया है। आप खेलते रह सकते हैं या कभी भी बैकअप दोबारा सेट कर सकते हैं।",
+        "deleteAccountNothing": "हटाने के लिए कुछ नहीं है: इस डिवाइस पर अभी ऑनलाइन खाता नहीं है।"
     },
     "leaderboard": {
         "title": "लीडरबोर्ड",

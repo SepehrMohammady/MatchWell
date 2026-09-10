@@ -189,7 +189,16 @@
         "changePlayerNameHint": "Cambia tu nombre en la clasificación",
         "changePlayerNameMessage": "Este es tu nombre en la clasificación y tu cuenta de copia en la nube.",
         "nameChangedTitle": "Nombre cambiado",
-        "nameChangedMessage": "Ahora eres {{name}} en la clasificación."
+        "nameChangedMessage": "Ahora eres {{name}} en la clasificación.",
+        "deleteAccount": "Eliminar cuenta",
+        "deleteAccountHint": "Borra tus datos en línea de nuestro servidor",
+        "deleteAccountTitle": "¿Eliminar tu cuenta?",
+        "deleteAccountMessage": "Esto borra tu entrada en la clasificación, tu copia en la nube y cualquier sala multijugador de nuestro servidor. No se puede deshacer.\n\nEl progreso en este dispositivo se conserva. Usa Reiniciar todo el progreso para borrarlo también.",
+        "deleteAccountPasswordPrompt": "Introduce tu contraseña de copia para confirmar.",
+        "deleteAccountConfirm": "Eliminar",
+        "deleteAccountDone": "Cuenta eliminada",
+        "deleteAccountDoneMessage": "Tus datos en línea se han borrado. Puedes seguir jugando o volver a activar la copia cuando quieras.",
+        "deleteAccountNothing": "No hay nada que eliminar: este dispositivo aún no tiene cuenta en línea."
     },
     "leaderboard": {
         "title": "Clasificación",

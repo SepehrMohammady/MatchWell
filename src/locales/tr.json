@@ -189,7 +189,16 @@
         "changePlayerNameHint": "Skor tablosundaki adını değiştir",
         "changePlayerNameMessage": "Bu, skor tablosundaki adın ve bulut yedekleme hesabındır.",
         "nameChangedTitle": "Ad değiştirildi",
-        "nameChangedMessage": "Skor tablosunda artık {{name}} olarak görünüyorsun."
+        "nameChangedMessage": "Skor tablosunda artık {{name}} olarak görünüyorsun.",
+        "deleteAccount": "Hesabı sil",
+        "deleteAccountHint": "Çevrimiçi verilerini sunucumuzdan sil",
+        "deleteAccountTitle": "Hesabın silinsin mi?",
+        "deleteAccountMessage": "Bu işlem skor tablosundaki kaydını, bulut yedeğini ve tüm çok oyunculu odalarını sunucumuzdan siler. Geri alınamaz.\n\nBu cihazdaki ilerleme korunur. Onu da silmek için Tüm ilerlemeyi sıfırla seçeneğini kullan.",
+        "deleteAccountPasswordPrompt": "Onaylamak için yedekleme şifreni gir.",
+        "deleteAccountConfirm": "Sil",
+        "deleteAccountDone": "Hesap silindi",
+        "deleteAccountDoneMessage": "Çevrimiçi verilerin silindi. Oynamaya devam edebilir veya yedeklemeyi istediğin zaman yeniden kurabilirsin.",
+        "deleteAccountNothing": "Silinecek bir şey yok: bu cihazın henüz çevrimiçi hesabı yok."
     },
     "leaderboard": {
         "title": "Leaderboard",

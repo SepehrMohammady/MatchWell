@@ -192,6 +192,18 @@ export const renamePlayer = async (
     return { success: false, error: response.error };
 };
 
+/**
+ * Forget this device's online identity.
+ *
+ * Called after the server has deleted the account, so the next online action
+ * registers a brand new player rather than trying to write to a row that is no
+ * longer there. The device id is dropped too: keeping it would tie the fresh
+ * identity back to the deleted one.
+ */
+export const clearLocalIdentity = async (): Promise<void> => {
+    await AsyncStorage.multiRemove([DEVICE_ID_KEY, USERNAME_KEY, DEVICE_SECRET_KEY]);
+};
+
 // Publish scores
 export interface PublishData {
     total_stars: number;

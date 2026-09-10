@@ -189,7 +189,16 @@
         "changePlayerNameHint": "Módosítsd a neved a ranglistán",
         "changePlayerNameMessage": "Ez a neved a ranglistán és a felhőmentés fiókod.",
         "nameChangedTitle": "Név módosítva",
-        "nameChangedMessage": "A ranglistán mostantól {{name}} vagy."
+        "nameChangedMessage": "A ranglistán mostantól {{name}} vagy.",
+        "deleteAccount": "Fiók törlése",
+        "deleteAccountHint": "Töröld az online adataidat a szerverünkről",
+        "deleteAccountTitle": "Törlöd a fiókodat?",
+        "deleteAccountMessage": "Ez törli a ranglistás bejegyzésedet, a felhőmentésedet és minden többjátékos szobádat a szerverünkről. Nem vonható vissza.\n\nAz ezen az eszközön lévő haladás megmarad. Használd az Összes haladás visszaállítása lehetőséget, ha azt is törölnéd.",
+        "deleteAccountPasswordPrompt": "A megerősítéshez add meg a mentési jelszavadat.",
+        "deleteAccountConfirm": "Törlés",
+        "deleteAccountDone": "Fiók törölve",
+        "deleteAccountDoneMessage": "Az online adataidat töröltük. Játszhatsz tovább, vagy bármikor újra beállíthatod a mentést.",
+        "deleteAccountNothing": "Nincs mit törölni: ezen az eszközön még nincs online fiók."
     },
     "leaderboard": {
         "title": "Leaderboard",

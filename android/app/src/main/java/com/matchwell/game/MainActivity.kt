@@ -1,4 +1,4 @@
-package com.matchwell
+package com.matchwell.game
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate

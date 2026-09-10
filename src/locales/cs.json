@@ -189,7 +189,16 @@
         "changePlayerNameHint": "Změň své jméno v žebříčku",
         "changePlayerNameMessage": "Toto je tvé jméno v žebříčku a účet pro zálohu v cloudu.",
         "nameChangedTitle": "Jméno změněno",
-        "nameChangedMessage": "V žebříčku se nyní jmenuješ {{name}}."
+        "nameChangedMessage": "V žebříčku se nyní jmenuješ {{name}}.",
+        "deleteAccount": "Smazat účet",
+        "deleteAccountHint": "Vymaž svá online data z našeho serveru",
+        "deleteAccountTitle": "Smazat tvůj účet?",
+        "deleteAccountMessage": "Tím se z našeho serveru vymaže tvůj záznam v žebříčku, záloha v cloudu i všechny místnosti pro více hráčů. Nelze to vrátit zpět.\n\nPostup na tomto zařízení zůstane. Pro jeho smazání použij Resetovat veškerý postup.",
+        "deleteAccountPasswordPrompt": "Pro potvrzení zadej heslo k záloze.",
+        "deleteAccountConfirm": "Smazat",
+        "deleteAccountDone": "Účet smazán",
+        "deleteAccountDoneMessage": "Tvá online data byla vymazána. Můžeš hrát dál nebo si zálohu kdykoli znovu nastavit.",
+        "deleteAccountNothing": "Není co mazat: toto zařízení zatím nemá online účet."
     },
     "leaderboard": {
         "title": "Leaderboard",

@@ -189,7 +189,16 @@
         "changePlayerNameHint": "Wijzig je naam op het scorebord",
         "changePlayerNameMessage": "Dit is je naam op het scorebord en je account voor de back-up in de cloud.",
         "nameChangedTitle": "Naam gewijzigd",
-        "nameChangedMessage": "Je heet nu {{name}} op het scorebord."
+        "nameChangedMessage": "Je heet nu {{name}} op het scorebord.",
+        "deleteAccount": "Account verwijderen",
+        "deleteAccountHint": "Wis je onlinegegevens van onze server",
+        "deleteAccountTitle": "Je account verwijderen?",
+        "deleteAccountMessage": "Dit wist je vermelding op het scorebord, je back-up in de cloud en al je multiplayerkamers van onze server. Dit kan niet ongedaan worden gemaakt.\n\nJe voortgang op dit apparaat blijft bewaard. Gebruik Alle voortgang wissen om die ook te verwijderen.",
+        "deleteAccountPasswordPrompt": "Voer je back-upwachtwoord in om te bevestigen.",
+        "deleteAccountConfirm": "Verwijderen",
+        "deleteAccountDone": "Account verwijderd",
+        "deleteAccountDoneMessage": "Je onlinegegevens zijn gewist. Je kunt gewoon verder spelen of de back-up later opnieuw instellen.",
+        "deleteAccountNothing": "Er valt niets te verwijderen: dit apparaat heeft nog geen online account."
     },
     "leaderboard": {
         "title": "Leaderboard",

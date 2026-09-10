@@ -189,7 +189,16 @@
         "changePlayerNameHint": "Ändere deinen Namen in der Bestenliste",
         "changePlayerNameMessage": "Das ist dein Name in der Bestenliste und dein Konto für die Cloud-Sicherung.",
         "nameChangedTitle": "Name geändert",
-        "nameChangedMessage": "Du heißt in der Bestenliste jetzt {{name}}."
+        "nameChangedMessage": "Du heißt in der Bestenliste jetzt {{name}}.",
+        "deleteAccount": "Konto löschen",
+        "deleteAccountHint": "Deine Online-Daten von unserem Server entfernen",
+        "deleteAccountTitle": "Dein Konto löschen?",
+        "deleteAccountMessage": "Damit werden dein Bestenlisten-Eintrag, deine Cloud-Sicherung und alle Mehrspieler-Räume von unserem Server gelöscht. Das lässt sich nicht rückgängig machen.\n\nDein Fortschritt auf diesem Gerät bleibt erhalten. Nutze Gesamten Fortschritt zurücksetzen, um auch den zu löschen.",
+        "deleteAccountPasswordPrompt": "Gib zur Bestätigung dein Sicherungspasswort ein.",
+        "deleteAccountConfirm": "Löschen",
+        "deleteAccountDone": "Konto gelöscht",
+        "deleteAccountDoneMessage": "Deine Online-Daten wurden gelöscht. Du kannst weiterspielen oder die Sicherung jederzeit neu einrichten.",
+        "deleteAccountNothing": "Es gibt nichts zu löschen: Dieses Gerät hat noch kein Online-Konto."
     },
     "leaderboard": {
         "title": "Bestenliste",

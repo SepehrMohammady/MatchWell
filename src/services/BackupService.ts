@@ -14,9 +14,15 @@
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { VERSION } from '../config/version';
-import { checkUsername, registerPlayer } from './LeaderboardService';
+import {
+    checkUsername,
+    clearLocalIdentity,
+    getDeviceSecret,
+    registerPlayer,
+} from './LeaderboardService';
 
 const API_BASE_URL = 'https://semo-lab.com/matchwell/backup';
+const DELETE_ACCOUNT_URL = 'https://semo-lab.com/matchwell/leaderboard/delete-account.php';
 
 const THEME_IDS = [
     'trash-sorting',
@@ -90,7 +96,10 @@ function classify(status: number, message?: string): BackupErrorCode {
 
 async function apiCall<T>(endpoint: string, body: Record<string, unknown>): Promise<BackupResult<T>> {
     try {
-        const response = await fetch(`${API_BASE_URL}/${endpoint}`, {
+        // An absolute endpoint reaches another MatchWell API; a bare name is
+        // relative to the backup one.
+        const url = endpoint.startsWith('https://') ? endpoint : `${API_BASE_URL}/${endpoint}`;
+        const response = await fetch(url, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(body),
@@ -417,6 +426,40 @@ export async function autoBackupIfEnabled(): Promise<void> {
  * player's cloud save with the empty one they just created. Signing out means
  * they have to restore deliberately to get the old save back.
  */
+/**
+ * Erase everything the server holds about this player, then forget them here.
+ *
+ * Google Play requires an in-app account deletion path for any app that lets
+ * users create an account, and this is it. The server drops the leaderboard
+ * entry, the cloud save, and any multiplayer rooms in one transaction.
+ *
+ * The password is required only when a cloud save exists - it is what stops a
+ * device that has already lost the save from deleting the copy it no longer
+ * owns. Local progress is deliberately left alone: this removes the online
+ * account, not the game on this device.
+ */
+export async function deleteAccount(password?: string): Promise<BackupResult<null>> {
+    const [deviceId, deviceSecret] = await Promise.all([
+        getDeviceId(),
+        getDeviceSecret(),
+    ]);
+
+    const result = await apiCall<null>(DELETE_ACCOUNT_URL, {
+        device_id: deviceId,
+        device_secret: deviceSecret,
+        password: password ?? '',
+        build: VERSION.buildNumber,
+    });
+
+    // A device the server has never heard of has nothing to delete, so treat
+    // that as done rather than as a failure the player has to act on.
+    if (!result.ok && result.code !== 'no-account') return result;
+
+    await signOutOfBackup();
+    await clearLocalIdentity();
+    return { ok: true, data: null };
+}
+
 export async function signOutOfBackup(): Promise<void> {
     await AsyncStorage.multiRemove([
         ACCOUNT_KEY,

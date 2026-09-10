@@ -189,7 +189,16 @@
         "changePlayerNameHint": "Vaihda nimesi tulostaulukossa",
         "changePlayerNameMessage": "Tämä on nimesi tulostaulukossa ja pilvivarmuuskopion tilisi.",
         "nameChangedTitle": "Nimi vaihdettu",
-        "nameChangedMessage": "Olet nyt {{name}} tulostaulukossa."
+        "nameChangedMessage": "Olet nyt {{name}} tulostaulukossa.",
+        "deleteAccount": "Poista tili",
+        "deleteAccountHint": "Poista verkkotietosi palvelimeltamme",
+        "deleteAccountTitle": "Poistetaanko tilisi?",
+        "deleteAccountMessage": "Tämä poistaa merkintäsi tulostaulukosta, pilvivarmuuskopiosi ja kaikki moninpelihuoneesi palvelimeltamme. Toimintoa ei voi perua.\n\nTämän laitteen edistyminen säilyy. Käytä Nollaa kaikki edistyminen poistaaksesi myös sen.",
+        "deleteAccountPasswordPrompt": "Vahvista syöttämällä varmuuskopion salasana.",
+        "deleteAccountConfirm": "Poista",
+        "deleteAccountDone": "Tili poistettu",
+        "deleteAccountDoneMessage": "Verkkotietosi on poistettu. Voit jatkaa pelaamista tai ottaa varmuuskopioinnin käyttöön uudelleen milloin tahansa.",
+        "deleteAccountNothing": "Poistettavaa ei ole: tällä laitteella ei ole vielä verkkotiliä."
     },
     "leaderboard": {
         "title": "Leaderboard",

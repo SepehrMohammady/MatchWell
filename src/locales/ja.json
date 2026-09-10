@@ -189,7 +189,16 @@
         "changePlayerNameHint": "ランキングでの名前を変更します",
         "changePlayerNameMessage": "これはランキングでの名前であり、クラウドバックアップのアカウントでもあります。",
         "nameChangedTitle": "名前を変更しました",
-        "nameChangedMessage": "ランキングでの名前が {{name}} になりました。"
+        "nameChangedMessage": "ランキングでの名前が {{name}} になりました。",
+        "deleteAccount": "アカウントを削除",
+        "deleteAccountHint": "オンラインデータをサーバーから消去します",
+        "deleteAccountTitle": "アカウントを削除しますか？",
+        "deleteAccountMessage": "ランキングの記録、クラウドバックアップ、マルチプレイのルームをサーバーから消去します。元に戻すことはできません。\n\nこの端末の進行状況は残ります。あわせて消すには「すべての進行状況をリセット」をお使いください。",
+        "deleteAccountPasswordPrompt": "確認のためバックアップのパスワードを入力してください。",
+        "deleteAccountConfirm": "削除",
+        "deleteAccountDone": "アカウントを削除しました",
+        "deleteAccountDoneMessage": "オンラインデータを消去しました。このまま遊べますし、いつでもバックアップを設定し直せます。",
+        "deleteAccountNothing": "削除するものがありません。この端末にはまだオンラインアカウントがありません。"
     },
     "leaderboard": {
         "title": "リーダーボード",

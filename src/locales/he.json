@@ -189,7 +189,16 @@
         "changePlayerNameHint": "שנו את שמכם בטבלת השיאים",
         "changePlayerNameMessage": "זהו שמכם בטבלת השיאים וחשבון הגיבוי בענן שלכם.",
         "nameChangedTitle": "השם שונה",
-        "nameChangedMessage": "מעכשיו אתם {{name}} בטבלת השיאים."
+        "nameChangedMessage": "מעכשיו אתם {{name}} בטבלת השיאים.",
+        "deleteAccount": "מחיקת חשבון",
+        "deleteAccountHint": "מחקו את הנתונים המקוונים שלכם מהשרת שלנו",
+        "deleteAccountTitle": "למחוק את החשבון שלכם?",
+        "deleteAccountMessage": "פעולה זו מוחקת את הרישום שלכם בטבלת השיאים, את הגיבוי בענן וכל חדרי משחק מרובה משתתפים מהשרת שלנו. אי אפשר לבטל אותה.\n\nההתקדמות במכשיר הזה נשמרת. השתמשו באיפוס כל ההתקדמות כדי למחוק גם אותה.",
+        "deleteAccountPasswordPrompt": "הזינו את סיסמת הגיבוי לאישור.",
+        "deleteAccountConfirm": "מחיקה",
+        "deleteAccountDone": "החשבון נמחק",
+        "deleteAccountDoneMessage": "הנתונים המקוונים שלכם נמחקו. אפשר להמשיך לשחק או להגדיר גיבוי מחדש בכל עת.",
+        "deleteAccountNothing": "אין מה למחוק: למכשיר הזה עדיין אין חשבון מקוון."
     },
     "leaderboard": {
         "title": "Leaderboard",

@@ -189,7 +189,16 @@
         "changePlayerNameHint": "Badilisha jina lako kwenye ubao wa viongozi",
         "changePlayerNameMessage": "Hili ndilo jina lako kwenye ubao wa viongozi na akaunti yako ya nakala ya wingu.",
         "nameChangedTitle": "Jina limebadilishwa",
-        "nameChangedMessage": "Sasa wewe ni {{name}} kwenye ubao wa viongozi."
+        "nameChangedMessage": "Sasa wewe ni {{name}} kwenye ubao wa viongozi.",
+        "deleteAccount": "Futa akaunti",
+        "deleteAccountHint": "Futa data yako ya mtandaoni kwenye seva yetu",
+        "deleteAccountTitle": "Kufuta akaunti yako?",
+        "deleteAccountMessage": "Hii inafuta kiingilio chako kwenye ubao wa viongozi, nakala yako ya wingu, na vyumba vyovyote vya wachezaji wengi kwenye seva yetu. Haiwezi kutenduliwa.\n\nMaendeleo kwenye kifaa hiki yatabaki. Tumia Weka upya maendeleo yote ili kuyafuta pia.",
+        "deleteAccountPasswordPrompt": "Weka nenosiri lako la nakala rudufu ili kuthibitisha.",
+        "deleteAccountConfirm": "Futa",
+        "deleteAccountDone": "Akaunti imefutwa",
+        "deleteAccountDoneMessage": "Data yako ya mtandaoni imefutwa. Unaweza kuendelea kucheza au kuweka nakala rudufu tena wakati wowote.",
+        "deleteAccountNothing": "Hakuna cha kufuta: kifaa hiki bado hakina akaunti ya mtandaoni."
     },
     "leaderboard": {
         "title": "Leaderboard",

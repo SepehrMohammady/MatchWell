@@ -189,7 +189,16 @@
         "changePlayerNameHint": "Modifiez votre nom dans le classement",
         "changePlayerNameMessage": "C'est votre nom dans le classement et votre compte de sauvegarde en ligne.",
         "nameChangedTitle": "Nom modifié",
-        "nameChangedMessage": "Vous êtes désormais {{name}} dans le classement."
+        "nameChangedMessage": "Vous êtes désormais {{name}} dans le classement.",
+        "deleteAccount": "Supprimer le compte",
+        "deleteAccountHint": "Effacez vos données en ligne de notre serveur",
+        "deleteAccountTitle": "Supprimer votre compte ?",
+        "deleteAccountMessage": "Cela efface votre entrée au classement, votre sauvegarde en ligne et toutes vos salles multijoueur de notre serveur. C'est irréversible.\n\nLa progression sur cet appareil est conservée. Utilisez Réinitialiser toute la progression pour l'effacer aussi.",
+        "deleteAccountPasswordPrompt": "Saisissez votre mot de passe de sauvegarde pour confirmer.",
+        "deleteAccountConfirm": "Supprimer",
+        "deleteAccountDone": "Compte supprimé",
+        "deleteAccountDoneMessage": "Vos données en ligne ont été effacées. Vous pouvez continuer à jouer ou réactiver la sauvegarde quand vous voulez.",
+        "deleteAccountNothing": "Il n'y a rien à supprimer : cet appareil n'a pas encore de compte en ligne."
     },
     "leaderboard": {
         "title": "Classement",

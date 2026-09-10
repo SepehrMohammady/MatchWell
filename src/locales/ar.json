@@ -189,7 +189,16 @@
         "changePlayerNameHint": "غيّر اسمك في لوحة الصدارة",
         "changePlayerNameMessage": "هذا اسمك في لوحة الصدارة وحساب النسخ الاحتياطي السحابي الخاص بك.",
         "nameChangedTitle": "تم تغيير الاسم",
-        "nameChangedMessage": "أنت الآن {{name}} في لوحة الصدارة."
+        "nameChangedMessage": "أنت الآن {{name}} في لوحة الصدارة.",
+        "deleteAccount": "حذف الحساب",
+        "deleteAccountHint": "امسح بياناتك على الإنترنت من خادمنا",
+        "deleteAccountTitle": "حذف حسابك؟",
+        "deleteAccountMessage": "سيؤدي هذا إلى مسح إدخالك في لوحة الصدارة ونسختك الاحتياطية السحابية وأي غرف لعب جماعي من خادمنا. لا يمكن التراجع عن ذلك.\n\nيبقى التقدم على هذا الجهاز. استخدم إعادة تعيين كل التقدم لمسحه أيضًا.",
+        "deleteAccountPasswordPrompt": "أدخل كلمة مرور النسخة الاحتياطية للتأكيد.",
+        "deleteAccountConfirm": "حذف",
+        "deleteAccountDone": "تم حذف الحساب",
+        "deleteAccountDoneMessage": "تم مسح بياناتك على الإنترنت. يمكنك مواصلة اللعب أو إعداد النسخ الاحتياطي مرة أخرى في أي وقت.",
+        "deleteAccountNothing": "لا يوجد ما يُحذف: هذا الجهاز ليس له حساب على الإنترنت بعد."
     },
     "leaderboard": {
         "title": "لوحة المتصدرين",

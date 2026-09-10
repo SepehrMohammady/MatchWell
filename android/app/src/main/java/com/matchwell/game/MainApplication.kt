@@ -1,4 +1,4 @@
-package com.matchwell
+package com.matchwell.game
 
 import android.app.Application
 import com.facebook.react.PackageList

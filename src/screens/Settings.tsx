@@ -32,7 +32,7 @@ import CustomAlert from '../components/UI/CustomAlert';
 import { useTranslation } from 'react-i18next';
 import { LANGUAGES, LanguageCode, changeLanguage, getCurrentLanguage, formatNumber } from '../config/i18n';
 import RNRestart from 'react-native-restart';
-import { signOutOfBackup, renameBackupAccount } from '../services/BackupService';
+import { signOutOfBackup, renameBackupAccount, deleteAccount } from '../services/BackupService';
 import { getStoredUsername, renamePlayer } from '../services/LeaderboardService';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Settings'>;
@@ -51,6 +51,12 @@ const Settings: React.FC<Props> = ({ navigation }) => {
     const [newName, setNewName] = useState('');
     const [nameError, setNameError] = useState('');
     const [savingName, setSavingName] = useState(false);
+    // Deleting the account asks for the backup password only when the server
+    // says one is needed, so a player without a cloud save is never prompted.
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [deletePassword, setDeletePassword] = useState('');
+    const [deleteError, setDeleteError] = useState('');
+    const [deletingAccount, setDeletingAccount] = useState(false);
     const [alertConfig, setAlertConfig] = useState<{ visible: boolean; title: string; message: string; buttons?: any[] }>({
         visible: false,
         title: '',
@@ -92,6 +98,51 @@ const Settings: React.FC<Props> = ({ navigation }) => {
             t('settings.nameChangedTitle'),
             t('settings.nameChangedMessage', { name: result.username }),
             [{ text: t('common.ok'), onPress: hideAlert }]
+        );
+    };
+
+    const runDelete = async (password?: string) => {
+        setDeletingAccount(true);
+        const result = await deleteAccount(password);
+        setDeletingAccount(false);
+
+        if (!result.ok) {
+            // The server asks for the password only if a cloud save exists.
+            if (result.code === 'bad-credentials') {
+                setDeleteError(password ? t('backup.errorCredentials') : '');
+                setShowDeleteModal(true);
+                return;
+            }
+            const key = result.code === 'network' ? 'backup.errorNetwork'
+                : result.code === 'rate-limited' ? 'backup.errorRateLimited'
+                : 'backup.errorUnknown';
+            showAlert(t('common.error'), t(key), [{ text: t('common.ok'), onPress: hideAlert }]);
+            return;
+        }
+
+        setShowDeleteModal(false);
+        setDeletePassword('');
+        setPlayerName(null);
+        showAlert(
+            t('settings.deleteAccountDone'),
+            t('settings.deleteAccountDoneMessage'),
+            [{ text: t('common.ok'), onPress: hideAlert }]
+        );
+    };
+
+    const handleDeleteAccount = () => {
+        playSfx('tile_select');
+        showAlert(
+            t('settings.deleteAccountTitle'),
+            t('settings.deleteAccountMessage'),
+            [
+                { text: t('common.cancel'), onPress: hideAlert },
+                {
+                    text: t('settings.deleteAccountConfirm'),
+                    style: 'destructive',
+                    onPress: () => { hideAlert(); runDelete(); },
+                },
+            ]
         );
     };
 
@@ -277,7 +328,16 @@ const Settings: React.FC<Props> = ({ navigation }) => {
                     >
                         <Text style={styles.dangerButtonText}>{t('settings.resetAllProgress')}</Text>
                     </TouchableOpacity>
+
+                    <TouchableOpacity
+                        style={[styles.dangerButton, styles.deleteAccountButton]}
+                        onPress={handleDeleteAccount}
+                    >
+                        <Text style={styles.dangerButtonText}>{t('settings.deleteAccount')}</Text>
+                    </TouchableOpacity>
+                    <Text style={styles.deleteAccountHint}>{t('settings.deleteAccountHint')}</Text>
                 </View>
+
                 {/* Testers Section */}
                 <View style={styles.section}>
                     <Text style={styles.sectionTitle}>{t('settings.testers')}</Text>
@@ -396,6 +456,49 @@ const Settings: React.FC<Props> = ({ navigation }) => {
                             >
                                 <Text style={styles.nameSaveText}>
                                     {savingName ? t('common.loading') : t('common.save')}
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
+
+            {/* Confirm account deletion with the backup password */}
+            <Modal
+                visible={showDeleteModal}
+                transparent={true}
+                animationType="fade"
+                onRequestClose={() => setShowDeleteModal(false)}
+            >
+                <View style={styles.modalOverlay}>
+                    <View style={styles.nameModal}>
+                        <Text style={styles.modalTitle}>{t('settings.deleteAccountTitle')}</Text>
+                        <Text style={styles.nameModalHint}>{t('settings.deleteAccountPasswordPrompt')}</Text>
+                        <TextInput
+                            style={styles.nameInput}
+                            value={deletePassword}
+                            onChangeText={(v) => { setDeletePassword(v); setDeleteError(''); }}
+                            placeholder={t('backup.password')}
+                            placeholderTextColor={COLORS.textMuted}
+                            secureTextEntry
+                            autoCapitalize="none"
+                            autoCorrect={false}
+                        />
+                        {!!deleteError && <Text style={styles.nameError}>{deleteError}</Text>}
+                        <View style={styles.nameModalButtons}>
+                            <TouchableOpacity
+                                style={styles.nameCancelButton}
+                                onPress={() => { setShowDeleteModal(false); setDeletePassword(''); }}
+                            >
+                                <Text style={styles.nameCancelText}>{t('common.cancel')}</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={[styles.nameSaveButton, styles.deleteConfirmButton]}
+                                onPress={() => runDelete(deletePassword)}
+                                disabled={deletingAccount}
+                            >
+                                <Text style={styles.nameSaveText}>
+                                    {deletingAccount ? t('common.loading') : t('settings.deleteAccountConfirm')}
                                 </Text>
                             </TouchableOpacity>
                         </View>
@@ -697,6 +800,18 @@ const styles = StyleSheet.create({
         padding: SPACING.lg,
         width: '100%',
         maxHeight: '80%',
+    },
+    deleteAccountButton: {
+        marginTop: SPACING.md,
+    },
+    deleteAccountHint: {
+        fontSize: TYPOGRAPHY.caption,
+        color: COLORS.textMuted,
+        textAlign: 'center',
+        marginTop: SPACING.sm,
+    },
+    deleteConfirmButton: {
+        backgroundColor: COLORS.accentDanger,
     },
     nameModal: {
         backgroundColor: COLORS.cardBackground,
