@@ -6,7 +6,7 @@
  */
 
 import React from 'react';
-import { AppState, AppStateStatus, StatusBar, StyleSheet, View } from 'react-native';
+import { StatusBar, StyleSheet, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
@@ -35,7 +35,7 @@ import LocalMultiplayerResults from './src/screens/LocalMultiplayerResults';
 
 import BackupScreen from './src/screens/BackupScreen';
 import TransferLock from './src/components/UI/TransferLock';
-import { refreshLockState, getLocalState, backupNow } from './src/services/BackupService';
+import { refreshLockState } from './src/services/BackupService';
 
 // Types
 import { RootStackParamList } from './src/types';
@@ -56,23 +56,11 @@ function App(): React.JSX.Element {
     refreshLockState().then(setLocked).catch(() => setLocked(false));
   }, []);
 
-  // Automatic backup, when the player has opted in: push progress as the app
-  // leaves the foreground, which is the natural "session over" moment.
-  React.useEffect(() => {
-    const onChange = (next: AppStateStatus) => {
-      if (next !== 'background' && next !== 'inactive') return;
-      getLocalState()
-        .then(state => {
-          if (state.autoBackup && state.account && !state.locked) {
-            return backupNow();
-          }
-          return undefined;
-        })
-        .catch(() => undefined);
-    };
-    const sub = AppState.addEventListener('change', onChange);
-    return () => sub.remove();
-  }, []);
+  // Automatic backup used to run here, when the app left the foreground. That is
+  // not a dependable signal: swiping the app away from the recents list leaves no
+  // usable window to finish a network request, so those sessions never backed up.
+  // It now runs from GameScreen at the moments progress actually changes -
+  // finishing a level, and leaving an endless run.
 
   if (locked) {
     return (

@@ -18,6 +18,7 @@ import GameBoard from '../components/Game/GameBoard';
 import HUD from '../components/UI/HUD';
 import PowerProgress from '../components/UI/PowerProgress';
 import ThemeAmbience from '../components/UI/ThemeAmbience';
+import { autoBackupIfEnabled } from '../services/BackupService';
 import Tutorial from '../components/UI/Tutorial';
 import StoryComplete from '../components/UI/StoryComplete';
 import { THEME_CONFIGS, getLevelById, getLevelsByTheme, LEVELS, TRASH_FACTS, POLLUTION_FACTS, WATER_FACTS, ENERGY_FACTS, FOREST_FACTS } from '../themes';
@@ -214,15 +215,17 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
         playSfx('level_complete');
 
         // Fade in, hold 3s, fade out - then hand over to whatever is queued behind it.
+        // The fades are deliberately gentle (700ms, was 300ms): an achievement is a
+        // reward, and at 300ms it snapped in and out hard enough to read as a glitch.
         Animated.timing(toastOpacity, {
             toValue: 1,
-            duration: 300,
+            duration: 700,
             useNativeDriver: true,
         }).start(() => {
             toastTimer.current = setTimeout(() => {
                 Animated.timing(toastOpacity, {
                     toValue: 0,
-                    duration: 300,
+                    duration: 700,
                     useNativeDriver: true,
                 }).start(() => {
                     setToastAchievement(null);
@@ -256,6 +259,8 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
         if (isLevelComplete && !levelCompleteProcessed.current) {
             levelCompleteProcessed.current = true;
             markLevelComplete(levelId, score, movesRemaining);
+            // Finishing a level is the other moment worth pushing to the cloud.
+            autoBackupIfEnabled();
 
             const allLevelIds = LEVELS.map(l => l.id);
             const updatedCompletedLevels = [...completedLevels, levelId];
@@ -421,6 +426,10 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
         if (isEndlessMode && !isGameOver) {
             await saveEndlessState(); // Save endless state for resume
         }
+        // Leaving an endless run is a moment progress has just changed. This sits
+        // outside the guard above on purpose: running out of moves is the usual way
+        // a run ends, and the high score is already saved by then either way.
+        if (isEndlessMode) autoBackupIfEnabled();
         resetGameState(); // Reset all game state flags before navigating
         stopBgm(); // Stop theme music to prevent overlap
         navigation.navigate('MainMenu');
@@ -430,6 +439,10 @@ const GameScreen: React.FC<Props> = ({ navigation, route }) => {
         if (isEndlessMode && !isGameOver) {
             await saveEndlessState(); // Save endless state for resume
         }
+        // Leaving an endless run is a moment progress has just changed. This sits
+        // outside the guard above on purpose: running out of moves is the usual way
+        // a run ends, and the high score is already saved by then either way.
+        if (isEndlessMode) autoBackupIfEnabled();
         resetGameState(); // Reset all game state flags before navigating
         stopBgm(); // Stop theme music to prevent overlap
         // Navigate to appropriate screen based on mode

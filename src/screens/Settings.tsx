@@ -10,6 +10,7 @@ import {
     Linking,
     ScrollView,
     Modal,
+    TextInput,
     I18nManager,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -31,6 +32,8 @@ import CustomAlert from '../components/UI/CustomAlert';
 import { useTranslation } from 'react-i18next';
 import { LANGUAGES, LanguageCode, changeLanguage, getCurrentLanguage, formatNumber } from '../config/i18n';
 import RNRestart from 'react-native-restart';
+import { signOutOfBackup, renameBackupAccount } from '../services/BackupService';
+import { getStoredUsername, renamePlayer } from '../services/LeaderboardService';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Settings'>;
 
@@ -42,6 +45,12 @@ const Settings: React.FC<Props> = ({ navigation }) => {
     const [currentLang, setCurrentLang] = useState<LanguageCode>(getCurrentLanguage());
     const [showLanguageModal, setShowLanguageModal] = useState(false);
     const [needsRestart, setNeedsRestart] = useState(false);
+    // Player name (the leaderboard name, which is also the backup account key).
+    const [playerName, setPlayerName] = useState<string | null>(null);
+    const [showNameModal, setShowNameModal] = useState(false);
+    const [newName, setNewName] = useState('');
+    const [nameError, setNameError] = useState('');
+    const [savingName, setSavingName] = useState(false);
     const [alertConfig, setAlertConfig] = useState<{ visible: boolean; title: string; message: string; buttons?: any[] }>({
         visible: false,
         title: '',
@@ -56,7 +65,35 @@ const Settings: React.FC<Props> = ({ navigation }) => {
         const settings = getSoundSettings();
         setSfxEnabled(settings.sfxEnabled);
         setMusicEnabled(settings.musicEnabled);
+        getStoredUsername().then(setPlayerName);
     }, []);
+
+    const handleSaveName = async () => {
+        const wanted = newName.trim();
+        if (wanted === playerName) { setShowNameModal(false); return; }
+        if (wanted.length < 3 || wanted.length > 20) {
+            setNameError(t('backup.errorNameLength'));
+            return;
+        }
+        setSavingName(true);
+        setNameError('');
+        const result = await renamePlayer(wanted);
+        setSavingName(false);
+        if (!result.success || !result.username) {
+            setNameError(result.error || t('backup.errorNameTaken'));
+            return;
+        }
+        // The backup account is keyed on the name, so move the local session too.
+        await renameBackupAccount(result.username);
+        setPlayerName(result.username);
+        setShowNameModal(false);
+        playSfx('level_complete');
+        showAlert(
+            t('settings.nameChangedTitle'),
+            t('settings.nameChangedMessage', { name: result.username }),
+            [{ text: t('common.ok'), onPress: hideAlert }]
+        );
+    };
 
     // Play menu music when screen is focused
     useFocusEffect(
@@ -100,6 +137,11 @@ const Settings: React.FC<Props> = ({ navigation }) => {
                     style: 'destructive',
                     onPress: async () => {
                         await resetProgress();
+                        // Also sign out of cloud backup. Staying signed in would let
+                        // the next backup overwrite the player's cloud save with the
+                        // empty one they just created - so a reset means signing in
+                        // again to get the old save back.
+                        await signOutOfBackup();
                         showAlert(t('common.ok'), t('settings.resetProgress'), [{ text: t('common.ok'), onPress: hideAlert }]);
                     },
                 },
@@ -193,6 +235,38 @@ const Settings: React.FC<Props> = ({ navigation }) => {
                     </TouchableOpacity>
                 </View>
 
+                {/* Player name - only meaningful once they have one. */}
+                {playerName && (
+                    <View style={styles.section}>
+                        <Text style={styles.sectionTitle}>{t('backup.playerName')}</Text>
+                        <TouchableOpacity
+                            style={[styles.settingRow, styles.lastRow]}
+                            onPress={() => { playSfx('tile_select'); setNewName(playerName); setNameError(''); setShowNameModal(true); }}
+                        >
+                            <View style={styles.settingInfo}>
+                                <Text style={styles.settingLabel}>{playerName}</Text>
+                                <Text style={styles.settingDescription}>{t('settings.changePlayerNameHint')}</Text>
+                            </View>
+                            <Text style={styles.linkIcon}>›</Text>
+                        </TouchableOpacity>
+                    </View>
+                )}
+
+                {/* Backup & Transfer */}
+                <View style={styles.section}>
+                    <Text style={styles.sectionTitle}>{t('backup.title')}</Text>
+                    <TouchableOpacity
+                        style={[styles.settingRow, styles.lastRow]}
+                        onPress={() => { playSfx('tile_select'); navigation.navigate('Backup'); }}
+                    >
+                        <View style={styles.settingInfo}>
+                            <Text style={styles.settingLabel}>{t('backup.title')}</Text>
+                            <Text style={styles.settingDescription}>{t('backup.settingsHint')}</Text>
+                        </View>
+                        <Text style={styles.linkIcon}>›</Text>
+                    </TouchableOpacity>
+                </View>
+
                 {/* Data Section */}
                 <View style={styles.section}>
                     <Text style={styles.sectionTitle}>{t('settings.resetProgress')}</Text>
@@ -204,22 +278,6 @@ const Settings: React.FC<Props> = ({ navigation }) => {
                         <Text style={styles.dangerButtonText}>{t('settings.resetAllProgress')}</Text>
                     </TouchableOpacity>
                 </View>
-
-                {/* Backup & Transfer */}
-                <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>{t('backup.title')}</Text>
-                    <TouchableOpacity
-                        style={styles.settingRow}
-                        onPress={() => { playSfx('tile_select'); navigation.navigate('Backup'); }}
-                    >
-                        <View style={styles.settingInfo}>
-                            <Text style={styles.settingLabel}>{t('backup.title')}</Text>
-                            <Text style={styles.settingDescription}>{t('backup.settingsHint')}</Text>
-                        </View>
-                        <Text style={styles.linkIcon}>›</Text>
-                    </TouchableOpacity>
-                </View>
-
                 {/* Testers Section */}
                 <View style={styles.section}>
                     <Text style={styles.sectionTitle}>{t('settings.testers')}</Text>
@@ -228,8 +286,12 @@ const Settings: React.FC<Props> = ({ navigation }) => {
                         <View style={styles.aboutCardRow}>
                             <Text style={styles.testersThankYou}>{t('settings.testersThanks')}</Text>
                         </View>
+                        {/* Alphabetical by first name. */}
                         <View style={styles.aboutCardRow}>
                             <Text style={styles.testerName}>Hoda Mostafanezhad</Text>
+                        </View>
+                        <View style={styles.aboutCardRow}>
+                            <Text style={styles.testerName}>Houriyeh Emadoleslami</Text>
                         </View>
                         <View style={[styles.aboutCardRow, styles.aboutCardLastRow]}>
                             <Text style={styles.testerName}>Majid Mohammadi</Text>
@@ -297,6 +359,49 @@ const Settings: React.FC<Props> = ({ navigation }) => {
                     <Text style={styles.copyright}>© 2026 Sepehr Mohammady. Open source under MIT License.</Text>
                 </View>
             </ScrollView>
+
+            {/* Change Player Name */}
+            <Modal
+                visible={showNameModal}
+                transparent={true}
+                animationType="fade"
+                onRequestClose={() => setShowNameModal(false)}
+            >
+                <View style={styles.modalOverlay}>
+                    <View style={styles.nameModal}>
+                        <Text style={styles.modalTitle}>{t('settings.changePlayerName')}</Text>
+                        <Text style={styles.nameModalHint}>{t('settings.changePlayerNameMessage')}</Text>
+                        <TextInput
+                            style={styles.nameInput}
+                            value={newName}
+                            onChangeText={(v) => { setNewName(v); setNameError(''); }}
+                            placeholder={t('backup.playerName')}
+                            placeholderTextColor={COLORS.textMuted}
+                            autoCapitalize="none"
+                            autoCorrect={false}
+                            maxLength={20}
+                        />
+                        {!!nameError && <Text style={styles.nameError}>{nameError}</Text>}
+                        <View style={styles.nameModalButtons}>
+                            <TouchableOpacity
+                                style={styles.nameCancelButton}
+                                onPress={() => setShowNameModal(false)}
+                            >
+                                <Text style={styles.nameCancelText}>{t('common.cancel')}</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={styles.nameSaveButton}
+                                onPress={handleSaveName}
+                                disabled={savingName}
+                            >
+                                <Text style={styles.nameSaveText}>
+                                    {savingName ? t('common.loading') : t('common.save')}
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
 
             {/* Language Selection Modal */}
             <Modal
@@ -592,6 +697,65 @@ const styles = StyleSheet.create({
         padding: SPACING.lg,
         width: '100%',
         maxHeight: '80%',
+    },
+    nameModal: {
+        backgroundColor: COLORS.cardBackground,
+        borderRadius: RADIUS.lg,
+        padding: SPACING.lg,
+        marginHorizontal: SPACING.lg,
+        gap: SPACING.sm,
+    },
+    nameModalHint: {
+        fontSize: TYPOGRAPHY.caption,
+        fontFamily: TYPOGRAPHY.fontFamily,
+        color: COLORS.textSecondary,
+        textAlign: 'center',
+    },
+    nameInput: {
+        borderWidth: 1,
+        borderColor: COLORS.cardBorder,
+        borderRadius: RADIUS.sm,
+        paddingHorizontal: SPACING.md,
+        paddingVertical: SPACING.sm,
+        fontSize: TYPOGRAPHY.body,
+        fontFamily: TYPOGRAPHY.fontFamily,
+        color: COLORS.textPrimary,
+        backgroundColor: COLORS.backgroundPrimary,
+        marginTop: SPACING.sm,
+    },
+    nameError: {
+        fontSize: TYPOGRAPHY.caption,
+        fontFamily: TYPOGRAPHY.fontFamily,
+        color: '#C0392B',
+    },
+    nameModalButtons: {
+        flexDirection: 'row',
+        gap: SPACING.sm,
+        marginTop: SPACING.sm,
+    },
+    nameCancelButton: {
+        flex: 1,
+        paddingVertical: SPACING.md,
+        borderRadius: RADIUS.sm,
+        backgroundColor: COLORS.backgroundSecondary,
+        alignItems: 'center',
+    },
+    nameCancelText: {
+        fontSize: TYPOGRAPHY.body,
+        fontFamily: TYPOGRAPHY.fontFamilyMedium,
+        color: COLORS.textPrimary,
+    },
+    nameSaveButton: {
+        flex: 1,
+        paddingVertical: SPACING.md,
+        borderRadius: RADIUS.sm,
+        backgroundColor: COLORS.organicWaste,
+        alignItems: 'center',
+    },
+    nameSaveText: {
+        fontSize: TYPOGRAPHY.body,
+        fontFamily: TYPOGRAPHY.fontFamilySemiBold,
+        color: '#FFFFFF',
     },
     modalTitle: {
         fontSize: TYPOGRAPHY.h3,

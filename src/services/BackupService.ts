@@ -376,6 +376,58 @@ export async function refreshLockState(): Promise<boolean> {
 }
 
 /**
+ * Point this device's backup session at a renamed account.
+ *
+ * The server renames the leaderboard entry and the backup account together; this
+ * keeps the local session in step. Without it the app would keep uploading under
+ * the old name and get "no backup found" on its next write.
+ */
+export async function renameBackupAccount(newUsername: string): Promise<void> {
+    const current = await AsyncStorage.getItem(ACCOUNT_KEY);
+    if (!current) return; // backup not in use on this device
+    await AsyncStorage.setItem(ACCOUNT_KEY, newUsername);
+}
+
+/**
+ * Back up now, but only if the player switched automatic backup on.
+ *
+ * Called at the points where progress has actually just changed - finishing a
+ * level, leaving an endless run - rather than when the app goes to background.
+ * Backgrounding is not a reliable signal: swiping the app away from the recents
+ * list gives no usable window to finish a network request, so those sessions
+ * were never backed up at all.
+ *
+ * Fire and forget: never block or interrupt play, and never surface an error.
+ */
+export async function autoBackupIfEnabled(): Promise<void> {
+    try {
+        const state = await getLocalState();
+        if (!state.autoBackup || !state.account || !state.hasToken || state.locked) return;
+        await backupNow();
+    } catch {
+        // Auto backup is a convenience; a failure must stay invisible.
+    }
+}
+
+/**
+ * Sign this device out of cloud backup, leaving the server account untouched.
+ *
+ * Called when the player resets their progress. Without it, a reset device stays
+ * signed in and the next backup - automatic or manual - would overwrite the
+ * player's cloud save with the empty one they just created. Signing out means
+ * they have to restore deliberately to get the old save back.
+ */
+export async function signOutOfBackup(): Promise<void> {
+    await AsyncStorage.multiRemove([
+        ACCOUNT_KEY,
+        OWNER_TOKEN_KEY,
+        LAST_BACKUP_KEY,
+        AUTO_KEY,
+        LOCK_KEY,
+    ]);
+}
+
+/**
  * Give up the save that moved away and start over on this device. Clears the
  * player's data and the backup session, but leaves the server account alone -
  * it belongs to the other device now.

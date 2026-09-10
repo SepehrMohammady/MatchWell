@@ -160,6 +160,38 @@ export const registerPlayer = async (username: string): Promise<{ success: boole
     return { success: false, error: response.error };
 };
 
+/**
+ * Change the player's name.
+ *
+ * Renames the leaderboard entry and, server-side, the cloud backup account in
+ * the same transaction - they share the name as their key, so they must move
+ * together. Authorised by the device key, not a login.
+ */
+export const renamePlayer = async (
+    newUsername: string,
+): Promise<{ success: boolean; username?: string; error?: string }> => {
+    const deviceId = await getDeviceId();
+    const deviceSecret = await getDeviceSecret();
+
+    const response = await apiCall<{ username: string }>(
+        'rename.php',
+        'POST',
+        {
+            device_id: deviceId,
+            device_secret: deviceSecret,
+            new_username: newUsername.trim(),
+            build: VERSION.buildNumber,
+        }
+    );
+
+    if (response.success && response.data?.username) {
+        await saveUsername(response.data.username);
+        return { success: true, username: response.data.username };
+    }
+
+    return { success: false, error: response.error };
+};
+
 // Publish scores
 export interface PublishData {
     total_stars: number;

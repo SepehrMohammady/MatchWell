@@ -2,7 +2,7 @@
 #
 .DS_Store
 
-# Claude Code local settings (machine-specific)
+# Local tooling settings (machine-specific)
 .claude/
 
 # Xcode

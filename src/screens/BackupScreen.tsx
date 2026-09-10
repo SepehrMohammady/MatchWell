@@ -3,7 +3,7 @@
 // The account is the player's leaderboard name plus a password. A save is only
 // ever live on one device: restoring here takes it away from the other device.
 
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import {
     View,
     Text,
@@ -66,12 +66,21 @@ const BackupScreen: React.FC<Props> = ({ navigation }) => {
     const showAlert = (title: string, message: string, buttons?: any[]) =>
         setAlert({ visible: true, title, message, buttons: buttons || [{ text: t('common.ok'), onPress: hideAlert }] });
 
+    // The restore name is only ever seeded once, as a convenience. The account
+    // being restored is often NOT this device's name - that is the whole point of
+    // restoring - so re-seeding on every focus made the field impossible to
+    // change: clearing it just refilled it on the next refresh.
+    const restoreNameSeeded = useRef(false);
+
     const refresh = useCallback(async () => {
         const [local, name] = await Promise.all([getLocalState(), getRegisteredUsername()]);
         setState(local);
         setRegisteredName(name);
-        if (!restoreName && name) setRestoreName(name);
-    }, [restoreName]);
+        if (!restoreNameSeeded.current && name) {
+            restoreNameSeeded.current = true;
+            setRestoreName(name);
+        }
+    }, []);
 
     useFocusEffect(
         useCallback(() => {
